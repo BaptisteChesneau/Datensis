@@ -17862,3 +17862,759 @@ document.addEventListener('DOMContentLoaded', () => {
     render();
   });
 })();
+
+"use strict";
+
+// Interface de demonstration : les projets ajoutes restent dans ce navigateur.
+document.addEventListener("DOMContentLoaded", () => {
+  const byId = (id) => document.getElementById(id);
+  const modal = byId("projectModal");
+  const form = byId("projectForm");
+  const grid = byId("projectsGrid");
+  const filter = byId("projectStatusFilter");
+  const empty = byId("projectsEmpty");
+  const storageKey = "datensis:tpe:projets:demo:v1";
+  if (!modal || !form || !grid || !filter) return;
+
+  const getProjects = () => {
+    try {
+      const data = JSON.parse(localStorage.getItem(storageKey) || "[]");
+      return Array.isArray(data) ? data : [];
+    } catch (error) {
+      console.warn("Impossible de lire les projets locaux", error);
+      return [];
+    }
+  };
+  const saveProjects = (items) => {
+    try {
+      localStorage.setItem(storageKey, JSON.stringify(items));
+      return true;
+    } catch (error) {
+      console.error("Sauvegarde locale impossible", error);
+      return false;
+    }
+  };
+
+  let previousFocus = null;
+  const openModal = () => {
+    previousFocus = document.activeElement;
+    modal.hidden = false;
+    modal.style.display = "flex";
+    document.body.style.overflow = "hidden";
+    byId("projectName").focus();
+  };
+  const closeModal = () => {
+    modal.hidden = true;
+    modal.style.display = "none";
+    document.body.style.overflow = "";
+    if (previousFocus && typeof previousFocus.focus === "function") previousFocus.focus();
+  };
+  ["openProjectModal", "openProjectModalBottom"].forEach((id) => {
+    byId(id)?.addEventListener("click", openModal);
+  });
+  ["closeProjectModal", "cancelProject"].forEach((id) => {
+    byId(id)?.addEventListener("click", closeModal);
+  });
+  modal.addEventListener("click", (event) => {
+    if (event.target === modal) closeModal();
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !modal.hidden) closeModal();
+  });
+
+  function textElement(tag, className, content) {
+    const element = document.createElement(tag);
+    if (className) element.className = className;
+    element.textContent = content;
+    return element;
+  }
+
+  function createCard(project) {
+    const card = document.createElement("article");
+    card.className = "tpe-project-card";
+    card.dataset.status = "etude";
+    card.dataset.localProject = "true";
+    const top = textElement("div", "tpe-project-card-top", "");
+    top.append(textElement("span", "tpe-project-type", project.type.toUpperCase()));
+    top.append(textElement("span", "tpe-project-status study", "En étude"));
+    card.append(top);
+    card.append(textElement("h3", "", project.name));
+    card.append(textElement("p", "tpe-project-description", project.goal));
+    const progressHeading = textElement("div", "tpe-project-progress-heading", "");
+    progressHeading.append(textElement("span", "", "Avancement de la mission"));
+    progressHeading.append(textElement("strong", "", "0 %"));
+    card.append(progressHeading);
+    const progress = document.createElement("div");
+    progress.className = "tpe-project-progress";
+    progress.setAttribute("role", "progressbar");
+    progress.setAttribute("aria-label", "Avancement du projet " + project.name);
+    progress.setAttribute("aria-valuemin", "0");
+    progress.setAttribute("aria-valuemax", "100");
+    progress.setAttribute("aria-valuenow", "0");
+    const bar = document.createElement("span");
+    bar.style.width = "0%";
+    progress.append(bar);
+    card.append(progress);
+    const meta = textElement("div", "tpe-project-meta", "");
+    const phase = document.createElement("div");
+    phase.append(textElement("span", "", "Phase actuelle"));
+    phase.append(textElement("strong", "", "Proposé — en attente d'étude"));
+    const date = document.createElement("div");
+    date.append(textElement("span", "", "Date souhaitée"));
+    const dateParts = project.date.split("-");
+    date.append(textElement("strong", "", dateParts.length === 3 ? dateParts.reverse().join("/") : project.date));
+    meta.append(phase, date);
+    card.append(meta);
+    const next = textElement("div", "tpe-project-next", "");
+    next.append(textElement("span", "", "PROCHAINE ÉTAPE"));
+    next.append(textElement("strong", "", "Étude de votre proposition"));
+    card.append(next);
+    const actions = textElement("div", "tpe-project-actions", "");
+    const details = textElement("button", "tpe-projects-primary", "Consulter le projet →");
+    details.type = "button";
+    details.addEventListener("click", () => {
+      const lines = ["Projet : " + project.name, "Type : " + project.type, "Date souhaitée : " + project.date, "", "Objectif :", project.goal, "", "Statut : En étude (démonstration locale)"];
+      window.alert(lines.join("\n"));
+    });
+    actions.append(details);
+    card.append(actions);
+    return card;
+  }
+
+  function refresh() {
+    const cards = Array.from(grid.querySelectorAll(".tpe-project-card"));
+    const selected = filter.value;
+    let shown = 0;
+    const totals = { "en-cours": 0, etude: 0, termine: 0 };
+    cards.forEach((card) => {
+      const status = card.dataset.status;
+      if (Object.prototype.hasOwnProperty.call(totals, status)) totals[status] += 1;
+      card.hidden = selected !== "all" && selected !== status;
+      if (!card.hidden) shown += 1;
+    });
+    if (empty) empty.hidden = shown > 0;
+    if (byId("projectsTotal")) byId("projectsTotal").textContent = String(cards.length).padStart(2, "0");
+    if (byId("projectsActive")) byId("projectsActive").textContent = String(totals["en-cours"]).padStart(2, "0");
+    if (byId("projectsStudy")) byId("projectsStudy").textContent = String(totals.etude).padStart(2, "0");
+    if (byId("projectsCompleted")) byId("projectsCompleted").textContent = String(totals.termine).padStart(2, "0");
+  }
+
+  getProjects().forEach((project) => {
+    if (project && typeof project.name === "string" && typeof project.goal === "string" && typeof project.type === "string" && typeof project.date === "string") {
+      grid.append(createCard(project));
+    }
+  });
+  filter.addEventListener("change", refresh);
+  refresh();
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (!form.reportValidity()) return;
+    const project = {
+      id: (typeof crypto !== "undefined" && crypto.randomUUID) ? crypto.randomUUID() : String(Date.now()),
+      name: byId("projectName").value.trim(),
+      type: byId("projectType").value,
+      date: byId("projectDate").value,
+      goal: byId("projectGoal").value.trim(),
+    };
+    if (!project.name || !project.goal || !project.date) return;
+    const projects = getProjects();
+    projects.push(project);
+    if (!saveProjects(projects)) {
+      window.alert("Impossible d'enregistrer le projet dans ce navigateur. Vérifiez l'espace disponible et les paramètres de confidentialité.");
+      return;
+    }
+    grid.append(createCard(project));
+    filter.value = "all";
+    refresh();
+    form.reset();
+    closeModal();
+  });
+});
+
+/* DATENSIS - interactions de la bibliotheque documentaire (demo locale). */
+(() => {
+  "use strict";
+  const $ = (id) => document.getElementById(id);
+  const modal = $("documentModal");
+  const drawer = $("documentDrawer");
+  const drawerOverlay = $("documentDrawerOverlay");
+  const tableBody = document.querySelector("#documentsTable tbody");
+  const form = $("documentForm");
+  if (!modal || !drawer || !tableBody || !form) return;
+
+  const uploadedFiles = new Map();
+  const allowedExtensions = new Set(["pdf", "doc", "docx", "xls", "xlsx", "png", "jpg", "jpeg"]);
+  const maxSize = 10 * 1024 * 1024;
+  const types = { "compte-rendu": "Compte rendu", planning: "Planning", preparation: "Préparation" };
+  const projects = { modernisation: "Modernisation informatique", organisation: "Organisation documentaire" };
+  let currentFileUrl = null;
+  let lastFocus = null;
+
+  function show(el) {
+    el.hidden = false;
+    el.style.display = "";
+  }
+  function hide(el) {
+    el.hidden = true;
+    el.style.display = "none";
+  }
+  function updateScroll() {
+    document.body.style.overflow = (!modal.hidden || !drawer.hidden) ? "hidden" : "";
+  }
+  function openModal(priority = false) {
+    closeDrawer();
+    lastFocus = document.activeElement;
+    if (priority) $("newDocumentProject").value = "modernisation";
+    show(modal);
+    updateScroll();
+    $("newDocumentFile").focus();
+  }
+  function closeModal() {
+    hide(modal);
+    updateScroll();
+    if (lastFocus && typeof lastFocus.focus === "function") lastFocus.focus();
+  }
+  function closeDrawer() {
+    hide(drawer);
+    hide(drawerOverlay);
+    drawer.setAttribute("aria-hidden", "true");
+    if (currentFileUrl) {
+      URL.revokeObjectURL(currentFileUrl);
+      currentFileUrl = null;
+    }
+    $("openDocumentFile").hidden = true;
+    updateScroll();
+  }
+  function openDrawer(button) {
+    closeModal();
+    lastFocus = document.activeElement;
+    const data = button.dataset;
+    $("drawerDocumentName").textContent = data.documentName || "Document";
+    $("drawerDocumentProject").textContent = data.documentProject || "—";
+    $("drawerDocumentType").textContent = data.documentType || "—";
+    $("drawerDocumentDate").textContent = data.documentDate || "—";
+    $("drawerDocumentVersion").textContent = data.documentVersion || "V1";
+    $("drawerDocumentDescription").textContent = data.documentDescription || "Aucune description.";
+    const file = uploadedFiles.get(button);
+    const openFileButton = $("openDocumentFile");
+    openFileButton.hidden = !file;
+    if (file) {
+      currentFileUrl = URL.createObjectURL(file);
+    }
+    show(drawerOverlay);
+    show(drawer);
+    drawer.setAttribute("aria-hidden", "false");
+    updateScroll();
+    $("closeDocumentDrawer").focus();
+  }
+  function allRows() {
+    return [...tableBody.querySelectorAll("tr")];
+  }
+  function update() {
+    const search = $("documentSearch").value.trim().toLocaleLowerCase("fr");
+    const selectedType = $("documentType").value;
+    const selectedProject = $("documentProject").value;
+    const rows = allRows();
+    let visible = 0;
+    const counts = { "compte-rendu": 0, planning: 0, preparation: 0 };
+    for (const row of rows) {
+      const type = row.dataset.type;
+      const project = row.dataset.project;
+      if (Object.hasOwn(counts, type)) counts[type]++;
+      const matches = (selectedType === "all" || selectedType === type)
+        && (selectedProject === "all" || selectedProject === project)
+        && row.textContent.toLocaleLowerCase("fr").includes(search);
+      row.hidden = !matches;
+      row.style.display = matches ? "" : "none";
+      if (matches) visible++;
+    }
+    $("docsTotal").textContent = String(rows.length).padStart(2, "0");
+    $("docsReports").textContent = String(counts["compte-rendu"]).padStart(2, "0");
+    $("docsPlannings").textContent = String(counts.planning).padStart(2, "0");
+    $("docsPreparation").textContent = String(counts.preparation).padStart(2, "0");
+    $("documentsCount").textContent = `${visible} document${visible > 1 ? "s" : ""} affiché${visible > 1 ? "s" : ""}`;
+    $("documentsEmpty").hidden = visible !== 0;
+  }
+  function makeCell(row, content) {
+    const td = document.createElement("td");
+    if (typeof content === "string") td.textContent = content;
+    else td.append(content);
+    row.append(td);
+    return td;
+  }
+  function addDocument(file, projectId, typeId, description) {
+    const row = document.createElement("tr");
+    row.dataset.type = typeId;
+    row.dataset.project = projectId;
+    const nameCell = document.createElement("div");
+    nameCell.className = "tpe-docs-file";
+    const ext = file.name.split(".").pop().toLowerCase();
+    const icon = document.createElement("span");
+    icon.className = `tpe-docs-file-icon ${ext === "pdf" ? "pdf" : "xlsx"}`;
+    icon.textContent = ext.toUpperCase();
+    const nameContainer = document.createElement("div");
+    const name = document.createElement("strong");
+    name.textContent = file.name;
+    const sub = document.createElement("small");
+    sub.textContent = description || "Document ajouté";
+    nameContainer.append(name, sub);
+    nameCell.append(icon, nameContainer);
+    makeCell(row, nameCell);
+    makeCell(row, projects[projectId]);
+    makeCell(row, types[typeId]);
+    const date = new Date().toLocaleDateString("fr-FR");
+    makeCell(row, date);
+    const version = document.createElement("span");
+    version.className = "tpe-docs-version";
+    version.textContent = "V1";
+    makeCell(row, version);
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "tpe-docs-open";
+    button.textContent = "Détails →";
+    Object.assign(button.dataset, {
+      documentName: file.name,
+      documentProject: projects[projectId],
+      documentType: types[typeId],
+      documentDate: date,
+      documentVersion: "V1",
+      documentDescription: description || "Document ajouté depuis cet appareil.",
+    });
+    makeCell(row, button);
+    uploadedFiles.set(button, file);
+    tableBody.prepend(row);
+  }
+
+  $("openDocumentModal")?.addEventListener("click", () => openModal());
+  $("uploadPriorityDocument")?.addEventListener("click", () => openModal(true));
+  $("closeDocumentModal")?.addEventListener("click", closeModal);
+  $("cancelDocument")?.addEventListener("click", closeModal);
+  $("closeDocumentDrawer")?.addEventListener("click", closeDrawer);
+  drawerOverlay?.addEventListener("click", closeDrawer);
+  modal.addEventListener("click", (event) => {
+    if (event.target === modal) closeModal();
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      if (!modal.hidden) closeModal();
+      if (!drawer.hidden) closeDrawer();
+    }
+  });
+  tableBody.addEventListener("click", (event) => {
+    const button = event.target.closest(".tpe-docs-open");
+    if (button && tableBody.contains(button)) openDrawer(button);
+  });
+  $("openDocumentFile")?.addEventListener("click", () => {
+    if (currentFileUrl) window.open(currentFileUrl, "_blank", "noopener,noreferrer");
+  });
+  for (const id of ["documentSearch", "documentType", "documentProject"]) {
+    $(id).addEventListener(id === "documentSearch" ? "input" : "change", update);
+  }
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (!form.reportValidity()) return;
+    const file = $("newDocumentFile").files[0];
+    if (!file) return;
+    const extension = file.name.split(".").pop().toLowerCase();
+    if (!allowedExtensions.has(extension)) {
+      alert("Format non accepté. Utilisez PDF, Word, Excel ou une image.");
+      return;
+    }
+    if (file.size > maxSize) {
+      alert("Le fichier dépasse la limite de 10 Mo.");
+      return;
+    }
+    addDocument(
+      file,
+      $("newDocumentProject").value,
+      $("newDocumentType").value,
+      $("newDocumentDescription").value.trim(),
+    );
+    form.reset();
+    closeModal();
+    update();
+  });
+  hide(modal);
+  hide(drawer);
+  hide(drawerOverlay);
+  update();
+})();
+
+"use strict";
+
+(() => {
+  const byId = (id) => document.getElementById(id);
+  const table = byId("invoicesTable");
+  const drawer = byId("invoiceDrawer");
+  const overlay = byId("invoiceDrawerOverlay");
+  if (!table || !drawer || !overlay) return;
+
+  const tbody = table.tBodies[0];
+  const rows = Array.from(tbody.querySelectorAll("tr[data-invoice]"));
+  const search = byId("invoiceSearch");
+  const statusFilter = byId("invoiceStatusFilter");
+  const sort = byId("invoiceSort");
+  const euro = new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" });
+  let previousFocus = null;
+
+  const amount = (row) => Number(row.dataset.amount) || 0;
+  const dateValue = (row) => Date.parse(row.dataset.date || "") || 0;
+  const statusLabel = (row) => row.dataset.status === "payee" ? "Payée" : "À régler";
+  const dateLabel = (row) => {
+    const iso = row.dataset.date || "";
+    const parts = iso.split("-");
+    return parts.length === 3 ? `${parts[2]}/${parts[1]}/${parts[0]}` : "Non renseignée";
+  };
+
+  function updateSummary() {
+    const total = rows.reduce((sum, row) => sum + amount(row), 0);
+    const due = rows.filter((row) => row.dataset.status === "a-regler")
+      .reduce((sum, row) => sum + amount(row), 0);
+    const paid = rows.filter((row) => row.dataset.status === "payee").length;
+    byId("invoicesTotal").textContent = String(rows.length).padStart(2, "0");
+    byId("invoicesAmount").textContent = euro.format(total);
+    byId("invoicesDue").textContent = euro.format(due);
+    byId("invoicesPaid").textContent = String(paid).padStart(2, "0");
+  }
+
+  function applyFilters() {
+    const term = (search?.value || "").trim().toLocaleLowerCase("fr-FR");
+    const status = statusFilter?.value || "all";
+    const order = sort?.value || "recent";
+    const sorted = [...rows].sort((a, b) => {
+      if (order === "oldest") return dateValue(a) - dateValue(b);
+      if (order === "highest") return amount(b) - amount(a);
+      if (order === "lowest") return amount(a) - amount(b);
+      return dateValue(b) - dateValue(a);
+    });
+    let count = 0;
+    sorted.forEach((row) => {
+      const haystack = `${row.dataset.invoice || ""} ${row.dataset.service || ""}`
+        .toLocaleLowerCase("fr-FR");
+      const visible = haystack.includes(term) && (status === "all" || row.dataset.status === status);
+      row.hidden = !visible;
+      if (visible) count += 1;
+      tbody.appendChild(row);
+    });
+    byId("invoicesEmpty").hidden = count !== 0;
+    byId("invoicesCount").textContent = `${count} facture${count > 1 ? "s" : ""} affichée${count > 1 ? "s" : ""}`;
+  }
+
+  function openInvoice(row) {
+    if (!row) return;
+    previousFocus = document.activeElement;
+    byId("invoiceDrawerTitle").textContent = `Facture ${row.dataset.invoice}`;
+    byId("invoiceDrawerAmount").textContent = euro.format(amount(row));
+    byId("invoiceDrawerReference").textContent = row.dataset.invoice || "";
+    byId("invoiceDrawerService").textContent = row.dataset.service || "";
+    byId("invoiceDrawerDate").textContent = dateLabel(row);
+    byId("invoiceDrawerPayment").textContent = statusLabel(row);
+    const badge = byId("invoiceDrawerStatus");
+    badge.textContent = statusLabel(row);
+    badge.className = `tpe-invoice-status ${row.dataset.status === "payee" ? "paid" : "pending"}`;
+    overlay.hidden = false;
+    drawer.setAttribute("aria-hidden", "false");
+    drawer.classList.add("is-open", "open", "active");
+    document.body.classList.add("invoice-drawer-open");
+    byId("closeInvoiceDrawer")?.focus();
+  }
+
+  function closeInvoice() {
+    drawer.classList.remove("is-open", "open", "active");
+    drawer.setAttribute("aria-hidden", "true");
+    overlay.hidden = true;
+    document.body.classList.remove("invoice-drawer-open");
+    if (previousFocus && previousFocus.isConnected) previousFocus.focus();
+  }
+
+  tbody.addEventListener("click", (event) => {
+    const button = event.target.closest(".tpe-invoices-open");
+    if (button) openInvoice(button.closest("tr[data-invoice]"));
+  });
+  document.querySelectorAll(".tpe-invoices-alert-action[data-invoice]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const row = rows.find((item) => item.dataset.invoice === button.dataset.invoice);
+      openInvoice(row);
+    });
+  });
+  byId("closeInvoiceDrawer")?.addEventListener("click", closeInvoice);
+  overlay.addEventListener("click", closeInvoice);
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && drawer.getAttribute("aria-hidden") === "false") closeInvoice();
+  });
+  [search, statusFilter, sort].forEach((control) => {
+    if (control) control.addEventListener(control === search ? "input" : "change", applyFilters);
+  });
+  updateSummary();
+  applyFilters();
+})();
+
+(() => {
+  'use strict';
+  const $ = (id) => document.getElementById(id);
+  const form = $('supportForm');
+  const table = $('supportTable');
+  if (!form || !table) return;
+  const tbody = table.tBodies[0];
+  const storageKey = 'datensis_tpe_support_demo_v1';
+  const drawer = $('supportDrawer');
+  const overlay = $('supportDrawerOverlay');
+  const subject = $('supportSubject');
+  const message = $('supportMessage');
+  const fileInput = $('supportFile');
+  const feedback = $('supportFeedback');
+  const allowed = new Set(['pdf', 'doc', 'docx', 'png', 'jpg', 'jpeg', 'xlsx']);
+  const getStored = () => {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(storageKey) || '[]');
+      return Array.isArray(parsed) ? parsed : [];
+    } catch { return []; }
+  };
+  const normalize = (value) => String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  const dateFr = (iso) => {
+    const [y, m, d] = iso.split('-');
+    return `${d}/${m}/${y}`;
+  };
+  const cell = (row, content, tag = 'td') => {
+    const el = document.createElement(tag);
+    el.textContent = content;
+    row.appendChild(el);
+    return el;
+  };
+  const addRow = (ticket) => {
+    const tr = document.createElement('tr');
+    Object.assign(tr.dataset, {
+      reference: ticket.reference, subject: ticket.subject,
+      category: ticket.category, priority: ticket.priority,
+      status: ticket.status, date: ticket.date,
+      message: ticket.message, file: ticket.file || ''
+    });
+    cell(tr, ticket.reference);
+    cell(tr, ticket.subject);
+    cell(tr, ticket.category);
+    cell(tr, dateFr(ticket.date));
+    cell(tr, ticket.priority);
+    const statusTd = document.createElement('td');
+    const badge = document.createElement('span');
+    badge.className = `tpe-support-status ${ticket.status === 'resolue' ? 'resolved' : 'ongoing'}`;
+    badge.textContent = ticket.status === 'resolue' ? 'Résolue' : 'En cours';
+    statusTd.appendChild(badge);
+    tr.appendChild(statusTd);
+    const actionTd = document.createElement('td');
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'tpe-support-view';
+    button.textContent = 'Détails →';
+    actionTd.appendChild(button);
+    tr.appendChild(actionTd);
+    tbody.prepend(tr);
+  };
+  getStored().forEach(addRow);
+  const allRows = () => Array.from(tbody.querySelectorAll('tr'));
+  const update = () => {
+    const query = normalize($('supportSearch').value.trim());
+    const status = $('supportStatusFilter').value;
+    let visible = 0;
+    const rows = allRows();
+    rows.forEach((row) => {
+      const d = row.dataset;
+      const text = normalize([d.reference, d.subject, d.category, d.message].join(' '));
+      const show = (!query || text.includes(query)) && (status === 'all' || d.status === status);
+      row.hidden = !show;
+      row.style.display = show ? '' : 'none';
+      if (show) visible += 1;
+    });
+    $('supportTotal').textContent = String(rows.length).padStart(2, '0');
+    $('supportOpen').textContent = String(rows.filter((r) => r.dataset.status === 'en-cours').length).padStart(2, '0');
+    $('supportResolved').textContent = String(rows.filter((r) => r.dataset.status === 'resolue').length).padStart(2, '0');
+    $('supportCount').textContent = `${visible} demande${visible > 1 ? 's' : ''} affichée${visible > 1 ? 's' : ''}`;
+    $('supportEmpty').hidden = visible !== 0;
+  };
+  $('supportSearch').addEventListener('input', update);
+  $('supportStatusFilter').addEventListener('change', update);
+  const goToForm = () => {
+    $('supportRequestSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    subject.focus({ preventScroll: true });
+  };
+  $('newSupportRequest').addEventListener('click', goToForm);
+  $('shortcutRequest').addEventListener('click', goToForm);
+  message.addEventListener('input', () => {
+    $('supportCharacterCount').textContent = `${message.value.length} / 3000`;
+  });
+  fileInput.addEventListener('change', () => {
+    const file = fileInput.files?.[0];
+    const label = $('supportFileName');
+    label.hidden = !file;
+    label.textContent = file ? `${file.name} (${(file.size / 1048576).toFixed(2)} Mo)` : '';
+  });
+  const closeDrawer = () => {
+    drawer.setAttribute('aria-hidden', 'true');
+    drawer.classList.remove('open', 'active', 'is-open');
+    overlay.hidden = true;
+    drawer.hidden = true;
+    document.body.style.overflow = '';
+  };
+  const openDrawer = (row) => {
+    const d = row.dataset;
+    $('supportDrawerTitle').textContent = d.subject || 'Demande';
+    $('supportDrawerReference').textContent = d.reference || '';
+    $('supportDrawerCategory').textContent = d.category || '';
+    $('supportDrawerPriority').textContent = d.priority || '';
+    $('supportDrawerDate').textContent = dateFr(d.date);
+    $('supportDrawerMessage').textContent = d.message || '';
+    $('supportDrawerFile').textContent = d.file || 'Aucune';
+    const statusEl = $('supportDrawerStatus');
+    statusEl.textContent = d.status === 'resolue' ? 'Résolue' : 'En cours';
+    statusEl.className = `tpe-support-status ${d.status === 'resolue' ? 'resolved' : 'ongoing'}`;
+    drawer.hidden = false;
+    overlay.hidden = false;
+    drawer.setAttribute('aria-hidden', 'false');
+    drawer.classList.add('open', 'active', 'is-open');
+    document.body.style.overflow = 'hidden';
+    $('closeSupportDrawer').focus();
+  };
+  tbody.addEventListener('click', (event) => {
+    const button = event.target.closest('.tpe-support-view');
+    if (button) openDrawer(button.closest('tr'));
+  });
+  $('closeSupportDrawer').addEventListener('click', closeDrawer);
+  overlay.addEventListener('click', closeDrawer);
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && drawer.getAttribute('aria-hidden') === 'false') closeDrawer();
+  });
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    feedback.hidden = true;
+    if (!form.reportValidity()) return;
+    const file = fileInput.files?.[0];
+    if (file) {
+      const extension = file.name.split('.').pop().toLowerCase();
+      if (!allowed.has(extension) || file.size > 10 * 1024 * 1024) {
+        feedback.textContent = 'Format non autorisé ou fichier supérieur à 10 Mo.';
+        feedback.hidden = false;
+        return;
+      }
+    }
+    const existing = getStored();
+    const year = new Date().getFullYear();
+    const nums = allRows().map((r) => Number((r.dataset.reference || '').split('-').pop()) || 0);
+    const next = Math.max(0, ...nums) + 1;
+    const ticket = {
+      reference: `SUP-${year}-${String(next).padStart(3, '0')}`,
+      subject: subject.value.trim(), category: $('supportCategory').value,
+      priority: $('supportPriority').value, status: 'en-cours',
+      date: new Date().toLocaleDateString('en-CA'),
+      message: message.value.trim(), file: file?.name || ''
+    };
+    try {
+      localStorage.setItem(storageKey, JSON.stringify([...existing, ticket]));
+    } catch {
+      feedback.textContent = 'Enregistrement local impossible : espace du navigateur indisponible.';
+      feedback.hidden = false;
+      return;
+    }
+    addRow(ticket);
+    form.reset();
+    $('supportCharacterCount').textContent = '0 / 3000';
+    $('supportFileName').hidden = true;
+    $('supportSearch').value = '';
+    $('supportStatusFilter').value = 'all';
+    update();
+    feedback.textContent = `Demande ${ticket.reference} enregistrée dans cette démonstration (non transmise à DATENSIS).`;
+    feedback.hidden = false;
+  });
+  update();
+})();
+
+"use strict";
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const profileForm = $("profileForm");
+  if (!profileForm) return;
+  const profileIds = ["profileFirstName", "profileLastName", "profileCompany", "profileRole", "profileEmail", "profilePhone", "profileSector", "profileSize"];
+  const preferenceIds = ["preferenceEmail", "preferenceSms", "preferenceNotifications"];
+  const storageKey = "datensis:tpe:demo:profile:v1";
+  const prefsKey = "datensis:tpe:demo:preferences:v1";
+  const defaults = Object.fromEntries(profileIds.map((id) => [id, $(id).value]));
+  const defaultPrefs = Object.fromEntries(preferenceIds.map((id) => [id, $(id).checked]));
+  const safeRead = (key) => { try { const value = JSON.parse(localStorage.getItem(key)); return value && typeof value === "object" && !Array.isArray(value) ? value : null; } catch { return null; } };
+  const safeWrite = (key, value) => { try { localStorage.setItem(key, JSON.stringify(value)); return true; } catch { return false; } };
+  const message = (id, value, error = false) => { const el = $(id); if (!el) return; el.textContent = value; el.style.color = error ? "#b42318" : "#067647"; };
+  let savedProfile = { ...defaults, ...safeRead(storageKey) };
+  const savedPrefs = { ...defaultPrefs, ...safeRead(prefsKey) };
+  const populate = (data) => profileIds.forEach((id) => { if (typeof data[id] === "string") $(id).value = data[id]; });
+  const updateSummary = () => {
+    const first = savedProfile.profileFirstName.trim();
+    const last = savedProfile.profileLastName.trim();
+    $("profileDisplayName").textContent = `${first} ${last}`.trim();
+    $("profileDisplayCompany").textContent = savedProfile.profileCompany;
+    $("profileDisplayRole").textContent = savedProfile.profileRole || "Non renseignée";
+    $("profileDisplaySector").textContent = savedProfile.profileSector;
+    $("profileAvatar").textContent = `${first.charAt(0)}${last.charAt(0)}`.toUpperCase() || "DT";
+  };
+  populate(savedProfile);
+  updateSummary();
+  preferenceIds.forEach((id) => {
+    $(id).checked = Boolean(savedPrefs[id]);
+    $(id).addEventListener("change", () => {
+      const data = Object.fromEntries(preferenceIds.map((key) => [key, $(key).checked]));
+      message("preferencesFeedback", safeWrite(prefsKey, data) ? "Préférences enregistrées dans ce navigateur (démonstration)." : "Impossible d'enregistrer les préférences dans ce navigateur.", !localStorageAvailable());
+    });
+  });
+  function localStorageAvailable() { try { const key = "__datensis_storage_test__"; localStorage.setItem(key, "1"); localStorage.removeItem(key); return true; } catch { return false; } }
+  profileForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (!profileForm.reportValidity()) return;
+    const data = Object.fromEntries(profileIds.map((id) => [id, $(id).value.trim()]));
+    if (!data.profileFirstName || !data.profileLastName || !data.profileCompany || !data.profileEmail || !data.profilePhone) {
+      message("profileFeedback", "Veuillez renseigner les champs obligatoires.", true); return;
+    }
+    if (!safeWrite(storageKey, data)) { message("profileFeedback", "Enregistrement impossible : stockage local indisponible.", true); return; }
+    savedProfile = data;
+    updateSummary();
+    message("profileFeedback", "Profil enregistré dans ce navigateur (démonstration). Aucune modification n'a été envoyée au serveur.");
+  });
+  profileForm.addEventListener("reset", (event) => {
+    event.preventDefault();
+    populate(savedProfile);
+    message("profileFeedback", "Modifications non enregistrées annulées.");
+  });
+  const modal = $("passwordModal");
+  const passwordForm = $("passwordForm");
+  const openModal = () => {
+    modal.hidden = false;
+    modal.style.display = "flex";
+    modal.style.zIndex = "10000";
+    modal.setAttribute("aria-hidden", "false");
+    message("passwordFeedback", "");
+    $("newProfilePassword").focus();
+  };
+  const closeModal = () => {
+    modal.hidden = true;
+    modal.style.display = "";
+    modal.setAttribute("aria-hidden", "true");
+    passwordForm.reset();
+    $("openPasswordModal").focus();
+  };
+  $("openPasswordModal").addEventListener("click", openModal);
+  $("closePasswordModal").addEventListener("click", closeModal);
+  $("cancelPasswordModal").addEventListener("click", closeModal);
+  modal.addEventListener("click", (event) => { if (event.target === modal) closeModal(); });
+  document.addEventListener("keydown", (event) => { if (event.key === "Escape" && !modal.hidden) closeModal(); });
+  passwordForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (!passwordForm.reportValidity()) return;
+    const password = $("newProfilePassword").value;
+    const confirmation = $("confirmProfilePassword").value;
+    if (password.length < 12 || !/[A-Z]/.test(password) || !/[0-9]/.test(password) || !/[^A-Za-z0-9]/.test(password)) {
+      message("passwordFeedback", "Le mot de passe doit contenir au moins 12 caractères, une majuscule, un chiffre et un caractère spécial.", true); return;
+    }
+    if (password !== confirmation) { message("passwordFeedback", "Les deux mots de passe ne correspondent pas.", true); return; }
+    passwordForm.reset();
+    message("passwordFeedback", "Format validé. Démonstration uniquement : le mot de passe n'a pas été modifié sur le serveur.");
+  });
+  $("showProfileSessions").addEventListener("click", () => {
+    message("securityFeedback", "Sessions réelles indisponibles dans cette démonstration. Leur consultation nécessite une route Flask authentifiée.");
+  });
+})();
