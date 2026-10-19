@@ -281,3 +281,8 @@ sauvegardes/
 # ============================================================
 # FIN DU FICHIER DATENSIS
 # ============================================================
+
+# Base SQLite locale DATENSIS
+database/*.db
+database/*.sqlite
+database/*.sqlite3
