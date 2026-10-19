@@ -113,7 +113,7 @@
                     <p>Recherchez une demande ou filtrez les résultats selon leur statut.</p>
                 </div>
 
-                <span class="tpe-requests-demo">Données de démonstration</span>
+                <span class="tpe-requests-demo">Démonstration locale : aucune donnée envoyée au serveur</span>
             </div>
 
             <div class="tpe-requests-toolbar">
@@ -138,6 +138,8 @@
                 </div>
 
             </div>
+
+            <p id="requestsFeedback" role="status" aria-live="polite"></p>
 
             <div class="tpe-requests-table-wrapper">
                 <table class="tpe-requests-table" id="requestsTable">
@@ -346,6 +348,7 @@
 <aside
     class="tpe-requests-drawer"
     id="requestDrawer"
+    hidden
     aria-hidden="true"
     aria-labelledby="drawerRequestTitle"
     role="dialog"
@@ -391,7 +394,7 @@
     </div>
 </aside>
 
-<script src="{{ url_for('static', filename='js/tpe.js') }}"></script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
 
 </body>
 </html>

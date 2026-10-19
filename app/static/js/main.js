@@ -17684,3 +17684,181 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
+/* DATENSIS - interactions de la page Mes demandes (mode demonstration local). */
+(() => {
+  'use strict';
+  document.addEventListener('DOMContentLoaded', () => {
+    const byId = (id) => document.getElementById(id);
+    const modal = byId('requestModal');
+    const drawer = byId('requestDrawer');
+    const drawerOverlay = byId('requestDrawerOverlay');
+    const form = byId('requestForm');
+    const tbody = document.querySelector('#requestsTable tbody');
+    const search = byId('requestSearch');
+    const statusFilter = byId('requestStatus');
+    if (!modal || !drawer || !drawerOverlay || !form || !tbody || !search || !statusFilter) return;
+
+    const key = 'datensis-tpe-requests-demo-v1';
+    const initial = Array.from(tbody.querySelectorAll('tr')).map((row, index) => {
+      const button = row.querySelector('.tpe-request-open');
+      return {
+        id: `exemple-${index + 1}`,
+        title: button?.dataset.requestTitle || '',
+        category: button?.dataset.requestCategory || '',
+        date: button?.dataset.requestDate || '',
+        status: row.dataset.status || 'en-cours',
+        description: button?.dataset.requestDescription || '',
+        demo: true,
+      };
+    });
+    let created = [];
+    try {
+      const stored = JSON.parse(localStorage.getItem(key) || '[]');
+      if (Array.isArray(stored)) created = stored.filter((x) => x && typeof x.title === 'string');
+    } catch (_error) { created = []; }
+    let requests = [...created, ...initial];
+    let focusBeforeDialog = null;
+
+    const labels = {
+      'en-cours': ['En cours', 'progress'],
+      'a-valider': ['À valider', 'pending'],
+      terminee: ['Terminée', 'completed'],
+      soumise: ['Soumise', 'pending'],
+    };
+    const persist = () => {
+      try { localStorage.setItem(key, JSON.stringify(created)); }
+      catch (_error) { /* La page reste utilisable sans stockage. */ }
+    };
+    const setText = (id, value) => { const element = byId(id); if (element) element.textContent = String(value); };
+    const openModal = () => {
+      closeDrawer();
+      focusBeforeDialog = document.activeElement;
+      modal.hidden = false;
+      byId('newRequestTitle')?.focus();
+    };
+    const closeModal = () => {
+      modal.hidden = true;
+      focusBeforeDialog?.focus?.();
+    };
+    const closeDrawer = () => {
+      drawer.setAttribute('aria-hidden', 'true');
+      drawerOverlay.hidden = true;
+      drawer.hidden = true;
+      focusBeforeDialog?.focus?.();
+    };
+    const openDrawer = (request) => {
+      closeModal();
+      focusBeforeDialog = document.activeElement;
+      setText('drawerRequestTitle', request.title);
+      setText('drawerRequestCategory', request.category);
+      setText('drawerRequestDate', request.date);
+      setText('drawerRequestStatus', labels[request.status]?.[0] || request.status);
+      setText('drawerRequestDescription', request.description);
+      drawer.hidden = false;
+      drawerOverlay.hidden = false;
+      drawer.setAttribute('aria-hidden', 'false');
+      byId('closeRequestDrawer')?.focus();
+    };
+    const makeCell = (row, text, tag = 'td') => {
+      const cell = document.createElement(tag);
+      cell.textContent = text;
+      row.append(cell);
+      return cell;
+    };
+    const render = () => {
+      const term = search.value.trim().toLocaleLowerCase('fr');
+      const selected = statusFilter.value;
+      const filtered = requests.filter((request) => {
+        const matchesText = [request.title, request.category, request.description]
+          .join(' ').toLocaleLowerCase('fr').includes(term);
+        return matchesText && (selected === 'all' || request.status === selected);
+      });
+      tbody.replaceChildren();
+      for (const request of filtered) {
+        const row = document.createElement('tr');
+        row.dataset.status = request.status;
+        const first = document.createElement('td');
+        const strong = document.createElement('strong');
+        strong.textContent = request.title;
+        const small = document.createElement('small');
+        small.textContent = request.description.slice(0, 95);
+        first.append(strong, small);
+        row.append(first);
+        makeCell(row, request.category);
+        makeCell(row, request.date);
+        const statusCell = document.createElement('td');
+        const badge = document.createElement('span');
+        const [label, style] = labels[request.status] || [request.status, 'pending'];
+        badge.className = `tpe-request-status ${style}`;
+        badge.textContent = label;
+        statusCell.append(badge);
+        row.append(statusCell);
+        const actionCell = document.createElement('td');
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'tpe-request-open';
+        button.textContent = 'Consulter →';
+        button.addEventListener('click', () => openDrawer(request));
+        actionCell.append(button);
+        row.append(actionCell);
+        tbody.append(row);
+      }
+      setText('requestsTotal', requests.length.toString().padStart(2, '0'));
+      setText('requestsProgress', requests.filter((x) => x.status === 'en-cours').length.toString().padStart(2, '0'));
+      setText('requestsPending', requests.filter((x) => ['a-valider', 'soumise'].includes(x.status)).length.toString().padStart(2, '0'));
+      setText('requestsCompleted', requests.filter((x) => x.status === 'terminee').length.toString().padStart(2, '0'));
+      setText('requestsCount', `${filtered.length} demande${filtered.length > 1 ? 's' : ''} affichée${filtered.length > 1 ? 's' : ''}`);
+      byId('requestsEmpty').hidden = filtered.length !== 0;
+    };
+
+    byId('openRequestModal')?.addEventListener('click', openModal);
+    byId('closeRequestModal')?.addEventListener('click', closeModal);
+    byId('cancelRequest')?.addEventListener('click', closeModal);
+    byId('closeRequestDrawer')?.addEventListener('click', closeDrawer);
+    drawerOverlay.addEventListener('click', closeDrawer);
+    modal.addEventListener('click', (event) => { if (event.target === modal) closeModal(); });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        if (!modal.hidden) closeModal();
+        else if (!drawer.hidden) closeDrawer();
+      }
+    });
+    search.addEventListener('input', render);
+    statusFilter.addEventListener('change', render);
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
+      const title = byId('newRequestTitle').value.trim();
+      const description = byId('newRequestDescription').value.trim();
+      if (!title || !description) return;
+      const date = new Intl.DateTimeFormat('fr-FR').format(new Date());
+      const request = {
+        id: (typeof crypto !== 'undefined' && crypto.randomUUID) ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`,
+        title,
+        category: byId('newRequestCategory').value,
+        priority: byId('newRequestPriority').value,
+        date,
+        status: 'soumise',
+        description,
+        demo: false,
+      };
+      created.unshift(request);
+      requests = [request, ...requests];
+      persist();
+      search.value = '';
+      statusFilter.value = 'all';
+      render();
+      form.reset();
+      closeModal();
+      const message = byId('requestsFeedback');
+      if (message) message.textContent = 'Demande ajoutée dans cette démonstration locale (non envoyée au serveur).';
+      const firstButton = tbody.querySelector('.tpe-request-open');
+      firstButton?.focus();
+    });
+    drawer.hidden = true;
+    drawerOverlay.hidden = true;
+    modal.hidden = true;
+    render();
+  });
+})();
