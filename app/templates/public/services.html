@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Services</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+</head>
+
+<body>
+
+    {% include "header.html" %}
+
+    <main class="services-page">
+
+        <section class="services-header">
+
+            <div class="services-header-content">
+
+                <p class="eyebrow">
+                    Nos services
+                </p>
+
+                <h1>
+                    Des solutions adaptées à vos projets
+                </h1>
+
+                <p>
+                    DATENSIS vous accompagne de l'étude de votre besoin
+                    jusqu'au suivi de votre projet.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <section class="services-prototype-grid">
+
+            <article class="services-prototype-card">
+
+                <div>
+
+                    <h2>
+                        Étude & conseil
+                    </h2>
+
+                    <p>
+                        Analysez votre besoin et définissez clairement
+                        votre projet.
+                    </p>
+
+                </div>
+
+                <a href="{{ url_for('main.tpe_etude_conseil') }}">
+                    En savoir plus
+                </a>
+
+            </article>
+
+
+            <article class="services-prototype-card">
+
+                <div>
+
+                    <h2>
+                        Solutions
+                    </h2>
+
+                    <p>
+                        Comparez les différentes possibilités adaptées
+                        à votre situation.
+                    </p>
+
+                </div>
+
+                <a href="{{ url_for('main.tpe_solutions') }}">
+                    Voir les solutions
+                </a>
+
+            </article>
+
+
+            <article class="services-prototype-card">
+
+                <div>
+
+                    <h2>
+                        Suivi & accompagnement
+                    </h2>
+
+                    <p>
+                        Bénéficiez d'un accompagnement pendant toutes
+                        les étapes de votre projet.
+                    </p>
+
+                </div>
+
+                <a href="{{ url_for('main.tpe_suivi') }}">
+                    Découvrir
+                </a>
+
+            </article>
+
+        </section>
+
+
+        <section class="services-bottom">
+
+            <div>
+
+                <p class="eyebrow">
+                    DATENSIS
+                </p>
+
+                <h2>
+                    Un accompagnement adapté à votre structure
+                </h2>
+
+                <p>
+                    Indépendant, TPE, PME, ETI ou cabinet partenaire,
+                    votre parcours est adapté à votre organisation
+                    et à vos besoins.
+                </p>
+
+            </div>
+
+            <div class="services-bottom-actions">
+
+                <a
+                    href="{{ url_for('main.creation_compte') }}"
+                    class="btn-primary"
+                >
+                    Créer un compte
+                </a>
+
+                <a
+                    href="{{ url_for('main.contact') }}"
+                    class="btn-secondary"
+                >
+                    Contacter DATENSIS
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    {% include "footer.html" %}
+
+    <script
+        src="{{ url_for('static', filename='js/main.js') }}"
+    ></script>
+
+</body>
+
+</html>

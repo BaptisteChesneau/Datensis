@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Connexion Cabinet</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="cabinet-auth login-page">
+
+<main class="dashboard-page">
+
+    <section class="auth-section">
+
+        <article class="auth-card">
+
+            <div class="auth-space-badge">
+                Cabinet partenaire
+            </div>
+
+            <h1>
+                Accédez à votre espace partenaire
+            </h1>
+
+            <p class="auth-intro">
+                Retrouvez vos opportunités, vos dossiers clients
+                et le suivi de votre partenariat avec DATENSIS.
+            </p>
+
+
+            <div class="cabinet-login-status">
+
+                <span class="cabinet-login-dot"></span>
+
+                <div>
+                    <strong>
+                        Espace partenaire
+                    </strong>
+
+                    <small>
+                        Qualification • Transmission • Suivi
+                    </small>
+                </div>
+
+            </div>
+
+
+            <form
+                id="loginForm"
+                class="datensis-login-form journey-form"
+                data-redirect="{{ url_for('main.cabinet_dashboard') }}"
+            >
+
+                <div class="form-group">
+
+                    <label for="loginEmail">
+                        Adresse e-mail professionnelle
+                    </label>
+
+                    <input
+                        type="email"
+                        id="loginEmail"
+                        name="email"
+                        autocomplete="email"
+                        placeholder="prenom.nom@cabinet.fr"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="loginPassword">
+                        Mot de passe
+                    </label>
+
+                    <input
+                        type="password"
+                        id="loginPassword"
+                        name="password"
+                        autocomplete="current-password"
+                        placeholder="Votre mot de passe"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="auth-login-options">
+
+                    <label class="auth-remember">
+
+                        <input
+                            type="checkbox"
+                            name="remember"
+                        >
+
+                        <span>
+                            Rester connecté
+                        </span>
+
+                    </label>
+
+                    <a href="#"
+                       class="auth-forgot">
+                        Mot de passe oublié ?
+                    </a>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="btn-primary"
+                >
+                    Accéder à l'espace partenaire
+                </button>
+
+            </form>
+
+
+            <div class="account-login-link">
+
+                <p>
+                    Votre cabinet n'est pas encore partenaire ?
+
+                    <a href="{{ url_for('main.cabinet_creation_compte') }}">
+                        Devenir partenaire
+                    </a>
+                </p>
+
+            </div>
+
+
+            <div class="account-back">
+
+                <a href="{{ url_for('main.cabinet_accueil') }}">
+                    ← Retour à l'accueil Cabinet
+                </a>
+
+            </div>
+
+        </article>
+
+    </section>
+
+</main>
+
+<script src="{{ url_for('static', filename='js/global.js') }}"></script>
+
+</body>
+</html>

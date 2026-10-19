@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Mes dossiers | DATENSIS</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+{% include "header.html" %}
+
+<main class="dashboard-page">
+
+    <section class="dashboard-intro">
+
+        <div>
+            <p class="eyebrow">
+                Collaborateur
+            </p>
+
+            <h1>
+                Mes dossiers
+            </h1>
+
+            <p>
+                Suivez les dossiers dont vous avez la responsabilité.
+            </p>
+        </div>
+
+    </section>
+
+
+    <section class="project-page-grid">
+
+        <article class="project-card">
+
+            <div class="project-card-top">
+
+                <div>
+
+                    <span class="status status-progress">
+                        En cours
+                    </span>
+
+                    <h2>
+                        Dupont Conseil
+                    </h2>
+
+                    <p>
+                        Digitalisation des processus.
+                    </p>
+
+                </div>
+
+                <strong class="project-percent">
+                    70 %
+                </strong>
+
+            </div>
+
+            <div class="progress">
+                <div class="progress-bar"
+                     style="width: 70%;">
+                </div>
+            </div>
+
+            <div class="project-meta">
+
+                <div>
+                    <span>Référence</span>
+                    <strong>DOS-2026-044</strong>
+                </div>
+
+                <div>
+                    <span>Profil</span>
+                    <strong>TPE</strong>
+                </div>
+
+                <div>
+                    <span>Étape</span>
+                    <strong>Déploiement</strong>
+                </div>
+
+            </div>
+
+            <div class="card-actions">
+
+                <button type="button"
+                        class="btn-primary">
+                    Piloter
+                </button>
+
+                <a href="{{ url_for('main.collaborateur_messagerie') }}"
+                   class="btn-secondary">
+                    Messagerie
+                </a>
+
+            </div>
+
+        </article>
+
+
+        <article class="project-card">
+
+            <div class="project-card-top">
+
+                <div>
+
+                    <span class="status status-warning">
+                        À compléter
+                    </span>
+
+                    <h2>
+                        AGRO Centre
+                    </h2>
+
+                    <p>
+                        Organisation documentaire multi-sites.
+                    </p>
+
+                </div>
+
+                <strong class="project-percent">
+                    35 %
+                </strong>
+
+            </div>
+
+            <div class="progress">
+                <div class="progress-bar"
+                     style="width: 35%;">
+                </div>
+            </div>
+
+            <div class="project-meta">
+
+                <div>
+                    <span>Référence</span>
+                    <strong>DOS-2026-038</strong>
+                </div>
+
+                <div>
+                    <span>Profil</span>
+                    <strong>PME</strong>
+                </div>
+
+                <div>
+                    <span>Étape</span>
+                    <strong>Cadrage</strong>
+                </div>
+
+            </div>
+
+            <div class="card-actions">
+
+                <button type="button"
+                        class="btn-primary">
+                    Ouvrir
+                </button>
+
+            </div>
+
+        </article>
+
+    </section>
+
+</main>
+
+{% include "footer.html" %}
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+</body>
+</html>

@@ -1,0 +1,51 @@
+<header class="pme-home-header">
+
+    <div class="pme-home-header-inner">
+
+        <!-- Identité -->
+        <a href="{{ url_for('main.pme_accueil') }}"class="pme-home-brand">
+
+            <span class="pme-home-brand-icon">
+                D
+            </span>
+
+            <span class="pme-home-brand-text">
+                <strong>DATENSIS</strong>
+                <small>PME & ETI</small>
+            </span>
+
+        </a>
+
+
+        <!-- Navigation -->
+        <nav class="pme-home-nav"
+             aria-label="Navigation PME">
+
+            <a href="{{ url_for('main.pme_cadrage_etude') }}">
+                Cadrage & étude
+            </a>
+
+            <a href="{{ url_for('main.pme_solutions_deploiement') }}">
+                Solutions & déploiement
+            </a>
+
+            <a href="{{ url_for('main.pme_suivi_pilotage') }}">
+                Suivi & pilotage
+            </a>
+
+        </nav>
+
+
+        <!-- Compte -->
+        <div class="pme-home-header-actions">
+
+            <a href="{{ url_for('main.pme_creation_compte') }}"
+               class="pme-home-account">
+                Créer un compte
+            </a>
+
+        </div>
+
+    </div>
+
+</header>

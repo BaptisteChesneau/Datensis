@@ -1,0 +1,571 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Portefeuille projets</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+</head>
+
+<body class="pme-control-page pme-projects-page">
+
+<div class="pme-app">
+
+    <!-- NAVIGATION LATÉRALE : IDENTIQUE AU DASHBOARD -->
+
+    <aside class="pme-sidebar" id="pmeSidebar">
+
+        <a class="pme-brand"
+           href="{{ url_for('main.pme_dashboard') }}">
+
+            <span class="pme-brand-symbol">D</span>
+
+            <span>
+                <strong>DATENSIS</strong>
+                <small>ESPACE ENTREPRISE</small>
+            </span>
+        </a>
+
+        <div class="pme-sidebar-label">
+            ESPACE DE TRAVAIL
+        </div>
+
+        <nav class="pme-nav" aria-label="Navigation PME">
+
+            <a href="{{ url_for('main.pme_dashboard') }}">
+                <span>▦</span> Vue d'ensemble
+            </a>
+
+            <a class="active"
+               aria-current="page"
+               href="{{ url_for('main.pme_projets') }}">
+                <span>◫</span> Portefeuille projets
+            </a>
+
+            <a href="{{ url_for('main.pme_sites') }}">
+                <span>⌖</span> Implantations
+            </a>
+
+            <a href="{{ url_for('main.pme_documents') }}">
+                <span>▤</span> Documents
+            </a>
+
+            <a href="{{ url_for('main.pme_activite') }}">
+                <span>◷</span> Journal d'activité
+            </a>
+
+        </nav>
+
+        <div class="pme-sidebar-label">
+            COLLABORATION
+        </div>
+
+        <nav class="pme-nav" aria-label="Collaboration">
+
+            <a href="{{ url_for('main.pme_messagerie') }}">
+                <span>✉</span> Messagerie
+                <b class="pme-nav-count">2</b>
+            </a>
+
+            <a href="{{ url_for('main.pme_rendez_vous') }}">
+                <span>▦</span> Rendez-vous
+            </a>
+
+        </nav>
+
+        <div class="pme-sidebar-bottom">
+
+            <div class="pme-sidebar-assistance">
+                <strong>Besoin d'un accompagnement ?</strong>
+
+                <p>
+                    Échangez avec votre interlocuteur DATENSIS.
+                </p>
+
+                <a href="{{ url_for('main.pme_messagerie') }}">
+                    Contacter l'équipe →
+                </a>
+            </div>
+
+            <span class="pme-sidebar-version">
+                DATENSIS · Espace PME
+            </span>
+
+        </div>
+
+    </aside>
+
+    <!-- ESPACE DE TRAVAIL -->
+
+    <div class="pme-workspace">
+
+        <!-- BARRE SUPÉRIEURE -->
+
+        <header class="pme-topbar">
+
+            <div class="pme-topbar-left">
+
+                <button class="pme-menu-toggle"
+                        id="pmeMenuToggle"
+                        type="button"
+                        aria-label="Ouvrir la navigation"
+                        aria-controls="pmeSidebar"
+                        aria-expanded="false">
+                    ☰
+                </button>
+
+                <div class="pme-breadcrumb">
+                    Espace entreprise
+                    <span>/</span>
+                    <strong>Portefeuille projets</strong>
+                </div>
+
+            </div>
+
+            <div class="pme-topbar-right">
+
+                <span class="pme-demo-indicator">
+                    Données de démonstration
+                </span>
+
+                <a class="pme-topbar-message"
+                   href="{{ url_for('main.pme_messagerie') }}"
+                   aria-label="Ouvrir la messagerie">
+                    ✉
+                    <span>2</span>
+                </a>
+
+                <div class="pme-account">
+                    <span class="pme-avatar">PM</span>
+
+                    <div>
+                        <strong>Espace PME</strong>
+                        <small>Organisation</small>
+                    </div>
+                </div>
+
+            </div>
+
+        </header>
+
+        <!-- CONTENU DE LA PAGE PROJETS -->
+
+        <main class="pme-main pme-projects">
+
+            <section class="pme-welcome pme-projects-welcome">
+
+                <div>
+                    <span class="pme-eyebrow">
+                        GESTION DES PROJETS
+                    </span>
+
+                    <h1>Portefeuille projets</h1>
+
+                    <p>
+                        Centralisez vos initiatives, suivez leur
+                        progression et gérez les prochaines étapes
+                        de votre organisation.
+                    </p>
+                </div>
+
+                <div class="pme-welcome-actions">
+                    <button type="button"
+                            class="pme-btn pme-projects-primary"
+                            id="openPmeProjectModal">
+                        + Nouveau projet
+                    </button>
+                </div>
+
+            </section>
+
+            <!-- INDICATEURS -->
+
+            <section class="pme-kpi-grid"
+                     aria-label="Indicateurs des projets">
+
+                <article class="pme-kpi">
+                    <div class="pme-kpi-top">
+                        <span>Total des projets</span>
+                        <span class="pme-kpi-icon">◫</span>
+                    </div>
+
+                    <strong id="pmeStatTotal">0</strong>
+
+                    <div class="pme-kpi-bottom">
+                        <span>Portefeuille global</span>
+                    </div>
+                </article>
+
+                <article class="pme-kpi">
+                    <div class="pme-kpi-top">
+                        <span>Projets en cours</span>
+                        <span class="pme-kpi-icon mint">↗</span>
+                    </div>
+
+                    <strong id="pmeStatProgress">0</strong>
+
+                    <div class="pme-kpi-bottom">
+                        <span>Opérations actives</span>
+                    </div>
+                </article>
+
+                <article class="pme-kpi">
+                    <div class="pme-kpi-top">
+                        <span>À valider</span>
+                        <span class="pme-kpi-icon coral">!</span>
+                    </div>
+
+                    <strong id="pmeStatPending">0</strong>
+
+                    <div class="pme-kpi-bottom">
+                        <span>Décisions attendues</span>
+                    </div>
+                </article>
+
+                <article class="pme-kpi">
+                    <div class="pme-kpi-top">
+                        <span>Avancement moyen</span>
+                        <span class="pme-kpi-icon">◎</span>
+                    </div>
+
+                    <strong id="pmeStatAverage">0 %</strong>
+
+                    <div class="pme-kpi-bottom">
+                        <span>Progression globale</span>
+                    </div>
+                </article>
+
+            </section>
+
+            <!-- PORTEFEUILLE -->
+
+            <section class="pme-panel pme-projects-workspace">
+
+                <div class="pme-panel-header">
+                    <div>
+                        <span class="pme-section-label">
+                            PORTEFEUILLE
+                        </span>
+
+                        <h2>Mes projets</h2>
+
+                        <p id="pmeProjectResultCount">
+                            Chargement des projets...
+                        </p>
+                    </div>
+                </div>
+
+                <!-- FILTRES -->
+
+                <div class="pme-projects-toolbar">
+
+                    <label class="pme-projects-search">
+                        <span aria-hidden="true">⌕</span>
+
+                        <input type="search"
+                               id="pmeProjectSearch"
+                               placeholder="Rechercher un projet..."
+                               aria-label="Rechercher un projet">
+                    </label>
+
+                    <select id="pmeProjectStatusFilter"
+                            aria-label="Filtrer les projets">
+                        <option value="all">Tous les statuts</option>
+                        <option value="progress">En cours</option>
+                        <option value="pending">À valider</option>
+                        <option value="completed">Terminés</option>
+                    </select>
+
+                    <select id="pmeProjectSort"
+                            aria-label="Trier les projets">
+                        <option value="recent">Plus récents</option>
+                        <option value="deadline">Échéance proche</option>
+                        <option value="progress-desc">
+                            Avancement décroissant
+                        </option>
+                        <option value="progress-asc">
+                            Avancement croissant
+                        </option>
+                        <option value="name">Nom A-Z</option>
+                    </select>
+
+                    <div class="pme-projects-view-switch"
+                         aria-label="Affichage des projets">
+
+                        <button type="button"
+                                data-view="grid"
+                                class="active"
+                                aria-label="Vue cartes"
+                                aria-pressed="true">
+                            ▦
+                        </button>
+
+                        <button type="button"
+                                data-view="list"
+                                aria-label="Vue liste"
+                                aria-pressed="false">
+                            ☷
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <!-- CARTES GÉNÉRÉES EN JAVASCRIPT -->
+
+                <div id="pmeProjectGrid"
+                     class="pme-projects-grid"
+                     aria-live="polite">
+                </div>
+
+                <div id="pmeProjectEmpty"
+                     class="pme-projects-empty"
+                     hidden>
+
+                    <span>⌕</span>
+
+                    <h3>Aucun projet trouvé</h3>
+
+                    <p>
+                        Modifiez les filtres ou créez un projet.
+                    </p>
+
+                    <button type="button" id="pmeResetFilters">
+                        Réinitialiser les filtres
+                    </button>
+
+                </div>
+
+            </section>
+
+            <footer class="pme-dashboard-footer">
+                <span>© DATENSIS — Espace PME & ETI</span>
+                <span>Interface de démonstration</span>
+            </footer>
+
+        </main>
+
+    </div>
+
+</div>
+
+<!-- OVERLAY MOBILE : IDENTIQUE AU DASHBOARD -->
+
+<div class="pme-mobile-overlay"
+     id="pmeMobileOverlay"
+     hidden>
+</div>
+
+<!-- MODALE DE CRÉATION / MODIFICATION -->
+
+<div id="pmeProjectModal" class="pme-projects-modal" hidden>
+
+    <div class="pme-projects-modal-backdrop"
+         data-close-modal></div>
+
+    <section class="pme-projects-modal-card"
+             role="dialog"
+             aria-modal="true"
+             aria-labelledby="pmeProjectModalTitle">
+
+        <div class="pme-projects-modal-header">
+            <div>
+                <span class="pme-projects-section-eyebrow">
+                    GESTION DE PROJET
+                </span>
+                <h2 id="pmeProjectModalTitle">Nouveau projet</h2>
+            </div>
+
+            <button type="button"
+                    class="pme-projects-close"
+                    id="closePmeProjectModal"
+                    aria-label="Fermer">×</button>
+        </div>
+
+        <form id="pmeProjectForm" class="pme-projects-form">
+
+            <input type="hidden" id="pmeProjectEditId">
+
+            <div class="pme-projects-form-group">
+                <label for="newPmeProjectName">Nom du projet *</label>
+                <input type="text"
+                       id="newPmeProjectName"
+                       maxlength="100"
+                       required>
+            </div>
+
+            <div class="pme-projects-form-row">
+
+                <div class="pme-projects-form-group">
+                    <label for="newPmeProjectType">Type *</label>
+                    <select id="newPmeProjectType" required>
+                        <option value="">Sélectionner</option>
+                        <option>Digitalisation</option>
+                        <option>Déploiement</option>
+                        <option>Documentation</option>
+                        <option>Pilotage</option>
+                        <option>Automatisation</option>
+                        <option>Autre</option>
+                    </select>
+                </div>
+
+                <div class="pme-projects-form-group">
+                    <label for="newPmeProjectStatus">Statut</label>
+                    <select id="newPmeProjectStatus">
+                        <option value="progress">En cours</option>
+                        <option value="pending">À valider</option>
+                        <option value="completed">Terminé</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="pme-projects-form-group">
+                <label for="newPmeProjectDescription">
+                    Description *
+                </label>
+                <textarea id="newPmeProjectDescription"
+                          rows="3"
+                          maxlength="600"
+                          required></textarea>
+            </div>
+
+            <div class="pme-projects-form-row">
+
+                <div class="pme-projects-form-group">
+                    <label for="newPmeProjectOwner">Responsable</label>
+                    <input type="text"
+                           id="newPmeProjectOwner"
+                           maxlength="70">
+                </div>
+
+                <div class="pme-projects-form-group">
+                    <label for="newPmeProjectSites">
+                        Nombre de sites
+                    </label>
+                    <input type="number"
+                           id="newPmeProjectSites"
+                           min="0"
+                           max="999"
+                           value="1">
+                </div>
+
+            </div>
+
+            <div class="pme-projects-form-row">
+
+                <div class="pme-projects-form-group">
+                    <label for="newPmeProjectDeadline">
+                        Échéance
+                    </label>
+                    <input type="date"
+                           id="newPmeProjectDeadline">
+                </div>
+
+                <div class="pme-projects-form-group">
+                    <label for="newPmeProjectProgress">
+                        Avancement :
+                        <strong id="pmeProgressValue">0 %</strong>
+                    </label>
+                    <input type="range"
+                           id="newPmeProjectProgress"
+                           min="0"
+                           max="100"
+                           value="0">
+                </div>
+
+            </div>
+
+            <div class="pme-projects-form-actions">
+
+                <button type="button"
+                        class="pme-projects-secondary"
+                        id="cancelPmeProject">
+                    Annuler
+                </button>
+
+                <button type="submit"
+                        class="pme-projects-primary"
+                        id="pmeProjectSaveButton">
+                    Créer le projet
+                </button>
+
+            </div>
+
+        </form>
+
+    </section>
+
+</div>
+
+<!-- MODALE DE DÉTAILS -->
+
+<div id="pmeProjectDetailsModal"
+     class="pme-projects-modal"
+     hidden>
+
+    <div class="pme-projects-modal-backdrop"
+         data-close-details></div>
+
+    <section class="pme-projects-modal-card pme-projects-details-card"
+             role="dialog"
+             aria-modal="true"
+             aria-labelledby="pmeProjectDetailsTitle">
+
+        <div class="pme-projects-modal-header">
+
+            <div>
+                <span class="pme-projects-section-eyebrow">
+                    FICHE PROJET
+                </span>
+
+                <h2 id="pmeProjectDetailsTitle">
+                    Détails du projet
+                </h2>
+            </div>
+
+            <button type="button"
+                    id="closePmeProjectDetails"
+                    class="pme-projects-close"
+                    aria-label="Fermer">
+                ×
+            </button>
+
+        </div>
+
+        <div id="pmeProjectDetailsContent"></div>
+
+        <div class="pme-projects-form-actions">
+
+            <button type="button"
+                    class="pme-projects-secondary"
+                    id="pmeProjectDetailsCloseButton">
+                Fermer
+            </button>
+
+            <button type="button"
+                    class="pme-projects-primary"
+                    id="pmeProjectDetailsEditButton">
+                Modifier le projet
+            </button>
+
+        </div>
+
+    </section>
+
+</div>
+
+<div id="pmeProjectToast"
+     class="pme-projects-toast"
+     role="status"
+     aria-live="polite">
+</div>
+
+</body>
+</html>

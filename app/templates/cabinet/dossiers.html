@@ -1,0 +1,516 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dossiers clients</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+</head>
+
+<body class="cab-dashboard cab-dossiers-page">
+
+<div class="cab-layout">
+
+    <!-- NAVIGATION PRIVÉE -->
+
+    <aside class="cab-sidebar" id="cabSidebar">
+
+        <a class="cab-brand" href="{{ url_for('main.cabinet_dashboard') }}">
+            <span class="cab-brand-mark">D<span>.</span></span>
+            <span class="cab-brand-copy">
+                <strong>DATENSIS</strong>
+                <small>PARTNER WORKSPACE</small>
+            </span>
+        </a>
+
+        <div class="cab-sidebar-divider"></div>
+
+        <div class="cab-sidebar-section">VOTRE ESPACE</div>
+
+        <nav class="cab-nav" aria-label="Navigation cabinet">
+
+            <a href="{{ url_for('main.cabinet_dashboard') }}">
+                <span class="cab-nav-icon">▦</span>
+                <span>Vue d'ensemble</span>
+            </a>
+
+            <a href="{{ url_for('main.cabinet_portefeuille') }}">
+                <span class="cab-nav-icon">♙</span>
+                <span>Portefeuille clients</span>
+            </a>
+
+            <a href="{{ url_for('main.cabinet_opportunites') }}">
+                <span class="cab-nav-icon">◇</span>
+                <span>Opportunités</span>
+                <span class="cab-nav-badge">3</span>
+            </a>
+
+            <a href="{{ url_for('main.cabinet_dossiers') }}"
+               class="active"
+               aria-current="page">
+                <span class="cab-nav-icon">▤</span>
+                <span>Dossiers transmis</span>
+            </a>
+
+            <a href="{{ url_for('main.cabinet_ressources') }}">
+                <span class="cab-nav-icon">▧</span>
+                <span>Ressources</span>
+            </a>
+
+        </nav>
+
+        <div class="cab-sidebar-section">COLLABORATION</div>
+
+        <nav class="cab-nav" aria-label="Collaboration">
+
+            <a href="{{ url_for('main.cabinet_messagerie') }}">
+                <span class="cab-nav-icon">✉</span>
+                <span>Messagerie</span>
+                <span class="cab-nav-badge cab-nav-badge-coral">2</span>
+            </a>
+
+            <a href="{{ url_for('main.cabinet_rendez_vous') }}">
+                <span class="cab-nav-icon">▦</span>
+                <span>Rendez-vous</span>
+            </a>
+
+        </nav>
+
+        <div class="cab-sidebar-spacer"></div>
+
+        <div class="cab-partner-card">
+            <span class="cab-partner-card-label">ACCOMPAGNEMENT</span>
+            <strong>Un suivi clair pour chaque dossier.</strong>
+            <p>Échangez avec DATENSIS sur vos missions en cours.</p>
+            <a href="{{ url_for('main.cabinet_messagerie') }}">
+                Contacter DATENSIS <span>↗</span>
+            </a>
+        </div>
+
+        <div class="cab-sidebar-footer">
+            <span class="cab-sidebar-status"></span>
+            Espace partenaire · Démonstration
+        </div>
+
+    </aside>
+
+    <!-- ZONE DE TRAVAIL -->
+
+    <div class="cab-main-shell">
+
+        <header class="cab-topbar">
+
+            <div class="cab-topbar-left">
+
+                <button type="button"
+                        class="cab-mobile-menu"
+                        id="cabMenuToggle"
+                        aria-label="Ouvrir le menu"
+                        aria-controls="cabSidebar"
+                        aria-expanded="false">
+                    ☰
+                </button>
+
+                <div class="cab-breadcrumb">
+                    <span>Partenariat</span>
+                    <span class="cab-breadcrumb-separator">/</span>
+                    <strong>Dossiers clients</strong>
+                </div>
+
+            </div>
+
+            <div class="cab-topbar-right">
+
+                <span class="cab-demo-label">
+                    <span></span>
+                    Environnement démo
+                </span>
+
+                <a href="{{ url_for('main.cabinet_messagerie') }}"
+                   class="cab-topbar-notification"
+                   aria-label="Accéder à la messagerie">
+                    ✉ <span>2</span>
+                </a>
+
+                <div class="cab-profile">
+                    <div class="cab-profile-avatar">CP</div>
+                    <div class="cab-profile-copy">
+                        <strong>Cabinet partenaire</strong>
+                        <small>Espace professionnel</small>
+                    </div>
+                </div>
+
+            </div>
+
+        </header>
+
+        <main class="cab-content cab-dossiers-content">
+
+            <!-- INTRODUCTION -->
+
+            <section class="cab-dossiers-hero">
+
+                <div class="cab-dossiers-hero-copy">
+
+                    <span class="cab-dossiers-eyebrow">
+                        SUIVI DES MISSIONS / CABINET PARTENAIRE
+                    </span>
+
+                    <h1>
+                        Vos dossiers avancent.<br>
+                        <em>Gardez le cap.</em>
+                    </h1>
+
+                    <p>
+                        Suivez les missions confiées à DATENSIS,
+                        visualisez les étapes franchies et retrouvez
+                        les prochaines actions pour chaque client.
+                    </p>
+
+                    <div class="cab-dossiers-hero-actions">
+
+                        <a href="{{ url_for('main.cabinet_mise_en_relation') }}"
+                           class="cab-btn cab-btn-light">
+                            ＋ Nouveau dossier
+                        </a>
+
+                        <a href="{{ url_for('main.cabinet_suivi_partenariat') }}"
+                           class="cab-btn cab-btn-outline">
+                            Suivi du partenariat ↗
+                        </a>
+
+                    </div>
+
+                </div>
+
+                <div class="cab-dossiers-hero-graphic" aria-hidden="true">
+
+                    <div class="cab-dossiers-graphic-ring"></div>
+
+                    <div class="cab-dossiers-graphic-center">
+                        <span>MISSIONS</span>
+                        <strong>02</strong>
+                        <small>en suivi</small>
+                    </div>
+
+                    <span class="cab-dossiers-graphic-dot dot-one"></span>
+                    <span class="cab-dossiers-graphic-dot dot-two"></span>
+                    <span class="cab-dossiers-graphic-dot dot-three"></span>
+
+                </div>
+
+            </section>
+
+            <!-- INDICATEURS -->
+
+            <div class="cab-section-heading">
+                <div>
+                    <span class="cab-section-eyebrow">VUE D'ENSEMBLE</span>
+                    <h2>État des dossiers</h2>
+                    <p>Suivi des dossiers présents dans cette démonstration.</p>
+                </div>
+            </div>
+
+            <section class="cab-dossiers-stats" aria-label="Indicateurs des dossiers">
+
+                <article class="cab-dossiers-stat">
+                    <div class="cab-dossiers-stat-top">
+                        <span>Dossiers suivis</span>
+                        <span class="cab-dossiers-stat-symbol">▤</span>
+                    </div>
+                    <strong id="dossiersStatTotal">0</strong>
+                    <small>Portefeuille de missions</small>
+                    <div class="cab-dossiers-stat-line"></div>
+                </article>
+
+                <article class="cab-dossiers-stat">
+                    <div class="cab-dossiers-stat-top">
+                        <span>En déploiement</span>
+                        <span class="cab-dossiers-stat-symbol blue">↗</span>
+                    </div>
+                    <strong id="dossiersStatDeployment">0</strong>
+                    <small>Missions en exécution</small>
+                    <div class="cab-dossiers-stat-line blue"></div>
+                </article>
+
+                <article class="cab-dossiers-stat">
+                    <div class="cab-dossiers-stat-top">
+                        <span>En préparation</span>
+                        <span class="cab-dossiers-stat-symbol coral">◷</span>
+                    </div>
+                    <strong id="dossiersStatPreparation">0</strong>
+                    <small>Missions en cadrage</small>
+                    <div class="cab-dossiers-stat-line coral"></div>
+                </article>
+
+                <article class="cab-dossiers-stat">
+                    <div class="cab-dossiers-stat-top">
+                        <span>Progression moyenne</span>
+                        <span class="cab-dossiers-stat-symbol mint">%</span>
+                    </div>
+                    <strong id="dossiersStatAverage">0 %</strong>
+                    <small>Avancement global indicatif</small>
+                    <div class="cab-dossiers-stat-line mint"></div>
+                </article>
+
+            </section>
+
+            <!-- PILOTAGE -->
+
+            <section class="cab-dossiers-workspace">
+
+                <div class="cab-dossiers-workspace-heading">
+
+                    <div>
+                        <span class="cab-section-eyebrow">
+                            CENTRE DE SUIVI
+                        </span>
+
+                        <h2>Vos missions en cours</h2>
+
+                        <p id="dossiersResultCount" aria-live="polite">
+                            Chargement...
+                        </p>
+                    </div>
+
+                    <div class="cab-dossiers-view-switch">
+
+                        <button type="button"
+                                class="active"
+                                id="dossiersCardsButton"
+                                aria-pressed="true">
+                            ▦ Cartes
+                        </button>
+
+                        <button type="button"
+                                id="dossiersTableButton"
+                                aria-pressed="false">
+                            ▤ Tableau
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <div class="cab-dossiers-toolbar">
+
+                    <label class="cab-dossiers-search">
+                        <span aria-hidden="true">⌕</span>
+
+                        <input type="search"
+                               id="dossiersSearch"
+                               placeholder="Client, mission, référence..."
+                               aria-label="Rechercher un dossier">
+                    </label>
+
+                    <select id="dossiersStatusFilter"
+                            aria-label="Filtrer par statut">
+                        <option value="all">Tous les statuts</option>
+                        <option value="deployment">En cours</option>
+                        <option value="preparation">Préparation</option>
+                    </select>
+
+                    <select id="dossiersSort"
+                            aria-label="Trier les dossiers">
+                        <option value="progress-desc">Avancement décroissant</option>
+                        <option value="progress-asc">Avancement croissant</option>
+                        <option value="name">Nom du client</option>
+                        <option value="recent">Dernière mise à jour</option>
+                    </select>
+
+                    <button type="button"
+                            id="dossiersReset"
+                            class="cab-dossiers-reset">
+                        Réinitialiser
+                    </button>
+
+                </div>
+
+                <!-- CARTES -->
+
+                <div class="cab-dossiers-grid" id="dossiersCards"></div>
+
+                <!-- TABLEAU -->
+
+                <div class="cab-dossiers-table-wrapper"
+                     id="dossiersTableContainer"
+                     hidden>
+
+                    <table class="cab-dossiers-table">
+                        <thead>
+                            <tr>
+                                <th>Client</th>
+                                <th>Référence</th>
+                                <th>Étape</th>
+                                <th>Progression</th>
+                                <th>Mise à jour</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dossiersTableBody"></tbody>
+                    </table>
+
+                </div>
+
+                <!-- AUCUN RÉSULTAT -->
+
+                <div class="cab-dossiers-empty" id="dossiersEmpty" hidden>
+                    <span>⌕</span>
+                    <h3>Aucun dossier trouvé</h3>
+                    <p>Modifiez les filtres pour afficher d'autres missions.</p>
+                    <button type="button" id="dossiersEmptyReset">
+                        Effacer les filtres
+                    </button>
+                </div>
+
+                <div class="cab-dossiers-workspace-footer">
+                    <span>Données fictives utilisées pour la démonstration.</span>
+                    <a href="{{ url_for('main.cabinet_opportunites') }}">
+                        Consulter les opportunités →
+                    </a>
+                </div>
+
+            </section>
+
+            <!-- PROCESSUS -->
+
+            <section class="cab-dossiers-process">
+
+                <div class="cab-dossiers-process-heading">
+                    <span class="cab-section-eyebrow">MÉTHODOLOGIE</span>
+                    <h2>Un parcours structuré, du besoin au résultat.</h2>
+                    <p>
+                        Chaque dossier suit une progression claire
+                        pour faciliter la coordination entre votre cabinet
+                        et DATENSIS.
+                    </p>
+                </div>
+
+                <div class="cab-dossiers-process-steps">
+
+                    <div>
+                        <span>01</span>
+                        <strong>Qualification</strong>
+                        <small>Comprendre le besoin</small>
+                    </div>
+
+                    <div>
+                        <span>02</span>
+                        <strong>Cadrage</strong>
+                        <small>Définir les actions</small>
+                    </div>
+
+                    <div>
+                        <span>03</span>
+                        <strong>Déploiement</strong>
+                        <small>Mettre en œuvre</small>
+                    </div>
+
+                    <div>
+                        <span>04</span>
+                        <strong>Finalisation</strong>
+                        <small>Valider les résultats</small>
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- ACTIONS -->
+
+            <section class="cab-dossiers-actions">
+
+                <div>
+                    <span class="cab-section-eyebrow">
+                        COLLABORATION
+                    </span>
+
+                    <h2>Besoin d'un point sur un dossier ?</h2>
+
+                    <p>
+                        Retrouvez votre interlocuteur DATENSIS
+                        pour échanger sur une mission ou planifier
+                        un rendez-vous de suivi.
+                    </p>
+                </div>
+
+                <div class="cab-dossiers-actions-buttons">
+                    <a href="{{ url_for('main.cabinet_messagerie') }}">
+                        Ouvrir la messagerie ↗
+                    </a>
+
+                    <a href="{{ url_for('main.cabinet_rendez_vous') }}">
+                        Planifier un rendez-vous
+                    </a>
+                </div>
+
+            </section>
+
+            <footer class="cab-footer">
+                <span>© DATENSIS — Espace Cabinet Partenaire</span>
+                <span>Suivi de missions · Démonstration</span>
+            </footer>
+
+        </main>
+
+    </div>
+
+</div>
+
+<div class="cab-mobile-overlay" id="cabMobileOverlay" hidden></div>
+
+<!-- MODALE DÉTAIL -->
+
+<div class="cab-dossiers-modal" id="dossiersModal" hidden>
+
+    <div class="cab-dossiers-modal-backdrop"
+         data-close-dossier></div>
+
+    <section class="cab-dossiers-modal-dialog"
+             role="dialog"
+             aria-modal="true"
+             aria-labelledby="dossiersModalTitle">
+
+        <div class="cab-dossiers-modal-heading">
+
+            <div>
+                <span class="cab-section-eyebrow">FICHE DOSSIER</span>
+                <h2 id="dossiersModalTitle">Dossier client</h2>
+            </div>
+
+            <button type="button"
+                    id="dossiersModalClose"
+                    aria-label="Fermer la fiche">×</button>
+
+        </div>
+
+        <div id="dossiersModalContent"></div>
+
+        <div class="cab-dossiers-modal-actions">
+
+            <button type="button" id="dossiersModalCancel">
+                Fermer
+            </button>
+
+            <a href="{{ url_for('main.cabinet_suivi_partenariat') }}">
+                Suivi du partenariat →
+            </a>
+
+            <a href="{{ url_for('main.cabinet_messagerie') }}">
+                Échanger avec DATENSIS ↗
+            </a>
+
+        </div>
+
+    </section>
+
+</div>
+
+</body>
+</html>

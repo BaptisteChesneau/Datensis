@@ -1,0 +1,528 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation projet</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+</head>
+
+<body class="pme-control-page pme-documents-page">
+
+<div class="pme-app">
+
+    <!-- SIDEBAR DU DASHBOARD PME -->
+
+    <aside class="pme-sidebar" id="pmeSidebar">
+
+        <a class="pme-brand" href="{{ url_for('main.pme_dashboard') }}">
+            <span class="pme-brand-symbol">D</span>
+            <span>
+                <strong>DATENSIS</strong>
+                <small>ESPACE ENTREPRISE</small>
+            </span>
+        </a>
+
+        <div class="pme-sidebar-label">ESPACE DE TRAVAIL</div>
+
+        <nav class="pme-nav" aria-label="Navigation PME">
+            <a href="{{ url_for('main.pme_dashboard') }}">
+                <span>▦</span> Vue d'ensemble
+            </a>
+
+            <a href="{{ url_for('main.pme_projets') }}">
+                <span>◫</span> Portefeuille projets
+            </a>
+
+            <a href="{{ url_for('main.pme_sites') }}">
+                <span>⌖</span> Implantations
+            </a>
+
+            <a class="active" aria-current="page"
+               href="{{ url_for('main.pme_documents') }}">
+                <span>▤</span> Documents
+            </a>
+
+            <a href="{{ url_for('main.pme_activite') }}">
+                <span>◷</span> Journal d'activité
+            </a>
+        </nav>
+
+        <div class="pme-sidebar-label">COLLABORATION</div>
+
+        <nav class="pme-nav" aria-label="Collaboration">
+            <a href="{{ url_for('main.pme_messagerie') }}">
+                <span>✉</span> Messagerie
+                <b class="pme-nav-count">2</b>
+            </a>
+
+            <a href="{{ url_for('main.pme_rendez_vous') }}">
+                <span>▦</span> Rendez-vous
+            </a>
+        </nav>
+
+        <div class="pme-sidebar-bottom">
+            <div class="pme-sidebar-assistance">
+                <strong>Besoin d'un accompagnement ?</strong>
+                <p>Échangez avec votre interlocuteur DATENSIS.</p>
+                <a href="{{ url_for('main.pme_messagerie') }}">
+                    Contacter l'équipe →
+                </a>
+            </div>
+
+            <span class="pme-sidebar-version">
+                DATENSIS · Espace PME
+            </span>
+        </div>
+    </aside>
+
+    <!-- ESPACE PRINCIPAL -->
+
+    <div class="pme-workspace">
+
+        <header class="pme-topbar">
+
+            <div class="pme-topbar-left">
+                <button class="pme-menu-toggle"
+                        id="pmeMenuToggle"
+                        type="button"
+                        aria-label="Ouvrir la navigation"
+                        aria-controls="pmeSidebar"
+                        aria-expanded="false">
+                    ☰
+                </button>
+
+                <div class="pme-breadcrumb">
+                    Espace entreprise
+                    <span>/</span>
+                    <strong>Documents</strong>
+                </div>
+            </div>
+
+            <div class="pme-topbar-right">
+                <span class="pme-demo-indicator">
+                    Données de démonstration
+                </span>
+
+                <a class="pme-topbar-message"
+                   href="{{ url_for('main.pme_messagerie') }}"
+                   aria-label="Ouvrir la messagerie">
+                    ✉ <span>2</span>
+                </a>
+
+                <div class="pme-account">
+                    <span class="pme-avatar">PM</span>
+                    <div>
+                        <strong>Espace PME</strong>
+                        <small>Organisation</small>
+                    </div>
+                </div>
+            </div>
+
+        </header>
+
+        <main class="pme-main pme-documents-main">
+
+            <!-- INTRODUCTION -->
+
+            <section class="pme-welcome pme-documents-welcome">
+                <div>
+                    <span class="pme-eyebrow">GESTION DOCUMENTAIRE</span>
+                    <h1>Documentation projet</h1>
+                    <p>
+                        Centralisez les documents liés à vos projets,
+                        retrouvez leurs versions et consultez
+                        les pièces associées à vos implantations.
+                    </p>
+                </div>
+
+                <div class="pme-welcome-actions">
+                    <button type="button"
+                            class="pme-btn pme-documents-primary"
+                            id="openDocumentImport">
+                        + Ajouter un document
+                    </button>
+                </div>
+            </section>
+
+            <!-- INDICATEURS -->
+
+            <section class="pme-kpi-grid" aria-label="Indicateurs documentaires">
+
+                <article class="pme-kpi">
+                    <div class="pme-kpi-top">
+                        <span>Documents</span>
+                        <span class="pme-kpi-icon">▤</span>
+                    </div>
+                    <strong id="documentStatTotal">0</strong>
+                    <div class="pme-kpi-bottom">
+                        <span>Fichiers répertoriés</span>
+                    </div>
+                </article>
+
+                <article class="pme-kpi">
+                    <div class="pme-kpi-top">
+                        <span>Projets associés</span>
+                        <span class="pme-kpi-icon mint">◫</span>
+                    </div>
+                    <strong id="documentStatProjects">0</strong>
+                    <div class="pme-kpi-bottom">
+                        <span>Projets représentés</span>
+                    </div>
+                </article>
+
+                <article class="pme-kpi">
+                    <div class="pme-kpi-top">
+                        <span>Sites concernés</span>
+                        <span class="pme-kpi-icon">⌖</span>
+                    </div>
+                    <strong id="documentStatSites">0</strong>
+                    <div class="pme-kpi-bottom">
+                        <span>Sites nommés dans les documents</span>
+                    </div>
+                </article>
+
+                <article class="pme-kpi">
+                    <div class="pme-kpi-top">
+                        <span>Documents de validation</span>
+                        <span class="pme-kpi-icon coral">✓</span>
+                    </div>
+                    <strong id="documentStatValidation">0</strong>
+                    <div class="pme-kpi-bottom">
+                        <span>Pièces classées « Validation »</span>
+                    </div>
+                </article>
+
+            </section>
+
+            <!-- BIBLIOTHÈQUE -->
+
+            <section class="pme-panel pme-documents-panel">
+
+                <div class="pme-panel-header">
+                    <div>
+                        <span class="pme-section-label">BIBLIOTHÈQUE</span>
+                        <h2>Mes documents</h2>
+                        <p id="documentResultCount">
+                            Chargement des documents...
+                        </p>
+                    </div>
+                </div>
+
+                <div class="pme-documents-toolbar">
+
+                    <label class="pme-documents-search">
+                        <span aria-hidden="true">⌕</span>
+                        <input type="search"
+                               id="pmeDocumentSearch"
+                               placeholder="Rechercher un fichier, projet, site..."
+                               aria-label="Rechercher un document">
+                    </label>
+
+                    <select id="pmeDocumentType"
+                            aria-label="Filtrer par type">
+                        <option value="all">Tous les types</option>
+                        <option value="Cahier des charges">Cahier des charges</option>
+                        <option value="Planning">Planning</option>
+                        <option value="Compte rendu">Compte rendu</option>
+                        <option value="Validation">Validation</option>
+                        <option value="Autre">Autre</option>
+                    </select>
+
+                    <select id="pmeDocumentSort"
+                            aria-label="Trier les documents">
+                        <option value="recent">Plus récents</option>
+                        <option value="name">Nom A-Z</option>
+                        <option value="project">Par projet</option>
+                        <option value="version">Version décroissante</option>
+                    </select>
+
+                    <div class="pme-documents-view-switch"
+                         aria-label="Mode d'affichage">
+
+                        <button type="button"
+                                class="active"
+                                data-document-view="cards"
+                                aria-label="Vue cartes"
+                                aria-pressed="true">▦</button>
+
+                        <button type="button"
+                                data-document-view="table"
+                                aria-label="Vue tableau"
+                                aria-pressed="false">☷</button>
+
+                    </div>
+
+                </div>
+
+                <!-- CARTES -->
+
+                <div class="pme-documents-grid"
+                     id="pmeDocumentsGrid"
+                     aria-live="polite"></div>
+
+                <!-- TABLEAU -->
+
+                <div class="pme-documents-table-wrap"
+                     id="pmeDocumentsTableWrap"
+                     hidden>
+
+                    <table class="pme-documents-table">
+                        <thead>
+                            <tr>
+                                <th>Document</th>
+                                <th>Projet</th>
+                                <th>Site</th>
+                                <th>Type</th>
+                                <th>Date</th>
+                                <th>Version</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="pmeDocumentsTableBody"></tbody>
+                    </table>
+
+                </div>
+
+                <!-- ÉTAT VIDE -->
+
+                <div class="pme-documents-empty"
+                     id="pmeDocumentsEmpty"
+                     hidden>
+                    <span>⌕</span>
+                    <h3>Aucun document trouvé</h3>
+                    <p>Modifiez les filtres ou ajoutez un document.</p>
+                    <button type="button" id="pmeDocumentResetFilters">
+                        Réinitialiser les filtres
+                    </button>
+                </div>
+
+            </section>
+
+            <!-- PANNEAUX INFÉRIEURS -->
+
+            <section class="pme-documents-bottom-grid">
+
+                <article class="pme-panel">
+                    <div class="pme-panel-header">
+                        <div>
+                            <span class="pme-section-label">RÉPARTITION</span>
+                            <h2>Types de documents</h2>
+                            <p>Répartition de la bibliothèque.</p>
+                        </div>
+                    </div>
+
+                    <div class="pme-documents-distribution"
+                         id="pmeDocumentsDistribution"></div>
+                </article>
+
+                <article class="pme-panel">
+                    <div class="pme-panel-header">
+                        <div>
+                            <span class="pme-section-label">ACCÈS RAPIDE</span>
+                            <h2>Ressources associées</h2>
+                            <p>Retrouvez les espaces liés à vos documents.</p>
+                        </div>
+                    </div>
+
+                    <div class="pme-documents-shortcuts">
+                        <a href="{{ url_for('main.pme_projets') }}">
+                            <span class="pme-documents-shortcut-icon">◫</span>
+                            <span>
+                                <strong>Portefeuille projets</strong>
+                                <small>Consulter les projets associés</small>
+                            </span>
+                            <span>→</span>
+                        </a>
+
+                        <a href="{{ url_for('main.pme_sites') }}">
+                            <span class="pme-documents-shortcut-icon">⌖</span>
+                            <span>
+                                <strong>Implantations</strong>
+                                <small>Retrouver les sites concernés</small>
+                            </span>
+                            <span>→</span>
+                        </a>
+
+                        <a href="{{ url_for('main.pme_messagerie') }}">
+                            <span class="pme-documents-shortcut-icon">✉</span>
+                            <span>
+                                <strong>Demander un document</strong>
+                                <small>Contacter votre interlocuteur</small>
+                            </span>
+                            <span>→</span>
+                        </a>
+                    </div>
+                </article>
+
+            </section>
+
+            <footer class="pme-dashboard-footer">
+                <span>© DATENSIS — Espace PME & ETI</span>
+                <span>Interface de démonstration</span>
+            </footer>
+
+        </main>
+
+    </div>
+</div>
+
+<div class="pme-mobile-overlay" id="pmeMobileOverlay" hidden></div>
+
+<!-- MODALE : DÉTAILS -->
+
+<div class="pme-documents-modal" id="pmeDocumentDetailsModal" hidden>
+    <div class="pme-documents-modal-backdrop" data-close-document></div>
+
+    <section class="pme-documents-modal-content"
+             role="dialog"
+             aria-modal="true"
+             aria-labelledby="pmeDocumentDetailsTitle">
+
+        <div class="pme-documents-modal-header">
+            <div>
+                <span class="pme-section-label">FICHE DOCUMENT</span>
+                <h2 id="pmeDocumentDetailsTitle">Détails du document</h2>
+            </div>
+
+            <button type="button"
+                    class="pme-documents-modal-close"
+                    id="closeDocumentDetails"
+                    aria-label="Fermer">×</button>
+        </div>
+
+        <div id="pmeDocumentDetailsContent"></div>
+
+        <div class="pme-documents-modal-actions">
+            <button type="button" id="documentDetailsCloseButton">
+                Fermer
+            </button>
+
+            <button type="button"
+                    class="pme-documents-primary"
+                    id="documentDetailsDownload">
+                Télécharger
+            </button>
+        </div>
+    </section>
+</div>
+
+<!-- MODALE : IMPORT SIMULÉ -->
+
+<div class="pme-documents-modal" id="pmeDocumentImportModal" hidden>
+    <div class="pme-documents-modal-backdrop" data-close-import></div>
+
+    <section class="pme-documents-modal-content"
+             role="dialog"
+             aria-modal="true"
+             aria-labelledby="pmeDocumentImportTitle">
+
+        <div class="pme-documents-modal-header">
+            <div>
+                <span class="pme-section-label">AJOUT DE DOCUMENT</span>
+                <h2 id="pmeDocumentImportTitle">Nouveau document</h2>
+            </div>
+
+            <button type="button"
+                    class="pme-documents-modal-close"
+                    id="closeDocumentImport"
+                    aria-label="Fermer">×</button>
+        </div>
+
+        <form id="pmeDocumentImportForm" class="pme-documents-form">
+
+            <div class="pme-documents-dropzone" id="pmeDocumentDropzone">
+                <span class="pme-documents-upload-icon">⇧</span>
+                <strong>Choisissez un fichier</strong>
+                <p>PDF, XLSX, DOCX ou TXT · 10 Mo maximum</p>
+
+                <input type="file"
+                       id="pmeDocumentFile"
+                       accept=".pdf,.xlsx,.docx,.txt"
+                       required>
+
+                <small id="pmeDocumentSelectedFile">
+                    Aucun fichier sélectionné
+                </small>
+            </div>
+
+            <div class="pme-documents-form-row">
+                <div class="pme-documents-form-group">
+                    <label for="newDocumentProject">Projet *</label>
+                    <select id="newDocumentProject" required>
+                        <option value="">Sélectionner</option>
+                        <option>Digitalisation</option>
+                        <option>Reporting</option>
+                        <option>Centralisation documentaire</option>
+                        <option>Autre</option>
+                    </select>
+                </div>
+
+                <div class="pme-documents-form-group">
+                    <label for="newDocumentSite">Site *</label>
+                    <select id="newDocumentSite" required>
+                        <option value="">Sélectionner</option>
+                        <option>Paris</option>
+                        <option>Lyon</option>
+                        <option>Bordeaux</option>
+                        <option>Nantes</option>
+                        <option>Tous</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="pme-documents-form-row">
+                <div class="pme-documents-form-group">
+                    <label for="newDocumentType">Type *</label>
+                    <select id="newDocumentType" required>
+                        <option value="">Sélectionner</option>
+                        <option>Cahier des charges</option>
+                        <option>Planning</option>
+                        <option>Compte rendu</option>
+                        <option>Validation</option>
+                        <option>Autre</option>
+                    </select>
+                </div>
+
+                <div class="pme-documents-form-group">
+                    <label for="newDocumentVersion">Version</label>
+                    <input type="number"
+                           id="newDocumentVersion"
+                           min="1"
+                           max="999"
+                           value="1"
+                           required>
+                </div>
+            </div>
+
+            <p class="pme-documents-demo-note">
+                Démonstration front-end : le fichier sera conservé
+                temporairement dans cet onglet uniquement.
+                Aucun envoi vers un serveur n'est effectué.
+            </p>
+
+            <div class="pme-documents-modal-actions">
+                <button type="button" id="cancelDocumentImport">
+                    Annuler
+                </button>
+
+                <button type="submit" class="pme-documents-primary">
+                    Ajouter à la bibliothèque
+                </button>
+            </div>
+        </form>
+    </section>
+</div>
+
+<div id="pmeDocumentToast"
+     class="pme-documents-toast"
+     role="status"
+     aria-live="polite"></div>
+
+</body>
+</html>

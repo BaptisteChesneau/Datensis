@@ -1,0 +1,493 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Opportunités</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+</head>
+
+<body class="cab-dashboard cab-opp-page">
+
+<div class="cab-layout">
+
+    <!-- SIDEBAR CABINET -->
+
+    <aside class="cab-sidebar" id="cabSidebar">
+
+        <a class="cab-brand" href="{{ url_for('main.cabinet_dashboard') }}">
+            <span class="cab-brand-mark">D<span>.</span></span>
+            <span class="cab-brand-copy">
+                <strong>DATENSIS</strong>
+                <small>PARTNER WORKSPACE</small>
+            </span>
+        </a>
+
+        <div class="cab-sidebar-divider"></div>
+
+        <div class="cab-sidebar-section">VOTRE ESPACE</div>
+
+        <nav class="cab-nav" aria-label="Navigation cabinet">
+            <a href="{{ url_for('main.cabinet_dashboard') }}">
+                <span class="cab-nav-icon">▦</span>
+                <span>Vue d'ensemble</span>
+            </a>
+
+            <a href="{{ url_for('main.cabinet_portefeuille') }}">
+                <span class="cab-nav-icon">♙</span>
+                <span>Portefeuille clients</span>
+            </a>
+
+            <a href="{{ url_for('main.cabinet_opportunites') }}"
+               class="active" aria-current="page">
+                <span class="cab-nav-icon">◇</span>
+                <span>Opportunités</span>
+                <span class="cab-nav-badge" id="oppSidebarCount">3</span>
+            </a>
+
+            <a href="{{ url_for('main.cabinet_dossiers') }}">
+                <span class="cab-nav-icon">▤</span>
+                <span>Dossiers transmis</span>
+            </a>
+
+            <a href="{{ url_for('main.cabinet_ressources') }}">
+                <span class="cab-nav-icon">▧</span>
+                <span>Ressources</span>
+            </a>
+        </nav>
+
+        <div class="cab-sidebar-section">COLLABORATION</div>
+
+        <nav class="cab-nav" aria-label="Collaboration">
+            <a href="{{ url_for('main.cabinet_messagerie') }}">
+                <span class="cab-nav-icon">✉</span>
+                <span>Messagerie</span>
+                <span class="cab-nav-badge cab-nav-badge-coral">2</span>
+            </a>
+
+            <a href="{{ url_for('main.cabinet_rendez_vous') }}">
+                <span class="cab-nav-icon">▦</span>
+                <span>Rendez-vous</span>
+            </a>
+        </nav>
+
+        <div class="cab-sidebar-spacer"></div>
+
+        <div class="cab-partner-card">
+            <span class="cab-partner-card-label">VOTRE PARTENARIAT</span>
+            <strong>Chaque besoin mérite une réponse adaptée.</strong>
+            <p>Préparez vos opportunités avant leur transmission.</p>
+            <a href="{{ url_for('main.cabinet_messagerie') }}">
+                Contacter DATENSIS <span>↗</span>
+            </a>
+        </div>
+
+        <div class="cab-sidebar-footer">
+            <span class="cab-sidebar-status"></span>
+            Espace partenaire · Démonstration
+        </div>
+
+    </aside>
+
+    <!-- ESPACE PRINCIPAL -->
+
+    <div class="cab-main-shell">
+
+        <header class="cab-topbar">
+            <div class="cab-topbar-left">
+
+                <button type="button"
+                        class="cab-mobile-menu"
+                        id="cabMenuToggle"
+                        aria-label="Ouvrir le menu"
+                        aria-controls="cabSidebar"
+                        aria-expanded="false">☰</button>
+
+                <div class="cab-breadcrumb">
+                    <span>Partenariat</span>
+                    <span class="cab-breadcrumb-separator">/</span>
+                    <strong>Opportunités</strong>
+                </div>
+
+            </div>
+
+            <div class="cab-topbar-right">
+                <span class="cab-demo-label">
+                    <span></span>
+                    Environnement démo
+                </span>
+
+                <a href="{{ url_for('main.cabinet_messagerie') }}"
+                   class="cab-topbar-notification"
+                   aria-label="Accéder à la messagerie">
+                    ✉ <span>2</span>
+                </a>
+
+                <div class="cab-profile">
+                    <div class="cab-profile-avatar">CP</div>
+                    <div class="cab-profile-copy">
+                        <strong>Cabinet partenaire</strong>
+                        <small>Espace professionnel</small>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="cab-content cab-opp-content">
+
+            <!-- HERO -->
+
+            <section class="cab-opp-hero">
+
+                <div class="cab-opp-hero-copy">
+                    <span class="cab-opp-eyebrow">
+                        PIPELINE PARTENAIRE / DATENSIS
+                    </span>
+
+                    <h1>
+                        Chaque opportunité<br>
+                        <em>fait avancer vos clients.</em>
+                    </h1>
+
+                    <p>
+                        Identifiez les besoins, structurez vos demandes
+                        et accompagnez leur progression jusqu'à la
+                        mise en relation avec DATENSIS.
+                    </p>
+
+                    <div class="cab-opp-hero-actions">
+                        <a class="cab-btn cab-btn-light"
+                           href="{{ url_for('main.cabinet_qualification_besoin') }}">
+                            ＋ Nouvelle opportunité
+                        </a>
+
+                        <a class="cab-btn cab-btn-outline"
+                           href="{{ url_for('main.cabinet_mise_en_relation') }}">
+                            Mise en relation ↗
+                        </a>
+                    </div>
+                </div>
+
+                <div class="cab-opp-hero-visual" aria-hidden="true">
+                    <div class="cab-opp-visual-line"></div>
+                    <div class="cab-opp-visual-step">
+                        <span>01</span>
+                        <strong>Identifier</strong>
+                    </div>
+                    <div class="cab-opp-visual-step">
+                        <span>02</span>
+                        <strong>Qualifier</strong>
+                    </div>
+                    <div class="cab-opp-visual-step">
+                        <span>03</span>
+                        <strong>Transmettre</strong>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- INDICATEURS -->
+
+            <div class="cab-section-heading">
+                <div>
+                    <span class="cab-section-eyebrow">VUE D'ENSEMBLE</span>
+                    <h2>Votre pipeline en chiffres</h2>
+                    <p>Indicateurs calculés sur les opportunités de démonstration.</p>
+                </div>
+            </div>
+
+            <section class="cab-opp-kpis" aria-label="Indicateurs des opportunités">
+
+                <article class="cab-opp-kpi">
+                    <span class="cab-opp-kpi-label">Total des opportunités</span>
+                    <strong id="oppStatTotal">0</strong>
+                    <small>Dans le pipeline</small>
+                    <span class="cab-opp-kpi-icon">◇</span>
+                </article>
+
+                <article class="cab-opp-kpi">
+                    <span class="cab-opp-kpi-label">En qualification</span>
+                    <strong id="oppStatQualification">0</strong>
+                    <small>Besoins à préciser</small>
+                    <span class="cab-opp-kpi-icon teal">◌</span>
+                </article>
+
+                <article class="cab-opp-kpi">
+                    <span class="cab-opp-kpi-label">À compléter</span>
+                    <strong id="oppStatIncomplete">0</strong>
+                    <small>Informations attendues</small>
+                    <span class="cab-opp-kpi-icon amber">!</span>
+                </article>
+
+                <article class="cab-opp-kpi">
+                    <span class="cab-opp-kpi-label">Prêtes à transmettre</span>
+                    <strong id="oppStatReady">0</strong>
+                    <small>Opportunités qualifiées</small>
+                    <span class="cab-opp-kpi-icon mint">✓</span>
+                </article>
+
+            </section>
+
+            <!-- PIPELINE -->
+
+            <section class="cab-opp-workspace">
+
+                <div class="cab-opp-workspace-heading">
+                    <div>
+                        <span class="cab-section-eyebrow">GESTION DES BESOINS</span>
+                        <h2>Pipeline des opportunités</h2>
+                        <p id="oppResultCount" aria-live="polite">
+                            Chargement...
+                        </p>
+                    </div>
+
+                    <div class="cab-opp-view-switch">
+                        <button type="button" class="active"
+                                id="oppKanbanButton"
+                                aria-pressed="true">
+                            ▦ Kanban
+                        </button>
+                        <button type="button"
+                                id="oppListButton"
+                                aria-pressed="false">
+                            ▤ Liste
+                        </button>
+                    </div>
+                </div>
+
+                <div class="cab-opp-toolbar">
+
+                    <label class="cab-opp-search">
+                        <span aria-hidden="true">⌕</span>
+                        <input type="search"
+                               id="oppSearch"
+                               placeholder="Rechercher un client ou un besoin..."
+                               aria-label="Rechercher une opportunité">
+                    </label>
+
+                    <select id="oppPriorityFilter"
+                            aria-label="Filtrer par priorité">
+                        <option value="all">Toutes les priorités</option>
+                        <option value="haute">Priorité haute</option>
+                        <option value="normale">Priorité normale</option>
+                        <option value="basse">Priorité basse</option>
+                    </select>
+
+                    <select id="oppStatusFilter"
+                            aria-label="Filtrer par statut">
+                        <option value="all">Tous les statuts</option>
+                        <option value="qualification">Qualification</option>
+                        <option value="incomplete">À compléter</option>
+                        <option value="ready">Qualifiée</option>
+                        <option value="transmitted">Transmise</option>
+                    </select>
+
+                    <button type="button"
+                            class="cab-opp-reset"
+                            id="oppResetFilters">
+                        Réinitialiser
+                    </button>
+                </div>
+
+                <div class="cab-opp-board" id="oppBoard">
+
+                    <section class="cab-opp-column"
+                             data-column="qualification">
+                        <div class="cab-opp-column-heading">
+                            <div>
+                                <span class="cab-opp-column-dot qualification"></span>
+                                <h3>Qualification</h3>
+                                <span class="cab-opp-column-count"
+                                      data-count="qualification">0</span>
+                            </div>
+                            <small>Besoin identifié</small>
+                        </div>
+                        <div class="cab-opp-column-body"
+                             data-dropzone="qualification"></div>
+                    </section>
+
+                    <section class="cab-opp-column"
+                             data-column="incomplete">
+                        <div class="cab-opp-column-heading">
+                            <div>
+                                <span class="cab-opp-column-dot incomplete"></span>
+                                <h3>À compléter</h3>
+                                <span class="cab-opp-column-count"
+                                      data-count="incomplete">0</span>
+                            </div>
+                            <small>Éléments manquants</small>
+                        </div>
+                        <div class="cab-opp-column-body"
+                             data-dropzone="incomplete"></div>
+                    </section>
+
+                    <section class="cab-opp-column"
+                             data-column="ready">
+                        <div class="cab-opp-column-heading">
+                            <div>
+                                <span class="cab-opp-column-dot ready"></span>
+                                <h3>Qualifiée</h3>
+                                <span class="cab-opp-column-count"
+                                      data-count="ready">0</span>
+                            </div>
+                            <small>Prête à transmettre</small>
+                        </div>
+                        <div class="cab-opp-column-body"
+                             data-dropzone="ready"></div>
+                    </section>
+
+                    <section class="cab-opp-column"
+                             data-column="transmitted">
+                        <div class="cab-opp-column-heading">
+                            <div>
+                                <span class="cab-opp-column-dot transmitted"></span>
+                                <h3>Transmise</h3>
+                                <span class="cab-opp-column-count"
+                                      data-count="transmitted">0</span>
+                            </div>
+                            <small>Prise en charge</small>
+                        </div>
+                        <div class="cab-opp-column-body"
+                             data-dropzone="transmitted"></div>
+                    </section>
+
+                </div>
+
+                <!-- VUE LISTE -->
+
+                <div class="cab-opp-table-wrapper" id="oppListContainer" hidden>
+                    <table class="cab-opp-table">
+                        <thead>
+                            <tr>
+                                <th>Client</th>
+                                <th>Besoin</th>
+                                <th>Créée le</th>
+                                <th>Priorité</th>
+                                <th>Statut</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="oppTableBody"></tbody>
+                    </table>
+                </div>
+
+                <div class="cab-opp-empty" id="oppEmpty" hidden>
+                    <strong>Aucune opportunité trouvée</strong>
+                    <p>Modifiez votre recherche ou vos filtres.</p>
+                    <button type="button" id="oppEmptyReset">
+                        Effacer les filtres
+                    </button>
+                </div>
+
+                <div class="cab-opp-workspace-footer">
+                    <span>Glissez les cartes pour modifier leur statut.</span>
+                    <span>Les changements sont enregistrés sur cet appareil.</span>
+                </div>
+
+            </section>
+
+            <!-- PARCOURS -->
+
+            <section class="cab-opp-nextstep">
+                <div class="cab-opp-nextstep-icon">⇄</div>
+
+                <div>
+                    <span class="cab-section-eyebrow">ÉTAPE SUIVANTE</span>
+                    <h2>Une opportunité est qualifiée ?</h2>
+                    <p>
+                        Organisez la mise en relation avec DATENSIS
+                        et transmettez les informations nécessaires.
+                    </p>
+                </div>
+
+                <a href="{{ url_for('main.cabinet_mise_en_relation') }}">
+                    Préparer la transmission ↗
+                </a>
+            </section>
+
+            <footer class="cab-footer">
+                <span>© DATENSIS — Espace Cabinet Partenaire</span>
+                <span>Pipeline de démonstration</span>
+            </footer>
+
+        </main>
+
+    </div>
+</div>
+
+<div class="cab-mobile-overlay" id="cabMobileOverlay" hidden></div>
+
+<!-- MODALE D'OPPORTUNITÉ -->
+
+<div class="cab-opp-modal" id="oppModal" hidden>
+    <div class="cab-opp-modal-backdrop" data-close-opp></div>
+
+    <section class="cab-opp-modal-dialog"
+             role="dialog"
+             aria-modal="true"
+             aria-labelledby="oppModalTitle">
+
+        <div class="cab-opp-modal-heading">
+            <div>
+                <span class="cab-section-eyebrow">FICHE OPPORTUNITÉ</span>
+                <h2 id="oppModalTitle">Détail</h2>
+            </div>
+
+            <button type="button"
+                    class="cab-opp-modal-close"
+                    id="oppModalClose"
+                    aria-label="Fermer">×</button>
+        </div>
+
+        <p id="oppModalDescription" class="cab-opp-modal-description"></p>
+
+        <div class="cab-opp-modal-details" id="oppModalDetails"></div>
+
+        <div class="cab-opp-modal-controls">
+            <label>
+                Statut
+                <select id="oppModalStatus">
+                    <option value="qualification">Qualification</option>
+                    <option value="incomplete">À compléter</option>
+                    <option value="ready">Qualifiée</option>
+                    <option value="transmitted">Transmise</option>
+                </select>
+            </label>
+
+            <label>
+                Priorité
+                <select id="oppModalPriority">
+                    <option value="basse">Basse</option>
+                    <option value="normale">Normale</option>
+                    <option value="haute">Haute</option>
+                </select>
+            </label>
+        </div>
+
+        <div class="cab-opp-modal-actions">
+            <button type="button" id="oppModalCancel">Annuler</button>
+
+            <button type="button"
+                    class="cab-opp-modal-save"
+                    id="oppModalSave">
+                Enregistrer
+            </button>
+
+            <a href="{{ url_for('main.cabinet_qualification_besoin') }}"
+               id="oppModalContinue">
+                Continuer la qualification ↗
+            </a>
+        </div>
+
+    </section>
+</div>
+
+<div class="cab-opp-toast" id="oppToast" role="status" aria-live="polite"></div>
+
+</body>
+</html>

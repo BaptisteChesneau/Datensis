@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Référentiels | DATENSIS</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+{% include "header.html" %}
+
+<main class="dashboard-page">
+
+    <section class="dashboard-intro">
+
+        <div>
+
+            <p class="eyebrow">
+                PME & ETI
+            </p>
+
+            <h1>
+                Référentiels
+            </h1>
+
+            <p>
+                Centralisez les documents de référence
+                utilisés par vos équipes et vos projets.
+            </p>
+
+        </div>
+
+        <a href="{{ url_for('main.pme_dashboard') }}"
+           class="btn-secondary">
+            Retour au tableau de bord
+        </a>
+
+    </section>
+
+
+    <section class="quick-actions-grid">
+
+
+        <article class="quick-action-card">
+
+            <div class="quick-action-icon">
+                01
+            </div>
+
+            <h3>
+                Procédures
+            </h3>
+
+            <p>
+                Procédures internes liées aux projets
+                et aux déploiements.
+            </p>
+
+            <button class="btn-secondary"
+                    type="button">
+                Consulter
+            </button>
+
+        </article>
+
+
+        <article class="quick-action-card">
+
+            <div class="quick-action-icon">
+                02
+            </div>
+
+            <h3>
+                Standards techniques
+            </h3>
+
+            <p>
+                Standards et règles techniques
+                utilisés dans l'organisation.
+            </p>
+
+            <button class="btn-secondary"
+                    type="button">
+                Consulter
+            </button>
+
+        </article>
+
+
+        <article class="quick-action-card">
+
+            <div class="quick-action-icon">
+                03
+            </div>
+
+            <h3>
+                Documentation utilisateur
+            </h3>
+
+            <p>
+                Guides et ressources destinés
+                aux collaborateurs.
+            </p>
+
+            <button class="btn-secondary"
+                    type="button">
+                Consulter
+            </button>
+
+        </article>
+
+    </section>
+
+
+    <section class="dashboard-card"
+             style="margin-top: 24px;">
+
+        <div class="card-heading">
+
+            <div>
+
+                <h2>
+                    Documents de référence
+                </h2>
+
+                <p>
+                    Derniers référentiels disponibles.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="table-wrapper">
+
+            <table class="data-table">
+
+                <thead>
+
+                    <tr>
+                        <th>Document</th>
+                        <th>Catégorie</th>
+                        <th>Version</th>
+                        <th>Mise à jour</th>
+                        <th>Responsable</th>
+                        <th>Action</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+
+                        <td>
+                            Politique documentaire
+                        </td>
+
+                        <td>
+                            Procédure
+                        </td>
+
+                        <td>
+                            V4
+                        </td>
+
+                        <td>
+                            20/09/2026
+                        </td>
+
+                        <td>
+                            Direction
+                        </td>
+
+                        <td>
+                            <button
+                                type="button"
+                                class="table-action">
+                                Ouvrir
+                            </button>
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            Standard postes utilisateurs
+                        </td>
+
+                        <td>
+                            Technique
+                        </td>
+
+                        <td>
+                            V2
+                        </td>
+
+                        <td>
+                            15/09/2026
+                        </td>
+
+                        <td>
+                            DSI
+                        </td>
+
+                        <td>
+                            <button
+                                type="button"
+                                class="table-action">
+                                Ouvrir
+                            </button>
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            Guide nouvel utilisateur
+                        </td>
+
+                        <td>
+                            Guide
+                        </td>
+
+                        <td>
+                            V3
+                        </td>
+
+                        <td>
+                            01/09/2026
+                        </td>
+
+                        <td>
+                            Support
+                        </td>
+
+                        <td>
+                            <button
+                                type="button"
+                                class="table-action">
+                                Ouvrir
+                            </button>
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+</main>
+
+{% include "footer.html" %}
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+</body>
+</html>

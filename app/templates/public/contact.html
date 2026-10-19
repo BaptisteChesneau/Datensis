@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Contact</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+{% include "header.html" %}
+
+<main class="contact-page">
+
+    <!-- =====================================================
+         HERO
+         ===================================================== -->
+
+    <section class="contact-hero">
+
+        <div class="contact-hero-content">
+
+            <p class="eyebrow">
+                Contact
+            </p>
+
+            <h1>
+                Parlons de votre besoin
+            </h1>
+
+            <p>
+                Expliquez-nous votre situation et votre objectif.
+                DATENSIS vous orientera vers l'interlocuteur
+                ou le parcours le plus adapté.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         CONTENU
+         ===================================================== -->
+
+    <section class="contact-layout">
+
+        <!-- FORMULAIRE -->
+
+        <article class="contact-card">
+
+            <div class="contact-card-heading">
+
+                <p class="eyebrow">
+                    Votre demande
+                </p>
+
+                <h2>
+                    Envoyez-nous un message
+                </h2>
+
+                <p>
+                    Complétez les informations ci-dessous.
+                    Les champs marqués comme obligatoires
+                    sont nécessaires au traitement de votre demande.
+                </p>
+
+            </div>
+
+
+            <form method="POST"
+                  action="#"
+                  class="contact-form"
+                  id="contactForm">
+
+                <div class="contact-form-grid">
+
+                    <div class="form-group">
+
+                        <label for="name">
+                            Nom et prénom
+                        </label>
+
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            autocomplete="name"
+                            placeholder="Votre nom"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="company">
+                            Entreprise / Cabinet
+                        </label>
+
+                        <input
+                            type="text"
+                            id="company"
+                            name="company"
+                            autocomplete="organization"
+                            placeholder="Nom de votre structure"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="email">
+                            Adresse e-mail
+                        </label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            autocomplete="email"
+                            placeholder="vous@entreprise.fr"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="phone">
+                            Téléphone
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="phone"
+                            name="phone"
+                            autocomplete="tel"
+                            placeholder="06 00 00 00 00"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group form-group-full">
+
+                        <label for="profile">
+                            Votre profil
+                        </label>
+
+                        <select
+                            id="profile"
+                            name="profile"
+                            required
+                        >
+
+                            <option value="">
+                                Sélectionnez votre profil
+                            </option>
+
+                            <option value="tpe">
+                                Indépendants & TPE
+                            </option>
+
+                            <option value="pme">
+                                PME & ETI
+                            </option>
+
+                            <option value="cabinet">
+                                Cabinet d'expertise comptable
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group form-group-full">
+
+                        <label for="subject">
+                            Objet de votre demande
+                        </label>
+
+                        <select
+                            id="subject"
+                            name="subject"
+                            required
+                        >
+
+                            <option value="">
+                                Sélectionnez un sujet
+                            </option>
+
+                            <option value="etude">
+                                Étude & conseil
+                            </option>
+
+                            <option value="solution">
+                                Recherche de solution
+                            </option>
+
+                            <option value="suivi">
+                                Suivi & accompagnement
+                            </option>
+
+                            <option value="rendez-vous">
+                                Prise de rendez-vous
+                            </option>
+
+                            <option value="support">
+                                Assistance
+                            </option>
+
+                            <option value="autre">
+                                Autre demande
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group form-group-full">
+
+                        <label for="message">
+                            Votre demande
+                        </label>
+
+                        <textarea
+                            id="message"
+                            name="message"
+                            rows="7"
+                            placeholder="Décrivez votre besoin, votre contexte ou la question que vous souhaitez nous poser..."
+                            required
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+
+                <div class="contact-consent">
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            id="contactConsent"
+                            required
+                        >
+
+                        <span>
+                            J'accepte que les informations transmises
+                            soient utilisées pour répondre à ma demande.
+                            Consultez notre
+                            <a href="{{ url_for('main.confidentialite') }}">
+                                politique de confidentialité
+                            </a>.
+                        </span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="contact-submit">
+
+                    <button
+                        type="submit"
+                        class="home-btn-primary"
+                    >
+                        Envoyer ma demande
+                    </button>
+
+                </div>
+
+            </form>
+
+        </article>
+
+
+        <!-- INFORMATIONS -->
+
+        <aside class="contact-side">
+
+            <article class="contact-info-card">
+
+                <span class="contact-info-number">
+                    01
+                </span>
+
+                <h3>
+                    Une demande précise
+                </h3>
+
+                <p>
+                    Plus votre besoin est détaillé,
+                    plus nous pouvons vous orienter efficacement.
+                </p>
+
+            </article>
+
+
+            <article class="contact-info-card">
+
+                <span class="contact-info-number">
+                    02
+                </span>
+
+                <h3>
+                    Le bon interlocuteur
+                </h3>
+
+                <p>
+                    Votre profil et le sujet de votre demande
+                    permettent d'identifier le parcours adapté.
+                </p>
+
+            </article>
+
+
+            <article class="contact-info-card">
+
+                <span class="contact-info-number">
+                    03
+                </span>
+
+                <h3>
+                    Déjà utilisateur ?
+                </h3>
+
+                <p>
+                    Si vous disposez déjà d'un compte,
+                    privilégiez la messagerie de votre espace
+                    pour le suivi d'un dossier existant.
+                </p>
+
+            </article>
+
+        </aside>
+
+    </section>
+
+</main>
+
+{% include "footer.html" %}
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+</body>
+
+</html>

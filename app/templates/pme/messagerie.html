@@ -1,0 +1,276 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Messagerie PME & ETI</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="pme-chat-page">
+
+<main class="pme-chat-shell">
+
+    <!-- HEADER PRIVÉ -->
+    <header class="pme-chat-topbar">
+        <a href="{{ url_for('main.pme_dashboard') }}"
+           class="pme-chat-brand">
+            <span class="pme-chat-brand-icon">D</span>
+            <span>
+                <strong>DATENSIS</strong>
+                <small>ESPACE PME & ETI</small>
+            </span>
+        </a>
+
+        <div class="pme-chat-topbar-actions">
+            <span class="pme-chat-demo-badge">
+                <span class="pme-chat-status-dot"></span>
+                Mode démonstration
+            </span>
+
+            <a href="{{ url_for('main.pme_dashboard') }}"
+               class="pme-chat-return">
+                ← Tableau de bord
+            </a>
+        </div>
+    </header>
+
+    <!-- TITRE -->
+    <section class="pme-chat-intro">
+        <div>
+            <span class="pme-chat-eyebrow">
+                ESPACE COLLABORATIF
+            </span>
+
+            <h1>Centre de messagerie</h1>
+
+            <p>
+                Centralisez vos échanges et retrouvez
+                vos conversations liées à vos projets.
+            </p>
+        </div>
+
+        <div class="pme-chat-intro-counter">
+            <span>Messages non lus</span>
+            <strong id="pmeUnreadTotal">0</strong>
+        </div>
+    </section>
+
+    <!-- APPLICATION MESSAGERIE -->
+    <section class="pme-chat-app" aria-label="Messagerie PME">
+
+        <!-- COLONNE CONVERSATIONS -->
+        <aside class="pme-chat-sidebar" id="pmeChatSidebar">
+
+            <div class="pme-chat-sidebar-header">
+                <div>
+                    <h2>Conversations</h2>
+                    <span id="pmeConversationCount">
+                        3 conversations
+                    </span>
+                </div>
+
+                <button type="button"
+                        id="pmeNewConversation"
+                        class="pme-chat-icon-button"
+                        title="Nouvelle conversation"
+                        aria-label="Nouvelle conversation">
+                    +
+                </button>
+            </div>
+
+            <div class="pme-chat-search">
+                <span aria-hidden="true">⌕</span>
+
+                <input type="search"
+                       id="pmeConversationSearch"
+                       placeholder="Rechercher un contact ou projet..."
+                       aria-label="Rechercher une conversation">
+            </div>
+
+            <div class="pme-chat-filterbar">
+                <button type="button"
+                        class="pme-chat-filter active"
+                        data-filter="all">
+                    Toutes
+                </button>
+
+                <button type="button"
+                        class="pme-chat-filter"
+                        data-filter="unread">
+                    Non lues
+                </button>
+            </div>
+
+            <div class="pme-chat-conversation-list"
+                 id="pmeConversationList">
+            </div>
+
+            <div class="pme-chat-sidebar-footer">
+                <span class="pme-chat-security-icon">✓</span>
+                <div>
+                    <strong>Environnement de démonstration</strong>
+                    <small>Conversations enregistrées localement</small>
+                </div>
+            </div>
+
+        </aside>
+
+        <!-- DISCUSSION -->
+        <article class="pme-chat-main" id="pmeChatMain">
+
+            <header class="pme-chat-conversation-header">
+
+                <button type="button"
+                        class="pme-chat-mobile-back"
+                        id="pmeChatMobileBack"
+                        aria-label="Retour aux conversations">
+                    ←
+                </button>
+
+                <div class="pme-chat-active-avatar"
+                     id="pmeActiveAvatar">
+                    CM
+                </div>
+
+                <div class="pme-chat-contact-info">
+                    <h2 id="pmeActiveContact">Claire Martin</h2>
+
+                    <div class="pme-chat-presence">
+                        <span class="pme-chat-status-dot"></span>
+                        <span id="pmeActiveStatus">
+                            Disponible
+                        </span>
+                    </div>
+                </div>
+
+                <button type="button"
+                        id="pmeChatInfoToggle"
+                        class="pme-chat-icon-button pme-chat-info-button"
+                        aria-label="Afficher les informations">
+                    ⓘ
+                </button>
+
+            </header>
+
+            <div class="pme-chat-thread"
+                 id="pmeChatMessages"
+                 role="log"
+                 aria-label="Messages de la conversation"
+                 aria-live="polite"
+                 aria-relevant="additions">
+            </div>
+
+            <div class="pme-chat-typing"
+                 id="pmeChatTyping"
+                 hidden>
+                <span></span>
+                <span></span>
+                <span></span>
+                <small>Votre interlocuteur rédige un message...</small>
+            </div>
+
+            <!-- RÉPONSE -->
+            <form class="pme-chat-composer"
+                  id="pmeChatForm">
+
+                <div class="pme-chat-composer-field">
+                    <textarea id="pmeChatInput"
+                              rows="1"
+                              maxlength="3000"
+                              placeholder="Rédigez votre message..."
+                              aria-label="Votre message"
+                              required></textarea>
+
+                    <span class="pme-chat-input-hint">
+                        Entrée pour envoyer · Maj + Entrée pour une ligne
+                    </span>
+                </div>
+
+                <button type="submit"
+                        id="pmeChatSend"
+                        class="pme-chat-send">
+                    <span>Envoyer</span>
+                    <span aria-hidden="true">➤</span>
+                </button>
+
+            </form>
+
+        </article>
+
+        <!-- INFORMATIONS -->
+        <aside class="pme-chat-details" id="pmeChatDetails">
+
+            <div class="pme-chat-details-heading">
+                <h2>Informations</h2>
+
+                <button type="button"
+                        id="pmeChatInfoClose"
+                        class="pme-chat-icon-button"
+                        aria-label="Fermer les informations">
+                    ×
+                </button>
+            </div>
+
+            <div class="pme-chat-profile">
+                <div class="pme-chat-profile-avatar"
+                     id="pmeDetailAvatar">
+                    CM
+                </div>
+
+                <h3 id="pmeDetailName">Claire Martin</h3>
+                <span id="pmeDetailRole">Cheffe de projet</span>
+            </div>
+
+            <div class="pme-chat-detail-section">
+                <span>ORGANISATION</span>
+                <strong id="pmeDetailCompany">DATENSIS</strong>
+            </div>
+
+            <div class="pme-chat-detail-section">
+                <span>PROJET ASSOCIÉ</span>
+                <strong id="pmeDetailProject">
+                    Digitalisation des processus
+                </strong>
+            </div>
+
+            <div class="pme-chat-detail-section">
+                <span>STATUT DU PROJET</span>
+                <div class="pme-chat-project-status">
+                    <span class="pme-chat-status-dot"></span>
+                    <strong id="pmeDetailProjectStatus">
+                        En cours
+                    </strong>
+                </div>
+            </div>
+
+            <div class="pme-chat-detail-section">
+                <span>HISTORIQUE</span>
+                <strong id="pmeDetailMessageCount">
+                    0 message
+                </strong>
+            </div>
+
+            <div class="pme-chat-detail-notice">
+                <strong>Suivi centralisé</strong>
+                <p>
+                    Les échanges de cette démonstration
+                    sont conservés uniquement dans ce navigateur.
+                    Ils ne sont pas partagés avec DATENSIS.
+                </p>
+            </div>
+
+        </aside>
+
+    </section>
+
+</main>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+</body>
+</html>

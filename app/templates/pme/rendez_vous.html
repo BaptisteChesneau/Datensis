@@ -1,0 +1,725 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="Planifiez un rendez-vous avec votre interlocuteur DATENSIS PME & ETI.">
+
+    <title>Prendre rendez-vous | DATENSIS PME & ETI</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="pme-booking-page">
+
+    <main class="booking-shell">
+
+        <!-- =====================================
+             HEADER PRIVÉ PME
+        ====================================== -->
+
+        <header class="booking-topbar">
+
+            <a href="{{ url_for('main.pme_dashboard') }}"
+               class="booking-logo">
+
+                <span class="booking-logo-mark">
+                    D
+                </span>
+
+                <span class="booking-logo-text">
+                    <strong>DATENSIS</strong>
+                    <small>ESPACE PME & ETI</small>
+                </span>
+
+            </a>
+
+            <a href="{{ url_for('main.pme_dashboard') }}"
+               class="booking-back">
+                ← Retour au tableau de bord
+            </a>
+
+        </header>
+
+
+        <!-- =====================================
+             INTRODUCTION
+        ====================================== -->
+
+        <section class="booking-intro">
+
+            <div class="booking-intro-content">
+
+                <span class="booking-eyebrow">
+                    PLANIFICATION INTELLIGENTE
+                </span>
+
+                <h1>
+                    Planifiez votre prochain rendez-vous.
+                </h1>
+
+                <p>
+                    Organisez un échange personnalisé avec
+                    votre interlocuteur DATENSIS.
+
+                    Sélectionnez une date dans notre calendrier
+                    interactif, choisissez votre horaire et
+                    détaillez vos besoins.
+
+                    Cette version permet de simuler une réservation
+                    sans enregistrer de données sur un serveur.
+                </p>
+
+            </div>
+
+            <div class="booking-live">
+                <span class="booking-live-dot"></span>
+                Créneaux de démonstration
+            </div>
+
+        </section>
+
+
+        <!-- =====================================
+             STRUCTURE PRINCIPALE
+        ====================================== -->
+
+        <div class="booking-layout">
+
+            <!-- FORMULAIRE -->
+
+            <form id="bookingForm"
+                  class="booking-form"
+                  autocomplete="on">
+
+                <!-- =============================
+                     ÉTAPE 01 : VOTRE DEMANDE
+                ============================== -->
+
+                <section class="booking-card">
+
+                    <div class="booking-section-heading">
+
+                        <span class="booking-step">
+                            01
+                        </span>
+
+                        <div>
+                            <h2>Votre demande</h2>
+
+                            <p>
+                                Définissez le contexte et
+                                l'objectif de votre rendez-vous.
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div class="booking-fields">
+
+                        <!-- MOTIF -->
+
+                        <label class="booking-field">
+
+                            <span>
+                                Motif principal *
+                            </span>
+
+                            <select name="reason" required>
+
+                                <option value="">
+                                    Sélectionner un motif
+                                </option>
+
+                                <option value="Cadrage d'un projet">
+                                    Cadrage d'un projet
+                                </option>
+
+                                <option value="Suivi de déploiement">
+                                    Suivi de déploiement
+                                </option>
+
+                                <option value="Point de pilotage">
+                                    Point de pilotage
+                                </option>
+
+                                <option value="Validation d'une étape">
+                                    Validation d'une étape
+                                </option>
+
+                                <option value="Question contractuelle">
+                                    Question contractuelle
+                                </option>
+
+                                <option value="Accompagnement stratégique">
+                                    Accompagnement stratégique
+                                </option>
+
+                                <option value="Autre demande">
+                                    Autre demande
+                                </option>
+
+                            </select>
+
+                        </label>
+
+
+                        <!-- INTERLOCUTEUR -->
+
+                        <label class="booking-field">
+
+                            <span>
+                                Interlocuteur DATENSIS *
+                            </span>
+
+                            <select name="contact"
+                                    id="bookingContact"
+                                    required>
+
+                                <option value="chef-projet">
+                                    Chef de projet
+                                </option>
+
+                                <option value="consultant">
+                                    Consultant DATENSIS
+                                </option>
+
+                                <option value="support">
+                                    Équipe support
+                                </option>
+
+                            </select>
+
+                        </label>
+
+
+                        <!-- PROJET -->
+
+                        <label class="booking-field">
+
+                            <span>
+                                Projet concerné
+                            </span>
+
+                            <input
+                                type="text"
+                                name="project"
+                                maxlength="120"
+                                placeholder="Ex. Transformation numérique">
+
+                        </label>
+
+
+                        <!-- FORMAT -->
+
+                        <label class="booking-field">
+
+                            <span>
+                                Format du rendez-vous *
+                            </span>
+
+                            <select name="format" required>
+
+                                <option value="Visioconférence">
+                                    Visioconférence
+                                </option>
+
+                                <option value="Téléphone">
+                                    Téléphone
+                                </option>
+
+                            </select>
+
+                        </label>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =============================
+                     ÉTAPE 02 : CALENDRIER 3D
+                ============================== -->
+
+                <section class="booking-card">
+
+                    <div class="booking-section-heading">
+
+                        <span class="booking-step">
+                            02
+                        </span>
+
+                        <div>
+
+                            <h2>
+                                Date et heure du rendez-vous
+                            </h2>
+
+                            <p>
+                                Sélectionnez une date disponible,
+                                puis choisissez votre heure
+                                de rendez-vous.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- CALENDRIER -->
+
+                    <div class="booking-calendar">
+
+                        <div class="booking-calendar-head">
+
+                            <button
+                                type="button"
+                                id="bookingPrev"
+                                aria-label="Afficher le mois précédent">
+                                ‹
+                            </button>
+
+                            <h3 id="bookingMonth">
+                                Chargement du calendrier...
+                            </h3>
+
+                            <button
+                                type="button"
+                                id="bookingNext"
+                                aria-label="Afficher le mois suivant">
+                                ›
+                            </button>
+
+                        </div>
+
+
+                        <!-- JOURS DE LA SEMAINE -->
+
+                        <div class="booking-weekdays"
+                             aria-hidden="true">
+
+                            <span>Lun</span>
+                            <span>Mar</span>
+                            <span>Mer</span>
+                            <span>Jeu</span>
+                            <span>Ven</span>
+                            <span>Sam</span>
+                            <span>Dim</span>
+
+                        </div>
+
+
+                        <!-- JOURS GÉNÉRÉS PAR JAVASCRIPT -->
+
+                        <div
+                            class="booking-days"
+                            id="bookingDays"
+                            aria-label="Calendrier de réservation">
+                        </div>
+
+                    </div>
+
+
+                    <!-- =============================
+                         CHOIX DE L'HEURE
+                    ============================== -->
+
+                    <div class="booking-slots-head">
+
+                        <div>
+
+                            <h3>
+                                Choisissez votre heure
+                            </h3>
+
+                            <p id="bookingSelectedDate">
+                                Sélectionnez d'abord une date
+                            </p>
+
+                        </div>
+
+                        <span class="booking-timezone">
+                            Europe/Paris
+                        </span>
+
+                    </div>
+
+
+                    <div class="booking-time-selection">
+
+                        <!-- HORAIRES GÉNÉRÉS PAR JAVASCRIPT -->
+
+                        <div
+                            class="booking-slots"
+                            id="bookingSlots"
+                            aria-label="Horaires disponibles"
+                            aria-live="polite">
+
+                            <p class="booking-placeholder">
+                                Sélectionnez une date dans
+                                le calendrier pour afficher
+                                les horaires disponibles.
+                            </p>
+
+                        </div>
+
+
+                        <!-- CONFIRMATION VISUELLE -->
+
+                        <div class="booking-time-confirmation">
+
+                            <span>
+                                Horaire sélectionné
+                            </span>
+
+                            <strong id="bookingChosenTime">
+                                Aucun horaire sélectionné
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- DONNÉES UTILISÉES PAR JAVASCRIPT -->
+
+                    <input
+                        type="hidden"
+                        name="date"
+                        id="bookingDate">
+
+                    <input
+                        type="hidden"
+                        name="time"
+                        id="bookingTime">
+
+                </section>
+
+
+                <!-- =============================
+                     ÉTAPE 03 : INFORMATIONS
+                ============================== -->
+
+                <section class="booking-card">
+
+                    <div class="booking-section-heading">
+
+                        <span class="booking-step">
+                            03
+                        </span>
+
+                        <div>
+
+                            <h2>
+                                Informations du demandeur
+                            </h2>
+
+                            <p>
+                                Renseignez vos coordonnées
+                                et les informations utiles
+                                à la préparation de l'échange.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="booking-fields">
+
+                        <!-- NOM -->
+
+                        <label class="booking-field">
+
+                            <span>
+                                Nom et prénom *
+                            </span>
+
+                            <input
+                                type="text"
+                                name="name"
+                                autocomplete="name"
+                                maxlength="120"
+                                placeholder="Votre nom et prénom"
+                                required>
+
+                        </label>
+
+
+                        <!-- ENTREPRISE -->
+
+                        <label class="booking-field">
+
+                            <span>
+                                Entreprise *
+                            </span>
+
+                            <input
+                                type="text"
+                                name="company"
+                                autocomplete="organization"
+                                maxlength="150"
+                                placeholder="Nom de votre entreprise"
+                                required>
+
+                        </label>
+
+
+                        <!-- EMAIL -->
+
+                        <label class="booking-field">
+
+                            <span>
+                                E-mail professionnel *
+                            </span>
+
+                            <input
+                                type="email"
+                                name="email"
+                                autocomplete="email"
+                                maxlength="254"
+                                placeholder="prenom.nom@entreprise.fr"
+                                required>
+
+                        </label>
+
+
+                        <!-- TÉLÉPHONE -->
+
+                        <label class="booking-field">
+
+                            <span>
+                                Numéro de téléphone *
+                            </span>
+
+                            <input
+                                type="tel"
+                                name="phone"
+                                autocomplete="tel"
+                                pattern="[+0-9(). -]{8,30}"
+                                maxlength="30"
+                                placeholder="06 00 00 00 00"
+                                required>
+
+                        </label>
+
+
+                        <!-- BESOINS -->
+
+                        <label class="booking-field booking-full">
+
+                            <span>
+                                Vos besoins et objectifs *
+                            </span>
+
+                            <textarea
+                                name="needs"
+                                rows="5"
+                                minlength="15"
+                                maxlength="3000"
+                                placeholder="Décrivez précisément votre situation, les difficultés rencontrées, les objectifs de votre entreprise et les résultats attendus..."
+                                required></textarea>
+
+                        </label>
+
+
+                        <!-- INFORMATIONS COMPLÉMENTAIRES -->
+
+                        <label class="booking-field booking-full">
+
+                            <span>
+                                Informations complémentaires
+                            </span>
+
+                            <textarea
+                                name="details"
+                                rows="4"
+                                maxlength="2000"
+                                placeholder="Participants supplémentaires, contraintes particulières, sujets prioritaires, documents à préparer..."></textarea>
+
+                        </label>
+
+                    </div>
+
+
+                    <!-- CONFIDENTIALITÉ -->
+
+                    <label class="booking-consent">
+
+                        <input
+                            type="checkbox"
+                            name="privacy"
+                            required>
+
+                        <span>
+                            J'ai pris connaissance de la
+
+                            <a href="{{ url_for('main.confidentialite') }}"
+                               target="_blank"
+                               rel="noopener noreferrer">
+                                politique de confidentialité
+                            </a>
+
+                            et comprends que les informations
+                            saisies dans cette démonstration
+                            ne seront pas transmises à DATENSIS.
+                            *
+                        </span>
+
+                    </label>
+
+                </section>
+
+
+                <!-- =============================
+                     VALIDATION
+                ============================== -->
+
+                <div class="booking-submit-area">
+
+                    <p
+                        id="bookingFeedback"
+                        role="status"
+                        aria-live="polite">
+                    </p>
+
+                    <button
+                        type="submit"
+                        id="bookingSubmit"
+                        class="booking-submit">
+
+                        Simuler le rendez-vous →
+
+                    </button>
+
+                </div>
+
+            </form>
+
+
+            <!-- =====================================
+                 RÉCAPITULATIF DYNAMIQUE
+            ====================================== -->
+
+            <aside class="booking-summary">
+
+                <div class="booking-summary-head">
+
+                    <span>
+                        VOTRE RÉSERVATION
+                    </span>
+
+                    <h2>
+                        Récapitulatif
+                    </h2>
+
+                    <p>
+                        Retrouvez les informations
+                        de votre rendez-vous avant
+                        de valider votre sélection.
+                    </p>
+
+                </div>
+
+
+                <!-- INTERLOCUTEUR -->
+
+                <div class="booking-summary-row">
+
+                    <span>
+                        Interlocuteur
+                    </span>
+
+                    <strong id="summaryContact">
+                        Chef de projet
+                    </strong>
+
+                </div>
+
+
+                <!-- DATE -->
+
+                <div class="booking-summary-row">
+
+                    <span>
+                        Date
+                    </span>
+
+                    <strong id="summaryDate">
+                        À sélectionner
+                    </strong>
+
+                </div>
+
+
+                <!-- DURÉE -->
+
+                <div class="booking-summary-row">
+
+                    <span>
+                        Durée
+                    </span>
+
+                    <strong>
+                        30 minutes
+                    </strong>
+
+                </div>
+
+
+                <!-- FUSEAU -->
+
+                <div class="booking-summary-row">
+
+                    <span>
+                        Fuseau horaire
+                    </span>
+
+                    <strong>
+                        Europe/Paris
+                    </strong>
+
+                </div>
+
+
+                <!-- INFORMATION DÉMONSTRATION -->
+
+                <div class="booking-summary-notice">
+
+                    <strong>
+                        Simulation de réservation
+                    </strong>
+
+                    <p>
+                        Cette interface permet de tester
+                        la sélection des dates et des horaires,
+                        ainsi que le formulaire de rendez-vous.
+
+                        Les disponibilités sont fictives.
+
+                        Aucun rendez-vous ne sera enregistré
+                        et aucun e-mail ne sera envoyé.
+                    </p>
+
+                </div>
+
+            </aside>
+
+        </div>
+
+    </main>
+
+
+    <!-- =====================================
+         JAVASCRIPT FRONT-END
+    ====================================== -->
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+</body>
+</html>

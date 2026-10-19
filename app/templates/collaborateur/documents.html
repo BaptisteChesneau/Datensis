@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Documents Collaborateur | DATENSIS</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+{% include "header.html" %}
+
+<main class="dashboard-page">
+
+    <section class="dashboard-intro">
+
+        <div>
+
+            <p class="eyebrow">
+                Collaborateur
+            </p>
+
+            <h1>
+                Documents
+            </h1>
+
+            <p>
+                Retrouvez les documents utiles
+                aux dossiers dont vous avez la charge.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <section class="dashboard-card">
+
+        <div class="list-toolbar">
+
+            <div class="search-box">
+
+                <label for="collabDocumentSearch">
+                    Rechercher
+                </label>
+
+                <input
+                    type="search"
+                    id="collabDocumentSearch"
+                    placeholder="Rechercher un document..."
+                >
+
+            </div>
+
+        </div>
+
+
+        <div class="table-wrapper">
+
+            <table class="data-table">
+
+                <thead>
+                    <tr>
+                        <th>Document</th>
+                        <th>Dossier</th>
+                        <th>Client</th>
+                        <th>Type</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>
+                            Cahier_des_charges.pdf
+                        </td>
+
+                        <td>
+                            DOS-2026-044
+                        </td>
+
+                        <td>
+                            Dupont Conseil
+                        </td>
+
+                        <td>
+                            Cadrage
+                        </td>
+
+                        <td>
+                            01/10/2026
+                        </td>
+
+                        <td>
+                            <button type="button"
+                                    class="table-action">
+                                Ouvrir
+                            </button>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            Planning_deploiement.xlsx
+                        </td>
+
+                        <td>
+                            DOS-2026-052
+                        </td>
+
+                        <td>
+                            Société Exemple
+                        </td>
+
+                        <td>
+                            Planning
+                        </td>
+
+                        <td>
+                            30/09/2026
+                        </td>
+
+                        <td>
+                            <button type="button"
+                                    class="table-action">
+                                Ouvrir
+                            </button>
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+</main>
+
+{% include "footer.html" %}
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+</body>
+</html>

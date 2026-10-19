@@ -1,0 +1,591 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espace Cabinet</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+</head>
+
+<body class="cab-dashboard">
+
+<div class="cab-layout">
+
+    <!-- NAVIGATION PRIVÉE CABINET -->
+
+    <aside class="cab-sidebar" id="cabSidebar">
+
+        <a class="cab-brand" href="{{ url_for('main.cabinet_dashboard') }}">
+            <span class="cab-brand-mark">D<span>.</span></span>
+            <span class="cab-brand-copy">
+                <strong>DATENSIS</strong>
+                <small>PARTNER WORKSPACE</small>
+            </span>
+        </a>
+
+        <div class="cab-sidebar-divider"></div>
+
+        <div class="cab-sidebar-section">VOTRE ESPACE</div>
+
+        <nav class="cab-nav" aria-label="Navigation cabinet">
+
+            <a class="active" aria-current="page"
+               href="{{ url_for('main.cabinet_dashboard') }}">
+                <span class="cab-nav-icon">▦</span>
+                <span>Vue d'ensemble</span>
+            </a>
+
+            <a href="{{ url_for('main.cabinet_portefeuille') }}">
+                <span class="cab-nav-icon">♙</span>
+                <span>Portefeuille clients</span>
+            </a>
+
+            <a href="{{ url_for('main.cabinet_opportunites') }}">
+                <span class="cab-nav-icon">◇</span>
+                <span>Opportunités</span>
+                <span class="cab-nav-badge">6</span>
+            </a>
+
+            <a href="{{ url_for('main.cabinet_dossiers') }}">
+                <span class="cab-nav-icon">▤</span>
+                <span>Dossiers transmis</span>
+            </a>
+
+            <a href="{{ url_for('main.cabinet_ressources') }}">
+                <span class="cab-nav-icon">▧</span>
+                <span>Ressources</span>
+            </a>
+
+        </nav>
+
+        <div class="cab-sidebar-section">COLLABORATION</div>
+
+        <nav class="cab-nav" aria-label="Collaboration">
+
+            <a href="{{ url_for('main.cabinet_messagerie') }}">
+                <span class="cab-nav-icon">✉</span>
+                <span>Messagerie</span>
+                <span class="cab-nav-badge cab-nav-badge-coral">2</span>
+            </a>
+
+            <a href="{{ url_for('main.cabinet_rendez_vous') }}">
+                <span class="cab-nav-icon">▦</span>
+                <span>Rendez-vous</span>
+            </a>
+
+        </nav>
+
+        <div class="cab-sidebar-spacer"></div>
+
+        <div class="cab-partner-card">
+            <span class="cab-partner-card-label">VOTRE PARTENARIAT</span>
+            <strong>Un accompagnement à chaque étape.</strong>
+            <p>Un besoin spécifique pour l'un de vos clients ?</p>
+            <a href="{{ url_for('main.cabinet_messagerie') }}">
+                Contacter DATENSIS <span>↗</span>
+            </a>
+        </div>
+
+        <div class="cab-sidebar-footer">
+            <span class="cab-sidebar-status"></span>
+            Espace partenaire · Démonstration
+        </div>
+
+    </aside>
+
+    <div class="cab-main-shell">
+
+        <!-- HEADER INTERNE -->
+
+        <header class="cab-topbar">
+
+            <div class="cab-topbar-left">
+
+                <button type="button"
+                        class="cab-mobile-menu"
+                        id="cabMenuToggle"
+                        aria-label="Ouvrir le menu"
+                        aria-controls="cabSidebar"
+                        aria-expanded="false">
+                    ☰
+                </button>
+
+                <div class="cab-breadcrumb">
+                    <span>Partenariat</span>
+                    <span class="cab-breadcrumb-separator">/</span>
+                    <strong>Vue d'ensemble</strong>
+                </div>
+
+            </div>
+
+            <div class="cab-topbar-right">
+
+                <span class="cab-demo-label">
+                    <span></span>
+                    Environnement démo
+                </span>
+
+                <a href="{{ url_for('main.cabinet_messagerie') }}"
+                   class="cab-topbar-notification"
+                   aria-label="Accéder à la messagerie">
+                    ✉
+                    <span>2</span>
+                </a>
+
+                <div class="cab-profile">
+                    <div class="cab-profile-avatar">CP</div>
+                    <div class="cab-profile-copy">
+                        <strong>Cabinet partenaire</strong>
+                        <small>Espace professionnel</small>
+                    </div>
+                </div>
+
+            </div>
+
+        </header>
+
+        <main class="cab-content">
+
+            <!-- ACCUEIL PREMIUM -->
+
+            <section class="cab-hero">
+
+                <div class="cab-hero-decoration cab-orbit-one"></div>
+                <div class="cab-hero-decoration cab-orbit-two"></div>
+
+                <div class="cab-hero-content">
+
+                    <div class="cab-hero-eyebrow">
+                        <span></span>
+                        PORTAIL PARTENAIRE DATENSIS
+                    </div>
+
+                    <h1>
+                        Ensemble, faisons avancer
+                        <em>vos clients.</em>
+                    </h1>
+
+                    <p>
+                        Un espace dédié pour transformer les besoins
+                        de vos clients en opportunités concrètes,
+                        coordonner les dossiers et piloter votre
+                        partenariat en toute simplicité.
+                    </p>
+
+                    <div class="cab-hero-actions">
+
+                        <a href="{{ url_for('main.cabinet_qualification_besoin') }}"
+                           class="cab-btn cab-btn-light">
+                            <span>＋</span>
+                            Nouvelle opportunité
+                        </a>
+
+                        <a href="{{ url_for('main.cabinet_dossiers') }}"
+                           class="cab-btn cab-btn-outline">
+                            Explorer les dossiers
+                            <span>↗</span>
+                        </a>
+
+                    </div>
+
+                </div>
+
+                <div class="cab-hero-visual" aria-hidden="true">
+
+                    <div class="cab-hero-visual-ring ring-outer"></div>
+                    <div class="cab-hero-visual-ring ring-inner"></div>
+
+                    <div class="cab-hero-center">
+                        <span>D.</span>
+                    </div>
+
+                    <div class="cab-hero-floating cab-float-one">
+                        <span>◇</span>
+                        <div>
+                            <strong>Opportunités</strong>
+                            <small>Identifier</small>
+                        </div>
+                    </div>
+
+                    <div class="cab-hero-floating cab-float-two">
+                        <span>▤</span>
+                        <div>
+                            <strong>Dossiers</strong>
+                            <small>Coordonner</small>
+                        </div>
+                    </div>
+
+                    <div class="cab-hero-floating cab-float-three">
+                        <span>↗</span>
+                        <div>
+                            <strong>Partenariat</strong>
+                            <small>Développer</small>
+                        </div>
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- TITRE INDICATEURS -->
+
+            <div class="cab-section-heading">
+                <div>
+                    <span class="cab-section-eyebrow">VUE STRATÉGIQUE</span>
+                    <h2>Votre activité en un regard</h2>
+                    <p>Les indicateurs essentiels de votre portefeuille partenaire.</p>
+                </div>
+                <span class="cab-section-meta">Données de démonstration</span>
+            </div>
+
+            <!-- KPI -->
+
+            <section class="cab-kpi-grid" aria-label="Indicateurs du cabinet">
+
+                <a class="cab-kpi-card" href="{{ url_for('main.cabinet_portefeuille') }}">
+                    <div class="cab-kpi-top">
+                        <span>Clients suivis</span>
+                        <span class="cab-kpi-icon">♙</span>
+                    </div>
+                    <strong class="cab-kpi-value" data-counter="24">0</strong>
+                    <div class="cab-kpi-footer">
+                        <span>Portefeuille actif</span>
+                        <span class="cab-kpi-arrow">↗</span>
+                    </div>
+                    <div class="cab-kpi-accent"></div>
+                </a>
+
+                <a class="cab-kpi-card" href="{{ url_for('main.cabinet_opportunites') }}">
+                    <div class="cab-kpi-top">
+                        <span>Opportunités actives</span>
+                        <span class="cab-kpi-icon mint">◇</span>
+                    </div>
+                    <strong class="cab-kpi-value" data-counter="6">0</strong>
+                    <div class="cab-kpi-footer">
+                        <span>À suivre et qualifier</span>
+                        <span class="cab-kpi-arrow">↗</span>
+                    </div>
+                    <div class="cab-kpi-accent mint"></div>
+                </a>
+
+                <a class="cab-kpi-card" href="{{ url_for('main.cabinet_dossiers') }}">
+                    <div class="cab-kpi-top">
+                        <span>Dossiers transmis</span>
+                        <span class="cab-kpi-icon blue">▤</span>
+                    </div>
+                    <strong class="cab-kpi-value" data-counter="9">0</strong>
+                    <div class="cab-kpi-footer">
+                        <span>Suivi des prises en charge</span>
+                        <span class="cab-kpi-arrow">↗</span>
+                    </div>
+                    <div class="cab-kpi-accent blue"></div>
+                </a>
+
+                <a class="cab-kpi-card" href="{{ url_for('main.cabinet_messagerie') }}">
+                    <div class="cab-kpi-top">
+                        <span>Messages non lus</span>
+                        <span class="cab-kpi-icon coral">✉</span>
+                    </div>
+                    <strong class="cab-kpi-value" data-counter="2">0</strong>
+                    <div class="cab-kpi-footer">
+                        <span>Échanges à consulter</span>
+                        <span class="cab-kpi-arrow">↗</span>
+                    </div>
+                    <div class="cab-kpi-accent coral"></div>
+                </a>
+
+            </section>
+
+            <!-- DOUBLE PANNEAU -->
+
+            <div class="cab-dashboard-grid">
+
+                <!-- OPPORTUNITÉS -->
+
+                <section class="cab-panel">
+
+                    <div class="cab-panel-header">
+                        <div>
+                            <span class="cab-section-eyebrow">PIPELINE</span>
+                            <h2>Opportunités récentes</h2>
+                            <p>Vos dernières demandes et leur état d'avancement.</p>
+                        </div>
+
+                        <a href="{{ url_for('main.cabinet_opportunites') }}">
+                            Tout voir ↗
+                        </a>
+                    </div>
+
+                    <div class="cab-opportunities">
+
+                        <article class="cab-opportunity">
+                            <div class="cab-opportunity-avatar">CD</div>
+                            <div class="cab-opportunity-main">
+                                <strong>Cabinet Martin — Client Dupont</strong>
+                                <span>Besoin de digitalisation</span>
+                                <small>Qualification initiale</small>
+                            </div>
+                            <span class="cab-status cab-status-progress">
+                                Qualification
+                            </span>
+                        </article>
+
+                        <article class="cab-opportunity">
+                            <div class="cab-opportunity-avatar mint">AC</div>
+                            <div class="cab-opportunity-main">
+                                <strong>Société AGRO Centre</strong>
+                                <span>Organisation documentaire</span>
+                                <small>Informations complémentaires attendues</small>
+                            </div>
+                            <span class="cab-status cab-status-warning">
+                                À compléter
+                            </span>
+                        </article>
+
+                        <article class="cab-opportunity">
+                            <div class="cab-opportunity-avatar coral">AB</div>
+                            <div class="cab-opportunity-main">
+                                <strong>Atelier Bernard</strong>
+                                <span>Renouvellement informatique</span>
+                                <small>Dossier transmis à DATENSIS</small>
+                            </div>
+                            <span class="cab-status cab-status-success">
+                                Transmis
+                            </span>
+                        </article>
+
+                    </div>
+
+                    <a href="{{ url_for('main.cabinet_qualification_besoin') }}"
+                       class="cab-panel-bottom-action">
+                        <span>＋</span>
+                        Identifier un nouveau besoin client
+                        <b>→</b>
+                    </a>
+
+                </section>
+
+                <!-- DOSSIERS -->
+
+                <section class="cab-panel">
+
+                    <div class="cab-panel-header">
+                        <div>
+                            <span class="cab-section-eyebrow">SUIVI OPÉRATIONNEL</span>
+                            <h2>Dossiers en cours</h2>
+                            <p>Avancement des missions prises en charge.</p>
+                        </div>
+
+                        <a href="{{ url_for('main.cabinet_dossiers') }}">
+                            Tout voir ↗
+                        </a>
+                    </div>
+
+                    <div class="cab-dossiers">
+
+                        <article class="cab-dossier">
+
+                            <div class="cab-dossier-top">
+                                <div class="cab-dossier-identity">
+                                    <span class="cab-dossier-icon">D</span>
+                                    <div>
+                                        <strong>Client Dupont</strong>
+                                        <small>Transformation digitale</small>
+                                    </div>
+                                </div>
+
+                                <strong class="cab-dossier-percent">70 %</strong>
+                            </div>
+
+                            <div class="cab-progress-track">
+                                <div class="cab-progress-fill"
+                                     data-progress="70"></div>
+                            </div>
+
+                            <div class="cab-dossier-bottom">
+                                <span>En cours de réalisation</span>
+                                <span>Étape 3 / 4</span>
+                            </div>
+
+                        </article>
+
+                        <article class="cab-dossier">
+
+                            <div class="cab-dossier-top">
+                                <div class="cab-dossier-identity">
+                                    <span class="cab-dossier-icon mint">A</span>
+                                    <div>
+                                        <strong>AGRO Centre</strong>
+                                        <small>Organisation documentaire</small>
+                                    </div>
+                                </div>
+
+                                <strong class="cab-dossier-percent">35 %</strong>
+                            </div>
+
+                            <div class="cab-progress-track">
+                                <div class="cab-progress-fill mint"
+                                     data-progress="35"></div>
+                            </div>
+
+                            <div class="cab-dossier-bottom">
+                                <span>Cadrage et préparation</span>
+                                <span>Étape 2 / 4</span>
+                            </div>
+
+                        </article>
+
+                    </div>
+
+                    <div class="cab-dossier-summary">
+                        <span class="cab-dossier-summary-icon">◈</span>
+                        <div>
+                            <strong>Gardez une vision claire des missions.</strong>
+                            <p>
+                                Retrouvez les informations et les étapes
+                                de chaque dossier dans votre espace dédié.
+                            </p>
+                        </div>
+                    </div>
+
+                </section>
+
+            </div>
+
+            <!-- PARCOURS PARTENAIRE -->
+
+            <section class="cab-partner-journey">
+
+                <div class="cab-section-heading">
+                    <div>
+                        <span class="cab-section-eyebrow">VOTRE MÉTHODE</span>
+                        <h2>Un partenariat, trois étapes.</h2>
+                        <p>
+                            Un parcours structuré pour accompagner
+                            les besoins de vos clients.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="cab-journey-grid">
+
+                    <a href="{{ url_for('main.cabinet_qualification_besoin') }}"
+                       class="cab-journey-card">
+
+                        <div class="cab-journey-top">
+                            <span class="cab-journey-number">01</span>
+                            <span class="cab-journey-arrow">↗</span>
+                        </div>
+
+                        <span class="cab-journey-symbol">◇</span>
+
+                        <h3>Qualifier le besoin</h3>
+
+                        <p>
+                            Identifiez les enjeux du client,
+                            formalisez sa demande et préparez
+                            une opportunité pertinente.
+                        </p>
+
+                        <span class="cab-journey-link">
+                            Démarrer la qualification →
+                        </span>
+
+                    </a>
+
+                    <a href="{{ url_for('main.cabinet_mise_en_relation') }}"
+                       class="cab-journey-card">
+
+                        <div class="cab-journey-top">
+                            <span class="cab-journey-number">02</span>
+                            <span class="cab-journey-arrow">↗</span>
+                        </div>
+
+                        <span class="cab-journey-symbol">⇄</span>
+
+                        <h3>Créer la relation</h3>
+
+                        <p>
+                            Organisez la mise en relation,
+                            transmettez les éléments utiles
+                            et facilitez la prise en charge.
+                        </p>
+
+                        <span class="cab-journey-link">
+                            Organiser une mise en relation →
+                        </span>
+
+                    </a>
+
+                    <a href="{{ url_for('main.cabinet_suivi_partenariat') }}"
+                       class="cab-journey-card">
+
+                        <div class="cab-journey-top">
+                            <span class="cab-journey-number">03</span>
+                            <span class="cab-journey-arrow">↗</span>
+                        </div>
+
+                        <span class="cab-journey-symbol">↗</span>
+
+                        <h3>Piloter le partenariat</h3>
+
+                        <p>
+                            Suivez les dossiers, coordonnez
+                            les échanges et accompagnez
+                            la progression des missions.
+                        </p>
+
+                        <span class="cab-journey-link">
+                            Consulter le suivi →
+                        </span>
+
+                    </a>
+
+                </div>
+
+            </section>
+
+            <!-- BANDEAU DE COLLABORATION -->
+
+            <section class="cab-collaboration-banner">
+
+                <div class="cab-collaboration-icon">✉</div>
+
+                <div>
+                    <span class="cab-section-eyebrow">
+                        RELATION PARTENAIRE
+                    </span>
+
+                    <h2>Une question sur un dossier ?</h2>
+
+                    <p>
+                        Votre espace de messagerie vous permet
+                        de centraliser vos échanges avec DATENSIS.
+                    </p>
+                </div>
+
+                <a href="{{ url_for('main.cabinet_messagerie') }}">
+                    Accéder à la messagerie ↗
+                </a>
+
+            </section>
+
+            <footer class="cab-footer">
+                <span>© DATENSIS — Espace Cabinet Partenaire</span>
+                <span>Interface de démonstration</span>
+            </footer>
+
+        </main>
+
+    </div>
+
+</div>
+
+<div class="cab-mobile-overlay" id="cabMobileOverlay" hidden></div>
+
+</body>
+</html>

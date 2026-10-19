@@ -1,0 +1,505 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Journal d'activité</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+</head>
+
+<body class="pme-control-page pme-activity-page">
+
+<div class="pme-app">
+
+    <!-- SIDEBAR PME -->
+
+    <aside class="pme-sidebar" id="pmeSidebar">
+
+        <a class="pme-brand"
+           href="{{ url_for('main.pme_dashboard') }}">
+            <span class="pme-brand-symbol">D</span>
+            <span>
+                <strong>DATENSIS</strong>
+                <small>ESPACE ENTREPRISE</small>
+            </span>
+        </a>
+
+        <div class="pme-sidebar-label">
+            ESPACE DE TRAVAIL
+        </div>
+
+        <nav class="pme-nav" aria-label="Navigation PME">
+
+            <a href="{{ url_for('main.pme_dashboard') }}">
+                <span>▦</span>
+                Vue d'ensemble
+            </a>
+
+            <a href="{{ url_for('main.pme_projets') }}">
+                <span>◫</span>
+                Portefeuille projets
+            </a>
+
+            <a href="{{ url_for('main.pme_sites') }}">
+                <span>⌖</span>
+                Implantations
+            </a>
+
+            <a href="{{ url_for('main.pme_documents') }}">
+                <span>▤</span>
+                Documents
+            </a>
+
+            <a href="{{ url_for('main.pme_activite') }}"
+               class="active"
+               aria-current="page">
+                <span>◷</span>
+                Journal d'activité
+            </a>
+
+        </nav>
+
+        <div class="pme-sidebar-label">
+            COLLABORATION
+        </div>
+
+        <nav class="pme-nav" aria-label="Collaboration">
+
+            <a href="{{ url_for('main.pme_messagerie') }}">
+                <span>✉</span>
+                Messagerie
+                <b class="pme-nav-count">2</b>
+            </a>
+
+            <a href="{{ url_for('main.pme_rendez_vous') }}">
+                <span>▦</span>
+                Rendez-vous
+            </a>
+
+        </nav>
+
+        <div class="pme-sidebar-bottom">
+
+            <div class="pme-sidebar-assistance">
+                <strong>Besoin d'un accompagnement ?</strong>
+                <p>
+                    Échangez avec votre interlocuteur DATENSIS.
+                </p>
+                <a href="{{ url_for('main.pme_messagerie') }}">
+                    Contacter l'équipe →
+                </a>
+            </div>
+
+            <span class="pme-sidebar-version">
+                DATENSIS · Espace PME
+            </span>
+
+        </div>
+
+    </aside>
+
+    <!-- ESPACE DE TRAVAIL -->
+
+    <div class="pme-workspace">
+
+        <header class="pme-topbar">
+
+            <div class="pme-topbar-left">
+
+                <button class="pme-menu-toggle"
+                        id="pmeMenuToggle"
+                        type="button"
+                        aria-label="Ouvrir la navigation"
+                        aria-controls="pmeSidebar"
+                        aria-expanded="false">
+                    ☰
+                </button>
+
+                <div class="pme-breadcrumb">
+                    Espace entreprise
+                    <span>/</span>
+                    <strong>Journal d'activité</strong>
+                </div>
+
+            </div>
+
+            <div class="pme-topbar-right">
+
+                <span class="pme-demo-indicator">
+                    Données de démonstration
+                </span>
+
+                <a class="pme-topbar-message"
+                   href="{{ url_for('main.pme_messagerie') }}"
+                   aria-label="Ouvrir la messagerie">
+                    ✉ <span>2</span>
+                </a>
+
+                <div class="pme-account">
+                    <span class="pme-avatar">PM</span>
+                    <div>
+                        <strong>Espace PME</strong>
+                        <small>Organisation</small>
+                    </div>
+                </div>
+
+            </div>
+
+        </header>
+
+        <main class="pme-main pme-activity-main">
+
+            <!-- INTRODUCTION -->
+
+            <section class="pme-welcome pme-activity-welcome">
+
+                <div>
+                    <span class="pme-eyebrow">
+                        SUIVI DES OPÉRATIONS
+                    </span>
+
+                    <h1>Journal d'activité</h1>
+
+                    <p>
+                        Retrouvez les dernières actions liées à
+                        vos projets, documents, implantations
+                        et échanges avec DATENSIS.
+                    </p>
+                </div>
+
+                <div class="pme-welcome-actions">
+                    <button type="button"
+                            class="pme-btn pme-activity-export"
+                            id="activityExport">
+                        ↓ Exporter le journal
+                    </button>
+                </div>
+
+            </section>
+
+            <!-- INDICATEURS -->
+
+            <section class="pme-kpi-grid"
+                     aria-label="Indicateurs d'activité">
+
+                <article class="pme-kpi">
+                    <div class="pme-kpi-top">
+                        <span>Événements</span>
+                        <span class="pme-kpi-icon">◷</span>
+                    </div>
+
+                    <strong id="activityStatTotal">0</strong>
+
+                    <div class="pme-kpi-bottom">
+                        <span>Actions répertoriées</span>
+                    </div>
+                </article>
+
+                <article class="pme-kpi">
+                    <div class="pme-kpi-top">
+                        <span>Documents</span>
+                        <span class="pme-kpi-icon mint">▤</span>
+                    </div>
+
+                    <strong id="activityStatDocuments">0</strong>
+
+                    <div class="pme-kpi-bottom">
+                        <span>Événements documentaires</span>
+                    </div>
+                </article>
+
+                <article class="pme-kpi">
+                    <div class="pme-kpi-top">
+                        <span>Implantations</span>
+                        <span class="pme-kpi-icon">⌖</span>
+                    </div>
+
+                    <strong id="activityStatSites">0</strong>
+
+                    <div class="pme-kpi-bottom">
+                        <span>Mises à jour de sites</span>
+                    </div>
+                </article>
+
+                <article class="pme-kpi">
+                    <div class="pme-kpi-top">
+                        <span>Collaboration</span>
+                        <span class="pme-kpi-icon coral">✉</span>
+                    </div>
+
+                    <strong id="activityStatCollaboration">0</strong>
+
+                    <div class="pme-kpi-bottom">
+                        <span>Messages et rendez-vous</span>
+                    </div>
+                </article>
+
+            </section>
+
+            <!-- JOURNAL ET PANNEAU LATÉRAL -->
+
+            <div class="pme-activity-layout">
+
+                <section class="pme-panel pme-activity-panel">
+
+                    <div class="pme-panel-header">
+                        <div>
+                            <span class="pme-section-label">
+                                HISTORIQUE
+                            </span>
+
+                            <h2>Chronologie des événements</h2>
+
+                            <p id="activityResultCount">
+                                Chargement des activités...
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- FILTRES -->
+
+                    <div class="pme-activity-toolbar">
+
+                        <label class="pme-activity-search">
+                            <span aria-hidden="true">⌕</span>
+
+                            <input type="search"
+                                   id="activitySearch"
+                                   placeholder="Rechercher une activité..."
+                                   aria-label="Rechercher une activité">
+                        </label>
+
+                        <select id="activityType"
+                                aria-label="Filtrer par catégorie">
+                            <option value="all">Toutes les catégories</option>
+                            <option value="document">Documents</option>
+                            <option value="site">Implantations</option>
+                            <option value="message">Messagerie</option>
+                            <option value="commercial">Commercial</option>
+                            <option value="meeting">Rendez-vous</option>
+                        </select>
+
+                        <select id="activitySort"
+                                aria-label="Trier les événements">
+                            <option value="recent">Plus récents</option>
+                            <option value="oldest">Plus anciens</option>
+                        </select>
+
+                    </div>
+
+                    <!-- FILTRES RAPIDES -->
+
+                    <div class="pme-activity-chips"
+                         id="activityQuickFilters"
+                         aria-label="Filtres rapides">
+
+                        <button type="button"
+                                class="active"
+                                data-activity-filter="all"
+                                aria-pressed="true">
+                            Tout afficher
+                        </button>
+
+                        <button type="button"
+                                data-activity-filter="document"
+                                aria-pressed="false">
+                            Documents
+                        </button>
+
+                        <button type="button"
+                                data-activity-filter="site"
+                                aria-pressed="false">
+                            Sites
+                        </button>
+
+                        <button type="button"
+                                data-activity-filter="message"
+                                aria-pressed="false">
+                            Messages
+                        </button>
+
+                        <button type="button"
+                                data-activity-filter="meeting"
+                                aria-pressed="false">
+                            Rendez-vous
+                        </button>
+
+                    </div>
+
+                    <!-- CHRONOLOGIE DYNAMIQUE -->
+
+                    <div id="activityTimeline"
+                         class="pme-activity-timeline"
+                         aria-live="polite">
+                    </div>
+
+                    <div class="pme-activity-empty"
+                         id="activityEmpty"
+                         hidden>
+
+                        <span>⌕</span>
+
+                        <h3>Aucune activité trouvée</h3>
+
+                        <p>
+                            Modifiez votre recherche ou
+                            réinitialisez les filtres.
+                        </p>
+
+                        <button type="button"
+                                id="activityReset">
+                            Réinitialiser les filtres
+                        </button>
+
+                    </div>
+
+                </section>
+
+                <!-- PANNEAU COMPLÉMENTAIRE -->
+
+                <aside class="pme-activity-aside">
+
+                    <section class="pme-panel pme-activity-summary">
+
+                        <span class="pme-section-label">
+                            VUE D'ENSEMBLE
+                        </span>
+
+                        <h2>Répartition des actions</h2>
+
+                        <p>
+                            Distribution des événements
+                            enregistrés dans la simulation.
+                        </p>
+
+                        <div id="activityDistribution"
+                             class="pme-activity-distribution">
+                        </div>
+
+                    </section>
+
+                    <section class="pme-panel pme-activity-shortcuts">
+
+                        <span class="pme-section-label">
+                            ACCÈS RAPIDE
+                        </span>
+
+                        <h2>Espaces associés</h2>
+
+                        <a href="{{ url_for('main.pme_projets') }}">
+                            <span>◫</span>
+                            <div>
+                                <strong>Projets</strong>
+                                <small>Suivre les opérations</small>
+                            </div>
+                            <b>→</b>
+                        </a>
+
+                        <a href="{{ url_for('main.pme_documents') }}">
+                            <span>▤</span>
+                            <div>
+                                <strong>Documents</strong>
+                                <small>Consulter les fichiers</small>
+                            </div>
+                            <b>→</b>
+                        </a>
+
+                        <a href="{{ url_for('main.pme_messagerie') }}">
+                            <span>✉</span>
+                            <div>
+                                <strong>Messagerie</strong>
+                                <small>Échanger avec DATENSIS</small>
+                            </div>
+                            <b>→</b>
+                        </a>
+
+                    </section>
+
+                </aside>
+
+            </div>
+
+            <footer class="pme-dashboard-footer">
+                <span>© DATENSIS — Espace PME & ETI</span>
+                <span>Interface de démonstration</span>
+            </footer>
+
+        </main>
+
+    </div>
+
+</div>
+
+<div class="pme-mobile-overlay"
+     id="pmeMobileOverlay"
+     hidden></div>
+
+<!-- MODALE DE DÉTAILS -->
+
+<div class="pme-activity-modal"
+     id="activityModal"
+     hidden>
+
+    <div class="pme-activity-modal-backdrop"
+         data-close-activity></div>
+
+    <section class="pme-activity-modal-card"
+             role="dialog"
+             aria-modal="true"
+             aria-labelledby="activityModalTitle">
+
+        <div class="pme-activity-modal-header">
+
+            <div>
+                <span class="pme-section-label">
+                    DÉTAIL DE L'ÉVÉNEMENT
+                </span>
+
+                <h2 id="activityModalTitle">
+                    Activité
+                </h2>
+            </div>
+
+            <button type="button"
+                    class="pme-activity-modal-close"
+                    id="activityModalClose"
+                    aria-label="Fermer">
+                ×
+            </button>
+
+        </div>
+
+        <div id="activityModalContent"></div>
+
+        <div class="pme-activity-modal-actions">
+
+            <button type="button"
+                    id="activityModalCancel">
+                Fermer
+            </button>
+
+            <a id="activityModalLink"
+               href="{{ url_for('main.pme_dashboard') }}"
+               class="pme-activity-primary">
+                Consulter l'espace associé →
+            </a>
+
+        </div>
+
+    </section>
+
+</div>
+
+<div id="activityToast"
+     class="pme-activity-toast"
+     role="status"
+     aria-live="polite"></div>
+
+</body>
+</html>

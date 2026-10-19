@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Choisissez votre espace</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <main class="portal-simple">
+
+        <!-- INTRODUCTION -->
+
+        <section class="portal-simple-intro">
+
+            <div class="portal-brand">
+
+                <span class="portal-logo">
+                    D
+                </span>
+
+                <strong>
+                    DATENSIS
+                </strong>
+
+            </div>
+
+
+            <p class="eyebrow">
+                Bienvenue sur DATENSIS
+            </p>
+
+
+            <h1>
+                Choisissez votre espace
+            </h1>
+
+
+            <p>
+                Sélectionnez le profil correspondant à votre structure.
+            </p>
+
+        </section>
+
+
+        <!-- CHOIX DES ESPACES -->
+
+        <section class="portal-simple-buttons"
+                 aria-label="Choix de votre espace">
+
+
+            <!-- INDÉPENDANTS & TPE -->
+
+            <a href="{{ url_for('main.tpe_accueil') }}"
+               class="portal-big-button">
+
+                <span class="portal-button-number coral">
+                    01
+                </span>
+
+                <span class="portal-button-text">
+
+                    <strong>
+                        Indépendants & TPE
+                    </strong>
+
+                    <small>
+                        Accéder à l'espace
+                    </small>
+
+                </span>
+
+                <span class="portal-button-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+            <!-- PME & ETI -->
+
+            <a href="{{ url_for('main.pme_accueil') }}"
+               class="portal-big-button">
+
+                <span class="portal-button-number petrol">
+                    02
+                </span>
+
+                <span class="portal-button-text">
+
+                    <strong>
+                        PME & ETI
+                    </strong>
+
+                    <small>
+                        Accéder à l'espace
+                    </small>
+
+                </span>
+
+                <span class="portal-button-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+            <!-- CABINET -->
+
+            <a href="{{ url_for('main.cabinet_accueil') }}"
+               class="portal-big-button">
+
+                <span class="portal-button-number mint">
+                    03
+                </span>
+
+                <span class="portal-button-text">
+
+                    <strong>
+                        Cabinet d'expertise comptable
+                    </strong>
+
+                    <small>
+                        Accéder à l'espace
+                    </small>
+
+                </span>
+
+                <span class="portal-button-arrow">
+                    →
+                </span>
+
+            </a>
+
+        </section>
+
+
+        <!-- INFORMATION -->
+
+        <div class="portal-simple-info">
+
+            <span>
+                Chaque espace dispose de services adaptés à votre profil.
+            </span>
+
+        </div>
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    {% include "footer.html" %}
+
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+</body>
+
+</html>

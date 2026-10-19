@@ -1,0 +1,420 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mes factures</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="tpe-invoices-page">
+
+<div class="tpe-invoices-layout">
+
+    <!-- NAVIGATION PRIVÉE -->
+    <aside class="tpe-invoices-sidebar">
+
+        <a href="{{ url_for('main.tpe_dashboard') }}" class="tpe-invoices-brand">
+            <span class="tpe-invoices-brand-icon">D</span>
+            <span>
+                <strong>DATENSIS</strong>
+                <small>Indépendants & TPE</small>
+            </span>
+        </a>
+
+        <p class="tpe-invoices-nav-label">MON ACTIVITÉ</p>
+
+        <nav class="tpe-invoices-nav" aria-label="Navigation de mon espace">
+            <a href="{{ url_for('main.tpe_dashboard') }}">Vue d'ensemble</a>
+            <a href="{{ url_for('main.tpe_demandes') }}">Mes demandes</a>
+            <a href="{{ url_for('main.tpe_projets') }}">Mes dossiers</a>
+            <a href="{{ url_for('main.tpe_documents') }}">Mes documents</a>
+            <a href="{{ url_for('main.tpe_factures') }}" class="active" aria-current="page">
+                Mes factures
+            </a>
+        </nav>
+
+        <p class="tpe-invoices-nav-label">MON COMPTE</p>
+
+        <nav class="tpe-invoices-nav" aria-label="Gestion du compte">
+            <a href="{{ url_for('main.tpe_support') }}">Assistance</a>
+            <a href="{{ url_for('main.tpe_profil') }}">Mon profil</a>
+        </nav>
+
+        <div class="tpe-invoices-sidebar-bottom">
+
+            <div class="tpe-invoices-help">
+                <strong>Une question sur une facture ?</strong>
+                <p>Contactez DATENSIS pour obtenir des précisions sur votre facturation.</p>
+                <a href="{{ url_for('main.tpe_support') }}">Contacter l'équipe →</a>
+            </div>
+
+            <a href="{{ url_for('main.tpe_accueil') }}" class="tpe-invoices-exit">
+                ← Retour au site TPE
+            </a>
+
+        </div>
+    </aside>
+
+    <!-- CONTENU PRINCIPAL -->
+    <main class="tpe-invoices-main">
+
+        <header class="tpe-invoices-header">
+            <div>
+                <p class="tpe-invoices-breadcrumb">
+                    <a href="{{ url_for('main.tpe_dashboard') }}">Mon espace</a>
+                    / Mes factures
+                </p>
+
+                <span class="tpe-invoices-eyebrow">SUIVI FINANCIER</span>
+                <h1>Mes factures</h1>
+
+                <p>
+                    Consultez vos factures DATENSIS, identifiez les montants
+                    restant à régler et suivez vos échéances.
+                </p>
+            </div>
+
+            <a href="{{ url_for('main.tpe_support') }}" class="tpe-invoices-secondary">
+                Une question sur ma facturation ?
+            </a>
+        </header>
+
+        <!-- ALERTE FACTURE -->
+        <section class="tpe-invoices-alert" id="invoiceAlert">
+
+            <div class="tpe-invoices-alert-icon" aria-hidden="true">€</div>
+
+            <div class="tpe-invoices-alert-content">
+                <span>ÉCHÉANCE À SURVEILLER</span>
+                <h2>Une facture reste à régler</h2>
+                <p>
+                    La facture <strong>FAC-2026-104</strong> d'un montant de
+                    <strong>1 950,00 € TTC</strong> arrive à échéance le
+                    <strong>15/10/2026</strong>.
+                </p>
+            </div>
+
+            <button
+                type="button"
+                class="tpe-invoices-alert-action"
+                data-invoice="FAC-2026-104"
+            >
+                Voir la facture →
+            </button>
+
+        </section>
+
+        <!-- INDICATEURS -->
+        <section class="tpe-invoices-summary" aria-label="Synthèse de facturation">
+
+            <article class="tpe-invoices-stat">
+                <span>Factures disponibles</span>
+                <strong id="invoicesTotal">03</strong>
+                <small>Factures enregistrées</small>
+            </article>
+
+            <article class="tpe-invoices-stat">
+                <span>Montant facturé</span>
+                <strong id="invoicesAmount">2 670 €</strong>
+                <small>Total TTC des factures</small>
+            </article>
+
+            <article class="tpe-invoices-stat">
+                <span>Reste à régler</span>
+                <strong id="invoicesDue">1 950 €</strong>
+                <small>Montant TTC en attente</small>
+            </article>
+
+            <article class="tpe-invoices-stat">
+                <span>Factures payées</span>
+                <strong id="invoicesPaid">02</strong>
+                <small>Paiements enregistrés</small>
+            </article>
+
+        </section>
+
+        <!-- LISTE DES FACTURES -->
+        <section class="tpe-invoices-panel">
+
+            <div class="tpe-invoices-panel-heading">
+                <div>
+                    <span class="tpe-invoices-eyebrow">HISTORIQUE</span>
+                    <h2>Historique de facturation</h2>
+                    <p>Retrouvez vos prestations facturées et leur état de paiement.</p>
+                </div>
+
+                <span class="tpe-invoices-demo">Données de démonstration</span>
+            </div>
+
+            <!-- RECHERCHE ET FILTRES -->
+            <div class="tpe-invoices-toolbar">
+
+                <div class="tpe-invoices-field">
+                    <label for="invoiceSearch">Rechercher</label>
+                    <input
+                        type="search"
+                        id="invoiceSearch"
+                        placeholder="Référence, prestation..."
+                    >
+                </div>
+
+                <div class="tpe-invoices-field">
+                    <label for="invoiceStatusFilter">Statut</label>
+                    <select id="invoiceStatusFilter">
+                        <option value="all">Tous les statuts</option>
+                        <option value="a-regler">À régler</option>
+                        <option value="payee">Payée</option>
+                    </select>
+                </div>
+
+                <div class="tpe-invoices-field">
+                    <label for="invoiceSort">Trier par</label>
+                    <select id="invoiceSort">
+                        <option value="recent">Échéance récente</option>
+                        <option value="oldest">Échéance ancienne</option>
+                        <option value="highest">Montant décroissant</option>
+                        <option value="lowest">Montant croissant</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="tpe-invoices-table-wrapper">
+                <table class="tpe-invoices-table" id="invoicesTable">
+
+                    <thead>
+                        <tr>
+                            <th>Référence</th>
+                            <th>Prestation</th>
+                            <th>Montant TTC</th>
+                            <th>Échéance</th>
+                            <th>Statut</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr
+                            data-invoice="FAC-2026-104"
+                            data-status="a-regler"
+                            data-amount="1950"
+                            data-date="2026-10-15"
+                            data-service="Modernisation informatique"
+                        >
+                            <td>
+                                <div class="tpe-invoices-reference">
+                                    <span class="tpe-invoices-file-icon">€</span>
+                                    <div>
+                                        <strong>FAC-2026-104</strong>
+                                        <small>Facture de prestation</small>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td>Modernisation informatique</td>
+
+                            <td class="tpe-invoices-amount">1 950,00 €</td>
+
+                            <td>15/10/2026</td>
+
+                            <td>
+                                <span class="tpe-invoice-status pending">À régler</span>
+                            </td>
+
+                            <td>
+                                <button type="button" class="tpe-invoices-open">
+                                    Consulter →
+                                </button>
+                            </td>
+                        </tr>
+
+                        <tr
+                            data-invoice="FAC-2026-087"
+                            data-status="payee"
+                            data-amount="540"
+                            data-date="2026-09-25"
+                            data-service="Étude & conseil"
+                        >
+                            <td>
+                                <div class="tpe-invoices-reference">
+                                    <span class="tpe-invoices-file-icon">€</span>
+                                    <div>
+                                        <strong>FAC-2026-087</strong>
+                                        <small>Facture de prestation</small>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td>Étude & conseil</td>
+
+                            <td class="tpe-invoices-amount">540,00 €</td>
+
+                            <td>25/09/2026</td>
+
+                            <td>
+                                <span class="tpe-invoice-status paid">Payée</span>
+                            </td>
+
+                            <td>
+                                <button type="button" class="tpe-invoices-open">
+                                    Consulter →
+                                </button>
+                            </td>
+                        </tr>
+
+                        <tr
+                            data-invoice="FAC-2026-063"
+                            data-status="payee"
+                            data-amount="180"
+                            data-date="2026-06-30"
+                            data-service="Assistance technique"
+                        >
+                            <td>
+                                <div class="tpe-invoices-reference">
+                                    <span class="tpe-invoices-file-icon">€</span>
+                                    <div>
+                                        <strong>FAC-2026-063</strong>
+                                        <small>Facture de prestation</small>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td>Assistance technique</td>
+
+                            <td class="tpe-invoices-amount">180,00 €</td>
+
+                            <td>30/06/2026</td>
+
+                            <td>
+                                <span class="tpe-invoice-status paid">Payée</span>
+                            </td>
+
+                            <td>
+                                <button type="button" class="tpe-invoices-open">
+                                    Consulter →
+                                </button>
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+            </div>
+
+            <p id="invoicesEmpty" class="tpe-invoices-empty" hidden>
+                Aucune facture ne correspond à votre recherche.
+            </p>
+
+            <div class="tpe-invoices-table-footer">
+                <span id="invoicesCount">3 factures affichées</span>
+                <span>Montants exprimés en euros TTC</span>
+            </div>
+
+        </section>
+
+        <!-- INFORMATIONS -->
+        <section class="tpe-invoices-information">
+
+            <div>
+                <span class="tpe-invoices-eyebrow">ACCOMPAGNEMENT</span>
+                <h2>Besoin d'une précision sur un règlement ?</h2>
+                <p>
+                    Retrouvez vos références de facture et contactez DATENSIS
+                    pour toute question concernant une prestation ou une échéance.
+                </p>
+            </div>
+
+            <a href="{{ url_for('main.tpe_support') }}" class="tpe-invoices-primary">
+                Contacter DATENSIS →
+            </a>
+
+        </section>
+
+        <footer class="tpe-invoices-footer">
+            <span>DATENSIS · Espace Indépendants & TPE</span>
+            <a href="{{ url_for('main.tpe_dashboard') }}">
+                Retour au tableau de bord
+            </a>
+        </footer>
+
+    </main>
+
+</div>
+
+<!-- PANNEAU DE CONSULTATION -->
+<div class="tpe-invoices-drawer-overlay" id="invoiceDrawerOverlay" hidden></div>
+
+<aside
+    class="tpe-invoices-drawer"
+    id="invoiceDrawer"
+    role="dialog"
+    aria-modal="true"
+    aria-hidden="true"
+    aria-labelledby="invoiceDrawerTitle"
+>
+    <div class="tpe-invoices-drawer-header">
+        <div>
+            <span class="tpe-invoices-eyebrow">DÉTAIL DE FACTURATION</span>
+            <h2 id="invoiceDrawerTitle">Facture</h2>
+        </div>
+
+        <button
+            type="button"
+            class="tpe-invoices-close"
+            id="closeInvoiceDrawer"
+            aria-label="Fermer"
+        >
+            ×
+        </button>
+    </div>
+
+    <div class="tpe-invoices-drawer-body">
+
+        <div class="tpe-invoices-detail-amount">
+            <span>Montant total TTC</span>
+            <strong id="invoiceDrawerAmount">0,00 €</strong>
+            <span id="invoiceDrawerStatus" class="tpe-invoice-status"></span>
+        </div>
+
+        <div class="tpe-invoices-detail">
+            <span>Référence</span>
+            <strong id="invoiceDrawerReference"></strong>
+        </div>
+
+        <div class="tpe-invoices-detail">
+            <span>Prestation</span>
+            <strong id="invoiceDrawerService"></strong>
+        </div>
+
+        <div class="tpe-invoices-detail">
+            <span>Date d'échéance</span>
+            <strong id="invoiceDrawerDate"></strong>
+        </div>
+
+        <div class="tpe-invoices-detail">
+            <span>État du règlement</span>
+            <strong id="invoiceDrawerPayment"></strong>
+        </div>
+
+        <div class="tpe-invoices-drawer-note">
+            <strong>Information</strong>
+            <p>
+                Cette fiche présente des données fictives.
+                Aucun paiement réel n'est effectué depuis cette interface.
+            </p>
+        </div>
+
+        <a href="{{ url_for('main.tpe_support') }}" class="tpe-invoices-primary">
+            Poser une question sur cette facture
+        </a>
+
+    </div>
+</aside>
+
+<script src="{{ url_for('static', filename='js/tpe.js') }}"></script>
+
+</body>
+</html>

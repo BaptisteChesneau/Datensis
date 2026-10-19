@@ -1,0 +1,284 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon profil</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="tpe-profile-page">
+
+<div class="tpe-service-layout">
+
+    <aside class="tpe-service-sidebar">
+        <a href="{{ url_for('main.tpe_dashboard') }}" class="tpe-service-brand">
+            <span class="tpe-service-brand-icon">D</span>
+            <span><strong>DATENSIS</strong><small>Indépendants & TPE</small></span>
+        </a>
+
+        <p class="tpe-service-nav-label">MON ACTIVITÉ</p>
+        <nav class="tpe-service-nav" aria-label="Navigation de mon espace">
+            <a href="{{ url_for('main.tpe_dashboard') }}">Vue d'ensemble</a>
+            <a href="{{ url_for('main.tpe_demandes') }}">Mes demandes</a>
+            <a href="{{ url_for('main.tpe_projets') }}">Mes dossiers</a>
+            <a href="{{ url_for('main.tpe_documents') }}">Mes documents</a>
+            <a href="{{ url_for('main.tpe_factures') }}">Mes factures</a>
+        </nav>
+
+        <p class="tpe-service-nav-label">MON COMPTE</p>
+        <nav class="tpe-service-nav" aria-label="Gestion du compte">
+            <a href="{{ url_for('main.tpe_support') }}">Assistance</a>
+            <a href="{{ url_for('main.tpe_profil') }}" class="active" aria-current="page">Mon profil</a>
+        </nav>
+
+        <div class="tpe-service-sidebar-bottom">
+            <div class="tpe-service-sidebar-note">
+                <strong>Vos informations</strong>
+                <p>Gardez vos coordonnées à jour pour faciliter vos échanges.</p>
+            </div>
+            <a href="{{ url_for('main.tpe_accueil') }}" class="tpe-service-exit">← Retour au site TPE</a>
+        </div>
+    </aside>
+
+    <main class="tpe-service-main">
+
+        <header class="tpe-service-header">
+            <div>
+                <p class="tpe-service-breadcrumb">
+                    <a href="{{ url_for('main.tpe_dashboard') }}">Mon espace</a> / Mon profil
+                </p>
+                <span class="tpe-service-eyebrow">PARAMÈTRES DU COMPTE</span>
+                <h1>Mon profil</h1>
+                <p>Consultez vos informations, personnalisez vos préférences et gérez vos paramètres.</p>
+            </div>
+            <span class="tpe-profile-demo">Compte de démonstration</span>
+        </header>
+
+        <div class="tpe-profile-layout">
+
+            <aside class="tpe-profile-summary">
+                <div class="tpe-profile-avatar" id="profileAvatar">BM</div>
+                <h2 id="profileDisplayName">Baptiste Martin</h2>
+                <p id="profileDisplayCompany">Atelier Martin</p>
+                <span class="tpe-profile-type">Indépendant & TPE</span>
+
+                <div class="tpe-profile-summary-divider"></div>
+
+                <div class="tpe-profile-summary-item">
+                    <span>Fonction</span>
+                    <strong id="profileDisplayRole">Dirigeant</strong>
+                </div>
+
+                <div class="tpe-profile-summary-item">
+                    <span>Secteur</span>
+                    <strong id="profileDisplaySector">Artisanat</strong>
+                </div>
+
+                <div class="tpe-profile-summary-item">
+                    <span>Compte créé</span>
+                    <strong>12/06/2026</strong>
+                </div>
+
+                <div class="tpe-profile-summary-item">
+                    <span>Environnement</span>
+                    <strong>Démonstration</strong>
+                </div>
+            </aside>
+
+            <section class="tpe-service-panel">
+                <div class="tpe-service-panel-heading">
+                    <span class="tpe-service-eyebrow">IDENTITÉ & ACTIVITÉ</span>
+                    <h2>Informations personnelles</h2>
+                    <p>Modifiez les informations utilisées dans votre espace DATENSIS.</p>
+                </div>
+
+                <form id="profileForm" class="tpe-service-form">
+                    <div class="tpe-service-field">
+                        <label for="profileFirstName">Prénom</label>
+                        <input type="text" id="profileFirstName" value="Baptiste"
+                               maxlength="80" autocomplete="given-name" required>
+                    </div>
+
+                    <div class="tpe-service-field">
+                        <label for="profileLastName">Nom</label>
+                        <input type="text" id="profileLastName" value="Martin"
+                               maxlength="80" autocomplete="family-name" required>
+                    </div>
+
+                    <div class="tpe-service-field">
+                        <label for="profileCompany">Entreprise</label>
+                        <input type="text" id="profileCompany" value="Atelier Martin"
+                               maxlength="120" autocomplete="organization" required>
+                    </div>
+
+                    <div class="tpe-service-field">
+                        <label for="profileRole">Fonction</label>
+                        <input type="text" id="profileRole" value="Dirigeant" maxlength="100">
+                    </div>
+
+                    <div class="tpe-service-field">
+                        <label for="profileEmail">Adresse e-mail</label>
+                        <input type="email" id="profileEmail"
+                               value="baptiste.martin@exemple.fr" autocomplete="email" required>
+                    </div>
+
+                    <div class="tpe-service-field">
+                        <label for="profilePhone">Téléphone</label>
+                        <input type="tel" id="profilePhone" value="06 12 34 56 78"
+                               autocomplete="tel" required>
+                    </div>
+
+                    <div class="tpe-service-field">
+                        <label for="profileSector">Secteur d'activité</label>
+                        <select id="profileSector">
+                            <option value="Artisanat">Artisanat</option>
+                            <option value="Tertiaire">Tertiaire</option>
+                            <option value="Agriculture">Agriculture</option>
+                            <option value="Commerce">Commerce</option>
+                            <option value="Autre">Autre</option>
+                        </select>
+                    </div>
+
+                    <div class="tpe-service-field">
+                        <label for="profileSize">Taille de la structure</label>
+                        <select id="profileSize">
+                            <option value="Indépendant">Indépendant</option>
+                            <option value="1 à 10 salariés" selected>1 à 10 salariés</option>
+                            <option value="11 à 49 salariés">11 à 49 salariés</option>
+                        </select>
+                    </div>
+
+                    <div class="tpe-service-form-actions">
+                        <button type="reset" class="tpe-service-secondary">Annuler</button>
+                        <button type="submit" class="tpe-service-primary">Enregistrer les modifications</button>
+                    </div>
+                    <p id="profileFeedback" class="tpe-service-feedback" role="status" aria-live="polite"></p>
+                </form>
+            </section>
+        </div>
+
+        <div class="tpe-profile-settings">
+
+            <section class="tpe-service-panel">
+                <div class="tpe-service-panel-heading">
+                    <span class="tpe-service-eyebrow">COMMUNICATION</span>
+                    <h2>Préférences de contact</h2>
+                    <p>Définissez les canaux que vous souhaitez privilégier.</p>
+                </div>
+
+                <label class="tpe-profile-preference">
+                    <span>
+                        <strong>Notifications par e-mail</strong>
+                        <small>Confirmations et informations concernant vos dossiers.</small>
+                    </span>
+                    <input type="checkbox" id="preferenceEmail" checked>
+                </label>
+
+                <label class="tpe-profile-preference">
+                    <span>
+                        <strong>Confirmations par SMS</strong>
+                        <small>Informations liées à vos rendez-vous.</small>
+                    </span>
+                    <input type="checkbox" id="preferenceSms" checked>
+                </label>
+
+                <label class="tpe-profile-preference">
+                    <span>
+                        <strong>Notifications DATENSIS</strong>
+                        <small>Évolutions et mises à jour de vos missions.</small>
+                    </span>
+                    <input type="checkbox" id="preferenceNotifications" checked>
+                </label>
+
+                <p class="tpe-service-feedback" id="preferencesFeedback" role="status" aria-live="polite"></p>
+            </section>
+
+            <section class="tpe-service-panel">
+                <div class="tpe-service-panel-heading">
+                    <span class="tpe-service-eyebrow">PROTECTION DU COMPTE</span>
+                    <h2>Sécurité</h2>
+                    <p>Consultez les options de protection de votre compte.</p>
+                </div>
+
+                <div class="tpe-profile-security-row">
+                    <div>
+                        <strong>Mot de passe</strong>
+                        <small>Modification simulée dans cette version.</small>
+                    </div>
+                    <button type="button" class="tpe-service-secondary" id="openPasswordModal">
+                        Modifier
+                    </button>
+                </div>
+
+                <div class="tpe-profile-security-row">
+                    <div>
+                        <strong>Sessions actives</strong>
+                        <small>Gestion des sessions non connectée à Flask.</small>
+                    </div>
+                    <button type="button" class="tpe-service-secondary" id="showProfileSessions">
+                        Voir les sessions
+                    </button>
+                </div>
+
+                <p class="tpe-service-feedback" id="securityFeedback" role="status" aria-live="polite"></p>
+            </section>
+
+        </div>
+
+        <footer class="tpe-service-footer">
+            <span>DATENSIS · Espace Indépendants & TPE</span>
+            <span>Profil de démonstration</span>
+        </footer>
+
+    </main>
+</div>
+
+<!-- MODAL DE MOT DE PASSE : DÉMONSTRATION -->
+<div class="tpe-service-overlay" id="passwordModal" hidden>
+    <section class="tpe-profile-password-modal" role="dialog" aria-modal="true"
+             aria-labelledby="passwordModalTitle">
+        <div class="tpe-support-drawer-header">
+            <div>
+                <span class="tpe-service-eyebrow">SÉCURITÉ</span>
+                <h2 id="passwordModalTitle">Modifier mon mot de passe</h2>
+            </div>
+            <button type="button" class="tpe-service-close" id="closePasswordModal"
+                    aria-label="Fermer">×</button>
+        </div>
+
+        <p class="tpe-profile-password-notice">
+            Démonstration uniquement : aucun mot de passe n'est modifié ni envoyé au serveur.
+        </p>
+
+        <form id="passwordForm" class="tpe-service-form">
+            <div class="tpe-service-field full">
+                <label for="newProfilePassword">Nouveau mot de passe</label>
+                <input type="password" id="newProfilePassword" required minlength="12"
+                       autocomplete="new-password">
+                <small>12 caractères minimum, dont une majuscule, un chiffre et un caractère spécial.</small>
+            </div>
+
+            <div class="tpe-service-field full">
+                <label for="confirmProfilePassword">Confirmer le mot de passe</label>
+                <input type="password" id="confirmProfilePassword" required
+                       autocomplete="new-password">
+            </div>
+
+            <div class="tpe-service-form-actions">
+                <button type="button" class="tpe-service-secondary" id="cancelPasswordModal">
+                    Annuler
+                </button>
+                <button type="submit" class="tpe-service-primary">
+                    Vérifier les informations
+                </button>
+            </div>
+
+            <p id="passwordFeedback" class="tpe-service-feedback" role="status" aria-live="polite"></p>
+        </form>
+    </section>
+</div>
+
+<script src="{{ url_for('static', filename='js/tpe.js') }}"></script>
+</body>
+</html>

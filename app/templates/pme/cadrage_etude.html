@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Cadrage & étude</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+{% include "pme/header_pme.html" %}
+
+<main class="pme-public-page">
+
+    <!-- =====================================================
+         HERO
+         ===================================================== -->
+
+    <section class="pme-service-hero">
+
+        <div class="pme-service-hero-content">
+
+            <p class="eyebrow">
+                PME & ETI
+            </p>
+
+            <h1>
+                Cadrage & étude
+            </h1>
+
+            <p class="pme-service-description">
+                Structurez votre besoin, identifiez vos contraintes
+                et définissez les priorités avant de lancer
+                votre projet.
+            </p>
+
+            <div class="pme-service-actions">
+
+                <a href="#cadrage-form"
+                   class="home-btn-primary">
+                    Commencer le cadrage
+                </a>
+
+                <a href="{{ url_for('main.pme_accueil') }}"
+                   class="home-btn-secondary">
+                    Retour à l'accueil PME
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="pme-service-hero-panel">
+
+            <span class="hero-panel-label">
+                Votre parcours
+            </span>
+
+
+            <div class="hero-step">
+
+                <strong>01</strong>
+
+                <div>
+                    <h3>Cartographier</h3>
+
+                    <p>
+                        Identifiez les équipes, sites
+                        et processus concernés.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="hero-step">
+
+                <strong>02</strong>
+
+                <div>
+                    <h3>Cadrer</h3>
+
+                    <p>
+                        Définissez les contraintes
+                        et le périmètre.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="hero-step">
+
+                <strong>03</strong>
+
+                <div>
+                    <h3>Prioriser</h3>
+
+                    <p>
+                        Identifiez les actions
+                        les plus importantes.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         PARCOURS
+         ===================================================== -->
+
+    <section class="process-section public-process-section">
+
+        <div class="section-heading">
+
+            <p class="eyebrow">
+                Préparer votre projet
+            </p>
+
+            <h2>
+                Un cadrage en trois étapes
+            </h2>
+
+            <p>
+                Avancez progressivement afin de construire
+                un périmètre cohérent avant de comparer
+                les solutions.
+            </p>
+
+        </div>
+
+
+        <div class="process-steps">
+
+            <article class="process-step active">
+
+                <span class="process-number">
+                    01
+                </span>
+
+                <h3>
+                    Cartographier le besoin
+                </h3>
+
+                <p>
+                    Identifiez les équipes,
+                    sites et processus concernés.
+                </p>
+
+            </article>
+
+
+            <article class="process-step">
+
+                <span class="process-number">
+                    02
+                </span>
+
+                <h3>
+                    Cadrer les contraintes
+                </h3>
+
+                <p>
+                    Prenez en compte les contraintes
+                    techniques, organisationnelles
+                    et calendaires.
+                </p>
+
+            </article>
+
+
+            <article class="process-step">
+
+                <span class="process-number">
+                    03
+                </span>
+
+                <h3>
+                    Prioriser et décider
+                </h3>
+
+                <p>
+                    Définissez les priorités
+                    et le périmètre du projet.
+                </p>
+
+            </article>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         FORMULAIRE
+         ===================================================== -->
+
+    <section class="public-journey-layout"
+             id="cadrage-form">
+
+        <article class="dashboard-card">
+
+            <div class="card-heading">
+
+                <div>
+
+                    <p class="eyebrow">
+                        Étape 1
+                    </p>
+
+                    <h2>
+                        Cartographier votre besoin
+                    </h2>
+
+                    <p>
+                        Décrivez l'organisation concernée
+                        par votre projet.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <form id="pmeCadrageForm"
+                  class="journey-form">
+
+                <div class="form-group">
+
+                    <label for="projectName">
+                        Nom du projet
+                    </label>
+
+                    <input
+                        type="text"
+                        id="projectName"
+                        name="projectName"
+                        placeholder="Ex. Digitalisation des processus"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="projectNeed">
+                        Besoin principal
+                    </label>
+
+                    <select id="projectNeed"
+                            name="projectNeed"
+                            required>
+
+                        <option value="">
+                            Sélectionnez un besoin
+                        </option>
+
+                        <option>
+                            Digitalisation de processus
+                        </option>
+
+                        <option>
+                            Déploiement multi-sites
+                        </option>
+
+                        <option>
+                            Centralisation documentaire
+                        </option>
+
+                        <option>
+                            Reporting et pilotage
+                        </option>
+
+                        <option>
+                            Organisation des outils
+                        </option>
+
+                        <option>
+                            Autre
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="projectSites">
+                        Nombre de sites concernés
+                    </label>
+
+                    <select id="projectSites"
+                            name="projectSites">
+
+                        <option>
+                            1 site
+                        </option>
+
+                        <option>
+                            2 à 5 sites
+                        </option>
+
+                        <option>
+                            6 à 10 sites
+                        </option>
+
+                        <option>
+                            Plus de 10 sites
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="projectTeams">
+                        Équipes concernées
+                    </label>
+
+                    <input
+                        type="text"
+                        id="projectTeams"
+                        name="projectTeams"
+                        placeholder="Ex. Direction, RH, finance, production..."
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="projectContext">
+                        Contexte actuel
+                    </label>
+
+                    <textarea
+                        id="projectContext"
+                        name="projectContext"
+                        rows="6"
+                        placeholder="Décrivez l'organisation actuelle et les difficultés rencontrées..."
+                        required
+                    ></textarea>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="projectGoal">
+                        Objectif principal
+                    </label>
+
+                    <textarea
+                        id="projectGoal"
+                        name="projectGoal"
+                        rows="5"
+                        placeholder="Quel résultat souhaitez-vous obtenir ?"
+                        required
+                    ></textarea>
+
+                </div>
+
+
+                <div class="card-actions">
+
+                    <a href="{{ url_for('main.pme_accueil') }}"
+                       class="btn-secondary">
+                        Retour
+                    </a>
+
+                    <button type="submit"
+                            class="btn-primary">
+                        Continuer
+                    </button>
+
+                </div>
+
+            </form>
+
+        </article>
+
+
+        <!-- AIDE -->
+
+        <aside class="dashboard-card pme-study-help">
+
+            <div class="card-heading">
+
+                <div>
+
+                    <p class="eyebrow">
+                        Pourquoi cadrer ?
+                    </p>
+
+                    <h2>
+                        Définir un périmètre réaliste
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <p>
+                Le cadrage permet de clarifier le projet
+                avant de comparer les solutions
+                et d'organiser le déploiement.
+            </p>
+
+
+            <div class="info-box">
+
+                <strong>
+                    À identifier
+                </strong>
+
+                <p>
+                    Sites, équipes, outils existants,
+                    dépendances, contraintes et objectifs.
+                </p>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <strong>
+                    Exemple PME
+                </strong>
+
+                <p>
+                    Une entreprise souhaite harmoniser
+                    ses outils documentaires entre son siège
+                    et plusieurs agences.
+                </p>
+
+            </div>
+
+        </aside>
+
+    </section>
+
+
+    <!-- =====================================================
+         SUITE
+         ===================================================== -->
+
+    <section class="pme-next-step">
+
+        <div>
+
+            <p class="eyebrow">
+                Étape suivante
+            </p>
+
+            <h2>
+                Comparez les solutions adaptées
+            </h2>
+
+            <p>
+                Une fois le périmètre défini,
+                découvrez les approches possibles
+                pour organiser votre déploiement.
+            </p>
+
+        </div>
+
+
+        <div class="pme-next-links">
+
+            <a href="{{ url_for('main.pme_solutions_deploiement') }}"
+               class="home-btn-primary">
+                Voir Solutions & déploiement
+            </a>
+
+            <a href="{{ url_for('main.pme_creation_compte') }}"
+               class="home-btn-secondary">
+                Créer mon compte
+            </a>
+
+        </div>
+
+    </section>
+
+</main>
+
+{% include "footer.html" %}
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+</body>
+
+</html>

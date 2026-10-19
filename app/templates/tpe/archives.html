@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Archives - DATENSIS</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    {% include "header.html" %}
+
+    <main class="dashboard-page">
+
+        <section class="dashboard-intro">
+
+            <div>
+
+                <p class="eyebrow">
+                    Indépendants & TPE
+                </p>
+
+                <h1>
+                    Archives
+                </h1>
+
+                <p>
+                    Retrouvez les projets, études et interventions
+                    qui ne sont plus actifs.
+                </p>
+
+            </div>
+
+            <a href="{{ url_for('main.tpe_dashboard') }}"
+               class="btn-secondary">
+                Retour au tableau de bord
+            </a>
+
+        </section>
+
+
+        <section class="archive-grid">
+
+            <article class="archive-card">
+
+                <span class="status status-success">
+                    Terminé
+                </span>
+
+                <h2>
+                    Installation messagerie
+                </h2>
+
+                <p>
+                    Projet finalisé en août 2026.
+                </p>
+
+                <div class="archive-meta">
+
+                    <span>
+                        5 documents
+                    </span>
+
+                    <span>
+                        Projet
+                    </span>
+
+                </div>
+
+                <button type="button"
+                        class="btn-secondary">
+                    Consulter l'archive
+                </button>
+
+            </article>
+
+
+            <article class="archive-card">
+
+                <span class="status status-success">
+                    Clôturé
+                </span>
+
+                <h2>
+                    Assistance poste direction
+                </h2>
+
+                <p>
+                    Intervention terminée en mai 2026.
+                </p>
+
+                <div class="archive-meta">
+
+                    <span>
+                        2 documents
+                    </span>
+
+                    <span>
+                        Support
+                    </span>
+
+                </div>
+
+                <button type="button"
+                        class="btn-secondary">
+                    Consulter l'archive
+                </button>
+
+            </article>
+
+
+            <article class="archive-card">
+
+                <span class="status status-success">
+                    Étude terminée
+                </span>
+
+                <h2>
+                    Sauvegarde documentaire
+                </h2>
+
+                <p>
+                    Étude réalisée en mars 2026.
+                </p>
+
+                <div class="archive-meta">
+
+                    <span>
+                        3 documents
+                    </span>
+
+                    <span>
+                        Étude
+                    </span>
+
+                </div>
+
+                <button type="button"
+                        class="btn-secondary">
+                    Consulter l'archive
+                </button>
+
+            </article>
+
+        </section>
+
+    </main>
+
+    {% include "footer.html" %}
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+</body>
+
+</html>

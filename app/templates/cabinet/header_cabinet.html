@@ -1,0 +1,55 @@
+<header class="cabinet-home-header">
+
+    <div class="cabinet-home-header-inner">
+
+        <!-- Identité -->
+        <a href="{{ url_for('main.cabinet_accueil') }}"class="cabinet-home-brand">
+
+            <span class="cabinet-home-brand-icon">
+                D
+            </span>
+
+            <span class="cabinet-home-brand-text">
+                <strong>DATENSIS</strong>
+                <small>Cabinet partenaire</small>
+            </span>
+
+        </a>
+
+
+        <!-- Navigation -->
+        <nav class="cabinet-home-nav"
+             aria-label="Navigation Cabinet">
+
+            <a href="{{ url_for('main.cabinet_accueil') }}">
+                Accueil
+            </a>
+
+            <a href="{{ url_for('main.cabinet_qualification_besoin') }}">
+                Qualification du besoin
+            </a>
+
+            <a href="{{ url_for('main.cabinet_mise_en_relation') }}">
+                Mise en relation
+            </a>
+
+            <a href="{{ url_for('main.cabinet_suivi_partenariat') }}">
+                Suivi du partenariat
+            </a>
+
+        </nav>
+
+
+        <!-- Compte -->
+        <div class="cabinet-home-header-actions">
+
+            <a href="{{ url_for('main.cabinet_creation_compte') }}"
+               class="cabinet-home-account">
+                Créer un compte
+            </a>
+
+        </div>
+
+    </div>
+
+</header>

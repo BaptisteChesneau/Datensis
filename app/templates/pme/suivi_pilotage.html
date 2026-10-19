@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Suivi & pilotage</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+{% include "pme/header_pme.html" %}
+
+<main class="pme-public-page">
+
+    <!-- =====================================================
+         HERO
+         ===================================================== -->
+
+    <section class="pme-service-hero">
+
+        <div class="pme-service-hero-content">
+
+            <p class="eyebrow">
+                PME & ETI
+            </p>
+
+            <h1>
+                Suivi & pilotage
+            </h1>
+
+            <p class="pme-service-description">
+                Centralisez le suivi de vos projets,
+                visualisez leur avancement et identifiez
+                rapidement les prochaines actions.
+            </p>
+
+
+            <div class="pme-service-actions">
+
+                <a href="#pilotage-demo"
+                   class="home-btn-primary">
+                    Découvrir le pilotage
+                </a>
+
+                <a href="{{ url_for('main.pme_accueil') }}"
+                   class="home-btn-secondary">
+                    Retour à l'accueil PME
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="pme-service-hero-panel">
+
+            <span class="hero-panel-label">
+                Pilotage
+            </span>
+
+
+            <div class="hero-step">
+
+                <strong>01</strong>
+
+                <div>
+                    <h3>Centraliser</h3>
+
+                    <p>
+                        Regroupez les informations
+                        essentielles du projet.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="hero-step">
+
+                <strong>02</strong>
+
+                <div>
+                    <h3>Mesurer</h3>
+
+                    <p>
+                        Visualisez les étapes
+                        et les indicateurs.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="hero-step">
+
+                <strong>03</strong>
+
+                <div>
+                    <h3>Décider</h3>
+
+                    <p>
+                        Identifiez les prochaines
+                        actions prioritaires.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         FONCTIONNEMENT
+         ===================================================== -->
+
+    <section class="process-section public-process-section">
+
+        <div class="section-heading">
+
+            <p class="eyebrow">
+                Une vision claire
+            </p>
+
+            <h2>
+                Pilotez vos projets plus simplement
+            </h2>
+
+            <p>
+                Le suivi DATENSIS permet de conserver
+                une vision globale des étapes,
+                validations et actions restantes.
+            </p>
+
+        </div>
+
+
+        <div class="process-steps">
+
+            <article class="process-step active">
+
+                <span class="process-number">
+                    01
+                </span>
+
+                <h3>
+                    Avancement
+                </h3>
+
+                <p>
+                    Visualisez rapidement
+                    la progression du projet.
+                </p>
+
+            </article>
+
+
+            <article class="process-step">
+
+                <span class="process-number">
+                    02
+                </span>
+
+                <h3>
+                    Validations
+                </h3>
+
+                <p>
+                    Identifiez les décisions
+                    et documents à valider.
+                </p>
+
+            </article>
+
+
+            <article class="process-step">
+
+                <span class="process-number">
+                    03
+                </span>
+
+                <h3>
+                    Prochaines actions
+                </h3>
+
+                <p>
+                    Retrouvez les actions prioritaires
+                    et les prochaines étapes.
+                </p>
+
+            </article>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         DÉMONSTRATION PILOTAGE
+         ===================================================== -->
+
+    <section class="pme-pilotage-demo"
+             id="pilotage-demo">
+
+        <div class="section-heading">
+
+            <p class="eyebrow">
+                Exemple de tableau de pilotage
+            </p>
+
+            <h2>
+                Digitalisation des processus
+            </h2>
+
+            <p>
+                Les informations ci-dessous illustrent
+                la présentation possible d'un projet
+                dans votre futur espace DATENSIS.
+            </p>
+
+        </div>
+
+
+        <!-- KPI -->
+
+        <div class="pme-public-kpi-grid">
+
+            <article class="pme-public-kpi">
+
+                <span>
+                    Avancement
+                </span>
+
+                <strong>
+                    68 %
+                </strong>
+
+                <small>
+                    Exemple
+                </small>
+
+            </article>
+
+
+            <article class="pme-public-kpi">
+
+                <span>
+                    Étapes terminées
+                </span>
+
+                <strong>
+                    3 / 5
+                </strong>
+
+                <small>
+                    Exemple
+                </small>
+
+            </article>
+
+
+            <article class="pme-public-kpi">
+
+                <span>
+                    Actions ouvertes
+                </span>
+
+                <strong>
+                    4
+                </strong>
+
+                <small>
+                    Exemple
+                </small>
+
+            </article>
+
+
+            <article class="pme-public-kpi">
+
+                <span>
+                    Documents à valider
+                </span>
+
+                <strong>
+                    2
+                </strong>
+
+                <small>
+                    Exemple
+                </small>
+
+            </article>
+
+        </div>
+
+
+        <!-- PROGRESSION -->
+
+        <div class="public-progress-card">
+
+            <div class="public-progress-heading">
+
+                <div>
+
+                    <span class="public-progress-label">
+                        Projet exemple
+                    </span>
+
+                    <h3>
+                        Déploiement multi-sites
+                    </h3>
+
+                    <p>
+                        Exemple de progression
+                        d'un projet PME.
+                    </p>
+
+                </div>
+
+
+                <span class="public-progress-value">
+                    68 %
+                </span>
+
+            </div>
+
+
+            <div class="progress progress-large">
+
+                <div class="progress-bar"
+                     style="width: 68%;">
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ÉTAPES -->
+
+        <div class="public-tracking-grid">
+
+            <article class="public-tracking-step completed">
+
+                <div class="tracking-marker">
+                    ✓
+                </div>
+
+                <div>
+
+                    <span class="tracking-label">
+                        Terminé
+                    </span>
+
+                    <h3>
+                        Cadrage du besoin
+                    </h3>
+
+                    <p>
+                        Le périmètre du projet
+                        a été validé.
+                    </p>
+
+                </div>
+
+            </article>
+
+
+            <article class="public-tracking-step completed">
+
+                <div class="tracking-marker">
+                    ✓
+                </div>
+
+                <div>
+
+                    <span class="tracking-label">
+                        Terminé
+                    </span>
+
+                    <h3>
+                        Choix de la solution
+                    </h3>
+
+                    <p>
+                        La solution de déploiement
+                        a été sélectionnée.
+                    </p>
+
+                </div>
+
+            </article>
+
+
+            <article class="public-tracking-step completed">
+
+                <div class="tracking-marker">
+                    ✓
+                </div>
+
+                <div>
+
+                    <span class="tracking-label">
+                        Terminé
+                    </span>
+
+                    <h3>
+                        Préparation
+                    </h3>
+
+                    <p>
+                        Les équipes et les sites
+                        ont été préparés.
+                    </p>
+
+                </div>
+
+            </article>
+
+
+            <article class="public-tracking-step active">
+
+                <div class="tracking-marker">
+                    04
+                </div>
+
+                <div>
+
+                    <span class="tracking-label">
+                        Étape actuelle
+                    </span>
+
+                    <h3>
+                        Déploiement
+                    </h3>
+
+                    <p>
+                        La solution est progressivement
+                        déployée sur les différents sites.
+                    </p>
+
+                </div>
+
+            </article>
+
+
+            <article class="public-tracking-step">
+
+                <div class="tracking-marker">
+                    05
+                </div>
+
+                <div>
+
+                    <span class="tracking-label">
+                        À venir
+                    </span>
+
+                    <h3>
+                        Validation & continuité
+                    </h3>
+
+                    <p>
+                        Contrôle final,
+                        validation et organisation du suivi.
+                    </p>
+
+                </div>
+
+            </article>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         AVANTAGES
+         ===================================================== -->
+
+    <section class="public-support-grid">
+
+        <article class="public-support-card">
+
+            <span class="public-support-number">
+                01
+            </span>
+
+            <h2>
+                Pilotage centralisé
+            </h2>
+
+            <p>
+                Regroupez les informations essentielles
+                de vos projets au même endroit.
+            </p>
+
+        </article>
+
+
+        <article class="public-support-card">
+
+            <span class="public-support-number">
+                02
+            </span>
+
+            <h2>
+                Priorités visibles
+            </h2>
+
+            <p>
+                Identifiez rapidement
+                les validations et actions à traiter.
+            </p>
+
+        </article>
+
+
+        <article class="public-support-card">
+
+            <span class="public-support-number">
+                03
+            </span>
+
+            <h2>
+                Accompagnement
+            </h2>
+
+            <p>
+                Retrouvez votre interlocuteur DATENSIS
+                lorsque vous avez besoin d'assistance.
+            </p>
+
+        </article>
+
+    </section>
+
+
+    <!-- =====================================================
+         CTA
+         ===================================================== -->
+
+    <section class="pme-next-step">
+
+        <div>
+
+            <p class="eyebrow">
+                Votre espace PME
+            </p>
+
+            <h2>
+                Accédez au suivi réel après connexion
+            </h2>
+
+            <p>
+                Créez votre compte pour retrouver
+                vos vrais projets, indicateurs,
+                documents et actions.
+            </p>
+
+        </div>
+
+
+        <div class="pme-next-links">
+
+            <a href="{{ url_for('main.contact') }}"
+               class="home-btn-secondary">
+                Poser une question
+            </a>
+
+            <a href="{{ url_for('main.pme_creation_compte') }}"
+               class="home-btn-primary">
+                Créer mon compte
+            </a>
+
+        </div>
+
+    </section>
+
+</main>
+
+{% include "footer.html" %}
+
+<script src="{{ url_for('static', filename='js/global.js') }}"></script>
+<script src="{{ url_for('static', filename='js/pme.js') }}"></script>
+
+</body>
+
+</html>

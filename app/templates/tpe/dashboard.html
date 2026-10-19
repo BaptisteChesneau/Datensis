@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon espace Indépendants & TPE</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="tpe-dashboard-page">
+
+<div class="tpe-workspace">
+
+    <!-- NAVIGATION PRIVÉE -->
+    <aside class="tpe-workspace-sidebar">
+
+        <a href="{{ url_for('main.tpe_dashboard') }}" class="tpe-workspace-logo">
+            <span class="tpe-workspace-logo-icon">D</span>
+            <span>
+                <strong>DATENSIS</strong>
+                <small>Espace Indépendants & TPE</small>
+            </span>
+        </a>
+
+        <div class="tpe-workspace-sidebar-label">MON ACTIVITÉ</div>
+
+        <nav class="tpe-workspace-menu" aria-label="Navigation de mon espace">
+
+            <a href="{{ url_for('main.tpe_dashboard') }}" class="active" aria-current="page">
+                <span class="tpe-menu-icon">▦</span>
+                Vue d'ensemble
+            </a>
+
+            <a href="{{ url_for('main.tpe_demandes') }}">
+                <span class="tpe-menu-icon">▤</span>
+                Mes demandes
+            </a>
+
+            <a href="{{ url_for('main.tpe_projets') }}">
+                <span class="tpe-menu-icon">◫</span>
+                Mes dossiers
+            </a>
+
+            <a href="{{ url_for('main.tpe_documents') }}">
+                <span class="tpe-menu-icon">▧</span>
+                Mes documents
+            </a>
+
+            <a href="{{ url_for('main.tpe_factures') }}">
+                <span class="tpe-menu-icon">▣</span>
+                Mes factures
+            </a>
+
+        </nav>
+
+        <div class="tpe-workspace-sidebar-label">MON COMPTE</div>
+
+        <nav class="tpe-workspace-menu" aria-label="Gestion de mon compte">
+
+            <a href="{{ url_for('main.tpe_support') }}">
+                <span class="tpe-menu-icon">◉</span>
+                Assistance
+            </a>
+
+            <a href="{{ url_for('main.tpe_profil') }}">
+                <span class="tpe-menu-icon">◇</span>
+                Mon profil
+            </a>
+
+        </nav>
+
+        <div class="tpe-workspace-sidebar-bottom">
+
+            <div class="tpe-workspace-contact">
+                <span class="tpe-contact-indicator"></span>
+                <div>
+                    <strong>Besoin d'un accompagnement ?</strong>
+                    <p>Retrouvez votre interlocuteur DATENSIS.</p>
+                </div>
+                <a href="{{ url_for('main.tpe_support') }}">
+                    Contacter l'équipe →
+                </a>
+            </div>
+
+            <a href="{{ url_for('main.tpe_accueil') }}" class="tpe-workspace-exit">
+                ← Retour au site TPE
+            </a>
+
+        </div>
+
+    </aside>
+
+    <!-- CONTENU -->
+    <main class="tpe-workspace-main">
+
+        <!-- EN-TÊTE -->
+        <header class="tpe-workspace-topbar">
+
+            <div>
+                <p class="tpe-workspace-breadcrumb">
+                    Mon espace / Vue d'ensemble
+                </p>
+
+                <h1>Bonjour, bienvenue dans votre espace</h1>
+
+                <p class="tpe-workspace-subtitle">
+                    Gardez une vision claire de vos dossiers et des actions à réaliser.
+                </p>
+            </div>
+
+            <div class="tpe-workspace-topbar-actions">
+                <a href="{{ url_for('main.tpe_profil') }}" class="tpe-workspace-user">
+                    <span class="tpe-workspace-user-avatar">U</span>
+                    <span>Mon compte</span>
+                </a>
+
+                <a href="{{ url_for('main.tpe_demandes') }}" class="tpe-workspace-primary-btn">
+                    + Nouvelle demande
+                </a>
+            </div>
+
+        </header>
+
+        <!-- PRIORITÉ -->
+        <section class="tpe-priority-card">
+
+            <div class="tpe-priority-content">
+                <span class="tpe-priority-eyebrow">
+                    ACTION PRIORITAIRE · EXEMPLE
+                </span>
+
+                <h2>Un document est attendu pour votre dossier</h2>
+
+                <p>
+                    Votre dossier de renouvellement de matériel nécessite
+                    une pièce complémentaire pour poursuivre son traitement.
+                </p>
+
+                <a href="{{ url_for('main.tpe_documents') }}" class="tpe-priority-button">
+                    Consulter mes documents →
+                </a>
+            </div>
+
+            <div class="tpe-priority-visual" aria-hidden="true">
+                <div class="tpe-priority-visual-circle">
+                    <span>!</span>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- INDICATEURS -->
+        <section class="tpe-workspace-section">
+
+            <div class="tpe-section-heading">
+                <div>
+                    <span class="tpe-section-eyebrow">VOTRE SITUATION</span>
+                    <h2>L'essentiel de votre activité</h2>
+                </div>
+
+                <span class="tpe-demo-note">Données de démonstration</span>
+            </div>
+
+            <div class="tpe-activity-grid">
+
+                <a href="{{ url_for('main.tpe_demandes') }}" class="tpe-activity-card">
+                    <span class="tpe-activity-icon coral">▤</span>
+                    <span class="tpe-activity-label">Demandes ouvertes</span>
+                    <strong class="tpe-activity-value">03</strong>
+                    <span class="tpe-activity-link">Consulter mes demandes →</span>
+                </a>
+
+                <a href="{{ url_for('main.tpe_projets') }}" class="tpe-activity-card">
+                    <span class="tpe-activity-icon petrol">◫</span>
+                    <span class="tpe-activity-label">Dossiers accompagnés</span>
+                    <strong class="tpe-activity-value">02</strong>
+                    <span class="tpe-activity-link">Voir mes dossiers →</span>
+                </a>
+
+                <a href="{{ url_for('main.tpe_documents') }}" class="tpe-activity-card">
+                    <span class="tpe-activity-icon mint">▧</span>
+                    <span class="tpe-activity-label">Documents à transmettre</span>
+                    <strong class="tpe-activity-value">01</strong>
+                    <span class="tpe-activity-link">Gérer mes documents →</span>
+                </a>
+
+                <a href="{{ url_for('main.tpe_suivi') }}" class="tpe-activity-card">
+                    <span class="tpe-activity-icon amber">◷</span>
+                    <span class="tpe-activity-label">Actions à effectuer</span>
+                    <strong class="tpe-activity-value">02</strong>
+                    <span class="tpe-activity-link">Consulter le suivi →</span>
+                </a>
+
+            </div>
+
+        </section>
+
+        <!-- DOSSIERS ET ACTIONS -->
+        <section class="tpe-workspace-content-grid">
+
+            <article class="tpe-workspace-panel">
+
+                <div class="tpe-panel-header">
+                    <div>
+                        <span class="tpe-section-eyebrow">ACCOMPAGNEMENT</span>
+                        <h2>Mes dossiers en cours</h2>
+                        <p>Retrouvez les missions suivies par DATENSIS.</p>
+                    </div>
+
+                    <a href="{{ url_for('main.tpe_projets') }}">Tout voir →</a>
+                </div>
+
+                <div class="tpe-case-list">
+
+                    <div class="tpe-case-item">
+                        <div class="tpe-case-top">
+                            <div class="tpe-case-symbol">01</div>
+                            <div class="tpe-case-info">
+                                <strong>Renouvellement du matériel informatique</strong>
+                                <span>Analyse du besoin et préparation du déploiement</span>
+                            </div>
+                        </div>
+
+                        <div class="tpe-case-progress-heading">
+                            <span>Avancement du dossier</span>
+                            <strong>65 %</strong>
+                        </div>
+
+                        <div class="tpe-case-progress">
+                            <div style="width: 65%;"></div>
+                        </div>
+
+                        <span class="tpe-case-status in-progress">En cours</span>
+                    </div>
+
+                    <div class="tpe-case-item">
+                        <div class="tpe-case-top">
+                            <div class="tpe-case-symbol">02</div>
+                            <div class="tpe-case-info">
+                                <strong>Organisation des documents professionnels</strong>
+                                <span>Étude des besoins et classement des fichiers</span>
+                            </div>
+                        </div>
+
+                        <div class="tpe-case-progress-heading">
+                            <span>Avancement du dossier</span>
+                            <strong>30 %</strong>
+                        </div>
+
+                        <div class="tpe-case-progress">
+                            <div style="width: 30%;"></div>
+                        </div>
+
+                        <span class="tpe-case-status review">Étude initiale</span>
+                    </div>
+
+                </div>
+
+                <a href="{{ url_for('main.tpe_projets') }}" class="tpe-panel-bottom-link">
+                    Accéder à tous mes dossiers →
+                </a>
+
+            </article>
+
+            <article class="tpe-workspace-panel">
+
+                <div class="tpe-panel-header">
+                    <div>
+                        <span class="tpe-section-eyebrow">À FAIRE</span>
+                        <h2>Mes prochaines actions</h2>
+                        <p>Les étapes qui nécessitent votre intervention.</p>
+                    </div>
+                </div>
+
+                <div class="tpe-task-list">
+
+                    <div class="tpe-task-item">
+                        <span class="tpe-task-number">01</span>
+
+                        <div>
+                            <strong>Transmettre un justificatif</strong>
+                            <p>Document complémentaire pour le dossier matériel.</p>
+                            <span class="tpe-task-badge urgent">À traiter</span>
+                        </div>
+
+                        <a href="{{ url_for('main.tpe_documents') }}" aria-label="Consulter les documents">
+                            →
+                        </a>
+                    </div>
+
+                    <div class="tpe-task-item">
+                        <span class="tpe-task-number">02</span>
+
+                        <div>
+                            <strong>Consulter une proposition</strong>
+                            <p>Une proposition est disponible pour votre projet.</p>
+                            <span class="tpe-task-badge normal">À consulter</span>
+                        </div>
+
+                        <a href="{{ url_for('main.tpe_devis') }}" aria-label="Consulter les propositions">
+                            →
+                        </a>
+                    </div>
+
+                    <div class="tpe-task-item">
+                        <span class="tpe-task-number">03</span>
+
+                        <div>
+                            <strong>Assistance à l'installation</strong>
+                            <p>Votre demande d'assistance a été traitée.</p>
+                            <span class="tpe-task-badge completed">Terminée</span>
+                        </div>
+
+                        <a href="{{ url_for('main.tpe_demandes') }}" aria-label="Consulter les demandes">
+                            →
+                        </a>
+                    </div>
+
+                </div>
+
+            </article>
+
+        </section>
+
+        <!-- DOCUMENTS ET CONTACT -->
+        <section class="tpe-workspace-content-grid">
+
+            <article class="tpe-workspace-panel">
+
+                <div class="tpe-panel-header">
+                    <div>
+                        <span class="tpe-section-eyebrow">DOCUMENTS</span>
+                        <h2>Mes documents professionnels</h2>
+                        <p>Les éléments liés à vos dossiers.</p>
+                    </div>
+
+                    <a href="{{ url_for('main.tpe_documents') }}">Tout voir →</a>
+                </div>
+
+                <div class="tpe-document-list">
+
+                    <a href="{{ url_for('main.tpe_devis') }}" class="tpe-document-item">
+                        <span class="tpe-document-icon">PDF</span>
+
+                        <span class="tpe-document-info">
+                            <strong>Proposition d'accompagnement</strong>
+                            <small>Devis & propositions</small>
+                        </span>
+
+                        <span class="tpe-document-arrow">→</span>
+                    </a>
+
+                    <a href="{{ url_for('main.tpe_documents') }}" class="tpe-document-item">
+                        <span class="tpe-document-icon">DOC</span>
+
+                        <span class="tpe-document-info">
+                            <strong>Compte rendu de diagnostic</strong>
+                            <small>Documents du dossier</small>
+                        </span>
+
+                        <span class="tpe-document-arrow">→</span>
+                    </a>
+
+                    <a href="{{ url_for('main.tpe_factures') }}" class="tpe-document-item">
+                        <span class="tpe-document-icon">PDF</span>
+
+                        <span class="tpe-document-info">
+                            <strong>Document de facturation</strong>
+                            <small>Factures</small>
+                        </span>
+
+                        <span class="tpe-document-arrow">→</span>
+                    </a>
+
+                </div>
+
+            </article>
+
+            <article class="tpe-workspace-panel tpe-contact-panel">
+
+                <div class="tpe-panel-header">
+                    <div>
+                        <span class="tpe-section-eyebrow">RELATION CLIENT</span>
+                        <h2>Votre interlocuteur DATENSIS</h2>
+                        <p>Un accompagnement adapté à votre activité.</p>
+                    </div>
+                </div>
+
+                <div class="tpe-advisor">
+                    <div class="tpe-advisor-avatar">D</div>
+
+                    <div>
+                        <strong>Équipe DATENSIS</strong>
+                        <span>Accompagnement Indépendants & TPE</span>
+                    </div>
+                </div>
+
+                <p class="tpe-advisor-description">
+                    Une question sur un dossier, un document ou une demande ?
+                    Contactez l'équipe pour obtenir une réponse adaptée.
+                </p>
+
+                <a href="{{ url_for('main.tpe_support') }}" class="tpe-contact-button">
+                    Contacter mon interlocuteur →
+                </a>
+
+                <div class="tpe-contact-note">
+                    Vos échanges sont liés au suivi de vos demandes.
+                </div>
+
+            </article>
+
+        </section>
+
+        <!-- GESTION COURANTE -->
+        <section class="tpe-workspace-section">
+
+            <div class="tpe-section-heading">
+                <div>
+                    <span class="tpe-section-eyebrow">GESTION COURANTE</span>
+                    <h2>Retrouver mes informations</h2>
+                </div>
+            </div>
+
+            <div class="tpe-management-grid">
+
+                <a href="{{ url_for('main.tpe_devis') }}" class="tpe-management-card">
+                    <span>▤</span>
+                    <strong>Devis & propositions</strong>
+                    <small>Consulter les propositions reçues.</small>
+                    <span class="tpe-management-arrow">→</span>
+                </a>
+
+                <a href="{{ url_for('main.tpe_factures') }}" class="tpe-management-card">
+                    <span>▣</span>
+                    <strong>Factures</strong>
+                    <small>Retrouver les documents de facturation.</small>
+                    <span class="tpe-management-arrow">→</span>
+                </a>
+
+                <a href="{{ url_for('main.tpe_archives') }}" class="tpe-management-card">
+                    <span>◫</span>
+                    <strong>Archives</strong>
+                    <small>Consulter les dossiers terminés.</small>
+                    <span class="tpe-management-arrow">→</span>
+                </a>
+
+                <a href="{{ url_for('main.tpe_historique') }}" class="tpe-management-card">
+                    <span>◷</span>
+                    <strong>Historique</strong>
+                    <small>Retrouver les opérations précédentes.</small>
+                    <span class="tpe-management-arrow">→</span>
+                </a>
+
+            </div>
+
+        </section>
+
+        <footer class="tpe-workspace-footer">
+            <span>DATENSIS · Espace Indépendants & TPE</span>
+
+            <a href="{{ url_for('main.tpe_support') }}">
+                Assistance
+            </a>
+        </footer>
+
+    </main>
+
+</div>
+
+</body>
+</html>

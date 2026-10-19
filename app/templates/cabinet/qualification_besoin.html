@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Qualification du besoin | DATENSIS</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+{% include "cabinet/header_cabinet.html" %}
+
+<main class="cabinet-public-page">
+
+    <section class="cabinet-service-hero">
+
+        <div class="cabinet-service-hero-content">
+
+            <p class="eyebrow">
+                Cabinet partenaire
+            </p>
+
+            <h1>
+                Qualification du besoin client
+            </h1>
+
+            <p class="cabinet-service-description">
+                Structurez la demande de votre client
+                afin de préparer une transmission claire
+                et exploitable vers DATENSIS.
+            </p>
+
+            <div class="cabinet-service-actions">
+
+                <a href="#qualification-form"
+                   class="home-btn-primary">
+                    Commencer la qualification
+                </a>
+
+                <a href="{{ url_for('main.cabinet_accueil') }}"
+                   class="home-btn-secondary">
+                    Retour à l'accueil Cabinet
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="cabinet-service-hero-panel">
+
+            <span class="hero-panel-label">
+                Parcours partenaire
+            </span>
+
+            <div class="hero-step">
+
+                <strong>01</strong>
+
+                <div>
+                    <h3>Comprendre</h3>
+                    <p>Identifier le contexte et le besoin.</p>
+                </div>
+
+            </div>
+
+            <div class="hero-step">
+
+                <strong>02</strong>
+
+                <div>
+                    <h3>Qualifier</h3>
+                    <p>Évaluer le périmètre et la priorité.</p>
+                </div>
+
+            </div>
+
+            <div class="hero-step">
+
+                <strong>03</strong>
+
+                <div>
+                    <h3>Transmettre</h3>
+                    <p>Préparer une mise en relation claire.</p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="process-section public-process-section">
+
+        <div class="section-heading">
+
+            <p class="eyebrow">
+                Qualification
+            </p>
+
+            <h2>
+                Une opportunité bien structurée
+            </h2>
+
+            <p>
+                Avant la mise en relation, rassemblez les informations
+                permettant à DATENSIS de comprendre rapidement
+                la situation du client.
+            </p>
+
+        </div>
+
+
+        <div class="process-steps">
+
+            <article class="process-step active">
+
+                <span class="process-number">01</span>
+
+                <h3>
+                    Comprendre la demande
+                </h3>
+
+                <p>
+                    Identifiez le contexte, l'objectif
+                    et la problématique principale.
+                </p>
+
+            </article>
+
+            <article class="process-step">
+
+                <span class="process-number">02</span>
+
+                <h3>
+                    Qualifier l'opportunité
+                </h3>
+
+                <p>
+                    Évaluez le besoin, le périmètre
+                    et le niveau de priorité.
+                </p>
+
+            </article>
+
+            <article class="process-step">
+
+                <span class="process-number">03</span>
+
+                <h3>
+                    Préparer la transmission
+                </h3>
+
+                <p>
+                    Regroupez les informations utiles
+                    avant la mise en relation.
+                </p>
+
+            </article>
+
+        </div>
+
+    </section>
+
+
+    <section class="public-journey-layout"
+             id="qualification-form">
+
+        <article class="dashboard-card">
+
+            <div class="card-heading">
+
+                <div>
+
+                    <p class="eyebrow">
+                        Informations client
+                    </p>
+
+                    <h2>
+                        Qualifier le besoin
+                    </h2>
+
+                    <p>
+                        Renseignez les informations nécessaires
+                        pour préparer la transmission.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <form id="cabinetQualificationForm"
+                  class="journey-form">
+
+                <div class="form-group">
+
+                    <label for="clientCompany">
+                        Entreprise cliente
+                    </label>
+
+                    <input
+                        type="text"
+                        id="clientCompany"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="clientContact">
+                        Interlocuteur
+                    </label>
+
+                    <input
+                        type="text"
+                        id="clientContact"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="clientSector">
+                        Secteur
+                    </label>
+
+                    <select id="clientSector">
+
+                        <option>Tertiaire</option>
+                        <option>Agriculture</option>
+                        <option>Artisanat</option>
+                        <option>Commerce</option>
+                        <option>Industrie</option>
+                        <option>Autre</option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="clientNeed">
+                        Besoin identifié
+                    </label>
+
+                    <select id="clientNeed">
+
+                        <option>Digitalisation</option>
+                        <option>Organisation documentaire</option>
+                        <option>Équipement informatique</option>
+                        <option>Pilotage</option>
+                        <option>Automatisation</option>
+                        <option>Autre</option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="clientContext">
+                        Contexte
+                    </label>
+
+                    <textarea
+                        id="clientContext"
+                        rows="6"
+                        placeholder="Décrivez brièvement la situation du client..."
+                        required
+                    ></textarea>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="clientPriority">
+                        Niveau de priorité
+                    </label>
+
+                    <select id="clientPriority">
+
+                        <option>Normale</option>
+                        <option>Haute</option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="card-actions">
+
+                    <a href="{{ url_for('main.cabinet_accueil') }}"
+                       class="btn-secondary">
+                        Retour
+                    </a>
+
+                    <button type="submit"
+                            class="btn-primary">
+                        Préparer la transmission
+                    </button>
+
+                </div>
+
+            </form>
+
+        </article>
+
+
+        <aside class="dashboard-card cabinet-study-help">
+
+            <div class="card-heading">
+
+                <div>
+
+                    <p class="eyebrow">
+                        Avant de transmettre
+                    </p>
+
+                    <h2>
+                        Les informations essentielles
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <strong>
+                    À vérifier
+                </strong>
+
+                <p>
+                    Le besoin, le contexte, le niveau d'urgence
+                    et l'interlocuteur principal.
+                </p>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <strong>
+                    Objectif
+                </strong>
+
+                <p>
+                    Permettre à DATENSIS de comprendre rapidement
+                    la demande et d'organiser la prise en charge.
+                </p>
+
+            </div>
+
+        </aside>
+
+    </section>
+
+
+    <section class="cabinet-next-step">
+
+        <div>
+
+            <p class="eyebrow">
+                Étape suivante
+            </p>
+
+            <h2>
+                Préparer la mise en relation
+            </h2>
+
+            <p>
+                Une fois le besoin qualifié,
+                créez le dossier client
+                et préparez le premier échange.
+            </p>
+
+        </div>
+
+        <div class="cabinet-next-links">
+
+            <a href="{{ url_for('main.cabinet_mise_en_relation') }}"
+               class="home-btn-primary">
+                Passer à la mise en relation
+            </a>
+
+            <a href="{{ url_for('main.cabinet_creation_compte') }}"
+               class="home-btn-secondary">
+                Créer mon compte
+            </a>
+
+        </div>
+
+    </section>
+
+</main>
+
+{% include "footer.html" %}
+
+<script src="{{ url_for('static', filename='js/global.js') }}"></script>
+<script src="{{ url_for('static', filename='js/cabinet.js') }}"></script>
+
+</body>
+</html>

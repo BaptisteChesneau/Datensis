@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Aide & FAQ</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+{% include "header.html" %}
+
+<main class="faq-page">
+
+    <!-- =====================================================
+         HERO
+         ===================================================== -->
+
+    <section class="faq-hero">
+
+        <div class="faq-hero-content">
+
+            <p class="eyebrow">
+                Centre d'aide
+            </p>
+
+            <h1>
+                Comment pouvons-nous vous aider ?
+            </h1>
+
+            <p class="faq-hero-description">
+                Retrouvez les réponses aux questions les plus fréquentes
+                concernant votre compte, vos espaces DATENSIS,
+                vos projets, vos rendez-vous et vos échanges.
+            </p>
+
+
+            <div class="faq-search-box">
+
+                <span class="faq-search-icon">
+                    ?
+                </span>
+
+                <input
+                    type="search"
+                    id="faqSearch"
+                    placeholder="Rechercher une question..."
+                    autocomplete="off"
+                >
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         CATÉGORIES
+         ===================================================== -->
+
+    <section class="faq-categories">
+
+        <article class="faq-category-card coral">
+
+            <span class="faq-category-number">
+                01
+            </span>
+
+            <h2>
+                Compte & connexion
+            </h2>
+
+            <p>
+                Création de compte, mot de passe,
+                connexion et accès à votre espace.
+            </p>
+
+        </article>
+
+
+        <article class="faq-category-card petrol">
+
+            <span class="faq-category-number">
+                02
+            </span>
+
+            <h2>
+                Projets & suivi
+            </h2>
+
+            <p>
+                Demandes, projets, solutions,
+                déploiement et suivi d'avancement.
+            </p>
+
+        </article>
+
+
+        <article class="faq-category-card mint">
+
+            <span class="faq-category-number">
+                03
+            </span>
+
+            <h2>
+                Assistance & échanges
+            </h2>
+
+            <p>
+                Rendez-vous, messagerie,
+                support et contact DATENSIS.
+            </p>
+
+        </article>
+
+    </section>
+
+
+    <!-- =====================================================
+         FAQ
+         ===================================================== -->
+
+    <section class="faq-content">
+
+        <div class="faq-section-heading">
+
+            <p class="eyebrow">
+                Questions fréquentes
+            </p>
+
+            <h2>
+                Les réponses essentielles
+            </h2>
+
+            <p>
+                Cliquez sur une question pour afficher sa réponse.
+            </p>
+
+        </div>
+
+
+        <div class="faq-list"
+             id="faqList">
+
+
+            <!-- CRÉATION DE COMPTE -->
+
+            <details class="faq-item"
+                     data-search="creer compte création profil tpe pme cabinet">
+
+                <summary>
+
+                    <span class="faq-question-number">
+                        01
+                    </span>
+
+                    <span>
+                        Comment créer un compte ?
+                    </span>
+
+                    <span class="faq-plus">
+                        +
+                    </span>
+
+                </summary>
+
+
+                <div class="faq-answer">
+
+                    <p>
+                        La création de compte dépend désormais
+                        de l'espace que vous avez choisi.
+                    </p>
+
+                    <p>
+                        Depuis le portail DATENSIS, sélectionnez :
+                    </p>
+
+                    <ul>
+                        <li>Indépendants & TPE ;</li>
+                        <li>PME & ETI ;</li>
+                        <li>Cabinet d'expertise comptable.</li>
+                    </ul>
+
+                    <p>
+                        Une fois dans votre espace, cliquez sur
+                        <strong>Créer un compte</strong>.
+                        Le formulaire affiché correspond uniquement
+                        à votre profil.
+                    </p>
+
+                </div>
+
+            </details>
+
+
+            <!-- CONNEXION -->
+
+            <details class="faq-item"
+                     data-search="connexion connecter compte tpe pme cabinet email mot passe">
+
+                <summary>
+
+                    <span class="faq-question-number">
+                        02
+                    </span>
+
+                    <span>
+                        Comment me connecter à mon espace ?
+                    </span>
+
+                    <span class="faq-plus">
+                        +
+                    </span>
+
+                </summary>
+
+
+                <div class="faq-answer">
+
+                    <p>
+                        Chaque type d'utilisateur dispose de sa propre
+                        page de connexion.
+                    </p>
+
+                    <p>
+                        Accédez d'abord à votre espace depuis le portail
+                        DATENSIS, puis utilisez le lien
+                        <strong>Se connecter</strong>.
+                    </p>
+
+                    <p>
+                        Renseignez ensuite votre adresse e-mail
+                        et votre mot de passe.
+                    </p>
+
+                </div>
+
+            </details>
+
+
+            <!-- MOT DE PASSE -->
+
+            <details class="faq-item"
+                     data-search="mot de passe sécurité 12 caractères majuscule chiffre spécial">
+
+                <summary>
+
+                    <span class="faq-question-number">
+                        03
+                    </span>
+
+                    <span>
+                        Quelles sont les règles du mot de passe ?
+                    </span>
+
+                    <span class="faq-plus">
+                        +
+                    </span>
+
+                </summary>
+
+
+                <div class="faq-answer">
+
+                    <p>
+                        Pour renforcer la sécurité de votre compte,
+                        votre mot de passe doit contenir au minimum :
+                    </p>
+
+                    <ul>
+                        <li>12 caractères ;</li>
+                        <li>1 lettre majuscule ;</li>
+                        <li>1 chiffre ;</li>
+                        <li>1 caractère spécial.</li>
+                    </ul>
+
+                </div>
+
+            </details>
+
+
+            <!-- PROFILS -->
+
+            <details class="faq-item"
+                     data-search="différence tpe pme cabinet profil espace">
+
+                <summary>
+
+                    <span class="faq-question-number">
+                        04
+                    </span>
+
+                    <span>
+                        Quelle est la différence entre les espaces ?
+                    </span>
+
+                    <span class="faq-plus">
+                        +
+                    </span>
+
+                </summary>
+
+
+                <div class="faq-answer">
+
+                    <p>
+                        Chaque espace DATENSIS possède son propre
+                        parcours et ses propres fonctionnalités.
+                    </p>
+
+
+                    <div class="faq-profile-grid">
+
+                        <div>
+                            <strong>Indépendants & TPE</strong>
+
+                            <p>
+                                Étude & conseil, solutions,
+                                demandes et suivi de projet.
+                            </p>
+                        </div>
+
+
+                        <div>
+                            <strong>PME & ETI</strong>
+
+                            <p>
+                                Cadrage, déploiement,
+                                pilotage et gestion de plusieurs projets.
+                            </p>
+                        </div>
+
+
+                        <div>
+                            <strong>Cabinet</strong>
+
+                            <p>
+                                Qualification des besoins clients,
+                                mise en relation et suivi du partenariat.
+                            </p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </details>
+
+
+            <!-- RENDEZ-VOUS -->
+
+            <details class="faq-item"
+                     data-search="rendez vous rdv interlocuteur besoin date créneau">
+
+                <summary>
+
+                    <span class="faq-question-number">
+                        05
+                    </span>
+
+                    <span>
+                        Comment prendre rendez-vous ?
+                    </span>
+
+                    <span class="faq-plus">
+                        +
+                    </span>
+
+                </summary>
+
+
+                <div class="faq-answer">
+
+                    <p>
+                        La prise de rendez-vous vous permet
+                        de sélectionner les informations nécessaires
+                        à votre échange avec DATENSIS.
+                    </p>
+
+                    <p>
+                        Selon votre espace, vous pourrez notamment
+                        renseigner :
+                    </p>
+
+                    <ul>
+                        <li>votre interlocuteur ;</li>
+                        <li>votre besoin ;</li>
+                        <li>la date souhaitée ;</li>
+                        <li>le créneau disponible ;</li>
+                        <li>vos coordonnées.</li>
+                    </ul>
+
+                    <p>
+                        Une confirmation pourra ensuite être transmise
+                        par e-mail et SMS.
+                    </p>
+
+                </div>
+
+            </details>
+
+
+            <!-- CHATBOT -->
+
+            <details class="faq-item"
+                     data-search="chatbot aide mots clés redirection page assistant">
+
+                <summary>
+
+                    <span class="faq-question-number">
+                        06
+                    </span>
+
+                    <span>
+                        À quoi sert le chatbot DATENSIS ?
+                    </span>
+
+                    <span class="faq-plus">
+                        +
+                    </span>
+
+                </summary>
+
+
+                <div class="faq-answer">
+
+                    <p>
+                        Le chatbot est disponible sur les pages
+                        d'accueil des espaces TPE, PME et Cabinet.
+                    </p>
+
+                    <p>
+                        Il reconnaît certains mots-clés dans votre question
+                        afin de vous orienter directement vers la rubrique
+                        correspondant à votre besoin.
+                    </p>
+
+                    <p>
+                        Par exemple :
+                    </p>
+
+                    <ul>
+                        <li>
+                            « Je veux voir mes factures »
+                            → rubrique Factures ;
+                        </li>
+
+                        <li>
+                            « Je veux cadrer mon projet »
+                            → Cadrage & étude ;
+                        </li>
+
+                        <li>
+                            « Je souhaite transmettre une opportunité »
+                            → Mise en relation.
+                        </li>
+                    </ul>
+
+                </div>
+
+            </details>
+
+
+            <!-- MESSAGERIE -->
+
+            <details class="faq-item"
+                     data-search="messagerie message collaborateur échange support">
+
+                <summary>
+
+                    <span class="faq-question-number">
+                        07
+                    </span>
+
+                    <span>
+                        Comment utiliser la messagerie ?
+                    </span>
+
+                    <span class="faq-plus">
+                        +
+                    </span>
+
+                </summary>
+
+
+                <div class="faq-answer">
+
+                    <p>
+                        La messagerie permet d'échanger directement
+                        avec un interlocuteur DATENSIS depuis votre espace.
+                    </p>
+
+                    <p>
+                        Elle peut être utilisée pour obtenir une réponse
+                        plus précise lorsqu'une demande nécessite
+                        l'intervention d'un collaborateur.
+                    </p>
+
+                </div>
+
+            </details>
+
+
+            <!-- SUIVI -->
+
+            <details class="faq-item"
+                     data-search="suivre projet avancement suivi pilotage accompagnement">
+
+                <summary>
+
+                    <span class="faq-question-number">
+                        08
+                    </span>
+
+                    <span>
+                        Comment suivre l'avancement de mon projet ?
+                    </span>
+
+                    <span class="faq-plus">
+                        +
+                    </span>
+
+                </summary>
+
+
+                <div class="faq-answer">
+
+                    <p>
+                        Le suivi dépend de votre espace.
+                    </p>
+
+                    <ul>
+                        <li>
+                            <strong>TPE :</strong>
+                            Suivi & accompagnement.
+                        </li>
+
+                        <li>
+                            <strong>PME & ETI :</strong>
+                            Suivi & pilotage.
+                        </li>
+
+                        <li>
+                            <strong>Cabinet :</strong>
+                            Suivi du partenariat.
+                        </li>
+                    </ul>
+
+                    <p>
+                        Ces rubriques permettent de conserver
+                        une vision claire des étapes et de l'avancement.
+                    </p>
+
+                </div>
+
+            </details>
+
+
+            <!-- DOCUMENTS -->
+
+            <details class="faq-item"
+                     data-search="document fichier pdf déposer télécharger">
+
+                <summary>
+
+                    <span class="faq-question-number">
+                        09
+                    </span>
+
+                    <span>
+                        Où retrouver mes documents ?
+                    </span>
+
+                    <span class="faq-plus">
+                        +
+                    </span>
+
+                </summary>
+
+
+                <div class="faq-answer">
+
+                    <p>
+                        Les espaces disposant d'une rubrique Documents
+                        permettent de centraliser les fichiers associés
+                        aux demandes et aux projets.
+                    </p>
+
+                    <p>
+                        Vous pourrez ainsi retrouver plus facilement
+                        les pièces nécessaires au suivi de votre activité.
+                    </p>
+
+                </div>
+
+            </details>
+
+
+            <!-- DONNÉES -->
+
+            <details class="faq-item"
+                     data-search="rgpd données personnelles confidentialité cookies droits">
+
+                <summary>
+
+                    <span class="faq-question-number">
+                        10
+                    </span>
+
+                    <span>
+                        Comment sont protégées mes données ?
+                    </span>
+
+                    <span class="faq-plus">
+                        +
+                    </span>
+
+                </summary>
+
+
+                <div class="faq-answer">
+
+                    <p>
+                        DATENSIS dispose de pages dédiées
+                        à la protection des données personnelles,
+                        aux mentions légales et aux cookies.
+                    </p>
+
+
+                    <div class="faq-answer-links">
+
+                        <a href="{{ url_for('main.confidentialite') }}">
+                            Politique de confidentialité
+                        </a>
+
+                        <a href="{{ url_for('main.cookies') }}">
+                            Politique des cookies
+                        </a>
+
+                        <a href="{{ url_for('main.mentions_legales') }}">
+                            Mentions légales
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </details>
+
+
+            <!-- CONTACT -->
+
+            <details class="faq-item"
+                     data-search="contact contacter datensis aide support question">
+
+                <summary>
+
+                    <span class="faq-question-number">
+                        11
+                    </span>
+
+                    <span>
+                        Comment contacter DATENSIS ?
+                    </span>
+
+                    <span class="faq-plus">
+                        +
+                    </span>
+
+                </summary>
+
+
+                <div class="faq-answer">
+
+                    <p>
+                        Vous pouvez utiliser la page de contact publique
+                        pour une demande générale.
+                    </p>
+
+                    <p>
+                        Si vous possédez déjà un espace DATENSIS,
+                        privilégiez la messagerie ou le support
+                        correspondant à votre profil.
+                    </p>
+
+
+                    <a href="{{ url_for('main.contact') }}"
+                       class="legal-action-link">
+
+                        Accéder à la page Contact
+
+                        <span>
+                            →
+                        </span>
+
+                    </a>
+
+                </div>
+
+            </details>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         CONTACT FINAL
+         ===================================================== -->
+
+    <section class="faq-contact-card">
+
+        <div>
+
+            <p class="eyebrow">
+                Besoin d'aide supplémentaire ?
+            </p>
+
+            <h2>
+                Vous n'avez pas trouvé votre réponse ?
+            </h2>
+
+            <p>
+                Envoyez votre demande à DATENSIS.
+                Nous pourrons vous orienter vers
+                l'interlocuteur ou le service adapté.
+            </p>
+
+        </div>
+
+
+        <a href="{{ url_for('main.contact') }}"
+           class="home-btn-primary">
+            Contacter DATENSIS
+        </a>
+
+    </section>
+
+</main>
+
+{% include "footer.html" %}
+
+<script src="{{ url_for('static', filename='js/global.js') }}"></script>
+
+</body>
+</html>

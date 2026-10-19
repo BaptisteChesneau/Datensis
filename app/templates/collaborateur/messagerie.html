@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Messagerie Collaborateur | DATENSIS</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+{% include "header.html" %}
+
+<main class="dashboard-page">
+
+    <section class="dashboard-intro">
+
+        <div>
+            <p class="eyebrow">
+                Collaborateur
+            </p>
+
+            <h1>
+                Messagerie
+            </h1>
+
+            <p>
+                Répondez aux questions précises des utilisateurs
+                et suivez vos échanges.
+            </p>
+        </div>
+
+    </section>
+
+
+    <section class="messaging-layout">
+
+        <aside class="conversation-list">
+
+            <div class="conversation-search">
+
+                <input
+                    type="search"
+                    placeholder="Rechercher une conversation..."
+                >
+
+            </div>
+
+
+            <button class="conversation-item active"
+                    type="button">
+
+                <div class="message-avatar">
+                    DC
+                </div>
+
+                <div>
+
+                    <strong>
+                        Dupont Conseil
+                    </strong>
+
+                    <span>
+                        Dossier DOS-2026-044
+                    </span>
+
+                    <p>
+                        Pouvez-vous confirmer la prochaine étape ?
+                    </p>
+
+                </div>
+
+                <time>
+                    10:42
+                </time>
+
+            </button>
+
+
+            <button class="conversation-item"
+                    type="button">
+
+                <div class="message-avatar">
+                    AC
+                </div>
+
+                <div>
+
+                    <strong>
+                        AGRO Centre
+                    </strong>
+
+                    <span>
+                        Dossier DOS-2026-038
+                    </span>
+
+                    <p>
+                        Nous avons ajouté le document demandé...
+                    </p>
+
+                </div>
+
+                <time>
+                    Hier
+                </time>
+
+            </button>
+
+        </aside>
+
+
+        <article class="conversation-panel">
+
+            <header class="conversation-header">
+
+                <div>
+
+                    <strong>
+                        Dupont Conseil
+                    </strong>
+
+                    <span>
+                        TPE
+                    </span>
+
+                    <small>
+                        Dossier DOS-2026-044
+                    </small>
+
+                </div>
+
+            </header>
+
+
+            <div class="conversation-messages"
+                 id="collabConversationMessages">
+
+                <div class="chat-message user-message">
+                    Bonjour, pouvez-vous confirmer
+                    la prochaine étape du projet ?
+                </div>
+
+                <div class="chat-message assistant-message">
+                    Bonjour, le projet passe maintenant
+                    à l'étape de déploiement.
+                </div>
+
+            </div>
+
+
+            <form class="conversation-reply"
+                  id="collabMessageForm">
+
+                <input
+                    type="text"
+                    id="collabMessageInput"
+                    placeholder="Écrire votre réponse..."
+                    required
+                >
+
+                <button type="submit"
+                        class="btn-primary">
+                    Envoyer
+                </button>
+
+            </form>
+
+        </article>
+
+    </section>
+
+</main>
+
+{% include "footer.html" %}
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+</body>
+</html>

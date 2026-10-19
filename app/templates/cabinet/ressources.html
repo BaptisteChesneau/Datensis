@@ -1,0 +1,589 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Ressources partenaire</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+
+</head>
+
+<body class="cab-dashboard cab-resources-page">
+
+<div class="cab-layout">
+
+    <!-- SIDEBAR -->
+
+    <aside class="cab-sidebar" id="cabSidebar">
+
+        <a class="cab-brand" href="{{ url_for('main.cabinet_dashboard') }}">
+            <span class="cab-brand-mark">D<span>.</span></span>
+            <span class="cab-brand-copy">
+                <strong>DATENSIS</strong>
+                <small>PARTNER WORKSPACE</small>
+            </span>
+        </a>
+
+        <div class="cab-sidebar-divider"></div>
+
+        <div class="cab-sidebar-section">VOTRE ESPACE</div>
+
+        <nav class="cab-nav" aria-label="Navigation cabinet">
+
+            <a href="{{ url_for('main.cabinet_dashboard') }}">
+                <span class="cab-nav-icon">▦</span>
+                <span>Vue d'ensemble</span>
+            </a>
+
+            <a href="{{ url_for('main.cabinet_portefeuille') }}">
+                <span class="cab-nav-icon">♙</span>
+                <span>Portefeuille clients</span>
+            </a>
+
+            <a href="{{ url_for('main.cabinet_opportunites') }}">
+                <span class="cab-nav-icon">◇</span>
+                <span>Opportunités</span>
+                <span class="cab-nav-badge">3</span>
+            </a>
+
+            <a href="{{ url_for('main.cabinet_dossiers') }}">
+                <span class="cab-nav-icon">▤</span>
+                <span>Dossiers transmis</span>
+            </a>
+
+            <a href="{{ url_for('main.cabinet_ressources') }}"
+               class="active"
+               aria-current="page">
+                <span class="cab-nav-icon">▧</span>
+                <span>Ressources</span>
+            </a>
+
+        </nav>
+
+        <div class="cab-sidebar-section">COLLABORATION</div>
+
+        <nav class="cab-nav" aria-label="Collaboration">
+
+            <a href="{{ url_for('main.cabinet_messagerie') }}">
+                <span class="cab-nav-icon">✉</span>
+                <span>Messagerie</span>
+                <span class="cab-nav-badge cab-nav-badge-coral">2</span>
+            </a>
+
+            <a href="{{ url_for('main.cabinet_rendez_vous') }}">
+                <span class="cab-nav-icon">▦</span>
+                <span>Rendez-vous</span>
+            </a>
+
+        </nav>
+
+        <div class="cab-sidebar-spacer"></div>
+
+        <div class="cab-partner-card">
+            <span class="cab-partner-card-label">BESOIN D'ASSISTANCE ?</span>
+            <strong>Un accompagnement à chaque étape.</strong>
+            <p>Votre interlocuteur DATENSIS reste disponible.</p>
+            <a href="{{ url_for('main.cabinet_messagerie') }}">
+                Contacter DATENSIS <span>↗</span>
+            </a>
+        </div>
+
+        <div class="cab-sidebar-footer">
+            <span class="cab-sidebar-status"></span>
+            Espace partenaire · Démonstration
+        </div>
+
+    </aside>
+
+    <!-- WORKSPACE -->
+
+    <div class="cab-main-shell">
+
+        <header class="cab-topbar">
+
+            <div class="cab-topbar-left">
+
+                <button type="button"
+                        class="cab-mobile-menu"
+                        id="cabMenuToggle"
+                        aria-label="Ouvrir le menu"
+                        aria-controls="cabSidebar"
+                        aria-expanded="false">
+                    ☰
+                </button>
+
+                <div class="cab-breadcrumb">
+                    <span>Partenariat</span>
+                    <span class="cab-breadcrumb-separator">/</span>
+                    <strong>Ressources</strong>
+                </div>
+
+            </div>
+
+            <div class="cab-topbar-right">
+
+                <span class="cab-demo-label">
+                    <span></span>
+                    Environnement démo
+                </span>
+
+                <a href="{{ url_for('main.cabinet_messagerie') }}"
+                   class="cab-topbar-notification"
+                   aria-label="Accéder à la messagerie">
+                    ✉ <span>2</span>
+                </a>
+
+                <div class="cab-profile">
+                    <div class="cab-profile-avatar">CP</div>
+                    <div class="cab-profile-copy">
+                        <strong>Cabinet partenaire</strong>
+                        <small>Espace professionnel</small>
+                    </div>
+                </div>
+
+            </div>
+
+        </header>
+
+        <main class="cab-content cab-resources-content">
+
+            <!-- HERO -->
+
+            <section class="cab-resources-hero">
+
+                <div class="cab-resources-hero-copy">
+
+                    <span class="cab-resources-eyebrow">
+                        DATENSIS / PARTNER KNOWLEDGE HUB
+                    </span>
+
+                    <h1>
+                        Les bonnes ressources.<br>
+                        <em>Au bon moment.</em>
+                    </h1>
+
+                    <p>
+                        Guides, présentations et procédures :
+                        retrouvez les supports nécessaires
+                        pour accompagner vos clients
+                        et développer votre partenariat.
+                    </p>
+
+                    <a href="#resourcesLibrary"
+                       class="cab-resources-hero-button">
+                        Explorer la bibliothèque ↓
+                    </a>
+
+                </div>
+
+                <div class="cab-resources-hero-art" aria-hidden="true">
+
+                    <div class="cab-resources-art-orbit"></div>
+
+                    <div class="cab-resources-art-main">
+                        <span>DATENSIS</span>
+                        <strong>KNOWLEDGE<br>HUB</strong>
+                        <small>PARTNER EDITION / 2026</small>
+                    </div>
+
+                    <div class="cab-resources-art-floating floating-one">
+                        <span>01</span>
+                        <strong>GUIDES</strong>
+                    </div>
+
+                    <div class="cab-resources-art-floating floating-two">
+                        <span>02</span>
+                        <strong>SUPPORTS</strong>
+                    </div>
+
+                    <div class="cab-resources-art-floating floating-three">
+                        <span>03</span>
+                        <strong>PROCESS</strong>
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- ACCÈS RAPIDES -->
+
+            <div class="cab-section-heading">
+                <div>
+                    <span class="cab-section-eyebrow">ACCÈS DIRECT</span>
+                    <h2>Vos essentiels partenaire</h2>
+                    <p>Trois ressources pour accompagner chaque étape.</p>
+                </div>
+            </div>
+
+            <section class="cab-resources-featured">
+
+                <article class="cab-resource-featured-card featured-qualification">
+
+                    <div class="cab-resource-featured-top">
+                        <span>01 / GUIDE</span>
+                        <span class="cab-resource-featured-symbol">?</span>
+                    </div>
+
+                    <div>
+                        <span class="cab-resource-featured-category">
+                            QUALIFICATION CLIENT
+                        </span>
+
+                        <h3>Poser les bonnes questions.</h3>
+
+                        <p>
+                            Une méthode structurée pour identifier
+                            les besoins avant de transmettre
+                            une opportunité.
+                        </p>
+                    </div>
+
+                    <button type="button"
+                            data-open-resource="qualification">
+                        Consulter le guide <span>↗</span>
+                    </button>
+
+                </article>
+
+                <article class="cab-resource-featured-card featured-presentation">
+
+                    <div class="cab-resource-featured-top">
+                        <span>02 / PRÉSENTATION</span>
+                        <span class="cab-resource-featured-symbol">D.</span>
+                    </div>
+
+                    <div>
+                        <span class="cab-resource-featured-category">
+                            PRÉSENTER DATENSIS
+                        </span>
+
+                        <h3>Valoriser notre accompagnement.</h3>
+
+                        <p>
+                            Un support synthétique pour expliquer
+                            l'approche DATENSIS
+                            à vos clients.
+                        </p>
+                    </div>
+
+                    <button type="button"
+                            data-open-resource="presentation">
+                        Voir la présentation <span>↗</span>
+                    </button>
+
+                </article>
+
+                <article class="cab-resource-featured-card featured-process">
+
+                    <div class="cab-resource-featured-top">
+                        <span>03 / PROCÉDURE</span>
+                        <span class="cab-resource-featured-symbol">⇄</span>
+                    </div>
+
+                    <div>
+                        <span class="cab-resource-featured-category">
+                            PARCOURS PARTENAIRE
+                        </span>
+
+                        <h3>Une collaboration sans friction.</h3>
+
+                        <p>
+                            Découvrez les étapes de qualification,
+                            de transmission et de suivi
+                            d'un dossier.
+                        </p>
+                    </div>
+
+                    <button type="button"
+                            data-open-resource="process">
+                        Explorer le processus <span>↗</span>
+                    </button>
+
+                </article>
+
+            </section>
+
+            <!-- BIBLIOTHÈQUE -->
+
+            <section class="cab-resources-library" id="resourcesLibrary">
+
+                <div class="cab-resources-library-heading">
+
+                    <div>
+                        <span class="cab-section-eyebrow">
+                            CENTRE DOCUMENTAIRE
+                        </span>
+
+                        <h2>Bibliothèque partenaire</h2>
+
+                        <p id="resourcesResultCount" aria-live="polite">
+                            Chargement des ressources...
+                        </p>
+                    </div>
+
+                    <div class="cab-resources-view-switch">
+
+                        <button type="button"
+                                class="active"
+                                id="resourcesCardsButton"
+                                aria-pressed="true">
+                            ▦ Cartes
+                        </button>
+
+                        <button type="button"
+                                id="resourcesTableButton"
+                                aria-pressed="false">
+                            ▤ Tableau
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <div class="cab-resources-toolbar">
+
+                    <label class="cab-resources-search">
+                        <span aria-hidden="true">⌕</span>
+
+                        <input type="search"
+                               id="resourcesSearch"
+                               placeholder="Rechercher un document, un sujet..."
+                               aria-label="Rechercher une ressource">
+                    </label>
+
+                    <select id="resourcesCategory"
+                            aria-label="Filtrer par catégorie">
+                        <option value="all">Toutes les catégories</option>
+                        <option value="commercial">Commercial</option>
+                        <option value="presentation">Présentation</option>
+                        <option value="procedure">Procédure</option>
+                    </select>
+
+                    <select id="resourcesSort"
+                            aria-label="Trier les ressources">
+                        <option value="recent">Plus récentes</option>
+                        <option value="name">Nom A → Z</option>
+                        <option value="category">Par catégorie</option>
+                    </select>
+
+                    <button type="button"
+                            id="resourcesFavoritesToggle"
+                            class="cab-resources-favorites-toggle"
+                            aria-pressed="false">
+                        ☆ Favoris
+                    </button>
+
+                    <button type="button"
+                            id="resourcesReset"
+                            class="cab-resources-reset">
+                        Réinitialiser
+                    </button>
+
+                </div>
+
+                <!-- CARTES -->
+
+                <div class="cab-resources-grid" id="resourcesCards"></div>
+
+                <!-- TABLEAU -->
+
+                <div class="cab-resources-table-wrapper"
+                     id="resourcesTableContainer"
+                     hidden>
+
+                    <table class="cab-resources-table">
+
+                        <thead>
+                            <tr>
+                                <th>Document</th>
+                                <th>Catégorie</th>
+                                <th>Version</th>
+                                <th>Mise à jour</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="resourcesTableBody"></tbody>
+
+                    </table>
+
+                </div>
+
+                <!-- ÉTAT VIDE -->
+
+                <div class="cab-resources-empty" id="resourcesEmpty" hidden>
+
+                    <span>⌕</span>
+
+                    <h3>Aucune ressource trouvée</h3>
+
+                    <p>
+                        Essayez une autre recherche
+                        ou réinitialisez vos filtres.
+                    </p>
+
+                    <button type="button" id="resourcesEmptyReset">
+                        Effacer les filtres
+                    </button>
+
+                </div>
+
+                <div class="cab-resources-library-footer">
+                    <span>Supports de démonstration consultables dans DATENSIS.</span>
+                    <span>Les favoris sont enregistrés sur cet appareil.</span>
+                </div>
+
+            </section>
+
+            <!-- PARCOURS -->
+
+            <section class="cab-resources-journey">
+
+                <div class="cab-resources-journey-intro">
+
+                    <span class="cab-section-eyebrow">
+                        LE PARCOURS PARTENAIRE
+                    </span>
+
+                    <h2>De l'identification du besoin au suivi du client.</h2>
+
+                    <p>
+                        Une démarche progressive pour assurer
+                        une transmission claire et un accompagnement continu.
+                    </p>
+
+                </div>
+
+                <div class="cab-resources-journey-steps">
+
+                    <a href="{{ url_for('main.cabinet_qualification_besoin') }}">
+                        <span>01</span>
+                        <strong>Qualifier</strong>
+                        <small>Comprendre le besoin</small>
+                        <b>↗</b>
+                    </a>
+
+                    <a href="{{ url_for('main.cabinet_mise_en_relation') }}">
+                        <span>02</span>
+                        <strong>Transmettre</strong>
+                        <small>Organiser la mise en relation</small>
+                        <b>↗</b>
+                    </a>
+
+                    <a href="{{ url_for('main.cabinet_suivi_partenariat') }}">
+                        <span>03</span>
+                        <strong>Accompagner</strong>
+                        <small>Suivre le dossier</small>
+                        <b>↗</b>
+                    </a>
+
+                </div>
+
+            </section>
+
+            <!-- ASSISTANCE -->
+
+            <section class="cab-resources-support">
+
+                <div>
+                    <span class="cab-section-eyebrow">
+                        ASSISTANCE PARTENAIRE
+                    </span>
+
+                    <h2>Une question sur une ressource ?</h2>
+
+                    <p>
+                        Contactez DATENSIS pour obtenir
+                        des précisions ou préparer un échange.
+                    </p>
+                </div>
+
+                <a href="{{ url_for('main.cabinet_messagerie') }}">
+                    Contacter DATENSIS ↗
+                </a>
+
+            </section>
+
+            <footer class="cab-footer">
+                <span>© DATENSIS — Espace Cabinet Partenaire</span>
+                <span>Partner Knowledge Hub · Démonstration</span>
+            </footer>
+
+        </main>
+
+    </div>
+
+</div>
+
+<div class="cab-mobile-overlay" id="cabMobileOverlay" hidden></div>
+
+<!-- LECTEUR DE RESSOURCE -->
+
+<div class="cab-resource-modal" id="resourceModal" hidden>
+
+    <div class="cab-resource-modal-backdrop"
+         data-close-resource></div>
+
+    <section class="cab-resource-modal-dialog"
+             role="dialog"
+             aria-modal="true"
+             aria-labelledby="resourceModalTitle">
+
+        <div class="cab-resource-modal-header">
+
+            <div>
+                <span class="cab-section-eyebrow">
+                    CENTRE DE CONNAISSANCES
+                </span>
+
+                <h2 id="resourceModalTitle">
+                    Ressource partenaire
+                </h2>
+
+                <p id="resourceModalSubtitle"></p>
+            </div>
+
+            <button type="button"
+                    id="resourceModalClose"
+                    aria-label="Fermer la ressource">
+                ×
+            </button>
+
+        </div>
+
+        <div class="cab-resource-modal-content"
+             id="resourceModalContent"></div>
+
+        <div class="cab-resource-modal-footer">
+
+            <button type="button" id="resourceModalFavorite">
+                ☆ Ajouter aux favoris
+            </button>
+
+            <button type="button" id="resourceModalCancel">
+                Fermer
+            </button>
+
+            <a href="{{ url_for('main.cabinet_messagerie') }}">
+                Poser une question ↗
+            </a>
+
+        </div>
+
+    </section>
+
+</div>
+
+<div class="cab-resource-toast"
+     id="resourceToast"
+     role="status"
+     aria-live="polite"></div>
+
+</body>
+</html>

@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>PME & ETI</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+</head>
+
+<body>
+
+
+<!-- =========================================================
+     HEADER PME
+     ========================================================= -->
+
+{% include "pme/header_pme.html" %}
+
+
+<!-- =========================================================
+     ACCUEIL PME
+     ========================================================= -->
+
+<main class="pme-modern-home">
+
+
+    <!-- =====================================================
+         HERO
+         ===================================================== -->
+
+    <section class="pme-modern-hero">
+
+        <div class="pme-modern-hero-content">
+
+            <div class="pme-modern-badge">
+                PME & ETI
+            </div>
+
+
+            <h1>
+                Transformez vos projets
+                <span>
+                    en décisions maîtrisées.
+                </span>
+            </h1>
+
+
+            <p class="pme-modern-hero-description">
+                DATENSIS vous accompagne du cadrage initial
+                jusqu'au pilotage de vos déploiements,
+                avec une vision claire des équipes,
+                des sites et des prochaines actions.
+            </p>
+
+
+            <div class="pme-modern-hero-actions">
+
+                <a
+                    href="{{ url_for('main.pme_cadrage_etude') }}"
+                    class="home-btn-primary"
+                >
+                    Cadrer mon projet
+                </a>
+
+                <a
+                    href="#pme-method"
+                    class="home-btn-secondary"
+                >
+                    Découvrir la méthode
+                </a>
+
+            </div>
+
+
+            <div class="pme-modern-points">
+
+                <div>
+
+                    <strong>
+                        01
+                    </strong>
+
+                    <span>
+                        Périmètre clair
+                    </span>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        02
+                    </strong>
+
+                    <span>
+                        Déploiement structuré
+                    </span>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        03
+                    </strong>
+
+                    <span>
+                        Pilotage centralisé
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             VISUEL DYNAMIQUE
+             ================================================= -->
+
+        <div class="pme-visual-board">
+
+            <div class="pme-board-top">
+
+                <div>
+
+                    <span class="pme-board-label">
+                        Vue projet
+                    </span>
+
+                    <h2 id="pmeBoardTitle">
+                        Cadrage du projet
+                    </h2>
+
+                </div>
+
+
+                <span
+                    class="pme-board-status"
+                    id="pmeBoardStatus"
+                >
+                    Étape 1
+                </span>
+
+            </div>
+
+
+            <div class="pme-board-progress">
+
+                <div
+                    class="pme-board-progress-bar"
+                    id="pmeBoardProgress"
+                    style="width: 32%;"
+                >
+                </div>
+
+            </div>
+
+
+            <div class="pme-board-main">
+
+                <div
+                    class="pme-board-number"
+                    id="pmeBoardNumber"
+                >
+                    01
+                </div>
+
+
+                <div>
+
+                    <strong id="pmeBoardHeading">
+                        Définir le périmètre
+                    </strong>
+
+                    <p id="pmeBoardText">
+                        Identifiez les équipes, les sites,
+                        les objectifs et les contraintes
+                        avant de choisir une solution.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="pme-board-grid">
+
+                <div>
+
+                    <span>
+                        Équipes
+                    </span>
+
+                    <strong id="pmeBoardMetric1">
+                        Identifier
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Sites
+                    </span>
+
+                    <strong id="pmeBoardMetric2">
+                        Cartographier
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Priorités
+                    </span>
+
+                    <strong id="pmeBoardMetric3">
+                        Définir
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="pme-board-switcher">
+
+                <button
+                    type="button"
+                    class="pme-board-btn active"
+                    data-step="cadrage"
+                >
+                    Cadrage
+                </button>
+
+                <button
+                    type="button"
+                    class="pme-board-btn"
+                    data-step="deploiement"
+                >
+                    Déploiement
+                </button>
+
+                <button
+                    type="button"
+                    class="pme-board-btn"
+                    data-step="pilotage"
+                >
+                    Pilotage
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         PROBLÉMATIQUES
+         ===================================================== -->
+
+    <section class="pme-challenges">
+
+        <div class="pme-section-heading">
+
+            <p class="eyebrow">
+                Enjeux PME & ETI
+            </p>
+
+            <h2>
+                Quand un projet devient complexe,
+                la visibilité devient essentielle.
+            </h2>
+
+            <p>
+                Plusieurs équipes, plusieurs sites,
+                différents interlocuteurs :
+                DATENSIS vous aide à structurer
+                l'ensemble du parcours.
+            </p>
+
+        </div>
+
+
+        <div class="pme-challenges-grid">
+
+            <article class="pme-challenge-card">
+
+                <span>
+                    01
+                </span>
+
+                <h3>
+                    Trop d'interlocuteurs
+                </h3>
+
+                <p>
+                    Centralisez les informations
+                    et limitez les échanges dispersés.
+                </p>
+
+            </article>
+
+
+            <article class="pme-challenge-card">
+
+                <span>
+                    02
+                </span>
+
+                <h3>
+                    Plusieurs sites
+                </h3>
+
+                <p>
+                    Organisez le déploiement
+                    avec une logique progressive.
+                </p>
+
+            </article>
+
+
+            <article class="pme-challenge-card">
+
+                <span>
+                    03
+                </span>
+
+                <h3>
+                    Manque de visibilité
+                </h3>
+
+                <p>
+                    Retrouvez les étapes,
+                    validations et prochaines actions.
+                </p>
+
+            </article>
+
+
+            <article class="pme-challenge-card">
+
+                <span>
+                    04
+                </span>
+
+                <h3>
+                    Décisions difficiles
+                </h3>
+
+                <p>
+                    Comparez les options
+                    avant d'engager votre organisation.
+                </p>
+
+            </article>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         MÉTHODE
+         ===================================================== -->
+
+    <section
+        class="pme-method"
+        id="pme-method"
+    >
+
+        <div class="pme-section-heading">
+
+            <p class="eyebrow">
+                La méthode DATENSIS
+            </p>
+
+            <h2>
+                Un parcours en trois temps
+            </h2>
+
+            <p>
+                Chaque étape répond à une question précise
+                avant de passer à la suivante.
+            </p>
+
+        </div>
+
+
+        <div class="pme-method-grid">
+
+
+            <!-- CADRAGE -->
+
+            <a
+                href="{{ url_for('main.pme_cadrage_etude') }}"
+                class="pme-method-card"
+            >
+
+                <div class="pme-method-top">
+
+                    <span>
+                        01
+                    </span>
+
+                    <small>
+                        Comprendre
+                    </small>
+
+                </div>
+
+
+                <h3>
+                    Cadrage & étude
+                </h3>
+
+                <p>
+                    Définissez le périmètre,
+                    les contraintes, les équipes
+                    et les objectifs.
+                </p>
+
+                <strong>
+                    Cadrer mon projet →
+                </strong>
+
+            </a>
+
+
+            <!-- DÉPLOIEMENT -->
+
+            <a
+                href="{{ url_for('main.pme_solutions_deploiement') }}"
+                class="pme-method-card featured"
+            >
+
+                <div class="pme-method-top">
+
+                    <span>
+                        02
+                    </span>
+
+                    <small>
+                        Structurer
+                    </small>
+
+                </div>
+
+
+                <h3>
+                    Solutions & déploiement
+                </h3>
+
+                <p>
+                    Comparez les approches
+                    puis planifiez une mise en œuvre
+                    adaptée à votre organisation.
+                </p>
+
+                <strong>
+                    Préparer le déploiement →
+                </strong>
+
+            </a>
+
+
+            <!-- PILOTAGE -->
+
+            <a
+                href="{{ url_for('main.pme_suivi_pilotage') }}"
+                class="pme-method-card"
+            >
+
+                <div class="pme-method-top">
+
+                    <span>
+                        03
+                    </span>
+
+                    <small>
+                        Piloter
+                    </small>
+
+                </div>
+
+
+                <h3>
+                    Suivi & pilotage
+                </h3>
+
+                <p>
+                    Suivez l'avancement,
+                    les validations
+                    et les prochaines actions.
+                </p>
+
+                <strong>
+                    Découvrir le pilotage →
+                </strong>
+
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         EXEMPLE DE PARCOURS
+         ===================================================== -->
+
+    <section class="pme-case-study">
+
+        <div class="pme-case-study-content">
+
+            <p class="eyebrow">
+                Exemple PME
+            </p>
+
+            <h2>
+                Un déploiement multi-sites,
+                sans perdre la vision globale.
+            </h2>
+
+            <p>
+                Une entreprise souhaite harmoniser ses outils
+                entre son siège et plusieurs agences.
+                DATENSIS structure le projet afin que chaque
+                étape reste lisible.
+            </p>
+
+
+            <a
+                href="{{ url_for('main.pme_cadrage_etude') }}"
+                class="home-btn-primary"
+            >
+                Démarrer un cadrage
+            </a>
+
+        </div>
+
+
+        <div class="pme-case-timeline">
+
+            <div class="pme-case-line"></div>
+
+
+            <div class="pme-case-step completed">
+
+                <span>
+                    ✓
+                </span>
+
+                <div>
+
+                    <small>
+                        Étape 01
+                    </small>
+
+                    <strong>
+                        Cadrage
+                    </strong>
+
+                    <p>
+                        Périmètre et priorités définis.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="pme-case-step active">
+
+                <span>
+                    02
+                </span>
+
+                <div>
+
+                    <small>
+                        Étape 02
+                    </small>
+
+                    <strong>
+                        Déploiement
+                    </strong>
+
+                    <p>
+                        Mise en œuvre progressive.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="pme-case-step">
+
+                <span>
+                    03
+                </span>
+
+                <div>
+
+                    <small>
+                        Étape 03
+                    </small>
+
+                    <strong>
+                        Pilotage
+                    </strong>
+
+                    <p>
+                        Suivi des actions et validations.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         POURQUOI DATENSIS
+         ===================================================== -->
+
+    <section class="pme-benefits">
+
+        <div class="pme-section-heading">
+
+            <p class="eyebrow">
+                DATENSIS pour les PME
+            </p>
+
+            <h2>
+                Plus de structure.
+                Moins de dispersion.
+            </h2>
+
+        </div>
+
+
+        <div class="pme-benefits-grid">
+
+            <article>
+
+                <span>
+                    01
+                </span>
+
+                <h3>
+                    Vision centralisée
+                </h3>
+
+                <p>
+                    Regroupez les informations utiles
+                    à la prise de décision.
+                </p>
+
+            </article>
+
+
+            <article>
+
+                <span>
+                    02
+                </span>
+
+                <h3>
+                    Parcours progressif
+                </h3>
+
+                <p>
+                    Avancez étape par étape
+                    plutôt que de tout déployer immédiatement.
+                </p>
+
+            </article>
+
+
+            <article>
+
+                <span>
+                    03
+                </span>
+
+                <h3>
+                    Accompagnement humain
+                </h3>
+
+                <p>
+                    Gardez un interlocuteur
+                    lorsque votre projet nécessite
+                    une expertise complémentaire.
+                </p>
+
+            </article>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         CTA FINAL
+         ===================================================== -->
+
+    <section class="pme-home-cta">
+
+        <div>
+
+            <p class="eyebrow">
+                Votre projet commence ici
+            </p>
+
+            <h2>
+                Définissez d'abord ce qui compte.
+            </h2>
+
+            <p>
+                Cadrez votre besoin avant de choisir
+                une solution ou d'organiser son déploiement.
+            </p>
+
+        </div>
+
+
+        <div class="pme-home-cta-actions">
+
+            <a
+                href="{{ url_for('main.pme_cadrage_etude') }}"
+                class="home-btn-primary"
+            >
+                Cadrer mon projet
+            </a>
+
+            <a
+                href="{{ url_for('main.pme_creation_compte') }}"
+                class="home-btn-secondary"
+            >
+                Créer mon compte
+            </a>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- =========================================================
+     CHATBOT PME
+     ========================================================= -->
+
+<button
+    type="button"
+    class="datensis-chat-trigger"
+    id="chatbotTrigger"
+    aria-label="Ouvrir le chatbot"
+>
+
+    <span>D</span>
+
+    Besoin d'aide ?
+
+</button>
+
+
+<section
+    class="datensis-chat"
+    id="chatbotWindow"
+    hidden
+>
+
+    <header class="datensis-chat-header">
+
+        <div class="datensis-chat-agent">
+
+            <span>D</span>
+
+            <div>
+
+                <strong>
+                    Chatbot PME & ETI
+                </strong>
+
+                <small>
+                    Assistance DATENSIS
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <button
+            type="button"
+            id="chatbotClose"
+            aria-label="Fermer le chatbot"
+        >
+            ×
+        </button>
+
+    </header>
+
+
+    <div
+        class="datensis-chat-body"
+        id="chatbotMessages"
+    >
+
+        <div class="chatbot-message chatbot-assistant">
+            Bonjour. Je peux vous orienter vers le cadrage,
+            le déploiement ou le suivi de votre projet.
+        </div>
+
+
+        <div class="chatbot-suggestions">
+
+            <button
+                type="button"
+                class="chatbot-suggestion"
+                data-message="Je souhaite cadrer un projet"
+            >
+                Cadrer un projet
+            </button>
+
+
+            <button
+                type="button"
+                class="chatbot-suggestion"
+                data-message="Je souhaite préparer un déploiement"
+            >
+                Préparer un déploiement
+            </button>
+
+
+            <button
+                type="button"
+                class="chatbot-suggestion"
+                data-message="Comment suivre mon projet ?"
+            >
+                Suivre un projet
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <form
+        id="chatbotForm"
+        class="datensis-chat-form"
+    >
+
+        <input
+            type="text"
+            id="chatbotInput"
+            placeholder="Écrivez votre question..."
+            autocomplete="off"
+            aria-label="Votre question"
+        >
+
+        <button type="submit">
+            Envoyer
+        </button>
+
+    </form>
+
+</section>
+
+
+<!-- =========================================================
+     FOOTER
+     ========================================================= -->
+
+{% include "footer.html" %}
+
+
+<!-- =========================================================
+     JAVASCRIPT
+     ========================================================= -->
+
+<script
+    src="{{ url_for('static', filename='js/main.js') }}"
+></script>
+
+
+</body>
+
+</html>

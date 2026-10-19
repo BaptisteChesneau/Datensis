@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Paramètres d'administration | DATENSIS</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+{% include "header.html" %}
+
+<main class="dashboard-page">
+
+    <section class="dashboard-intro">
+
+        <div>
+            <p class="eyebrow">Administration DATENSIS</p>
+
+            <h1>Paramètres d'administration</h1>
+
+            <p>
+                Gérez les rôles, les paramètres généraux
+                et les règles de fonctionnement de la plateforme.
+            </p>
+        </div>
+
+        <a href="{{ url_for('main.home') }}"
+           class="btn-secondary">
+            Quitter l'administration
+        </a>
+
+    </section>
+
+
+    <section class="dashboard-grid">
+
+        <article class="dashboard-card">
+
+            <div class="card-heading">
+                <div>
+                    <h2>Rôles & permissions</h2>
+                    <p>
+                        Gérez les accès aux différents espaces.
+                    </p>
+                </div>
+            </div>
+
+            <div class="security-row">
+                <div>
+                    <strong>Administrateurs</strong>
+                    <span>3 comptes</span>
+                </div>
+
+                <button type="button"
+                        class="btn-secondary">
+                    Gérer
+                </button>
+            </div>
+
+            <div class="security-row">
+                <div>
+                    <strong>Collaborateurs</strong>
+                    <span>10 comptes</span>
+                </div>
+
+                <button type="button"
+                        class="btn-secondary">
+                    Gérer
+                </button>
+            </div>
+
+        </article>
+
+
+        <article class="dashboard-card">
+
+            <div class="card-heading">
+                <div>
+                    <h2>Paramètres utilisateurs</h2>
+                </div>
+            </div>
+
+            <label class="preference-row">
+
+                <div>
+                    <strong>Validation des cabinets</strong>
+                    <span>
+                        Exiger une validation administrateur
+                        avant activation.
+                    </span>
+                </div>
+
+                <input type="checkbox"
+                       checked>
+
+            </label>
+
+            <label class="preference-row">
+
+                <div>
+                    <strong>Notifications utilisateurs</strong>
+                    <span>
+                        Envoyer les notifications de suivi.
+                    </span>
+                </div>
+
+                <input type="checkbox"
+                       checked>
+
+            </label>
+
+        </article>
+
+
+        <article class="dashboard-card">
+
+            <div class="card-heading">
+                <div>
+                    <h2>Rendez-vous</h2>
+                </div>
+            </div>
+
+            <label class="preference-row">
+
+                <div>
+                    <strong>Confirmation e-mail</strong>
+                    <span>
+                        Envoyer automatiquement une confirmation.
+                    </span>
+                </div>
+
+                <input type="checkbox"
+                       checked>
+
+            </label>
+
+            <label class="preference-row">
+
+                <div>
+                    <strong>Confirmation SMS</strong>
+                    <span>
+                        Envoyer également une confirmation SMS.
+                    </span>
+                </div>
+
+                <input type="checkbox"
+                       checked>
+
+            </label>
+
+        </article>
+
+
+        <article class="dashboard-card">
+
+            <div class="card-heading">
+                <div>
+                    <h2>Système</h2>
+                </div>
+            </div>
+
+            <div class="detail-block">
+                <span>Version</span>
+                <strong>DATENSIS 1.0</strong>
+            </div>
+
+            <div class="detail-block">
+                <span>Environnement</span>
+                <strong>Développement</strong>
+            </div>
+
+            <div class="detail-block">
+                <span>État</span>
+                <strong>Opérationnel</strong>
+            </div>
+
+        </article>
+
+    </section>
+
+</main>
+
+{% include "footer.html" %}
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+</body>
+</html>

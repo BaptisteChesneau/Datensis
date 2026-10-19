@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Suivi & accompagnement</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+{% include "tpe/header_tpe.html" %}
+
+<main class="tpe-public-page">
+
+    <!-- =====================================================
+         HERO
+         ===================================================== -->
+
+    <section class="tpe-service-hero">
+
+        <div class="tpe-service-hero-content">
+
+            <p class="eyebrow">
+                Indépendants & TPE
+            </p>
+
+            <h1>
+                Suivi & accompagnement
+            </h1>
+
+            <p class="tpe-service-description">
+                Gardez une vision claire de votre projet,
+                de son avancement et des prochaines étapes
+                grâce à un accompagnement structuré.
+            </p>
+
+            <div class="tpe-service-actions">
+
+                <a href="#suivi"
+                   class="home-btn-primary">
+                    Découvrir le suivi
+                </a>
+
+                <a href="{{ url_for('main.tpe_accueil') }}"
+                   class="home-btn-secondary">
+                    Retour à l'accueil TPE
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="tpe-service-hero-panel">
+
+            <span class="hero-panel-label">
+                Votre parcours
+            </span>
+
+
+            <div class="hero-step">
+
+                <strong>
+                    01
+                </strong>
+
+                <div>
+
+                    <h3>
+                        Préparer
+                    </h3>
+
+                    <p>
+                        Définissez les étapes et les objectifs.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="hero-step">
+
+                <strong>
+                    02
+                </strong>
+
+                <div>
+
+                    <h3>
+                        Suivre
+                    </h3>
+
+                    <p>
+                        Consultez l'avancement du projet.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="hero-step">
+
+                <strong>
+                    03
+                </strong>
+
+                <div>
+
+                    <h3>
+                        Accompagner
+                    </h3>
+
+                    <p>
+                        Obtenez de l'aide lorsque cela est nécessaire.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         PRÉSENTATION
+         ===================================================== -->
+
+    <section class="process-section public-process-section"
+             id="suivi">
+
+        <div class="section-heading">
+
+            <p class="eyebrow">
+                Comment ça fonctionne ?
+            </p>
+
+            <h2>
+                Un suivi clair à chaque étape
+            </h2>
+
+            <p>
+                DATENSIS vous aide à comprendre où en est votre projet
+                et quelles sont les prochaines actions à réaliser.
+            </p>
+
+        </div>
+
+
+        <div class="process-steps">
+
+            <article class="process-step active">
+
+                <span class="process-number">
+                    01
+                </span>
+
+                <h3>
+                    Vision globale
+                </h3>
+
+                <p>
+                    Visualisez les grandes étapes
+                    de votre projet en un coup d'œil.
+                </p>
+
+            </article>
+
+
+            <article class="process-step">
+
+                <span class="process-number">
+                    02
+                </span>
+
+                <h3>
+                    Actions à venir
+                </h3>
+
+                <p>
+                    Identifiez facilement les prochaines
+                    actions et échéances.
+                </p>
+
+            </article>
+
+
+            <article class="process-step">
+
+                <span class="process-number">
+                    03
+                </span>
+
+                <h3>
+                    Assistance
+                </h3>
+
+                <p>
+                    Contactez DATENSIS si une étape
+                    nécessite un accompagnement complémentaire.
+                </p>
+
+            </article>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         EXEMPLE DE SUIVI
+         ===================================================== -->
+
+    <section class="public-tracking-section">
+
+        <div class="section-heading">
+
+            <p class="eyebrow">
+                Exemple de suivi
+            </p>
+
+            <h2>
+                Modernisation informatique
+            </h2>
+
+            <p>
+                Voici un exemple de la manière dont un projet
+                peut être présenté dans votre futur espace DATENSIS.
+            </p>
+
+        </div>
+
+
+        <!-- PROGRESSION -->
+
+        <div class="public-progress-card">
+
+            <div class="public-progress-heading">
+
+                <div>
+
+                    <span class="public-progress-label">
+                        Exemple de projet
+                    </span>
+
+                    <h3>
+                        Modernisation informatique
+                    </h3>
+
+                    <p>
+                        Déploiement d'une nouvelle infrastructure
+                        de travail.
+                    </p>
+
+                </div>
+
+
+                <span class="public-progress-value">
+                    65 %
+                </span>
+
+            </div>
+
+
+            <div class="progress progress-large">
+
+                <div class="progress-bar"
+                     style="width: 65%;">
+                </div>
+
+            </div>
+
+
+            <div class="public-progress-footer">
+
+                <span>
+                    Démarrage
+                </span>
+
+                <span>
+                    Mise en place
+                </span>
+
+                <span>
+                    Finalisation
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- ÉTAPES -->
+
+        <div class="public-tracking-grid">
+
+
+            <!-- ÉTAPE 1 -->
+
+            <article class="public-tracking-step completed">
+
+                <div class="tracking-marker">
+                    ✓
+                </div>
+
+                <div>
+
+                    <span class="tracking-label">
+                        Étape 01
+                    </span>
+
+                    <h3>
+                        Solution validée
+                    </h3>
+
+                    <p>
+                        La solution et le périmètre
+                        du projet ont été confirmés.
+                    </p>
+
+                    <span class="tracking-status-text">
+                        Terminée
+                    </span>
+
+                </div>
+
+            </article>
+
+
+            <!-- ÉTAPE 2 -->
+
+            <article class="public-tracking-step completed">
+
+                <div class="tracking-marker">
+                    ✓
+                </div>
+
+                <div>
+
+                    <span class="tracking-label">
+                        Étape 02
+                    </span>
+
+                    <h3>
+                        Préparation
+                    </h3>
+
+                    <p>
+                        Les éléments nécessaires
+                        à la mise en place ont été préparés.
+                    </p>
+
+                    <span class="tracking-status-text">
+                        Terminée
+                    </span>
+
+                </div>
+
+            </article>
+
+
+            <!-- ÉTAPE 3 -->
+
+            <article class="public-tracking-step active">
+
+                <div class="tracking-marker">
+                    03
+                </div>
+
+                <div>
+
+                    <span class="tracking-label">
+                        Étape actuelle
+                    </span>
+
+                    <h3>
+                        Mise en place
+                    </h3>
+
+                    <p>
+                        L'installation et la configuration
+                        sont actuellement en cours.
+                    </p>
+
+                    <span class="tracking-status-text">
+                        En cours
+                    </span>
+
+                </div>
+
+            </article>
+
+
+            <!-- ÉTAPE 4 -->
+
+            <article class="public-tracking-step">
+
+                <div class="tracking-marker">
+                    04
+                </div>
+
+                <div>
+
+                    <span class="tracking-label">
+                        Étape 04
+                    </span>
+
+                    <h3>
+                        Vérification
+                    </h3>
+
+                    <p>
+                        Contrôle du fonctionnement
+                        et validation du résultat.
+                    </p>
+
+                    <span class="tracking-status-text">
+                        À venir
+                    </span>
+
+                </div>
+
+            </article>
+
+
+            <!-- ÉTAPE 5 -->
+
+            <article class="public-tracking-step">
+
+                <div class="tracking-marker">
+                    05
+                </div>
+
+                <div>
+
+                    <span class="tracking-label">
+                        Étape 05
+                    </span>
+
+                    <h3>
+                        Continuité
+                    </h3>
+
+                    <p>
+                        Assistance et suivi
+                        après la mise en place.
+                    </p>
+
+                    <span class="tracking-status-text">
+                        À venir
+                    </span>
+
+                </div>
+
+            </article>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         ACCOMPAGNEMENT
+         ===================================================== -->
+
+    <section class="public-support-grid">
+
+        <article class="public-support-card">
+
+            <span class="public-support-number">
+                01
+            </span>
+
+            <h2>
+                Des prochaines étapes claires
+            </h2>
+
+            <p>
+                Chaque projet peut afficher la prochaine action,
+                l'étape actuelle et les éléments restant à valider.
+            </p>
+
+        </article>
+
+
+        <article class="public-support-card">
+
+            <span class="public-support-number">
+                02
+            </span>
+
+            <h2>
+                Un interlocuteur disponible
+            </h2>
+
+            <p>
+                Si vous avez une question,
+                vous pouvez utiliser la messagerie
+                ou contacter DATENSIS.
+            </p>
+
+        </article>
+
+
+        <article class="public-support-card">
+
+            <span class="public-support-number">
+                03
+            </span>
+
+            <h2>
+                Une vision centralisée
+            </h2>
+
+            <p>
+                Les informations utiles sont regroupées
+                afin de limiter les échanges dispersés.
+            </p>
+
+        </article>
+
+    </section>
+
+
+    <!-- =====================================================
+         CTA FINAL
+         ===================================================== -->
+
+    <section class="tpe-next-step">
+
+        <div>
+
+            <p class="eyebrow">
+                Votre espace DATENSIS
+            </p>
+
+            <h2>
+                Suivez réellement vos projets après connexion
+            </h2>
+
+            <p>
+                Créez votre compte pour accéder à votre espace personnel
+                et retrouver l'avancement réel de vos projets.
+            </p>
+
+        </div>
+
+
+        <div class="tpe-next-links">
+
+            <a href="{{ url_for('main.contact') }}"
+               class="home-btn-secondary">
+                Poser une question
+            </a>
+
+            <a href="{{ url_for('main.tpe_creation_compte') }}"
+               class="home-btn-primary">
+                Créer mon compte
+            </a>
+
+        </div>
+
+    </section>
+
+</main>
+
+{% include "footer.html" %}
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,397 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mes demandes</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="tpe-requests-page">
+
+<div class="tpe-requests-layout">
+
+    <!-- NAVIGATION DE L'ESPACE CONNECTÉ -->
+    <aside class="tpe-requests-sidebar">
+
+        <a href="{{ url_for('main.tpe_dashboard') }}" class="tpe-requests-brand">
+            <span class="tpe-requests-brand-icon">D</span>
+            <span>
+                <strong>DATENSIS</strong>
+                <small>Indépendants & TPE</small>
+            </span>
+        </a>
+
+        <p class="tpe-requests-nav-label">MON ACTIVITÉ</p>
+
+        <nav class="tpe-requests-nav" aria-label="Navigation de mon espace">
+            <a href="{{ url_for('main.tpe_dashboard') }}">Vue d'ensemble</a>
+            <a href="{{ url_for('main.tpe_demandes') }}" class="active" aria-current="page">Mes demandes</a>
+            <a href="{{ url_for('main.tpe_projets') }}">Mes dossiers</a>
+            <a href="{{ url_for('main.tpe_documents') }}">Mes documents</a>
+            <a href="{{ url_for('main.tpe_factures') }}">Mes factures</a>
+        </nav>
+
+        <p class="tpe-requests-nav-label">MON COMPTE</p>
+
+        <nav class="tpe-requests-nav" aria-label="Gestion du compte">
+            <a href="{{ url_for('main.tpe_support') }}">Assistance</a>
+            <a href="{{ url_for('main.tpe_profil') }}">Mon profil</a>
+        </nav>
+
+        <div class="tpe-requests-sidebar-bottom">
+            <div class="tpe-requests-help">
+                <strong>Besoin d'aide ?</strong>
+                <p>Un interlocuteur DATENSIS peut vous accompagner dans vos démarches.</p>
+                <a href="{{ url_for('main.tpe_support') }}">Contacter l'équipe →</a>
+            </div>
+
+            <a href="{{ url_for('main.tpe_accueil') }}" class="tpe-requests-exit">
+                ← Retour au site TPE
+            </a>
+        </div>
+
+    </aside>
+
+    <main class="tpe-requests-main">
+
+        <!-- EN-TÊTE -->
+        <header class="tpe-requests-header">
+            <div>
+                <p class="tpe-requests-breadcrumb">
+                    <a href="{{ url_for('main.tpe_dashboard') }}">Mon espace</a>
+                    / Mes demandes
+                </p>
+
+                <span class="tpe-requests-eyebrow">SUIVI DES DEMANDES</span>
+                <h1>Mes demandes</h1>
+
+                <p class="tpe-requests-intro">
+                    Transmettez vos besoins à DATENSIS et suivez chaque étape de leur traitement.
+                </p>
+            </div>
+
+            <button type="button" class="tpe-requests-primary" id="openRequestModal">
+                + Nouvelle demande
+            </button>
+        </header>
+
+        <!-- SYNTHÈSE -->
+        <section class="tpe-requests-summary" aria-label="Synthèse des demandes">
+            <article class="tpe-requests-summary-card">
+                <span>Total des demandes</span>
+                <strong id="requestsTotal">03</strong>
+                <small>Demandes enregistrées</small>
+            </article>
+
+            <article class="tpe-requests-summary-card">
+                <span>En cours</span>
+                <strong id="requestsProgress">01</strong>
+                <small>Traitement en cours</small>
+            </article>
+
+            <article class="tpe-requests-summary-card">
+                <span>À valider</span>
+                <strong id="requestsPending">01</strong>
+                <small>Votre intervention est attendue</small>
+            </article>
+
+            <article class="tpe-requests-summary-card">
+                <span>Terminées</span>
+                <strong id="requestsCompleted">01</strong>
+                <small>Demandes clôturées</small>
+            </article>
+        </section>
+
+        <!-- LISTE DES DEMANDES -->
+        <section class="tpe-requests-panel">
+
+            <div class="tpe-requests-panel-heading">
+                <div>
+                    <h2>Historique de mes demandes</h2>
+                    <p>Recherchez une demande ou filtrez les résultats selon leur statut.</p>
+                </div>
+
+                <span class="tpe-requests-demo">Données de démonstration</span>
+            </div>
+
+            <div class="tpe-requests-toolbar">
+
+                <div class="tpe-requests-field">
+                    <label for="requestSearch">Rechercher</label>
+                    <input
+                        type="search"
+                        id="requestSearch"
+                        placeholder="Objet, catégorie, description..."
+                    >
+                </div>
+
+                <div class="tpe-requests-field">
+                    <label for="requestStatus">Statut</label>
+                    <select id="requestStatus">
+                        <option value="all">Tous les statuts</option>
+                        <option value="en-cours">En cours</option>
+                        <option value="a-valider">À valider</option>
+                        <option value="terminee">Terminée</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="tpe-requests-table-wrapper">
+                <table class="tpe-requests-table" id="requestsTable">
+                    <thead>
+                        <tr>
+                            <th>Demande</th>
+                            <th>Catégorie</th>
+                            <th>Date</th>
+                            <th>Statut</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr data-status="en-cours">
+                            <td>
+                                <strong>Renouvellement de matériel</strong>
+                                <small>Remplacement des postes de travail</small>
+                            </td>
+                            <td>Équipement</td>
+                            <td>29/09/2026</td>
+                            <td>
+                                <span class="tpe-request-status progress">En cours</span>
+                            </td>
+                            <td>
+                                <button
+                                    type="button"
+                                    class="tpe-request-open"
+                                    data-request-title="Renouvellement de matériel"
+                                    data-request-category="Équipement"
+                                    data-request-date="29/09/2026"
+                                    data-request-status="En cours"
+                                    data-request-description="Remplacement de plusieurs postes de travail et préparation de la migration."
+                                >
+                                    Consulter →
+                                </button>
+                            </td>
+                        </tr>
+
+                        <tr data-status="a-valider">
+                            <td>
+                                <strong>Conseil sur une solution</strong>
+                                <small>Comparaison des solutions disponibles</small>
+                            </td>
+                            <td>Conseil</td>
+                            <td>26/09/2026</td>
+                            <td>
+                                <span class="tpe-request-status pending">À valider</span>
+                            </td>
+                            <td>
+                                <button
+                                    type="button"
+                                    class="tpe-request-open"
+                                    data-request-title="Conseil sur une solution"
+                                    data-request-category="Conseil"
+                                    data-request-date="26/09/2026"
+                                    data-request-status="À valider"
+                                    data-request-description="Comparaison de plusieurs solutions avant validation."
+                                >
+                                    Consulter →
+                                </button>
+                            </td>
+                        </tr>
+
+                        <tr data-status="terminee">
+                            <td>
+                                <strong>Assistance installation</strong>
+                                <small>Accompagnement technique</small>
+                            </td>
+                            <td>Support</td>
+                            <td>20/09/2026</td>
+                            <td>
+                                <span class="tpe-request-status completed">Terminée</span>
+                            </td>
+                            <td>
+                                <button
+                                    type="button"
+                                    class="tpe-request-open"
+                                    data-request-title="Assistance installation"
+                                    data-request-category="Support"
+                                    data-request-date="20/09/2026"
+                                    data-request-status="Terminée"
+                                    data-request-description="Intervention d'assistance terminée et validée."
+                                >
+                                    Consulter →
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p id="requestsEmpty" class="tpe-requests-empty" hidden>
+                Aucune demande ne correspond à votre recherche.
+            </p>
+
+            <div class="tpe-requests-table-footer">
+                <span id="requestsCount">3 demandes affichées</span>
+                <span>Suivi centralisé DATENSIS</span>
+            </div>
+
+        </section>
+
+        <!-- AIDE -->
+        <section class="tpe-requests-assistance">
+            <div>
+                <h2>Une question concernant une demande ?</h2>
+                <p>Contactez DATENSIS pour obtenir des précisions sur son traitement.</p>
+            </div>
+
+            <a href="{{ url_for('main.tpe_support') }}">
+                Contacter DATENSIS →
+            </a>
+        </section>
+
+        <footer class="tpe-requests-footer">
+            <span>DATENSIS · Espace Indépendants & TPE</span>
+            <a href="{{ url_for('main.tpe_dashboard') }}">Retour au tableau de bord</a>
+        </footer>
+
+    </main>
+
+</div>
+
+<!-- MODAL NOUVELLE DEMANDE -->
+<div class="tpe-requests-overlay" id="requestModal" hidden>
+    <section
+        class="tpe-requests-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="requestModalTitle"
+    >
+        <div class="tpe-requests-modal-header">
+            <div>
+                <span class="tpe-requests-eyebrow">NOUVELLE DEMANDE</span>
+                <h2 id="requestModalTitle">Transmettre un besoin</h2>
+                <p>Décrivez votre demande pour faciliter son traitement.</p>
+            </div>
+
+            <button type="button" class="tpe-requests-close" id="closeRequestModal" aria-label="Fermer">
+                ×
+            </button>
+        </div>
+
+        <form id="requestForm" class="tpe-requests-form">
+
+            <div class="tpe-requests-field full">
+                <label for="newRequestTitle">Objet de la demande</label>
+                <input
+                    type="text"
+                    id="newRequestTitle"
+                    name="title"
+                    placeholder="Ex. Remplacement de mon ordinateur"
+                    maxlength="120"
+                    required
+                >
+            </div>
+
+            <div class="tpe-requests-field">
+                <label for="newRequestCategory">Catégorie</label>
+                <select id="newRequestCategory" name="category" required>
+                    <option value="Conseil">Conseil</option>
+                    <option value="Projet">Projet</option>
+                    <option value="Équipement">Équipement</option>
+                    <option value="Support">Support</option>
+                    <option value="Autre">Autre</option>
+                </select>
+            </div>
+
+            <div class="tpe-requests-field">
+                <label for="newRequestPriority">Priorité</label>
+                <select id="newRequestPriority" name="priority">
+                    <option value="Normale">Normale</option>
+                    <option value="Haute">Haute</option>
+                </select>
+            </div>
+
+            <div class="tpe-requests-field full">
+                <label for="newRequestDescription">Description du besoin</label>
+                <textarea
+                    id="newRequestDescription"
+                    name="description"
+                    rows="6"
+                    placeholder="Expliquez votre situation, vos besoins et le résultat attendu..."
+                    required
+                ></textarea>
+            </div>
+
+            <div class="tpe-requests-form-actions">
+                <button type="button" class="tpe-requests-secondary" id="cancelRequest">
+                    Annuler
+                </button>
+
+                <button type="submit" class="tpe-requests-primary">
+                    Envoyer la demande
+                </button>
+            </div>
+
+        </form>
+    </section>
+</div>
+
+<!-- PANNEAU DE DÉTAIL -->
+<div class="tpe-requests-drawer-overlay" id="requestDrawerOverlay" hidden></div>
+
+<aside
+    class="tpe-requests-drawer"
+    id="requestDrawer"
+    aria-hidden="true"
+    aria-labelledby="drawerRequestTitle"
+    role="dialog"
+    aria-modal="true"
+>
+    <div class="tpe-requests-drawer-header">
+        <div>
+            <span class="tpe-requests-eyebrow">DÉTAIL DE LA DEMANDE</span>
+            <h2 id="drawerRequestTitle">Demande</h2>
+        </div>
+
+        <button type="button" class="tpe-requests-close" id="closeRequestDrawer" aria-label="Fermer">
+            ×
+        </button>
+    </div>
+
+    <div class="tpe-requests-drawer-body">
+        <div class="tpe-requests-detail">
+            <span>Catégorie</span>
+            <strong id="drawerRequestCategory"></strong>
+        </div>
+
+        <div class="tpe-requests-detail">
+            <span>Date de création</span>
+            <strong id="drawerRequestDate"></strong>
+        </div>
+
+        <div class="tpe-requests-detail">
+            <span>Statut</span>
+            <strong id="drawerRequestStatus"></strong>
+        </div>
+
+        <div class="tpe-requests-detail">
+            <span>Description</span>
+            <p id="drawerRequestDescription"></p>
+        </div>
+
+        <div class="tpe-requests-drawer-actions">
+            <a href="{{ url_for('main.tpe_support') }}" class="tpe-requests-primary">
+                Contacter DATENSIS
+            </a>
+        </div>
+    </div>
+</aside>
+
+<script src="{{ url_for('static', filename='js/tpe.js') }}"></script>
+
+</body>
+</html>

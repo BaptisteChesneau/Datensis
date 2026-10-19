@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Messagerie | Administration DATENSIS</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+{% include "header.html" %}
+
+<main class="dashboard-page">
+
+    <section class="dashboard-intro">
+
+        <div>
+            <p class="eyebrow">Administration</p>
+
+            <h1>Messagerie</h1>
+
+            <p>
+                Consultez les échanges liés aux dossiers
+                et aux utilisateurs de la plateforme.
+            </p>
+        </div>
+
+    </section>
+
+
+    <section class="messaging-layout">
+
+        <aside class="conversation-list">
+
+            <div class="conversation-search">
+                <input
+                    type="search"
+                    placeholder="Rechercher une conversation..."
+                >
+            </div>
+
+            <button class="conversation-item active"
+                    type="button">
+
+                <div class="message-avatar">
+                    JM
+                </div>
+
+                <div>
+                    <strong>Julie Morel</strong>
+                    <span>Collaborateur</span>
+                    <p>
+                        Le dossier DOS-2026-052 nécessite une validation...
+                    </p>
+                </div>
+
+                <time>11:20</time>
+
+            </button>
+
+            <button class="conversation-item"
+                    type="button">
+
+                <div class="message-avatar">
+                    CH
+                </div>
+
+                <div>
+                    <strong>Cabinet Horizon</strong>
+                    <span>Partenaire</span>
+                    <p>
+                        Nous avons une nouvelle opportunité...
+                    </p>
+                </div>
+
+                <time>Hier</time>
+
+            </button>
+
+        </aside>
+
+
+        <article class="conversation-panel">
+
+            <header class="conversation-header">
+                <div>
+                    <strong>Julie Morel</strong>
+                    <span>Collaborateur DATENSIS</span>
+                    <small>DOS-2026-052</small>
+                </div>
+            </header>
+
+
+            <div class="conversation-messages"
+                 id="adminConversationMessages">
+
+                <div class="chat-message assistant-message">
+                    Le dossier DOS-2026-052 nécessite une validation
+                    avant la prochaine étape.
+                </div>
+
+                <div class="chat-message user-message">
+                    Je vérifie le dossier et je vous confirme.
+                </div>
+
+            </div>
+
+
+            <form class="conversation-reply"
+                  id="adminMessageForm">
+
+                <input
+                    type="text"
+                    id="adminMessageInput"
+                    placeholder="Écrire un message..."
+                    required
+                >
+
+                <button type="submit"
+                        class="btn-primary">
+                    Envoyer
+                </button>
+
+            </form>
+
+        </article>
+
+    </section>
+
+</main>
+
+{% include "footer.html" %}
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+</body>
+</html>

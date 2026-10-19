@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Mes demandes | DATENSIS</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+{% include "header.html" %}
+
+<main class="dashboard-page">
+
+    <section class="dashboard-intro">
+
+        <div>
+            <p class="eyebrow">
+                Collaborateur
+            </p>
+
+            <h1>
+                Mes demandes
+            </h1>
+
+            <p>
+                Retrouvez les demandes qui vous sont affectées.
+            </p>
+        </div>
+
+    </section>
+
+
+    <nav class="workspace-nav">
+
+        <a href="{{ url_for('main.collaborateur_dashboard') }}">
+            Tableau de bord
+        </a>
+
+        <a href="{{ url_for('main.collaborateur_demandes') }}"
+           class="active">
+            Mes demandes
+        </a>
+
+        <a href="{{ url_for('main.collaborateur_dossiers') }}">
+            Mes dossiers
+        </a>
+
+        <a href="{{ url_for('main.collaborateur_messagerie') }}">
+            Messagerie
+        </a>
+
+        <a href="{{ url_for('main.collaborateur_rendez_vous') }}">
+            Rendez-vous
+        </a>
+
+        <a href="{{ url_for('main.collaborateur_documents') }}">
+            Documents
+        </a>
+
+    </nav>
+
+
+    <section class="dashboard-card">
+
+        <div class="list-toolbar">
+
+            <div class="search-box">
+
+                <label for="collabRequestSearch">
+                    Rechercher
+                </label>
+
+                <input
+                    type="search"
+                    id="collabRequestSearch"
+                    placeholder="Rechercher une demande..."
+                >
+
+            </div>
+
+
+            <div class="filter-box">
+
+                <label for="collabRequestStatus">
+                    Statut
+                </label>
+
+                <select id="collabRequestStatus">
+
+                    <option value="all">
+                        Tous
+                    </option>
+
+                    <option value="nouvelle">
+                        Nouvelle
+                    </option>
+
+                    <option value="en-cours">
+                        En cours
+                    </option>
+
+                    <option value="attente">
+                        En attente
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <div class="table-wrapper">
+
+            <table class="data-table"
+                   id="collabRequestsTable">
+
+                <thead>
+                    <tr>
+                        <th>Demande</th>
+                        <th>Client</th>
+                        <th>Profil</th>
+                        <th>Date</th>
+                        <th>Statut</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr data-status="nouvelle">
+
+                        <td>
+                            Conseil solution
+                        </td>
+
+                        <td>
+                            Dupont Conseil
+                        </td>
+
+                        <td>
+                            TPE
+                        </td>
+
+                        <td>
+                            02/10/2026
+                        </td>
+
+                        <td>
+                            <span class="status status-warning">
+                                Nouvelle
+                            </span>
+                        </td>
+
+                        <td>
+                            <button class="table-action"
+                                    type="button">
+                                Ouvrir
+                            </button>
+                        </td>
+
+                    </tr>
+
+
+                    <tr data-status="en-cours">
+
+                        <td>
+                            Déploiement site Lyon
+                        </td>
+
+                        <td>
+                            Société Exemple
+                        </td>
+
+                        <td>
+                            PME
+                        </td>
+
+                        <td>
+                            01/10/2026
+                        </td>
+
+                        <td>
+                            <span class="status status-progress">
+                                En cours
+                            </span>
+                        </td>
+
+                        <td>
+                            <button class="table-action"
+                                    type="button">
+                                Piloter
+                            </button>
+                        </td>
+
+                    </tr>
+
+
+                    <tr data-status="attente">
+
+                        <td>
+                            Organisation documentaire
+                        </td>
+
+                        <td>
+                            AGRO Centre
+                        </td>
+
+                        <td>
+                            PME
+                        </td>
+
+                        <td>
+                            30/09/2026
+                        </td>
+
+                        <td>
+                            <span class="status status-warning">
+                                En attente
+                            </span>
+                        </td>
+
+                        <td>
+                            <button class="table-action"
+                                    type="button">
+                                Voir
+                            </button>
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+</main>
+
+{% include "footer.html" %}
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+</body>
+</html>

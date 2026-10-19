@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Créer un compte Cabinet</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="cabinet-auth register-page">
+
+<main class="dashboard-page">
+
+    <section class="auth-section">
+
+        <article class="auth-card">
+
+            <p class="eyebrow">
+                Cabinet d'expertise comptable
+            </p>
+
+            <h1>
+                Créer votre compte partenaire
+            </h1>
+
+            <p class="auth-intro">
+                Créez votre espace Cabinet pour qualifier
+                les besoins de vos clients, transmettre vos opportunités
+                et suivre vos partenariats avec DATENSIS.
+            </p>
+
+
+            <form
+                id="createAccountForm"
+                class="journey-form"
+            >
+
+                <input
+                    type="hidden"
+                    id="selectedProfile"
+                    name="profile"
+                    value="cabinet"
+                >
+
+
+                <div class="form-group">
+
+                    <label for="accountFirstName">
+                        Prénom
+                    </label>
+
+                    <input
+                        type="text"
+                        id="accountFirstName"
+                        name="first_name"
+                        autocomplete="given-name"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="accountLastName">
+                        Nom
+                    </label>
+
+                    <input
+                        type="text"
+                        id="accountLastName"
+                        name="last_name"
+                        autocomplete="family-name"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="accountCompany">
+                        Nom du cabinet
+                    </label>
+
+                    <input
+                        type="text"
+                        id="accountCompany"
+                        name="company"
+                        autocomplete="organization"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="accountRole">
+                        Fonction
+                    </label>
+
+                    <input
+                        type="text"
+                        id="accountRole"
+                        name="role"
+                        placeholder="Ex. Expert-comptable, Associé..."
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="accountEmail">
+                        Adresse e-mail professionnelle
+                    </label>
+
+                    <input
+                        type="email"
+                        id="accountEmail"
+                        name="email"
+                        autocomplete="email"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="accountPhone">
+                        Téléphone
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="accountPhone"
+                        name="phone"
+                        autocomplete="tel"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="accountPassword">
+                        Mot de passe
+                    </label>
+
+                    <input
+                        type="password"
+                        id="accountPassword"
+                        name="password"
+                        autocomplete="new-password"
+                        minlength="12"
+                        required
+                    >
+
+                    <small class="form-help">
+                        12 caractères minimum, avec au moins
+                        une majuscule, un chiffre et un caractère spécial.
+                    </small>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="accountPasswordConfirm">
+                        Confirmer le mot de passe
+                    </label>
+
+                    <input
+                        type="password"
+                        id="accountPasswordConfirm"
+                        name="password_confirm"
+                        autocomplete="new-password"
+                        minlength="12"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="account-terms">
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            id="accountTerms"
+                            required
+                        >
+
+                        <span>
+                            J'accepte les
+                            <a href="{{ url_for('main.mentions_legales') }}">
+                                mentions légales
+                            </a>,
+                            la
+                            <a href="{{ url_for('main.confidentialite') }}">
+                                politique de confidentialité
+                            </a>
+                            et la
+                            <a href="{{ url_for('main.cookies') }}">
+                                politique des cookies
+                            </a>.
+                        </span>
+
+                    </label>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="btn-primary"
+                >
+                    Créer mon compte partenaire
+                </button>
+
+            </form>
+
+
+            <div class="account-login-link">
+
+                <p>
+                    Avez-vous déjà un compte ?
+
+                    <a href="{{ url_for('main.cabinet_connexion') }}">
+                        Se connecter
+                    </a>
+                </p>
+
+            </div>
+
+
+            <div class="account-back">
+
+                <a href="{{ url_for('main.cabinet_accueil') }}">
+                    ← Retour à l'accueil Cabinet
+                </a>
+
+            </div>
+
+        </article>
+
+    </section>
+
+</main>
+
+<script src="{{ url_for('static', filename='js/global.js') }}"></script>
+
+</body>
+</html>

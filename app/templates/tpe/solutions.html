@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Solutions</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+{% include "tpe/header_tpe.html" %}
+
+<main class="tpe-public-page">
+
+    <!-- =====================================================
+         HERO
+         ===================================================== -->
+
+    <section class="tpe-service-hero">
+
+        <div class="tpe-service-hero-content">
+
+            <p class="eyebrow">
+                Indépendants & TPE
+            </p>
+
+            <h1>
+                Solutions
+            </h1>
+
+            <p class="tpe-service-description">
+                Comparez plusieurs orientations adaptées à votre besoin
+                et identifiez la solution la plus cohérente
+                pour votre activité.
+            </p>
+
+            <div class="tpe-service-actions">
+
+                <a href="#solutions"
+                   class="home-btn-primary">
+                    Voir les solutions
+                </a>
+
+                <a href="{{ url_for('main.tpe_accueil') }}"
+                   class="home-btn-secondary">
+                    Retour à l'accueil TPE
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="tpe-service-hero-panel">
+
+            <span class="hero-panel-label">
+                Votre parcours
+            </span>
+
+            <div class="hero-step">
+
+                <strong>
+                    01
+                </strong>
+
+                <div>
+                    <h3>
+                        Identifier
+                    </h3>
+
+                    <p>
+                        Clarifiez précisément votre besoin.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="hero-step">
+
+                <strong>
+                    02
+                </strong>
+
+                <div>
+                    <h3>
+                        Comparer
+                    </h3>
+
+                    <p>
+                        Analysez plusieurs possibilités adaptées.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="hero-step">
+
+                <strong>
+                    03
+                </strong>
+
+                <div>
+                    <h3>
+                        Choisir
+                    </h3>
+
+                    <p>
+                        Orientez-vous vers la solution la plus cohérente.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         PARCOURS
+         ===================================================== -->
+
+    <section class="process-section public-process-section">
+
+        <div class="section-heading">
+
+            <p class="eyebrow">
+                Comment avancer ?
+            </p>
+
+            <h2>
+                Trouver la solution adaptée
+            </h2>
+
+            <p>
+                DATENSIS vous aide à avancer progressivement
+                avant de prendre une décision.
+            </p>
+
+        </div>
+
+
+        <div class="process-steps">
+
+            <article class="process-step active">
+
+                <span class="process-number">
+                    01
+                </span>
+
+                <h3>
+                    Besoin
+                </h3>
+
+                <p>
+                    Identifiez précisément votre situation
+                    et ce que vous cherchez à améliorer.
+                </p>
+
+            </article>
+
+
+            <article class="process-step">
+
+                <span class="process-number">
+                    02
+                </span>
+
+                <h3>
+                    Comparaison
+                </h3>
+
+                <p>
+                    Comparez différentes orientations
+                    selon vos contraintes et vos priorités.
+                </p>
+
+            </article>
+
+
+            <article class="process-step">
+
+                <span class="process-number">
+                    03
+                </span>
+
+                <h3>
+                    Orientation
+                </h3>
+
+                <p>
+                    Sélectionnez l'approche la plus adaptée
+                    à votre activité et à votre rythme.
+                </p>
+
+            </article>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         SOLUTIONS
+         ===================================================== -->
+
+    <section class="public-solutions-section"
+             id="solutions">
+
+        <div class="section-heading">
+
+            <p class="eyebrow">
+                Nos orientations
+            </p>
+
+            <h2>
+                Trois niveaux d'accompagnement
+            </h2>
+
+            <p>
+                Chaque solution répond à un niveau de besoin différent.
+            </p>
+
+        </div>
+
+
+        <div class="public-solution-grid">
+
+            <!-- OPTION 1 -->
+
+            <article class="public-solution-card">
+
+                <span class="solution-badge">
+                    Option 01
+                </span>
+
+                <h2>
+                    Solution essentielle
+                </h2>
+
+                <p>
+                    Une approche simple pour répondre
+                    à un besoin clairement identifié.
+                </p>
+
+                <ul class="feature-list">
+
+                    <li>
+                        Mise en place rapide
+                    </li>
+
+                    <li>
+                        Budget maîtrisé
+                    </li>
+
+                    <li>
+                        Fonctionnalités essentielles
+                    </li>
+
+                </ul>
+
+                <a href="{{ url_for('main.tpe_creation_compte') }}"
+                   class="home-btn-primary">
+                    Choisir cette orientation
+                </a>
+
+            </article>
+
+
+            <!-- OPTION 2 -->
+
+            <article class="public-solution-card recommended">
+
+                <div class="recommended-label">
+                    Recommandée
+                </div>
+
+                <span class="solution-badge">
+                    Option 02
+                </span>
+
+                <h2>
+                    Solution évolutive
+                </h2>
+
+                <p>
+                    Une solution plus souple capable
+                    d'accompagner l'évolution de votre activité.
+                </p>
+
+                <ul class="feature-list">
+
+                    <li>
+                        Évolutive
+                    </li>
+
+                    <li>
+                        Adaptable
+                    </li>
+
+                    <li>
+                        Accompagnement DATENSIS
+                    </li>
+
+                </ul>
+
+                <a href="{{ url_for('main.tpe_creation_compte') }}"
+                   class="home-btn-primary">
+                    Choisir cette orientation
+                </a>
+
+            </article>
+
+
+            <!-- OPTION 3 -->
+
+            <article class="public-solution-card">
+
+                <span class="solution-badge">
+                    Option 03
+                </span>
+
+                <h2>
+                    Solution personnalisée
+                </h2>
+
+                <p>
+                    Une étude complémentaire pour les besoins
+                    nécessitant davantage de personnalisation.
+                </p>
+
+                <ul class="feature-list">
+
+                    <li>
+                        Étude détaillée
+                    </li>
+
+                    <li>
+                        Configuration sur mesure
+                    </li>
+
+                    <li>
+                        Suivi renforcé
+                    </li>
+
+                </ul>
+
+                <a href="{{ url_for('main.contact') }}"
+                   class="home-btn-secondary">
+                    Échanger avec DATENSIS
+                </a>
+
+            </article>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         AIDE
+         ===================================================== -->
+
+    <section class="tpe-next-step">
+
+        <div>
+
+            <p class="eyebrow">
+                Besoin d'aide ?
+            </p>
+
+            <h2>
+                Vous hésitez entre plusieurs solutions ?
+            </h2>
+
+            <p>
+                Présentez votre situation à DATENSIS
+                afin d'obtenir une orientation plus adaptée
+                à votre activité et à vos contraintes.
+            </p>
+
+        </div>
+
+
+        <div class="tpe-next-links">
+
+            <a href="{{ url_for('main.tpe_etude_conseil') }}"
+               class="home-btn-secondary">
+                Étudier mon besoin
+            </a>
+
+            <a href="{{ url_for('main.contact') }}"
+               class="home-btn-primary">
+                Contacter DATENSIS
+            </a>
+
+        </div>
+
+    </section>
+
+</main>
+
+{% include "footer.html" %}
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+</body>
+</html>

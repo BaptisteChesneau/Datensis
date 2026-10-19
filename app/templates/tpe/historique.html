@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Historique - DATENSIS</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    {% include "header.html" %}
+
+    <main class="dashboard-page">
+
+        <section class="dashboard-intro">
+
+            <div>
+
+                <p class="eyebrow">
+                    Indépendants & TPE
+                </p>
+
+                <h1>
+                    Historique
+                </h1>
+
+                <p>
+                    Retrouvez les principales actions
+                    effectuées dans votre espace DATENSIS.
+                </p>
+
+            </div>
+
+            <a href="{{ url_for('main.tpe_dashboard') }}"
+               class="btn-secondary">
+                Retour au tableau de bord
+            </a>
+
+        </section>
+
+
+        <section class="dashboard-card">
+
+            <div class="history-timeline">
+
+                <article class="history-item">
+
+                    <div class="history-marker"></div>
+
+                    <div class="history-content">
+
+                        <time>
+                            30/09/2026 - 10:15
+                        </time>
+
+                        <h2>
+                            Document ajouté
+                        </h2>
+
+                        <p>
+                            Planning_mise_en_place.xlsx a été ajouté
+                            au projet Modernisation informatique.
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+                <article class="history-item">
+
+                    <div class="history-marker"></div>
+
+                    <div class="history-content">
+
+                        <time>
+                            29/09/2026 - 16:40
+                        </time>
+
+                        <h2>
+                            Proposition mise à jour
+                        </h2>
+
+                        <p>
+                            La proposition commerciale est passée
+                            en version 2.
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+                <article class="history-item">
+
+                    <div class="history-marker"></div>
+
+                    <div class="history-content">
+
+                        <time>
+                            29/09/2026 - 11:05
+                        </time>
+
+                        <h2>
+                            Message reçu
+                        </h2>
+
+                        <p>
+                            DATENSIS a répondu à votre question
+                            concernant le délai d'installation.
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+                <article class="history-item">
+
+                    <div class="history-marker"></div>
+
+                    <div class="history-content">
+
+                        <time>
+                            28/09/2026 - 09:30
+                        </time>
+
+                        <h2>
+                            Demande mise à jour
+                        </h2>
+
+                        <p>
+                            Votre demande a été affectée
+                            à un interlocuteur DATENSIS.
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+                <article class="history-item">
+
+                    <div class="history-marker"></div>
+
+                    <div class="history-content">
+
+                        <time>
+                            25/09/2026 - 14:10
+                        </time>
+
+                        <h2>
+                            Facture réglée
+                        </h2>
+
+                        <p>
+                            La facture FAC-2026-087 a été enregistrée
+                            comme payée.
+                        </p>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    {% include "footer.html" %}
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+</body>
+
+</html>

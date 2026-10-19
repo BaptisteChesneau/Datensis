@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Mise en relation | DATENSIS</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+{% include "cabinet/header_cabinet.html" %}
+
+<main class="cabinet-public-page">
+
+    <section class="cabinet-service-hero">
+
+        <div class="cabinet-service-hero-content">
+
+            <p class="eyebrow">
+                Cabinet partenaire
+            </p>
+
+            <h1>
+                Mise en relation
+            </h1>
+
+            <p class="cabinet-service-description">
+                Préparez les informations du client
+                et organisez sa mise en relation
+                avec DATENSIS.
+            </p>
+
+            <div class="cabinet-service-actions">
+
+                <a href="#relation-form"
+                   class="home-btn-primary">
+                    Créer le dossier
+                </a>
+
+                <a href="{{ url_for('main.cabinet_accueil') }}"
+                   class="home-btn-secondary">
+                    Retour à l'accueil Cabinet
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="cabinet-service-hero-panel">
+
+            <span class="hero-panel-label">
+                Transmission
+            </span>
+
+            <div class="hero-step">
+
+                <strong>01</strong>
+
+                <div>
+                    <h3>Qualifier</h3>
+                    <p>Structurer le besoin du client.</p>
+                </div>
+
+            </div>
+
+            <div class="hero-step">
+
+                <strong>02</strong>
+
+                <div>
+                    <h3>Créer le dossier</h3>
+                    <p>Regrouper les informations utiles.</p>
+                </div>
+
+            </div>
+
+            <div class="hero-step">
+
+                <strong>03</strong>
+
+                <div>
+                    <h3>Mettre en relation</h3>
+                    <p>Préparer le premier échange.</p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="process-section public-process-section">
+
+        <div class="section-heading">
+
+            <p class="eyebrow">
+                Transmission client
+            </p>
+
+            <h2>
+                Une mise en relation structurée
+            </h2>
+
+            <p>
+                Regroupez les informations essentielles
+                afin de faciliter la prise en charge
+                par DATENSIS.
+            </p>
+
+        </div>
+
+
+        <div class="process-steps">
+
+            <article class="process-step">
+
+                <span class="process-number">01</span>
+
+                <h3>
+                    Besoin qualifié
+                </h3>
+
+                <p>
+                    Le contexte et l'objectif
+                    ont été identifiés.
+                </p>
+
+            </article>
+
+            <article class="process-step active">
+
+                <span class="process-number">02</span>
+
+                <h3>
+                    Créer le dossier
+                </h3>
+
+                <p>
+                    Rassemblez les coordonnées
+                    et informations nécessaires.
+                </p>
+
+            </article>
+
+            <article class="process-step">
+
+                <span class="process-number">03</span>
+
+                <h3>
+                    Organiser l'échange
+                </h3>
+
+                <p>
+                    Préparez la prise de contact
+                    entre le client et DATENSIS.
+                </p>
+
+            </article>
+
+        </div>
+
+    </section>
+
+
+    <section class="public-journey-layout"
+             id="relation-form">
+
+        <article class="dashboard-card">
+
+            <div class="card-heading">
+
+                <div>
+
+                    <p class="eyebrow">
+                        Dossier client
+                    </p>
+
+                    <h2>
+                        Créer le dossier
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <form id="cabinetRelationForm"
+                  class="journey-form">
+
+                <div class="form-group">
+
+                    <label for="relationCompany">
+                        Entreprise
+                    </label>
+
+                    <input
+                        type="text"
+                        id="relationCompany"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="relationContact">
+                        Contact principal
+                    </label>
+
+                    <input
+                        type="text"
+                        id="relationContact"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="relationEmail">
+                        E-mail
+                    </label>
+
+                    <input
+                        type="email"
+                        id="relationEmail"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="relationPhone">
+                        Téléphone
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="relationPhone"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="relationNeed">
+                        Besoin
+                    </label>
+
+                    <textarea
+                        id="relationNeed"
+                        rows="5"
+                        placeholder="Résumez le besoin identifié..."
+                        required
+                    ></textarea>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="relationDocument">
+                        Ajouter un document
+                    </label>
+
+                    <input
+                        type="file"
+                        id="relationDocument"
+                    >
+
+                </div>
+
+
+                <div class="card-actions">
+
+                    <a href="{{ url_for('main.cabinet_qualification_besoin') }}"
+                       class="btn-secondary">
+                        Retour à la qualification
+                    </a>
+
+                    <button type="submit"
+                            class="btn-primary">
+                        Créer le dossier
+                    </button>
+
+                </div>
+
+            </form>
+
+        </article>
+
+
+        <aside class="dashboard-card cabinet-study-help">
+
+            <div class="card-heading">
+
+                <div>
+
+                    <p class="eyebrow">
+                        Mise en relation
+                    </p>
+
+                    <h2>
+                        Que se passe-t-il ensuite ?
+                    </h2>
+
+                </div>
+
+            </div>
+
+            <p>
+                Après création du dossier,
+                DATENSIS peut organiser
+                un premier échange avec le client.
+            </p>
+
+
+            <div class="info-box">
+
+                <strong>
+                    Préparez le contact
+                </strong>
+
+                <p>
+                    Vérifiez les coordonnées du client
+                    et résumez clairement le besoin transmis.
+                </p>
+
+            </div>
+
+
+            <a href="{{ url_for('main.contact') }}"
+               class="home-btn-secondary">
+                Contacter DATENSIS
+            </a>
+
+        </aside>
+
+    </section>
+
+
+    <section class="cabinet-next-step">
+
+        <div>
+
+            <p class="eyebrow">
+                La suite
+            </p>
+
+            <h2>
+                Suivez le partenariat
+            </h2>
+
+            <p>
+                Découvrez comment les opportunités
+                et dossiers peuvent être suivis
+                dans l'espace partenaire.
+            </p>
+
+        </div>
+
+        <a href="{{ url_for('main.cabinet_suivi_partenariat') }}"
+           class="home-btn-primary">
+            Découvrir le suivi
+        </a>
+
+    </section>
+
+</main>
+
+{% include "footer.html" %}
+
+<script src="{{ url_for('static', filename='js/global.js') }}"></script>
+<script src="{{ url_for('static', filename='js/cabinet.js') }}"></script>
+
+</body>
+</html>

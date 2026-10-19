@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Utilisateurs | Administration DATENSIS</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+{% include "header.html" %}
+
+<main class="dashboard-page">
+
+    <section class="dashboard-intro">
+
+        <div>
+
+            <p class="eyebrow">
+                Administration
+            </p>
+
+            <h1>
+                Utilisateurs
+            </h1>
+
+            <p>
+                Gérez les comptes, les profils et les accès DATENSIS.
+            </p>
+
+        </div>
+
+        <button type="button"
+                class="btn-primary"
+                id="openAdminUserModal">
+            Ajouter un utilisateur
+        </button>
+
+    </section>
+
+
+    <nav class="workspace-nav">
+
+        <a href="{{ url_for('main.admin_dashboard') }}">
+            Tableau de bord
+        </a>
+
+        <a href="{{ url_for('main.admin_utilisateurs') }}"
+           class="active">
+            Utilisateurs
+        </a>
+
+        <a href="{{ url_for('main.admin_demandes') }}">
+            Demandes
+        </a>
+
+        <a href="{{ url_for('main.admin_projets_dossiers') }}">
+            Projets & dossiers
+        </a>
+
+        <a href="{{ url_for('main.admin_cabinets') }}">
+            Cabinets partenaires
+        </a>
+
+        <a href="{{ url_for('main.admin_administration') }}">
+            Administration
+        </a>
+
+    </nav>
+
+
+    <section class="dashboard-card">
+
+        <div class="list-toolbar">
+
+            <div class="search-box">
+
+                <label for="adminUserSearch">
+                    Rechercher
+                </label>
+
+                <input
+                    type="search"
+                    id="adminUserSearch"
+                    placeholder="Nom, e-mail, entreprise..."
+                >
+
+            </div>
+
+
+            <div class="filter-box">
+
+                <label for="adminUserProfile">
+                    Profil
+                </label>
+
+                <select id="adminUserProfile">
+
+                    <option value="all">
+                        Tous
+                    </option>
+
+                    <option value="tpe">
+                        TPE
+                    </option>
+
+                    <option value="pme">
+                        PME
+                    </option>
+
+                    <option value="cabinet">
+                        Cabinet
+                    </option>
+
+                    <option value="collaborateur">
+                        Collaborateur
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <div class="table-wrapper">
+
+            <table class="data-table"
+                   id="adminUsersTable">
+
+                <thead>
+                    <tr>
+                        <th>Utilisateur</th>
+                        <th>Entreprise</th>
+                        <th>Profil</th>
+                        <th>E-mail</th>
+                        <th>Statut</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr data-profile="tpe">
+                        <td>Baptiste Martin</td>
+                        <td>Atelier Martin</td>
+                        <td>TPE</td>
+                        <td>b.martin@exemple.fr</td>
+                        <td>
+                            <span class="status status-success">
+                                Actif
+                            </span>
+                        </td>
+                        <td>
+                            <button type="button"
+                                    class="table-action">
+                                Gérer
+                            </button>
+                        </td>
+                    </tr>
+
+
+                    <tr data-profile="pme">
+                        <td>Claire Durand</td>
+                        <td>Société Exemple</td>
+                        <td>PME</td>
+                        <td>c.durand@exemple.fr</td>
+                        <td>
+                            <span class="status status-success">
+                                Actif
+                            </span>
+                        </td>
+                        <td>
+                            <button type="button"
+                                    class="table-action">
+                                Gérer
+                            </button>
+                        </td>
+                    </tr>
+
+
+                    <tr data-profile="cabinet">
+                        <td>Marc Leroy</td>
+                        <td>Cabinet Horizon</td>
+                        <td>Cabinet</td>
+                        <td>m.leroy@horizon.fr</td>
+                        <td>
+                            <span class="status status-progress">
+                                À valider
+                            </span>
+                        </td>
+                        <td>
+                            <button type="button"
+                                    class="table-action">
+                                Valider
+                            </button>
+                        </td>
+                    </tr>
+
+
+                    <tr data-profile="collaborateur">
+                        <td>Julie Morel</td>
+                        <td>DATENSIS</td>
+                        <td>Collaborateur</td>
+                        <td>j.morel@datensis.fr</td>
+                        <td>
+                            <span class="status status-success">
+                                Actif
+                            </span>
+                        </td>
+                        <td>
+                            <button type="button"
+                                    class="table-action">
+                                Gérer
+                            </button>
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<div class="modal-backdrop"
+     id="adminUserModal"
+     hidden>
+
+    <div class="modal-card">
+
+        <div class="modal-header">
+
+            <div>
+
+                <p class="eyebrow">
+                    Administration
+                </p>
+
+                <h2>
+                    Ajouter un utilisateur
+                </h2>
+
+            </div>
+
+            <button
+                type="button"
+                class="modal-close"
+                id="closeAdminUserModal"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <form id="adminUserForm"
+              class="journey-form">
+
+            <div class="form-group">
+                <label for="adminUserFirstName">
+                    Prénom
+                </label>
+
+                <input type="text"
+                       id="adminUserFirstName"
+                       required>
+            </div>
+
+
+            <div class="form-group">
+                <label for="adminUserLastName">
+                    Nom
+                </label>
+
+                <input type="text"
+                       id="adminUserLastName"
+                       required>
+            </div>
+
+
+            <div class="form-group">
+                <label for="adminUserEmail">
+                    E-mail
+                </label>
+
+                <input type="email"
+                       id="adminUserEmail"
+                       required>
+            </div>
+
+
+            <div class="form-group">
+                <label for="adminUserCompany">
+                    Entreprise
+                </label>
+
+                <input type="text"
+                       id="adminUserCompany">
+            </div>
+
+
+            <div class="form-group">
+                <label for="adminUserType">
+                    Profil
+                </label>
+
+                <select id="adminUserType"
+                        required>
+
+                    <option value="">
+                        Sélectionnez
+                    </option>
+
+                    <option>TPE</option>
+                    <option>PME</option>
+                    <option>Cabinet</option>
+                    <option>Collaborateur</option>
+                    <option>Administrateur</option>
+
+                </select>
+            </div>
+
+
+            <div class="card-actions">
+
+                <button type="button"
+                        class="btn-secondary"
+                        id="cancelAdminUser">
+                    Annuler
+                </button>
+
+                <button type="submit"
+                        class="btn-primary">
+                    Créer le compte
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+{% include "footer.html" %}
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+</body>
+</html>

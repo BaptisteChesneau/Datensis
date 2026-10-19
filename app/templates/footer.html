@@ -1,0 +1,77 @@
+<footer class="site-footer">
+
+    <div class="footer-container">
+
+        <!-- Présentation -->
+        <div class="footer-brand">
+
+            <a href="{{ url_for('main.home') }}"
+               class="footer-logo">
+                DATENSIS
+            </a>
+
+            <p>
+                Un accompagnement clair et personnalisé
+                pour vos projets.
+            </p>
+
+        </div>
+
+
+        <!-- Navigation -->
+        <div class="footer-column">
+
+            <h3>
+                Navigation
+            </h3>
+
+            <a href="{{ url_for('main.services') }}">
+                Services
+            </a>
+
+            <a href="{{ url_for('main.faq') }}">
+                Aide & FAQ
+            </a>
+
+            <a href="{{ url_for('main.contact') }}">
+                Contact
+            </a>
+
+        </div>
+
+
+        <!-- Informations légales -->
+        <div class="footer-column">
+
+            <h3>
+                Informations
+            </h3>
+
+            <a href="{{ url_for('main.mentions_legales') }}">
+                Mentions légales
+            </a>
+
+            <a href="{{ url_for('main.confidentialite') }}">
+                Politique de confidentialité
+            </a>
+
+            <a href="{{ url_for('main.cookies') }}">
+                Politique des cookies
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- Bas du footer -->
+    <div class="footer-bottom">
+
+        <p>
+            &copy; 2026 DATENSIS.
+            Tous droits réservés.
+        </p>
+
+    </div>
+
+</footer>

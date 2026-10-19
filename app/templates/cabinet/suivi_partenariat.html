@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Suivi du partenariat</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+{% include "cabinet/header_cabinet.html" %}
+
+<main class="cabinet-public-page">
+
+    <section class="cabinet-service-hero">
+
+        <div class="cabinet-service-hero-content">
+
+            <p class="eyebrow">
+                Cabinet partenaire
+            </p>
+
+            <h1>
+                Suivi du partenariat
+            </h1>
+
+            <p class="cabinet-service-description">
+                Centralisez le suivi des opportunités,
+                dossiers transmis et échanges
+                avec DATENSIS.
+            </p>
+
+            <div class="cabinet-service-actions">
+
+                <a href="#partnership-demo"
+                   class="home-btn-primary">
+                    Découvrir le suivi
+                </a>
+
+                <a href="{{ url_for('main.cabinet_accueil') }}"
+                   class="home-btn-secondary">
+                    Retour à l'accueil Cabinet
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="cabinet-service-hero-panel">
+
+            <span class="hero-panel-label">
+                Partenariat
+            </span>
+
+            <div class="hero-step">
+
+                <strong>01</strong>
+
+                <div>
+                    <h3>Transmettre</h3>
+                    <p>Envoyez une opportunité qualifiée.</p>
+                </div>
+
+            </div>
+
+            <div class="hero-step">
+
+                <strong>02</strong>
+
+                <div>
+                    <h3>Suivre</h3>
+                    <p>Visualisez les dossiers en cours.</p>
+                </div>
+
+            </div>
+
+            <div class="hero-step">
+
+                <strong>03</strong>
+
+                <div>
+                    <h3>Échanger</h3>
+                    <p>Maintenez une relation claire avec DATENSIS.</p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="process-section public-process-section">
+
+        <div class="section-heading">
+
+            <p class="eyebrow">
+                Pilotage partenaire
+            </p>
+
+            <h2>
+                Une vue claire sur votre partenariat
+            </h2>
+
+            <p>
+                Retrouvez facilement les opportunités,
+                dossiers et prochaines actions
+                depuis votre futur espace partenaire.
+            </p>
+
+        </div>
+
+
+        <div class="process-steps">
+
+            <article class="process-step active">
+
+                <span class="process-number">01</span>
+
+                <h3>
+                    Opportunités
+                </h3>
+
+                <p>
+                    Suivez les besoins transmis
+                    et leur état d'avancement.
+                </p>
+
+            </article>
+
+            <article class="process-step">
+
+                <span class="process-number">02</span>
+
+                <h3>
+                    Dossiers
+                </h3>
+
+                <p>
+                    Visualisez les dossiers actifs
+                    et les étapes en cours.
+                </p>
+
+            </article>
+
+            <article class="process-step">
+
+                <span class="process-number">03</span>
+
+                <h3>
+                    Échanges
+                </h3>
+
+                <p>
+                    Retrouvez les rendez-vous
+                    et points de suivi.
+                </p>
+
+            </article>
+
+        </div>
+
+    </section>
+
+
+    <section class="cabinet-partnership-demo"
+             id="partnership-demo">
+
+        <div class="section-heading">
+
+            <p class="eyebrow">
+                Exemple de tableau partenaire
+            </p>
+
+            <h2>
+                Vue d'ensemble
+            </h2>
+
+            <p>
+                Les données ci-dessous sont uniquement
+                des exemples de présentation.
+            </p>
+
+        </div>
+
+
+        <div class="cabinet-public-kpi-grid">
+
+            <article class="cabinet-public-kpi">
+
+                <span>
+                    Clients transmis
+                </span>
+
+                <strong>
+                    14
+                </strong>
+
+                <small>
+                    Exemple
+                </small>
+
+            </article>
+
+
+            <article class="cabinet-public-kpi">
+
+                <span>
+                    Opportunités ouvertes
+                </span>
+
+                <strong>
+                    6
+                </strong>
+
+                <small>
+                    Exemple
+                </small>
+
+            </article>
+
+
+            <article class="cabinet-public-kpi">
+
+                <span>
+                    Dossiers actifs
+                </span>
+
+                <strong>
+                    9
+                </strong>
+
+                <small>
+                    Exemple
+                </small>
+
+            </article>
+
+
+            <article class="cabinet-public-kpi">
+
+                <span>
+                    Rendez-vous prévus
+                </span>
+
+                <strong>
+                    3
+                </strong>
+
+                <small>
+                    Exemple
+                </small>
+
+            </article>
+
+        </div>
+
+
+        <div class="cabinet-demo-grid">
+
+            <article class="cabinet-demo-card">
+
+                <div class="card-heading">
+
+                    <div>
+
+                        <p class="eyebrow">
+                            Exemple
+                        </p>
+
+                        <h2>
+                            Portefeuille transmis
+                        </h2>
+
+                        <p>
+                            Répartition indicative
+                            des clients suivis.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="cabinet-portfolio-list">
+
+                    <div>
+
+                        <span>
+                            TPE
+                        </span>
+
+                        <strong>
+                            57 %
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            PME
+                        </span>
+
+                        <strong>
+                            36 %
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Autres
+                        </span>
+
+                        <strong>
+                            7 %
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <article class="cabinet-demo-card">
+
+                <div class="card-heading">
+
+                    <div>
+
+                        <p class="eyebrow">
+                            Exemple
+                        </p>
+
+                        <h2>
+                            Prochain point partenariat
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="appointment-card cabinet-demo-appointment">
+
+                    <div class="appointment-date">
+
+                        <strong>
+                            15
+                        </strong>
+
+                        <span>
+                            OCT
+                        </span>
+
+                    </div>
+
+
+                    <div class="appointment-content">
+
+                        <strong>
+                            Revue partenariat
+                        </strong>
+
+                        <span>
+                            14:30 - Visioconférence
+                        </span>
+
+                        <span>
+                            Équipe DATENSIS
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+        </div>
+
+    </section>
+
+
+    <section class="public-support-grid">
+
+        <article class="public-support-card">
+
+            <span class="public-support-number">
+                01
+            </span>
+
+            <h2>
+                Opportunités centralisées
+            </h2>
+
+            <p>
+                Retrouvez les besoins transmis
+                dans une vue unique.
+            </p>
+
+        </article>
+
+
+        <article class="public-support-card">
+
+            <span class="public-support-number">
+                02
+            </span>
+
+            <h2>
+                Suivi des dossiers
+            </h2>
+
+            <p>
+                Gardez une visibilité
+                sur les dossiers en cours.
+            </p>
+
+        </article>
+
+
+        <article class="public-support-card">
+
+            <span class="public-support-number">
+                03
+            </span>
+
+            <h2>
+                Relation partenaire
+            </h2>
+
+            <p>
+                Organisez les échanges
+                et points réguliers avec DATENSIS.
+            </p>
+
+        </article>
+
+    </section>
+
+
+    <section class="cabinet-next-step">
+
+        <div>
+
+            <p class="eyebrow">
+                Votre espace partenaire
+            </p>
+
+            <h2>
+                Accédez au suivi réel après connexion
+            </h2>
+
+            <p>
+                Créez votre compte pour retrouver
+                vos vraies opportunités, dossiers
+                et échanges.
+            </p>
+
+        </div>
+
+
+        <div class="cabinet-next-links">
+
+            <a href="{{ url_for('main.contact') }}"
+               class="home-btn-secondary">
+                Contacter DATENSIS
+            </a>
+
+            <a href="{{ url_for('main.cabinet_creation_compte') }}"
+               class="home-btn-primary">
+                Créer mon compte
+            </a>
+
+        </div>
+
+    </section>
+
+</main>
+
+{% include "footer.html" %}
+
+<script src="{{ url_for('static', filename='js/global.js') }}"></script>
+<script src="{{ url_for('static', filename='js/cabinet.js') }}"></script>
+
+</body>
+</html>

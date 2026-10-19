@@ -1,0 +1,51 @@
+<header class="tpe-home-header">
+
+    <div class="tpe-home-header-inner">
+
+        <!-- Identité -->
+        <a href="{{ url_for('main.tpe_accueil') }}"class="tpe-home-brand">
+
+            <span class="tpe-home-brand-icon">
+                D
+            </span>
+
+            <span class="tpe-home-brand-text">
+                <strong>DATENSIS</strong>
+                <small>Indépendants & TPE</small>
+            </span>
+
+        </a>
+
+
+        <!-- Navigation -->
+        <nav class="tpe-home-nav"
+             aria-label="Navigation TPE">
+
+            <a href="{{ url_for('main.tpe_etude_conseil') }}">
+                Étude & conseil
+            </a>
+
+            <a href="{{ url_for('main.tpe_solutions') }}">
+                Solutions
+            </a>
+
+            <a href="{{ url_for('main.tpe_suivi') }}">
+                Suivi & accompagnement
+            </a>
+
+        </nav>
+
+
+        <!-- Compte -->
+        <div class="tpe-home-header-actions">
+
+            <a href="{{ url_for('main.tpe_creation_compte') }}"
+               class="tpe-home-account">
+                Créer un compte
+            </a>
+
+        </div>
+
+    </div>
+
+</header>

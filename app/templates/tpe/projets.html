@@ -1,0 +1,368 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mes projets</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="tpe-projects-page">
+
+<div class="tpe-projects-layout">
+
+    <aside class="tpe-projects-sidebar">
+        <a href="{{ url_for('main.tpe_dashboard') }}" class="tpe-projects-brand">
+            <span class="tpe-projects-brand-icon">D</span>
+            <span>
+                <strong>DATENSIS</strong>
+                <small>Indépendants & TPE</small>
+            </span>
+        </a>
+
+        <p class="tpe-projects-nav-label">MON ACTIVITÉ</p>
+
+        <nav class="tpe-projects-nav" aria-label="Navigation de mon espace">
+            <a href="{{ url_for('main.tpe_dashboard') }}">Vue d'ensemble</a>
+            <a href="{{ url_for('main.tpe_demandes') }}">Mes demandes</a>
+            <a href="{{ url_for('main.tpe_projets') }}" class="active" aria-current="page">Mes dossiers</a>
+            <a href="{{ url_for('main.tpe_documents') }}">Mes documents</a>
+            <a href="{{ url_for('main.tpe_factures') }}">Mes factures</a>
+        </nav>
+
+        <p class="tpe-projects-nav-label">MON COMPTE</p>
+
+        <nav class="tpe-projects-nav" aria-label="Gestion du compte">
+            <a href="{{ url_for('main.tpe_support') }}">Assistance</a>
+            <a href="{{ url_for('main.tpe_profil') }}">Mon profil</a>
+        </nav>
+
+        <div class="tpe-projects-sidebar-bottom">
+            <div class="tpe-projects-help">
+                <strong>Un projet à concrétiser ?</strong>
+                <p>Présentez votre besoin à l'équipe DATENSIS.</p>
+                <a href="{{ url_for('main.tpe_support') }}">Contacter l'équipe →</a>
+            </div>
+
+            <a href="{{ url_for('main.tpe_accueil') }}" class="tpe-projects-exit">
+                ← Retour au site TPE
+            </a>
+        </div>
+    </aside>
+
+    <main class="tpe-projects-main">
+
+        <header class="tpe-projects-header">
+            <div>
+                <p class="tpe-projects-breadcrumb">
+                    <a href="{{ url_for('main.tpe_dashboard') }}">Mon espace</a>
+                    / Mes dossiers
+                </p>
+
+                <span class="tpe-projects-eyebrow">PILOTAGE DES MISSIONS</span>
+                <h1>Mes projets</h1>
+                <p>
+                    Visualisez l'avancement de vos missions et les prochaines étapes
+                    de votre accompagnement.
+                </p>
+            </div>
+
+            <button type="button" class="tpe-projects-primary" id="openProjectModal">
+                + Proposer un projet
+            </button>
+        </header>
+
+        <section class="tpe-projects-summary" aria-label="Synthèse des projets">
+            <article class="tpe-projects-stat">
+                <span>Projets suivis</span>
+                <strong id="projectsTotal">03</strong>
+                <small>Ensemble des dossiers</small>
+            </article>
+
+            <article class="tpe-projects-stat">
+                <span>En cours</span>
+                <strong id="projectsActive">01</strong>
+                <small>Mission en réalisation</small>
+            </article>
+
+            <article class="tpe-projects-stat">
+                <span>En étude</span>
+                <strong id="projectsStudy">01</strong>
+                <small>Besoin en cours d'analyse</small>
+            </article>
+
+            <article class="tpe-projects-stat">
+                <span>Terminés</span>
+                <strong id="projectsCompleted">01</strong>
+                <small>Mission finalisée</small>
+            </article>
+        </section>
+
+        <section class="tpe-projects-section">
+            <div class="tpe-projects-section-heading">
+                <div>
+                    <span class="tpe-projects-eyebrow">SUIVI OPÉRATIONNEL</span>
+                    <h2>Vos missions accompagnées</h2>
+                    <p>Retrouvez les informations essentielles de chaque dossier.</p>
+                </div>
+
+                <div class="tpe-projects-filter">
+                    <label for="projectStatusFilter">Afficher</label>
+                    <select id="projectStatusFilter">
+                        <option value="all">Tous les projets</option>
+                        <option value="en-cours">En cours</option>
+                        <option value="etude">En étude</option>
+                        <option value="termine">Terminés</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="tpe-projects-grid" id="projectsGrid">
+
+                <article class="tpe-project-card" data-status="en-cours">
+                    <div class="tpe-project-card-top">
+                        <span class="tpe-project-type">ÉQUIPEMENT & OUTILS</span>
+                        <span class="tpe-project-status active">En cours</span>
+                    </div>
+
+                    <h3>Modernisation informatique</h3>
+                    <p class="tpe-project-description">
+                        Renouvellement des postes de travail et préparation
+                        de l'environnement informatique.
+                    </p>
+
+                    <div class="tpe-project-progress-heading">
+                        <span>Avancement de la mission</span>
+                        <strong>65 %</strong>
+                    </div>
+
+                    <div class="tpe-project-progress" role="progressbar"
+                         aria-label="Avancement modernisation informatique"
+                         aria-valuemin="0" aria-valuemax="100" aria-valuenow="65">
+                        <span style="width: 65%;"></span>
+                    </div>
+
+                    <div class="tpe-project-meta">
+                        <div>
+                            <span>Phase actuelle</span>
+                            <strong>Mise en place</strong>
+                        </div>
+                        <div>
+                            <span>Échéance indicative</span>
+                            <strong>08/10/2026</strong>
+                        </div>
+                        <div>
+                            <span>Documents</span>
+                            <strong>4 pièces</strong>
+                        </div>
+                    </div>
+
+                    <div class="tpe-project-next">
+                        <span>PROCHAINE ÉTAPE</span>
+                        <strong>Finaliser la préparation des équipements</strong>
+                    </div>
+
+                    <div class="tpe-project-actions">
+                        <a href="{{ url_for('main.tpe_suivi') }}" class="tpe-projects-primary">
+                            Consulter le suivi →
+                        </a>
+                        <a href="{{ url_for('main.tpe_documents') }}" class="tpe-projects-secondary">
+                            Documents
+                        </a>
+                    </div>
+                </article>
+
+                <article class="tpe-project-card" data-status="etude">
+                    <div class="tpe-project-card-top">
+                        <span class="tpe-project-type">ORGANISATION</span>
+                        <span class="tpe-project-status study">En étude</span>
+                    </div>
+
+                    <h3>Organisation documentaire</h3>
+                    <p class="tpe-project-description">
+                        Analyse des méthodes de classement actuelles
+                        et identification des améliorations possibles.
+                    </p>
+
+                    <div class="tpe-project-progress-heading">
+                        <span>Avancement de la mission</span>
+                        <strong>30 %</strong>
+                    </div>
+
+                    <div class="tpe-project-progress" role="progressbar"
+                         aria-label="Avancement organisation documentaire"
+                         aria-valuemin="0" aria-valuemax="100" aria-valuenow="30">
+                        <span style="width: 30%;"></span>
+                    </div>
+
+                    <div class="tpe-project-meta">
+                        <div>
+                            <span>Phase actuelle</span>
+                            <strong>Cadrage</strong>
+                        </div>
+                        <div>
+                            <span>Échéance indicative</span>
+                            <strong>22/10/2026</strong>
+                        </div>
+                        <div>
+                            <span>Documents</span>
+                            <strong>2 pièces</strong>
+                        </div>
+                    </div>
+
+                    <div class="tpe-project-next">
+                        <span>PROCHAINE ÉTAPE</span>
+                        <strong>Valider les besoins et les priorités</strong>
+                    </div>
+
+                    <div class="tpe-project-actions">
+                        <a href="{{ url_for('main.tpe_etude_conseil') }}" class="tpe-projects-primary">
+                            Consulter l'étude →
+                        </a>
+                        <a href="{{ url_for('main.tpe_documents') }}" class="tpe-projects-secondary">
+                            Documents
+                        </a>
+                    </div>
+                </article>
+
+                <article class="tpe-project-card" data-status="termine">
+                    <div class="tpe-project-card-top">
+                        <span class="tpe-project-type">COMMUNICATION</span>
+                        <span class="tpe-project-status completed">Terminé</span>
+                    </div>
+
+                    <h3>Installation de la messagerie</h3>
+                    <p class="tpe-project-description">
+                        Configuration et mise en service de la messagerie
+                        professionnelle.
+                    </p>
+
+                    <div class="tpe-project-progress-heading">
+                        <span>Avancement de la mission</span>
+                        <strong>100 %</strong>
+                    </div>
+
+                    <div class="tpe-project-progress" role="progressbar"
+                         aria-label="Avancement installation messagerie"
+                         aria-valuemin="0" aria-valuemax="100" aria-valuenow="100">
+                        <span style="width: 100%;"></span>
+                    </div>
+
+                    <div class="tpe-project-meta">
+                        <div>
+                            <span>Phase actuelle</span>
+                            <strong>Clôturé</strong>
+                        </div>
+                        <div>
+                            <span>Date de clôture</span>
+                            <strong>12/08/2026</strong>
+                        </div>
+                        <div>
+                            <span>Documents</span>
+                            <strong>5 pièces</strong>
+                        </div>
+                    </div>
+
+                    <div class="tpe-project-next completed">
+                        <span>MISSION FINALISÉE</span>
+                        <strong>Installation terminée et validée</strong>
+                    </div>
+
+                    <div class="tpe-project-actions">
+                        <a href="{{ url_for('main.tpe_archives') }}" class="tpe-projects-secondary">
+                            Consulter l'archive →
+                        </a>
+                    </div>
+                </article>
+
+            </div>
+
+            <p id="projectsEmpty" class="tpe-projects-empty" hidden>
+                Aucun projet ne correspond au filtre sélectionné.
+            </p>
+        </section>
+
+        <section class="tpe-projects-assistance">
+            <div>
+                <span class="tpe-projects-eyebrow">ACCOMPAGNEMENT</span>
+                <h2>Une nouvelle idée pour votre activité ?</h2>
+                <p>
+                    Présentez votre projet à DATENSIS afin d'étudier les solutions
+                    et les étapes nécessaires à sa réalisation.
+                </p>
+            </div>
+
+            <button type="button" class="tpe-projects-primary" id="openProjectModalBottom">
+                Présenter mon projet →
+            </button>
+        </section>
+
+        <footer class="tpe-projects-footer">
+            <span>DATENSIS · Espace Indépendants & TPE</span>
+            <span>Données de démonstration</span>
+        </footer>
+
+    </main>
+</div>
+
+<!-- MODAL NOUVEAU PROJET -->
+<div class="tpe-projects-overlay" id="projectModal" hidden>
+    <section class="tpe-projects-modal" role="dialog" aria-modal="true"
+             aria-labelledby="projectModalTitle">
+        <div class="tpe-projects-modal-header">
+            <div>
+                <span class="tpe-projects-eyebrow">NOUVEAU PROJET</span>
+                <h2 id="projectModalTitle">Présenter votre projet</h2>
+                <p>Décrivez votre besoin pour préparer son étude.</p>
+            </div>
+
+            <button type="button" class="tpe-projects-close"
+                    id="closeProjectModal" aria-label="Fermer">×</button>
+        </div>
+
+        <form id="projectForm" class="tpe-projects-form">
+            <div class="tpe-projects-field full">
+                <label for="projectName">Nom du projet</label>
+                <input id="projectName" type="text" maxlength="120"
+                       placeholder="Ex. Modernisation de mon atelier" required>
+            </div>
+
+            <div class="tpe-projects-field">
+                <label for="projectType">Type de projet</label>
+                <select id="projectType" required>
+                    <option value="Équipement">Équipement</option>
+                    <option value="Organisation">Organisation</option>
+                    <option value="Déploiement">Déploiement</option>
+                    <option value="Conseil">Conseil</option>
+                    <option value="Autre">Autre</option>
+                </select>
+            </div>
+
+            <div class="tpe-projects-field">
+                <label for="projectDate">Date souhaitée</label>
+                <input id="projectDate" type="date" required>
+            </div>
+
+            <div class="tpe-projects-field full">
+                <label for="projectGoal">Objectif du projet</label>
+                <textarea id="projectGoal" rows="6"
+                          placeholder="Décrivez les objectifs et les besoins de votre activité..."
+                          required></textarea>
+            </div>
+
+            <div class="tpe-projects-form-actions">
+                <button type="button" class="tpe-projects-secondary" id="cancelProject">
+                    Annuler
+                </button>
+                <button type="submit" class="tpe-projects-primary">
+                    Ajouter le projet
+                </button>
+            </div>
+        </form>
+    </section>
+</div>
+
+<script src="{{ url_for('static', filename='js/tpe.js') }}"></script>
+</body>
+</html>

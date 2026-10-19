@@ -1,0 +1,492 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de bord PME</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="pme-control-page">
+<div class="pme-app">
+
+    <!-- NAVIGATION PRIVÉE -->
+    <aside class="pme-sidebar" id="pmeSidebar">
+        <a class="pme-brand"
+           href="{{ url_for('main.pme_dashboard') }}">
+            <span class="pme-brand-symbol">D</span>
+            <span>
+                <strong>DATENSIS</strong>
+                <small>ESPACE ENTREPRISE</small>
+            </span>
+        </a>
+
+        <div class="pme-sidebar-label">ESPACE DE TRAVAIL</div>
+
+        <nav class="pme-nav" aria-label="Navigation PME">
+            <a class="active" aria-current="page"
+               href="{{ url_for('main.pme_dashboard') }}">
+                <span>▦</span> Vue d'ensemble
+            </a>
+            <a href="{{ url_for('main.pme_projets') }}">
+                <span>◫</span> Portefeuille projets
+            </a>
+            <a href="{{ url_for('main.pme_sites') }}">
+                <span>⌖</span> Implantations
+            </a>
+            <a href="{{ url_for('main.pme_documents') }}">
+                <span>▤</span> Documents
+            </a>
+            <a href="{{ url_for('main.pme_activite') }}">
+                <span>◷</span> Journal d'activité
+            </a>
+        </nav>
+
+        <div class="pme-sidebar-label">COLLABORATION</div>
+
+        <nav class="pme-nav" aria-label="Collaboration">
+            <a href="{{ url_for('main.pme_messagerie') }}">
+                <span>✉</span> Messagerie
+                <b class="pme-nav-count">2</b>
+            </a>
+            <a href="{{ url_for('main.pme_rendez_vous') }}">
+                <span>▦</span> Rendez-vous
+            </a>
+        </nav>
+
+        <div class="pme-sidebar-bottom">
+            <div class="pme-sidebar-assistance">
+                <strong>Besoin d'un accompagnement ?</strong>
+                <p>Échangez avec votre interlocuteur DATENSIS.</p>
+                <a href="{{ url_for('main.pme_messagerie') }}">
+                    Contacter l'équipe →
+                </a>
+            </div>
+            <span class="pme-sidebar-version">
+                DATENSIS · Espace PME
+            </span>
+        </div>
+    </aside>
+
+    <div class="pme-workspace">
+
+        <!-- BARRE SUPÉRIEURE -->
+        <header class="pme-topbar">
+            <div class="pme-topbar-left">
+                <button class="pme-menu-toggle"
+                        id="pmeMenuToggle"
+                        type="button"
+                        aria-label="Ouvrir la navigation"
+                        aria-controls="pmeSidebar"
+                        aria-expanded="false">
+                    ☰
+                </button>
+
+                <div class="pme-breadcrumb">
+                    Espace entreprise
+                    <span>/</span>
+                    <strong>Vue d'ensemble</strong>
+                </div>
+            </div>
+
+            <div class="pme-topbar-right">
+                <span class="pme-demo-indicator">
+                    Données de démonstration
+                </span>
+
+                <a class="pme-topbar-message"
+                   href="{{ url_for('main.pme_messagerie') }}"
+                   aria-label="Ouvrir la messagerie">
+                    ✉
+                    <span>2</span>
+                </a>
+
+                <div class="pme-account">
+                    <span class="pme-avatar">PM</span>
+                    <div>
+                        <strong>Espace PME</strong>
+                        <small>Organisation</small>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="pme-main">
+
+            <!-- INTRODUCTION -->
+            <section class="pme-welcome">
+                <div>
+                    <span class="pme-eyebrow">
+                        CENTRE DE PILOTAGE
+                    </span>
+                    <h1>Vue d'ensemble</h1>
+                    <p>
+                        Retrouvez vos priorités, suivez les opérations
+                        et accédez aux informations essentielles
+                        de votre organisation.
+                    </p>
+                </div>
+
+                <div class="pme-welcome-actions">
+                    <a class="pme-btn pme-btn-outline"
+                       href="{{ url_for('main.pme_rendez_vous') }}">
+                        Planifier un échange
+                    </a>
+                </div>
+            </section>
+
+            <!-- INDICATEURS -->
+            <section class="pme-kpi-grid"
+                     aria-label="Indicateurs principaux">
+
+                <article class="pme-kpi">
+                    <div class="pme-kpi-top">
+                        <span>Projets actifs</span>
+                        <span class="pme-kpi-icon">◫</span>
+                    </div>
+                    <strong>4</strong>
+                    <div class="pme-kpi-bottom">
+                        <span>Portefeuille en cours</span>
+                        <a href="{{ url_for('main.pme_projets') }}">
+                            Consulter →
+                        </a>
+                    </div>
+                </article>
+
+                <article class="pme-kpi">
+                    <div class="pme-kpi-top">
+                        <span>Sites suivis</span>
+                        <span class="pme-kpi-icon mint">⌖</span>
+                    </div>
+                    <strong>7</strong>
+                    <div class="pme-kpi-bottom">
+                        <span>Implantations</span>
+                        <a href="{{ url_for('main.pme_sites') }}">
+                            Consulter →
+                        </a>
+                    </div>
+                </article>
+
+                <article class="pme-kpi">
+                    <div class="pme-kpi-top">
+                        <span>Validations attendues</span>
+                        <span class="pme-kpi-icon coral">!</span>
+                    </div>
+                    <strong>3</strong>
+                    <div class="pme-kpi-bottom">
+                        <span>Documents à examiner</span>
+                        <a href="{{ url_for('main.pme_documents') }}">
+                            Traiter →
+                        </a>
+                    </div>
+                </article>
+
+                <article class="pme-kpi">
+                    <div class="pme-kpi-top">
+                        <span>Messages non lus</span>
+                        <span class="pme-kpi-icon">✉</span>
+                    </div>
+                    <strong>2</strong>
+                    <div class="pme-kpi-bottom">
+                        <span>Échanges à consulter</span>
+                        <a href="{{ url_for('main.pme_messagerie') }}">
+                            Répondre →
+                        </a>
+                    </div>
+                </article>
+            </section>
+
+            <!-- PILOTAGE PRINCIPAL -->
+            <div class="pme-content-grid">
+
+                <!-- PROJETS -->
+                <section class="pme-panel pme-project-panel">
+                    <div class="pme-panel-header">
+                        <div>
+                            <span class="pme-section-label">
+                                PORTEFEUILLE
+                            </span>
+                            <h2>Suivi des projets</h2>
+                            <p>
+                                Progression des principales opérations.
+                            </p>
+                        </div>
+                        <a href="{{ url_for('main.pme_projets') }}">
+                            Tous les projets →
+                        </a>
+                    </div>
+
+                    <div class="pme-project-list">
+
+                        <article class="pme-project">
+                            <div class="pme-project-top">
+                                <div>
+                                    <strong>
+                                        Digitalisation des processus
+                                    </strong>
+                                    <span>Déploiement multi-sites</span>
+                                </div>
+                                <span class="pme-status blue">
+                                    En cours
+                                </span>
+                            </div>
+                            <div class="pme-project-progress">
+                                <div class="pme-progress-track">
+                                    <span style="width:68%"></span>
+                                </div>
+                                <strong>68 %</strong>
+                            </div>
+                        </article>
+
+                        <article class="pme-project">
+                            <div class="pme-project-top">
+                                <div>
+                                    <strong>
+                                        Centralisation documentaire
+                                    </strong>
+                                    <span>
+                                        Organisation des référentiels
+                                    </span>
+                                </div>
+                                <span class="pme-status orange">
+                                    À valider
+                                </span>
+                            </div>
+                            <div class="pme-project-progress">
+                                <div class="pme-progress-track">
+                                    <span style="width:42%"></span>
+                                </div>
+                                <strong>42 %</strong>
+                            </div>
+                        </article>
+
+                        <article class="pme-project">
+                            <div class="pme-project-top">
+                                <div>
+                                    <strong>
+                                        Automatisation du reporting
+                                    </strong>
+                                    <span>Pilotage de l'activité</span>
+                                </div>
+                                <span class="pme-status green">
+                                    Déployé
+                                </span>
+                            </div>
+                            <div class="pme-project-progress">
+                                <div class="pme-progress-track">
+                                    <span style="width:100%"></span>
+                                </div>
+                                <strong>100 %</strong>
+                            </div>
+                        </article>
+
+                    </div>
+                </section>
+
+                <!-- PRIORITÉS -->
+                <section class="pme-panel pme-priority-panel">
+                    <div class="pme-panel-header">
+                        <div>
+                            <span class="pme-section-label">
+                                À TRAITER
+                            </span>
+                            <h2>Vos priorités</h2>
+                            <p>Actions nécessitant votre attention.</p>
+                        </div>
+                    </div>
+
+                    <a class="pme-priority"
+                       href="{{ url_for('main.pme_documents') }}">
+                        <span class="pme-priority-icon coral">!</span>
+                        <span>
+                            <strong>Valider les documents</strong>
+                            <small>3 éléments en attente</small>
+                        </span>
+                        <span class="pme-priority-arrow">→</span>
+                    </a>
+
+                    <a class="pme-priority"
+                       href="{{ url_for('main.pme_messagerie') }}">
+                        <span class="pme-priority-icon blue">✉</span>
+                        <span>
+                            <strong>Consulter les messages</strong>
+                            <small>2 nouveaux échanges</small>
+                        </span>
+                        <span class="pme-priority-arrow">→</span>
+                    </a>
+
+                    <a class="pme-priority"
+                       href="{{ url_for('main.pme_rendez_vous') }}">
+                        <span class="pme-priority-icon mint">◷</span>
+                        <span>
+                            <strong>Organiser un point de suivi</strong>
+                            <small>Accéder à la planification</small>
+                        </span>
+                        <span class="pme-priority-arrow">→</span>
+                    </a>
+                </section>
+
+                <!-- ACTIVITÉ -->
+                <section class="pme-panel">
+                    <div class="pme-panel-header">
+                        <div>
+                            <span class="pme-section-label">
+                                HISTORIQUE
+                            </span>
+                            <h2>Activité récente</h2>
+                            <p>
+                                Événements illustratifs de votre espace.
+                            </p>
+                        </div>
+                        <a href="{{ url_for('main.pme_activite') }}">
+                            Historique →
+                        </a>
+                    </div>
+
+                    <div class="pme-timeline">
+                        <div class="pme-timeline-item">
+                            <span class="pme-timeline-dot mint"></span>
+                            <div>
+                                <strong>Document ajouté</strong>
+                                <p>
+                                    Cahier des charges — Site Paris
+                                </p>
+                                <small>Exemple d'activité</small>
+                            </div>
+                        </div>
+
+                        <div class="pme-timeline-item">
+                            <span class="pme-timeline-dot blue"></span>
+                            <div>
+                                <strong>Projet mis à jour</strong>
+                                <p>
+                                    Digitalisation des processus
+                                </p>
+                                <small>Exemple d'activité</small>
+                            </div>
+                        </div>
+
+                        <div class="pme-timeline-item">
+                            <span class="pme-timeline-dot coral"></span>
+                            <div>
+                                <strong>Nouveau message</strong>
+                                <p>
+                                    Échange avec DATENSIS
+                                </p>
+                                <small>Exemple d'activité</small>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SITES -->
+                <section class="pme-panel">
+                    <div class="pme-panel-header">
+                        <div>
+                            <span class="pme-section-label">
+                                IMPLANTATIONS
+                            </span>
+                            <h2>État des sites</h2>
+                            <p>
+                                Situation des sites suivis.
+                            </p>
+                        </div>
+                        <a href="{{ url_for('main.pme_sites') }}">
+                            Tous les sites →
+                        </a>
+                    </div>
+
+                    <div class="pme-site-list">
+                        <div class="pme-site">
+                            <div>
+                                <strong>Paris</strong>
+                                <small>Siège social</small>
+                            </div>
+                            <span class="pme-status green">
+                                Opérationnel
+                            </span>
+                        </div>
+
+                        <div class="pme-site">
+                            <div>
+                                <strong>Lyon</strong>
+                                <small>Agence régionale</small>
+                            </div>
+                            <span class="pme-status blue">
+                                Déploiement
+                            </span>
+                        </div>
+
+                        <div class="pme-site">
+                            <div>
+                                <strong>Bordeaux</strong>
+                                <small>Agence régionale</small>
+                            </div>
+                            <span class="pme-status orange">
+                                Préparation
+                            </span>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+
+            <!-- ACCÈS DIRECTS -->
+            <section class="pme-access-section">
+                <div class="pme-panel-header">
+                    <div>
+                        <span class="pme-section-label">
+                            OUTILS DE TRAVAIL
+                        </span>
+                        <h2>Accès directs</h2>
+                        <p>
+                            Retrouvez vos outils sans quitter
+                            votre espace de pilotage.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="pme-access-grid">
+                    <a href="{{ url_for('main.pme_documents') }}">
+                        <span>▤</span>
+                        <strong>Bibliothèque documentaire</strong>
+                        <small>Consulter et gérer les documents</small>
+                    </a>
+
+                    <a href="{{ url_for('main.pme_contrats') }}">
+                        <span>▣</span>
+                        <strong>Contrats</strong>
+                        <small>Accéder aux engagements</small>
+                    </a>
+
+                    <a href="{{ url_for('main.pme_referentiels') }}">
+                        <span>☷</span>
+                        <strong>Référentiels</strong>
+                        <small>Retrouver les standards</small>
+                    </a>
+
+                    <a href="{{ url_for('main.pme_rendez_vous') }}">
+                        <span>◷</span>
+                        <strong>Planification</strong>
+                        <small>Organiser vos prochains échanges</small>
+                    </a>
+                </div>
+            </section>
+
+            <footer class="pme-dashboard-footer">
+                <span>© DATENSIS — Espace PME & ETI</span>
+                <span>Interface de démonstration</span>
+            </footer>
+        </main>
+    </div>
+</div>
+
+<div class="pme-mobile-overlay"
+     id="pmeMobileOverlay"
+     hidden></div>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

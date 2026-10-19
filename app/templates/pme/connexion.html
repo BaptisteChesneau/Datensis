@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Connexion PME & ETI</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="pme-auth login-page">
+
+<main class="dashboard-page">
+
+    <section class="auth-section">
+
+        <article class="auth-card">
+
+            <div class="auth-space-badge">
+                PME & ETI
+            </div>
+
+            <h1>
+                Accédez à votre pilotage
+            </h1>
+
+            <p class="auth-intro">
+                Retrouvez vos projets, vos déploiements,
+                vos sites et vos prochaines actions.
+            </p>
+
+
+            <div class="pme-login-summary">
+
+                <div>
+                    <strong>01</strong>
+                    <span>Projets</span>
+                </div>
+
+                <div>
+                    <strong>02</strong>
+                    <span>Déploiements</span>
+                </div>
+
+                <div>
+                    <strong>03</strong>
+                    <span>Pilotage</span>
+                </div>
+
+            </div>
+
+
+            <form
+                id="loginForm"
+                class="datensis-login-form journey-form"
+                data-redirect="{{ url_for('main.pme_dashboard') }}"
+            >
+
+                <div class="form-group">
+
+                    <label for="loginEmail">
+                        Adresse e-mail professionnelle
+                    </label>
+
+                    <input
+                        type="email"
+                        id="loginEmail"
+                        name="email"
+                        autocomplete="email"
+                        placeholder="prenom.nom@entreprise.fr"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="loginPassword">
+                        Mot de passe
+                    </label>
+
+                    <input
+                        type="password"
+                        id="loginPassword"
+                        name="password"
+                        autocomplete="current-password"
+                        placeholder="Votre mot de passe"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="auth-login-options">
+
+                    <label class="auth-remember">
+
+                        <input
+                            type="checkbox"
+                            name="remember"
+                        >
+
+                        <span>
+                            Rester connecté
+                        </span>
+
+                    </label>
+
+                    <a href="#"
+                       class="auth-forgot">
+                        Mot de passe oublié ?
+                    </a>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="btn-primary"
+                >
+                    Ouvrir mon espace PME
+                </button>
+
+            </form>
+
+
+            <div class="account-login-link">
+
+                <p>
+                    Première connexion ?
+
+                    <a href="{{ url_for('main.pme_creation_compte') }}">
+                        Créer un compte
+                    </a>
+                </p>
+
+            </div>
+
+
+            <div class="account-back">
+
+                <a href="{{ url_for('main.pme_accueil') }}">
+                    ← Retour à l'accueil PME & ETI
+                </a>
+
+            </div>
+
+        </article>
+
+    </section>
+
+</main>
+
+<script src="{{ url_for('static', filename='js/global.js') }}"></script>
+
+</body>
+</html>

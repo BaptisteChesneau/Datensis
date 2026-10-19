@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Administration | DATENSIS</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+{% include "header.html" %}
+
+<main class="dashboard-page">
+
+    <section class="dashboard-intro">
+
+        <div>
+
+            <p class="eyebrow">
+                Administration DATENSIS
+            </p>
+
+            <h1>
+                Tableau de bord administrateur
+            </h1>
+
+            <p>
+                Supervisez les utilisateurs, les demandes,
+                les dossiers, les rendez-vous et l'activité globale.
+            </p>
+
+        </div>
+
+        <div class="dashboard-intro-actions">
+
+            <a href="{{ url_for('main.admin_utilisateurs') }}"
+               class="btn-primary">
+                Gérer les utilisateurs
+            </a>
+
+            <a href="{{ url_for('main.home') }}"
+               class="btn-secondary">
+                Quitter l'administration
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <nav class="workspace-nav">
+
+        <a href="{{ url_for('main.admin_dashboard') }}"
+           class="active">
+            Tableau de bord
+        </a>
+
+        <a href="{{ url_for('main.admin_utilisateurs') }}">
+            Utilisateurs
+        </a>
+
+        <a href="{{ url_for('main.admin_demandes') }}">
+            Demandes
+        </a>
+
+        <a href="{{ url_for('main.admin_projets_dossiers') }}">
+            Projets & dossiers
+        </a>
+
+        <a href="{{ url_for('main.admin_cabinets') }}">
+            Cabinets partenaires
+        </a>
+
+        <a href="{{ url_for('main.admin_rendez_vous') }}">
+            Rendez-vous
+        </a>
+
+        <a href="{{ url_for('main.admin_messagerie') }}">
+            Messagerie
+        </a>
+
+        <a href="{{ url_for('main.admin_documents') }}">
+            Documents
+        </a>
+
+        <a href="{{ url_for('main.admin_notifications') }}">
+            Notifications
+        </a>
+
+        <a href="{{ url_for('main.admin_administration') }}">
+            Administration
+        </a>
+
+    </nav>
+
+
+    <section class="kpi-grid">
+
+        <article class="kpi-card">
+            <span class="kpi-label">
+                Utilisateurs actifs
+            </span>
+
+            <strong class="kpi-value">
+                128
+            </strong>
+
+            <a href="{{ url_for('main.admin_utilisateurs') }}">
+                Voir les utilisateurs
+            </a>
+        </article>
+
+
+        <article class="kpi-card">
+            <span class="kpi-label">
+                Demandes ouvertes
+            </span>
+
+            <strong class="kpi-value">
+                31
+            </strong>
+
+            <a href="{{ url_for('main.admin_demandes') }}">
+                Voir les demandes
+            </a>
+        </article>
+
+
+        <article class="kpi-card">
+            <span class="kpi-label">
+                Dossiers actifs
+            </span>
+
+            <strong class="kpi-value">
+                42
+            </strong>
+
+            <a href="{{ url_for('main.admin_projets_dossiers') }}">
+                Voir les dossiers
+            </a>
+        </article>
+
+
+        <article class="kpi-card">
+            <span class="kpi-label">
+                Notifications
+            </span>
+
+            <strong class="kpi-value">
+                7
+            </strong>
+
+            <a href="{{ url_for('main.admin_notifications') }}">
+                Consulter
+            </a>
+        </article>
+
+    </section>
+
+
+    <section class="dashboard-grid">
+
+        <article class="dashboard-card">
+
+            <div class="card-heading">
+
+                <div>
+                    <h2>
+                        Tâches prioritaires
+                    </h2>
+
+                    <p>
+                        Actions nécessitant une intervention.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="dashboard-list">
+
+                <div class="dashboard-list-item">
+
+                    <div>
+                        <strong>
+                            4 demandes sans affectation
+                        </strong>
+
+                        <span>
+                            Affecter un collaborateur
+                        </span>
+                    </div>
+
+                    <span class="status status-warning">
+                        Prioritaire
+                    </span>
+
+                </div>
+
+
+                <div class="dashboard-list-item">
+
+                    <div>
+                        <strong>
+                            2 comptes à valider
+                        </strong>
+
+                        <span>
+                            Nouveaux utilisateurs
+                        </span>
+                    </div>
+
+                    <span class="status status-progress">
+                        À traiter
+                    </span>
+
+                </div>
+
+
+                <div class="dashboard-list-item">
+
+                    <div>
+                        <strong>
+                            1 cabinet en attente
+                        </strong>
+
+                        <span>
+                            Validation partenaire
+                        </span>
+                    </div>
+
+                    <span class="status status-warning">
+                        À vérifier
+                    </span>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <article class="dashboard-card">
+
+            <div class="card-heading">
+
+                <div>
+                    <h2>
+                        Activité récente
+                    </h2>
+
+                    <p>
+                        Dernières actions de la plateforme.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="dashboard-list">
+
+                <div class="dashboard-list-item">
+
+                    <div>
+                        <strong>
+                            Nouvel utilisateur
+                        </strong>
+
+                        <span>
+                            Profil PME créé
+                        </span>
+                    </div>
+
+                    <span>
+                        10:24
+                    </span>
+
+                </div>
+
+
+                <div class="dashboard-list-item">
+
+                    <div>
+                        <strong>
+                            Nouvelle demande
+                        </strong>
+
+                        <span>
+                            Dossier TPE
+                        </span>
+                    </div>
+
+                    <span>
+                        09:50
+                    </span>
+
+                </div>
+
+
+                <div class="dashboard-list-item">
+
+                    <div>
+                        <strong>
+                            Cabinet partenaire ajouté
+                        </strong>
+
+                        <span>
+                            Cabinet Horizon
+                        </span>
+                    </div>
+
+                    <span>
+                        Hier
+                    </span>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <article class="dashboard-card">
+
+            <div class="card-heading">
+
+                <div>
+                    <h2>
+                        Répartition des profils
+                    </h2>
+                </div>
+
+            </div>
+
+            <div class="dashboard-list">
+
+                <div class="dashboard-list-item">
+                    <div>
+                        <strong>TPE</strong>
+                        <span>63 utilisateurs</span>
+                    </div>
+
+                    <strong>49 %</strong>
+                </div>
+
+                <div class="dashboard-list-item">
+                    <div>
+                        <strong>PME</strong>
+                        <span>38 utilisateurs</span>
+                    </div>
+
+                    <strong>30 %</strong>
+                </div>
+
+                <div class="dashboard-list-item">
+                    <div>
+                        <strong>Cabinets</strong>
+                        <span>17 partenaires</span>
+                    </div>
+
+                    <strong>13 %</strong>
+                </div>
+
+                <div class="dashboard-list-item">
+                    <div>
+                        <strong>Collaborateurs</strong>
+                        <span>10 comptes</span>
+                    </div>
+
+                    <strong>8 %</strong>
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <article class="dashboard-card">
+
+            <div class="card-heading">
+
+                <div>
+                    <h2>
+                        Actions rapides
+                    </h2>
+                </div>
+
+            </div>
+
+            <div class="card-actions">
+
+                <a href="{{ url_for('main.admin_utilisateurs') }}"
+                   class="btn-primary">
+                    Ajouter un utilisateur
+                </a>
+
+                <a href="{{ url_for('main.admin_demandes') }}"
+                   class="btn-secondary">
+                    Voir les demandes
+                </a>
+
+                <a href="{{ url_for('main.admin_cabinets') }}"
+                   class="btn-secondary">
+                    Ajouter un cabinet
+                </a>
+
+            </div>
+
+        </article>
+
+    </section>
+
+</main>
+
+{% include "footer.html" %}
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+</body>
+</html>

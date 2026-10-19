@@ -1,0 +1,485 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Messagerie Cabinet</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+</head>
+
+<body class="cab-dashboard cab-messaging-page">
+
+<div class="cab-layout">
+
+    <!-- SIDEBAR PRINCIPALE -->
+
+    <aside class="cab-sidebar" id="cabSidebar">
+
+        <a class="cab-brand" href="{{ url_for('main.cabinet_dashboard') }}">
+            <span class="cab-brand-mark">D<span>.</span></span>
+            <span class="cab-brand-copy">
+                <strong>DATENSIS</strong>
+                <small>PARTNER WORKSPACE</small>
+            </span>
+        </a>
+
+        <div class="cab-sidebar-divider"></div>
+
+        <div class="cab-sidebar-section">VOTRE ESPACE</div>
+
+        <nav class="cab-nav" aria-label="Navigation cabinet">
+
+            <a href="{{ url_for('main.cabinet_dashboard') }}">
+                <span class="cab-nav-icon">▦</span>
+                <span>Vue d'ensemble</span>
+            </a>
+
+            <a href="{{ url_for('main.cabinet_portefeuille') }}">
+                <span class="cab-nav-icon">♙</span>
+                <span>Portefeuille clients</span>
+            </a>
+
+            <a href="{{ url_for('main.cabinet_opportunites') }}">
+                <span class="cab-nav-icon">◇</span>
+                <span>Opportunités</span>
+                <span class="cab-nav-badge">3</span>
+            </a>
+
+            <a href="{{ url_for('main.cabinet_dossiers') }}">
+                <span class="cab-nav-icon">▤</span>
+                <span>Dossiers transmis</span>
+            </a>
+
+            <a href="{{ url_for('main.cabinet_ressources') }}">
+                <span class="cab-nav-icon">▧</span>
+                <span>Ressources</span>
+            </a>
+
+        </nav>
+
+        <div class="cab-sidebar-section">COLLABORATION</div>
+
+        <nav class="cab-nav" aria-label="Collaboration">
+
+            <a href="{{ url_for('main.cabinet_messagerie') }}"
+               class="active"
+               aria-current="page">
+                <span class="cab-nav-icon">✉</span>
+                <span>Messagerie</span>
+                <span class="cab-nav-badge cab-nav-badge-coral"
+                      id="cabSidebarUnread">2</span>
+            </a>
+
+            <a href="{{ url_for('main.cabinet_rendez_vous') }}">
+                <span class="cab-nav-icon">▦</span>
+                <span>Rendez-vous</span>
+            </a>
+
+        </nav>
+
+        <div class="cab-sidebar-spacer"></div>
+
+        <div class="cab-partner-card">
+            <span class="cab-partner-card-label">COLLABORATION</span>
+            <strong>Un canal dédié à vos échanges.</strong>
+            <p>Retrouvez les discussions liées à vos dossiers.</p>
+            <a href="{{ url_for('main.cabinet_dossiers') }}">
+                Consulter les dossiers <span>↗</span>
+            </a>
+        </div>
+
+        <div class="cab-sidebar-footer">
+            <span class="cab-sidebar-status"></span>
+            Espace partenaire · Démonstration
+        </div>
+
+    </aside>
+
+    <!-- CONTENU -->
+
+    <div class="cab-main-shell">
+
+        <header class="cab-topbar">
+
+            <div class="cab-topbar-left">
+
+                <button type="button"
+                        class="cab-mobile-menu"
+                        id="cabMenuToggle"
+                        aria-label="Ouvrir le menu"
+                        aria-controls="cabSidebar"
+                        aria-expanded="false">
+                    ☰
+                </button>
+
+                <div class="cab-breadcrumb">
+                    <span>Collaboration</span>
+                    <span class="cab-breadcrumb-separator">/</span>
+                    <strong>Messagerie</strong>
+                </div>
+
+            </div>
+
+            <div class="cab-topbar-right">
+
+                <span class="cab-demo-label">
+                    <span></span>
+                    Environnement démo
+                </span>
+
+                <div class="cab-profile">
+                    <div class="cab-profile-avatar">CP</div>
+                    <div class="cab-profile-copy">
+                        <strong>Cabinet partenaire</strong>
+                        <small>Espace professionnel</small>
+                    </div>
+                </div>
+
+            </div>
+
+        </header>
+
+        <main class="cab-content cab-messaging-content">
+
+            <!-- INTRODUCTION -->
+
+            <section class="cab-messaging-intro">
+
+                <div>
+                    <span class="cab-section-eyebrow">
+                        DATENSIS / PARTNER CONNECT
+                    </span>
+
+                    <h1>Vos échanges, <em>au même endroit.</em></h1>
+
+                    <p>
+                        Communiquez avec DATENSIS et retrouvez
+                        les discussions liées à vos clients,
+                        opportunités et dossiers.
+                    </p>
+                </div>
+
+                <div class="cab-messaging-intro-actions">
+
+                    <div class="cab-messaging-unread">
+                        <span>MESSAGES NON LUS</span>
+                        <strong id="cabUnreadCount">2</strong>
+                    </div>
+
+                    <a href="{{ url_for('main.cabinet_dashboard') }}"
+                       class="cab-messaging-back">
+                        ← Tableau de bord
+                    </a>
+
+                </div>
+
+            </section>
+
+            <!-- MESSAGERIE -->
+
+            <section class="cab-messaging-shell"
+                     aria-label="Messagerie partenaire">
+
+                <!-- CONVERSATIONS -->
+
+                <aside class="cab-conversations"
+                       id="cabConversations">
+
+                    <div class="cab-conversations-heading">
+
+                        <div>
+                            <span>BOÎTE DE RÉCEPTION</span>
+                            <h2>Conversations</h2>
+                        </div>
+
+                        <span class="cab-conversations-total"
+                              id="cabConversationCount">2</span>
+
+                    </div>
+
+                    <div class="cab-conversations-search">
+
+                        <span aria-hidden="true">⌕</span>
+
+                        <input type="search"
+                               id="cabConversationSearch"
+                               placeholder="Rechercher un échange..."
+                               aria-label="Rechercher une conversation">
+
+                    </div>
+
+                    <div class="cab-conversations-filters">
+
+                        <button type="button"
+                                class="active"
+                                data-conversation-filter="all"
+                                aria-pressed="true">
+                            Toutes
+                        </button>
+
+                        <button type="button"
+                                data-conversation-filter="unread"
+                                aria-pressed="false">
+                            Non lues
+                        </button>
+
+                    </div>
+
+                    <div class="cab-conversations-list"
+                         id="cabConversationList"
+                         aria-label="Liste des conversations">
+                    </div>
+
+                    <div class="cab-conversations-empty"
+                         id="cabConversationEmpty"
+                         hidden>
+                        Aucune conversation trouvée.
+                    </div>
+
+                    <div class="cab-conversations-footer">
+                        <span class="cab-conversations-security">◇</span>
+                        <p>
+                            Messagerie de démonstration.
+                            Aucun message n'est transmis à un serveur.
+                        </p>
+                    </div>
+
+                </aside>
+
+                <!-- DISCUSSION -->
+
+                <article class="cab-chat"
+                         id="cabChat">
+
+                    <header class="cab-chat-header">
+
+                        <button type="button"
+                                class="cab-chat-mobile-back"
+                                id="cabChatBack"
+                                aria-label="Retour aux conversations">
+                            ←
+                        </button>
+
+                        <div class="cab-chat-contact-avatar"
+                             id="cabChatAvatar">
+                            DM
+                        </div>
+
+                        <div class="cab-chat-contact-info">
+
+                            <strong id="cabChatName">
+                                DATENSIS - Marie
+                            </strong>
+
+                            <span id="cabChatSubject">
+                                Dossier Dupont Conseil
+                            </span>
+
+                        </div>
+
+                        <div class="cab-chat-header-actions">
+
+                            <button type="button"
+                                    id="cabChatInfoToggle"
+                                    aria-label="Afficher les informations du dossier"
+                                    aria-expanded="true">
+                                ⓘ
+                            </button>
+
+                        </div>
+
+                    </header>
+
+                    <div class="cab-chat-context-strip">
+
+                        <span class="cab-chat-context-label">
+                            DOSSIER ASSOCIÉ
+                        </span>
+
+                        <strong id="cabChatReference">
+                            DOS-2026-044
+                        </strong>
+
+                        <span class="cab-chat-context-divider"></span>
+
+                        <span id="cabChatStatus">
+                            En cours
+                        </span>
+
+                    </div>
+
+                    <div class="cab-chat-messages"
+                         id="cabinetConversationMessages"
+                         role="log"
+                         aria-label="Messages de la conversation"
+                         aria-live="polite"
+                         aria-relevant="additions">
+
+                    </div>
+
+                    <div class="cab-chat-compose-area">
+
+                        <div class="cab-chat-compose-hint">
+                            <span>ÉCHANGE PARTENAIRE</span>
+                            <span>Entrée pour envoyer · Maj + Entrée pour une nouvelle ligne</span>
+                        </div>
+
+                        <form id="cabinetMessageForm"
+                              class="cab-chat-compose">
+
+                            <textarea id="cabinetMessageInput"
+                                      rows="1"
+                                      maxlength="2000"
+                                      placeholder="Écrivez votre message..."
+                                      aria-label="Votre message"
+                                      required></textarea>
+
+                            <button type="submit"
+                                    id="cabinetMessageSend"
+                                    aria-label="Envoyer le message">
+                                Envoyer ↗
+                            </button>
+
+                        </form>
+
+                        <div class="cab-chat-compose-footer">
+                            <span>
+                                Démonstration locale : pas d'envoi réel.
+                            </span>
+                            <span id="cabMessageLength">0 / 2000</span>
+                        </div>
+
+                    </div>
+
+                </article>
+
+                <!-- CONTEXTE DOSSIER -->
+
+                <aside class="cab-chat-details"
+                       id="cabChatDetails">
+
+                    <div class="cab-chat-details-heading">
+
+                        <div>
+                            <span>CONTEXTE</span>
+                            <h2>Informations du dossier</h2>
+                        </div>
+
+                        <button type="button"
+                                id="cabChatDetailsClose"
+                                aria-label="Masquer les informations">
+                            ×
+                        </button>
+
+                    </div>
+
+                    <div class="cab-chat-details-content">
+
+                        <div class="cab-chat-details-identity">
+
+                            <div class="cab-chat-details-icon">▤</div>
+
+                            <span>DOSSIER CLIENT</span>
+
+                            <h3 id="cabDetailsClient">
+                                Dupont Conseil
+                            </h3>
+
+                            <p id="cabDetailsDescription">
+                                Digitalisation des processus internes
+                            </p>
+
+                        </div>
+
+                        <div class="cab-chat-details-section">
+
+                            <h3>Informations générales</h3>
+
+                            <div class="cab-chat-detail-row">
+                                <span>Référence</span>
+                                <strong id="cabDetailsReference">
+                                    DOS-2026-044
+                                </strong>
+                            </div>
+
+                            <div class="cab-chat-detail-row">
+                                <span>Statut</span>
+                                <strong id="cabDetailsStatus">
+                                    En cours
+                                </strong>
+                            </div>
+
+                            <div class="cab-chat-detail-row">
+                                <span>Interlocuteur</span>
+                                <strong id="cabDetailsContact">
+                                    Marie
+                                </strong>
+                            </div>
+
+                        </div>
+
+                        <div class="cab-chat-details-section">
+
+                            <h3>Avancement du dossier</h3>
+
+                            <div class="cab-chat-progress-heading">
+                                <span>Progression indicative</span>
+                                <strong id="cabDetailsProgressValue">
+                                    70 %
+                                </strong>
+                            </div>
+
+                            <div class="cab-chat-progress">
+                                <div id="cabDetailsProgressBar"></div>
+                            </div>
+
+                            <p class="cab-chat-progress-note">
+                                Données fictives du prototype.
+                            </p>
+
+                        </div>
+
+                        <div class="cab-chat-details-links">
+
+                            <a href="{{ url_for('main.cabinet_dossiers') }}">
+                                Voir les dossiers ↗
+                            </a>
+
+                            <a href="{{ url_for('main.cabinet_rendez_vous') }}">
+                                Planifier un rendez-vous ↗
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </aside>
+
+            </section>
+
+            <footer class="cab-footer cab-messaging-footer">
+                <span>© DATENSIS — Espace Cabinet Partenaire</span>
+                <span>Partner Connect · Démonstration</span>
+            </footer>
+
+        </main>
+
+    </div>
+
+</div>
+
+<div class="cab-mobile-overlay" id="cabMobileOverlay" hidden></div>
+
+<div class="cab-message-toast"
+     id="cabMessageToast"
+     role="status"
+     aria-live="polite"></div>
+
+</body>
+</html>

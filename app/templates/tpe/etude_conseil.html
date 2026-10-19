@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Étude & conseil</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+{% include "tpe/header_tpe.html" %}
+
+<main class="tpe-public-page">
+
+    <!-- =====================================================
+         HERO
+         ===================================================== -->
+
+    <section class="tpe-service-hero">
+
+        <div class="tpe-service-hero-content">
+
+            <p class="eyebrow">
+                Indépendants & TPE
+            </p>
+
+            <h1>
+                Étude & conseil
+            </h1>
+
+            <p class="tpe-service-description">
+                Présentez votre besoin, votre contexte et vos contraintes
+                afin d'obtenir un cadrage adapté à votre activité.
+            </p>
+
+            <div class="tpe-service-actions">
+
+                <a href="#etude-form"
+                   class="home-btn-primary">
+                    Commencer mon étude
+                </a>
+
+                <a href="{{ url_for('main.tpe_accueil') }}"
+                   class="home-btn-secondary">
+                    Retour à l'accueil TPE
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="tpe-service-hero-panel">
+
+            <span class="hero-panel-label">
+                Étude & conseil
+            </span>
+
+            <div class="hero-step">
+
+                <strong>
+                    01
+                </strong>
+
+                <div>
+                    <h3>
+                        Comprendre
+                    </h3>
+
+                    <p>
+                        Identifiez précisément votre besoin.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="hero-step">
+
+                <strong>
+                    02
+                </strong>
+
+                <div>
+                    <h3>
+                        Analyser
+                    </h3>
+
+                    <p>
+                        Prenez en compte vos contraintes et priorités.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="hero-step">
+
+                <strong>
+                    03
+                </strong>
+
+                <div>
+                    <h3>
+                        Cadrer
+                    </h3>
+
+                    <p>
+                        Obtenez une base claire pour avancer.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         PARCOURS
+         ===================================================== -->
+
+    <section class="process-section public-process-section">
+
+        <div class="section-heading">
+
+            <p class="eyebrow">
+                Votre parcours
+            </p>
+
+            <h2>
+                Une étude en trois étapes
+            </h2>
+
+            <p>
+                Avancez étape par étape pour structurer
+                votre projet avant de choisir une solution.
+            </p>
+
+        </div>
+
+
+        <div class="process-steps">
+
+            <article class="process-step active">
+
+                <span class="process-number">
+                    01
+                </span>
+
+                <h3>
+                    Comprendre le besoin
+                </h3>
+
+                <p>
+                    Décrivez votre situation actuelle,
+                    votre besoin principal et votre objectif.
+                </p>
+
+            </article>
+
+
+            <article class="process-step">
+
+                <span class="process-number">
+                    02
+                </span>
+
+                <h3>
+                    Analyser le contexte
+                </h3>
+
+                <p>
+                    Identifiez vos contraintes,
+                    vos priorités et les ressources disponibles.
+                </p>
+
+            </article>
+
+
+            <article class="process-step">
+
+                <span class="process-number">
+                    03
+                </span>
+
+                <h3>
+                    Obtenir un cadrage
+                </h3>
+
+                <p>
+                    Disposez d'une synthèse claire
+                    avant de poursuivre vers une solution.
+                </p>
+
+            </article>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         FORMULAIRE
+         ===================================================== -->
+
+    <section class="journey-layout public-journey-layout"
+             id="etude-form">
+
+        <article class="dashboard-card">
+
+            <div class="card-heading">
+
+                <div>
+
+                    <p class="eyebrow">
+                        Étape 1
+                    </p>
+
+                    <h2>
+                        Comprendre votre besoin
+                    </h2>
+
+                    <p>
+                        Donnez-nous les informations essentielles
+                        pour mieux comprendre votre situation.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <form class="journey-form"
+                  id="tpeStudyForm">
+
+                <div class="form-group">
+
+                    <label for="besoin">
+                        Quel est votre besoin principal ?
+                    </label>
+
+                    <select id="besoin"
+                            name="besoin"
+                            required>
+
+                        <option value="">
+                            Sélectionnez votre besoin
+                        </option>
+
+                        <option value="materiel">
+                            Renouvellement de matériel
+                        </option>
+
+                        <option value="organisation">
+                            Organisation numérique
+                        </option>
+
+                        <option value="solution">
+                            Conseil sur une solution
+                        </option>
+
+                        <option value="projet">
+                            Nouveau projet
+                        </option>
+
+                        <option value="autre">
+                            Autre
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="objectif">
+                        Quel est votre objectif ?
+                    </label>
+
+                    <textarea
+                        id="objectif"
+                        name="objectif"
+                        rows="5"
+                        placeholder="Décrivez ce que vous souhaitez améliorer ou mettre en place..."
+                        required
+                    ></textarea>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="contexte">
+                        Quel est votre contexte actuel ?
+                    </label>
+
+                    <textarea
+                        id="contexte"
+                        name="contexte"
+                        rows="4"
+                        placeholder="Ex. organisation actuelle, outils utilisés, difficulté rencontrée..."
+                    ></textarea>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="delai">
+                        Quel est votre délai souhaité ?
+                    </label>
+
+                    <select id="delai"
+                            name="delai">
+
+                        <option value="">
+                            Pas de délai défini
+                        </option>
+
+                        <option value="moins-1-mois">
+                            Moins d'un mois
+                        </option>
+
+                        <option value="1-3-mois">
+                            1 à 3 mois
+                        </option>
+
+                        <option value="plus-3-mois">
+                            Plus de 3 mois
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="budget">
+                        Avez-vous déjà défini un budget ?
+                    </label>
+
+                    <select id="budget"
+                            name="budget">
+
+                        <option value="">
+                            Je ne sais pas encore
+                        </option>
+
+                        <option value="oui">
+                            Oui
+                        </option>
+
+                        <option value="non">
+                            Non
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="card-actions">
+
+                    <a href="{{ url_for('main.tpe_accueil') }}"
+                       class="btn-secondary">
+                        Retour
+                    </a>
+
+                    <button type="submit"
+                            class="btn-primary">
+                        Continuer
+                    </button>
+
+                </div>
+
+            </form>
+
+        </article>
+
+
+        <!-- =================================================
+             EXPLICATION
+             ================================================= -->
+
+        <aside class="dashboard-card tpe-study-help">
+
+            <div class="card-heading">
+
+                <div>
+
+                    <p class="eyebrow">
+                        Pourquoi cette étape ?
+                    </p>
+
+                    <h2>
+                        Un besoin bien défini évite les mauvais choix
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <p>
+                Une bonne compréhension de votre besoin permet
+                d'éviter une solution trop complexe,
+                trop coûteuse ou mal adaptée à votre activité.
+            </p>
+
+
+            <div class="info-box">
+
+                <strong>
+                    Exemple
+                </strong>
+
+                <p>
+                    Vous souhaitez remplacer plusieurs postes
+                    de travail mais vous ne savez pas encore
+                    quelle configuration choisir ni comment
+                    organiser la migration.
+                </p>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <strong>
+                    Ce que nous cherchons à comprendre
+                </strong>
+
+                <ul>
+                    <li>votre situation actuelle ;</li>
+                    <li>votre objectif principal ;</li>
+                    <li>vos contraintes ;</li>
+                    <li>votre délai ;</li>
+                    <li>vos priorités.</li>
+                </ul>
+
+            </div>
+
+        </aside>
+
+    </section>
+
+
+    <!-- =====================================================
+         SUITE DU PARCOURS
+         ===================================================== -->
+
+    <section class="tpe-next-step">
+
+        <div>
+
+            <p class="eyebrow">
+                La suite
+            </p>
+
+            <h2>
+                Une fois votre besoin cadré
+            </h2>
+
+            <p>
+                Vous pourrez découvrir les solutions adaptées
+                puis suivre l'évolution de votre projet.
+            </p>
+
+        </div>
+
+
+        <div class="tpe-next-links">
+
+            <a href="{{ url_for('main.tpe_solutions') }}"
+               class="home-btn-primary">
+                Découvrir les solutions
+            </a>
+
+            <a href="{{ url_for('main.tpe_creation_compte') }}"
+               class="home-btn-secondary">
+                Créer mon compte
+            </a>
+
+        </div>
+
+    </section>
+
+</main>
+
+{% include "footer.html" %}
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+</body>
+
+</html>

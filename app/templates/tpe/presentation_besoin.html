@@ -1,0 +1,1397 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Présenter mon besoin</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+    <script
+        src="{{ url_for('static', filename='js/main.js') }}"
+        defer
+    ></script>
+
+</head>
+
+<body>
+
+<div class="journey-layout" id="journeyApp">
+
+    <!-- =========================================
+         BARRE LATÉRALE
+    ========================================= -->
+
+    <aside class="journey-sidebar">
+
+        <a href="{{ url_for('main.tpe_accueil') }}" class="brand">
+
+            <span class="brand-mark">
+                D<span>.</span>
+            </span>
+
+            <span class="brand-name">
+                <strong>DATENSIS</strong>
+                <small>PARCOURS PERSONNALISÉ</small>
+            </span>
+
+        </a>
+
+        <div class="sidebar-content">
+
+            <span class="eyebrow">
+                VOTRE ACCOMPAGNEMENT
+            </span>
+
+            <h2>
+                Chaque activité mérite une approche adaptée.
+            </h2>
+
+            <p>
+                Décrivez votre métier, personnalisez votre parcours
+                et identifiez les points à approfondir.
+            </p>
+
+            <nav
+                class="journey-progress"
+                aria-label="Étapes du formulaire"
+            >
+
+                <div class="progress-item active" data-progress="1">
+                    <span>01</span>
+
+                    <div>
+                        <strong>Votre activité</strong>
+                        <small>Identifier votre métier</small>
+                    </div>
+                </div>
+
+                <div class="progress-item" data-progress="2">
+                    <span>02</span>
+
+                    <div>
+                        <strong>Votre univers</strong>
+                        <small>Couleurs et présentation</small>
+                    </div>
+                </div>
+
+                <div class="progress-item" data-progress="3">
+                    <span>03</span>
+
+                    <div>
+                        <strong>Vos besoins</strong>
+                        <small>Qualifier votre demande</small>
+                    </div>
+                </div>
+
+                <div class="progress-item" data-progress="4">
+                    <span>04</span>
+
+                    <div>
+                        <strong>Votre synthèse</strong>
+                        <small>Orientation préliminaire</small>
+                    </div>
+                </div>
+
+            </nav>
+
+        </div>
+
+        <div class="sidebar-bottom">
+            <span class="status-dot"></span>
+            Prototype interactif · Aucune transmission automatique
+        </div>
+
+    </aside>
+
+
+    <!-- =========================================
+         CONTENU PRINCIPAL
+    ========================================= -->
+
+    <main class="journey-main">
+
+        <header class="journey-topbar">
+
+            <div class="breadcrumb">
+                DATENSIS
+                <span>/</span>
+                Présenter mon besoin
+            </div>
+
+            <span class="demo-pill">
+                MODE DÉMONSTRATION
+            </span>
+
+        </header>
+
+
+        <div class="journey-content">
+
+            <!-- PROGRESSION -->
+
+            <div class="step-counter">
+
+                <span id="stepCounter">
+                    ÉTAPE 01 / 04
+                </span>
+
+                <div class="step-track">
+                    <div id="stepTrack"></div>
+                </div>
+
+            </div>
+
+
+            <!-- =========================================
+                 ÉTAPE 1 — CHOIX DU SECTEUR
+            ========================================= -->
+
+            <section
+                class="form-step active"
+                data-step="1"
+            >
+
+                <span class="section-label">
+                    01 — VOTRE ACTIVITÉ
+                </span>
+
+                <h1>
+                    Parlons de votre métier.
+                </h1>
+
+                <p class="step-description">
+                    Sélectionnez votre secteur pour découvrir
+                    un parcours adapté à votre activité.
+                </p>
+
+
+                <div class="sector-grid">
+
+                    <!-- AGRICULTURE -->
+
+                    <button
+                        type="button"
+                        class="sector-card"
+                        data-sector="agriculture"
+                        aria-pressed="false"
+                    >
+
+                        <span class="sector-icon">
+                            🌱
+                        </span>
+
+                        <strong>
+                            Agriculture
+                        </strong>
+
+                        <small>
+                            Exploitations, cultures, élevage
+                        </small>
+
+                        <span
+                            class="sector-check"
+                            aria-hidden="true"
+                        >
+                            ✓
+                        </span>
+
+                    </button>
+
+
+                    <!-- ARTISANAT -->
+
+                    <button
+                        type="button"
+                        class="sector-card"
+                        data-sector="artisanat"
+                        aria-pressed="false"
+                    >
+
+                        <span class="sector-icon">
+                            ⚒
+                        </span>
+
+                        <strong>
+                            Artisanat
+                        </strong>
+
+                        <small>
+                            Chantiers, devis, facturation
+                        </small>
+
+                        <span
+                            class="sector-check"
+                            aria-hidden="true"
+                        >
+                            ✓
+                        </span>
+
+                    </button>
+
+
+                    <!-- TERTIAIRE -->
+
+                    <button
+                        type="button"
+                        class="sector-card"
+                        data-sector="tertiaire"
+                        aria-pressed="false"
+                    >
+
+                        <span class="sector-icon">
+                            ▦
+                        </span>
+
+                        <strong>
+                            Services &amp; tertiaire
+                        </strong>
+
+                        <small>
+                            Clients, projets, organisation
+                        </small>
+
+                        <span
+                            class="sector-check"
+                            aria-hidden="true"
+                        >
+                            ✓
+                        </span>
+
+                    </button>
+
+
+                    <!-- AUTRE ACTIVITÉ -->
+
+                    <button
+                        type="button"
+                        class="sector-card"
+                        data-sector="autre"
+                        aria-pressed="false"
+                    >
+
+                        <span class="sector-icon">
+                            ◇
+                        </span>
+
+                        <strong>
+                            Autre activité
+                        </strong>
+
+                        <small>
+                            Un parcours général personnalisé
+                        </small>
+
+                        <span
+                            class="sector-check"
+                            aria-hidden="true"
+                        >
+                            ✓
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- =========================================
+                 ÉTAPE 2 — PERSONNALISATION
+            ========================================= -->
+
+            <section
+                class="form-step"
+                data-step="2"
+            >
+
+                <span class="section-label">
+                    02 — PERSONNALISATION
+                </span>
+
+                <h1>
+                    Un espace à votre image.
+                </h1>
+
+                <p class="step-description">
+                    Choisissez votre couleur et l'ambiance
+                    visuelle de votre formulaire.
+                </p>
+
+
+                <!-- COULEURS -->
+
+                <h3 class="field-heading">
+                    Couleur principale
+                </h3>
+
+                <div
+                    class="color-options"
+                    id="colorOptions"
+                >
+
+                    <button
+                        type="button"
+                        class="color-choice selected"
+                        data-color="#00778B"
+                        aria-label="Bleu pétrole"
+                        aria-pressed="true"
+                        style="--swatch:#00778B"
+                    >
+                        <span></span>
+                        <small>Bleu pétrole</small>
+                    </button>
+
+                    <button
+                        type="button"
+                        class="color-choice"
+                        data-color="#428D73"
+                        aria-label="Vert sauge"
+                        aria-pressed="false"
+                        style="--swatch:#428D73"
+                    >
+                        <span></span>
+                        <small>Vert sauge</small>
+                    </button>
+
+                    <button
+                        type="button"
+                        class="color-choice"
+                        data-color="#E96148"
+                        aria-label="Corail"
+                        aria-pressed="false"
+                        style="--swatch:#E96148"
+                    >
+                        <span></span>
+                        <small>Corail</small>
+                    </button>
+
+                    <button
+                        type="button"
+                        class="color-choice"
+                        data-color="#7662B7"
+                        aria-label="Violet"
+                        aria-pressed="false"
+                        style="--swatch:#7662B7"
+                    >
+                        <span></span>
+                        <small>Violet</small>
+                    </button>
+
+                    <button
+                        type="button"
+                        class="color-choice"
+                        data-color="#243D64"
+                        aria-label="Bleu nuit"
+                        aria-pressed="false"
+                        style="--swatch:#243D64"
+                    >
+                        <span></span>
+                        <small>Bleu nuit</small>
+                    </button>
+
+                </div>
+
+
+                <!-- STYLES -->
+
+                <h3 class="field-heading">
+                    Style du formulaire
+                </h3>
+
+                <div class="style-options">
+
+                    <!-- MODERNE -->
+
+                    <button
+                        type="button"
+                        class="style-card selected"
+                        data-style="moderne"
+                        aria-pressed="true"
+                    >
+
+                        <span class="style-preview modern-preview">
+
+                            <span class="mock-topbar">
+                                <span class="mock-logo"></span>
+                                <span class="mock-nav"></span>
+                                <span class="mock-avatar"></span>
+                            </span>
+
+                            <span class="mock-content">
+
+                                <span class="mock-heading"></span>
+                                <span class="mock-description"></span>
+
+                                <span class="mock-fields">
+                                    <span class="mock-field"></span>
+                                    <span class="mock-field"></span>
+                                </span>
+
+                                <span class="mock-action"></span>
+
+                            </span>
+
+                        </span>
+
+                        <strong>Moderne</strong>
+                        <small>Clair, fluide et intuitif</small>
+
+                    </button>
+
+
+                    <!-- ÉLÉGANT -->
+
+                    <button
+                        type="button"
+                        class="style-card"
+                        data-style="elegant"
+                        aria-pressed="false"
+                    >
+
+                        <span class="style-preview elegant-preview">
+
+                            <span class="mock-topbar">
+                                <span class="mock-logo"></span>
+                                <span class="mock-nav"></span>
+                                <span class="mock-avatar"></span>
+                            </span>
+
+                            <span class="mock-content">
+
+                                <span class="mock-heading"></span>
+                                <span class="mock-description"></span>
+
+                                <span class="mock-fields">
+                                    <span class="mock-field"></span>
+                                    <span class="mock-field"></span>
+                                </span>
+
+                                <span class="mock-action"></span>
+
+                            </span>
+
+                        </span>
+
+                        <strong>Élégant</strong>
+                        <small>Raffiné, sobre et structuré</small>
+
+                    </button>
+
+
+                    <!-- DYNAMIQUE -->
+
+                    <button
+                        type="button"
+                        class="style-card"
+                        data-style="dynamique"
+                        aria-pressed="false"
+                    >
+
+                        <span class="style-preview dynamic-preview">
+
+                            <span class="mock-topbar">
+                                <span class="mock-logo"></span>
+                                <span class="mock-nav"></span>
+                                <span class="mock-avatar"></span>
+                            </span>
+
+                            <span class="mock-content">
+
+                                <span class="mock-heading"></span>
+                                <span class="mock-description"></span>
+
+                                <span class="mock-fields">
+                                    <span class="mock-field"></span>
+                                    <span class="mock-field"></span>
+                                </span>
+
+                                <span class="mock-action"></span>
+
+                            </span>
+
+                        </span>
+
+                        <strong>Dynamique</strong>
+                        <small>Créatif, vivant et contrasté</small>
+
+                    </button>
+
+                </div>
+
+
+                <!-- APERÇU DU THÈME -->
+
+                <div class="theme-preview">
+
+                    <div class="theme-preview-header">
+
+                        <span>
+                            APERÇU DE VOTRE THÈME
+                        </span>
+
+                        <strong id="themePreviewSector">
+                            Votre activité
+                        </strong>
+
+                    </div>
+
+
+                    <div class="theme-preview-body">
+
+                        <div class="preview-intro">
+
+                            <span class="preview-kicker">
+                                VOTRE ESPACE
+                            </span>
+
+                            <strong>
+                                Un parcours qui vous ressemble.
+                            </strong>
+
+                            <p>
+                                Votre couleur et votre style accompagnent
+                                chaque étape de qualification.
+                            </p>
+
+                        </div>
+
+
+                        <div class="preview-form">
+
+                            <div class="preview-form-field">
+
+                                <label for="previewActivity">
+                                    Votre activité
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="previewActivity"
+                                    name="previewActivity"
+                                    readonly
+                                >
+
+                            </div>
+
+
+                            <div class="preview-form-field">
+
+                                <label for="previewDescription">
+                                    Votre besoin principal
+                                </label>
+
+                                <textarea
+                                    id="previewDescription"
+                                    name="previewDescription"
+                                    rows="3"
+                                    maxlength="1500"
+                                    placeholder="Décrivez votre projet, vos difficultés ou vos attentes..."
+                                ></textarea>
+
+                            </div>
+
+                        </div>
+
+
+                        <button
+                            type="button"
+                            class="theme-preview-button"
+                            id="previewContinue"
+                        >
+                            Continuer
+                            <span aria-hidden="true">↗</span>
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =========================================
+                 ÉTAPE 3 — QUALIFICATION
+            ========================================= -->
+
+            <section
+                class="form-step"
+                data-step="3"
+            >
+
+                <span class="section-label">
+                    03 — VOTRE PROJET
+                </span>
+
+                <h1>
+                    Parlons de vos besoins.
+                </h1>
+
+                <p
+                    class="step-description"
+                    id="sectorIntroduction"
+                >
+                    Décrivez votre activité, vos difficultés
+                    et vos objectifs.
+
+                    Vos réponses permettront de préparer
+                    une première orientation adaptée
+                    à votre situation.
+                </p>
+
+
+                <form
+                    id="qualificationForm"
+                    novalidate
+                >
+
+                    <!-- TYPE D'ACTIVITÉ -->
+
+                    <div class="form-field">
+
+                        <label for="activityType">
+                            Quel est votre type d'activité ?
+                            <span aria-hidden="true">*</span>
+                        </label>
+
+                        <select
+                            id="activityType"
+                            name="activityType"
+                            required
+                        >
+                            <option value="">
+                                Sélectionnez votre activité
+                            </option>
+                        </select>
+
+                    </div>
+
+
+                    <!-- BESOINS -->
+
+                    <div class="form-field">
+
+                        <label>
+                            Quels sont vos besoins principaux ?
+                        </label>
+
+                        <p class="field-hint">
+                            Vous pouvez sélectionner plusieurs réponses.
+                        </p>
+
+                        <div
+                            class="needs-grid"
+                            id="needsOptions"
+                        ></div>
+
+                    </div>
+
+
+                    <!-- DIFFICULTÉS -->
+
+                    <div class="form-field">
+
+                        <label for="mainDifficulty">
+                            Quelle est votre principale difficulté ?
+                        </label>
+
+                        <select
+                            id="mainDifficulty"
+                            name="mainDifficulty"
+                        >
+
+                            <option value="">
+                                Sélectionnez une difficulté
+                            </option>
+
+                            <option value="Gestion des stocks">
+                                Gestion des stocks
+                            </option>
+
+                            <option value="Suivi de la trésorerie">
+                                Suivi de la trésorerie
+                            </option>
+
+                            <option value="Organisation administrative">
+                                Organisation administrative
+                            </option>
+
+                            <option value="Suivi comptable">
+                                Suivi comptable
+                            </option>
+
+                            <option value="Gestion des projets">
+                                Gestion des projets
+                            </option>
+
+                            <option value="Autre difficulté">
+                                Autre difficulté
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- OUTILS -->
+
+                    <div class="form-field">
+
+                        <label for="currentTools">
+                            Quels outils utilisez-vous actuellement ?
+                        </label>
+
+                        <input
+                            type="text"
+                            id="currentTools"
+                            name="currentTools"
+                            maxlength="250"
+                            autocomplete="off"
+                            placeholder="Ex. : Word, Excel, logiciel comptable..."
+                        >
+
+                    </div>
+
+
+                    <!-- OBJECTIF -->
+
+                    <div class="form-field">
+
+                        <label for="mainObjective">
+                            Quel est votre objectif principal ?
+                            <span aria-hidden="true">*</span>
+                        </label>
+
+                        <textarea
+                            id="mainObjective"
+                            name="mainObjective"
+                            rows="5"
+                            maxlength="1500"
+                            required
+                            placeholder="Ex. : Je recherche un cabinet d'expertise comptable capable de m'accompagner dans mes différents projets."
+                        ></textarea>
+
+                        <p class="field-hint">
+                            Précisez ce que vous souhaitez améliorer
+                            ou mettre en place.
+                        </p>
+
+                    </div>
+
+
+                    <div class="form-divider"></div>
+
+
+                    <!-- SITUATION ACTUELLE -->
+
+                    <h3>
+                        Votre situation actuelle
+                    </h3>
+
+
+                    <div class="form-field">
+
+                        <label for="currentFirm">
+                            Travaillez-vous déjà avec un cabinet
+                            d'expertise comptable ?
+                        </label>
+
+                        <select
+                            id="currentFirm"
+                            name="currentFirm"
+                        >
+
+                            <option value="">
+                                Je préfère préciser plus tard
+                            </option>
+
+                            <option value="Oui, cabinet actuel conservé">
+                                Oui, et je souhaite le conserver
+                            </option>
+
+                            <option value="Oui, changement envisagé">
+                                Oui, mais j'envisage de changer
+                            </option>
+
+                            <option value="Non, premier cabinet recherché">
+                                Non, je recherche un cabinet
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- ACCOMPAGNEMENT -->
+
+                    <div class="form-field">
+
+                        <label for="expectedServices">
+                            Quel type d'accompagnement recherchez-vous ?
+                        </label>
+
+                        <select
+                            id="expectedServices"
+                            name="expectedServices"
+                        >
+
+                            <option value="">
+                                Sélectionnez une réponse
+                            </option>
+
+                            <option value="Conseil et suivi de gestion">
+                                Conseil et suivi de gestion
+                            </option>
+
+                            <option value="Suivi comptable">
+                                Suivi comptable
+                            </option>
+
+                            <option value="Accompagnement des projets">
+                                Accompagnement des projets
+                            </option>
+
+                            <option value="Organisation administrative">
+                                Organisation administrative
+                            </option>
+
+                            <option value="Accompagnement global">
+                                Accompagnement global
+                            </option>
+
+                            <option value="À définir">
+                                Je souhaite être orienté
+                            </option>
+
+                        </select>
+
+                        <p class="field-hint">
+                            Ce choix exprime votre besoin.
+                            Il ne garantit pas la disponibilité
+                            de cette prestation chez DATENSIS.
+                        </p>
+
+                    </div>
+
+
+                    <!-- PROJETS -->
+
+                    <div class="form-field">
+
+                        <label for="projectDetails">
+                            Avez-vous des projets particuliers ?
+                        </label>
+
+                        <textarea
+                            id="projectDetails"
+                            name="projectDetails"
+                            rows="4"
+                            maxlength="1500"
+                            placeholder="Ex. : Développement de mon exploitation, nouveaux investissements, amélioration du suivi de gestion..."
+                        ></textarea>
+
+                    </div>
+
+
+                    <!-- ÉCHÉANCE -->
+
+                    <div class="form-field">
+
+                        <label for="deadline">
+                            Quand souhaitez-vous commencer
+                            cet accompagnement ?
+                        </label>
+
+                        <select
+                            id="deadline"
+                            name="deadline"
+                        >
+
+                            <option value="">
+                                Échéance non définie
+                            </option>
+
+                            <option value="Dès que possible">
+                                Dès que possible
+                            </option>
+
+                            <option value="Dans les trois prochains mois">
+                                Dans les trois prochains mois
+                            </option>
+
+                            <option value="Dans les six prochains mois">
+                                Dans les six prochains mois
+                            </option>
+
+                            <option value="À plus long terme">
+                                À plus long terme
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-divider"></div>
+
+
+                    <!-- INFORMATIONS COMPLÉMENTAIRES -->
+
+                    <h3>
+                        Informations complémentaires
+                    </h3>
+
+                    <div class="form-field">
+
+                        <label for="additionalInformation">
+                            Souhaitez-vous ajouter quelque chose ?
+                        </label>
+
+                        <textarea
+                            id="additionalInformation"
+                            name="additionalInformation"
+                            rows="4"
+                            maxlength="1500"
+                            placeholder="Décrivez librement votre situation ou vos attentes..."
+                        ></textarea>
+
+                    </div>
+
+
+                    <!-- CONFIDENTIALITÉ -->
+
+                    <div class="demo-notice">
+
+                        <strong>
+                            Confidentialité — Démonstration
+                        </strong>
+
+                        <p>
+                            Ce formulaire fonctionne uniquement
+                            dans votre navigateur.
+
+                            Aucune donnée n'est envoyée
+                            automatiquement à DATENSIS.
+                        </p>
+
+                    </div>
+
+                </form>
+
+            </section>
+
+
+            <!-- =========================================
+                 ÉTAPE 4 — SYNTHÈSE DE QUALIFICATION
+            ========================================= -->
+
+            <section
+                class="form-step"
+                data-step="4"
+            >
+
+                <span class="section-label">
+                    04 — VOTRE SYNTHÈSE
+                </span>
+
+                <h1>
+                    Votre besoin, en résumé.
+                </h1>
+
+                <p class="step-description">
+                    Retrouvez votre fiche de qualification,
+                    votre orientation préliminaire
+                    et les informations restant à préciser.
+                </p>
+
+
+                <!-- EN-TÊTE -->
+
+                <div class="summary-header">
+
+                    <span class="summary-icon">
+                        ✓
+                    </span>
+
+                    <div>
+
+                        <span>
+                            QUALIFICATION PRÉLIMINAIRE
+                        </span>
+
+                        <h2 id="summaryTitle">
+                            Votre projet
+                        </h2>
+
+                        <p id="summarySubtitle"></p>
+
+                    </div>
+
+                    <span
+                        class="summary-status"
+                        id="summaryStatus"
+                    >
+                        À compléter
+                    </span>
+
+                </div>
+
+
+                <!-- COMPLÉTUDE -->
+
+                <div class="summary-completion">
+
+                    <div
+                        class="summary-completion-ring"
+                        role="progressbar"
+                        aria-label="Complétude de la qualification"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                        aria-valuenow="0"
+                    >
+                        <strong id="summaryCompletionValue">
+                            0%
+                        </strong>
+                    </div>
+
+                    <div class="summary-completion-copy">
+
+                        <h3>
+                            Niveau de qualification
+                        </h3>
+
+                        <p id="summaryCompletionDescription">
+                            Les réponses permettront d'évaluer
+                            la complétude de votre fiche.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- INFORMATIONS RÉCAPITULATIVES -->
+
+                <div
+                    class="summary-grid"
+                    id="summaryGrid"
+                ></div>
+
+
+                <!-- ANALYSE -->
+
+                <article class="summary-panel">
+
+                    <span class="section-label">
+                        ANALYSE DU BESOIN
+                    </span>
+
+                    <h3>
+                        Ce que nous avons identifié
+                    </h3>
+
+                    <p id="summaryAnalysis"></p>
+
+                </article>
+
+
+                <!-- ORIENTATION -->
+
+                <article class="summary-panel orientation-panel">
+
+                    <span class="section-label">
+                        ORIENTATION PRÉLIMINAIRE
+                    </span>
+
+                    <h3 id="summaryOrientationTitle"></h3>
+
+                    <p id="summaryOrientation"></p>
+
+                </article>
+
+
+                <!-- INFORMATIONS MANQUANTES -->
+
+                <article class="summary-panel">
+
+                    <span class="section-label">
+                        QUALIFICATION COMPLÉMENTAIRE
+                    </span>
+
+                    <h3>
+                        Informations à préciser
+                    </h3>
+
+                    <ul
+                        class="missing-list"
+                        id="missingInformation"
+                    ></ul>
+
+                </article>
+
+
+                <!-- PROCHAINES ÉTAPES -->
+
+                <article class="summary-panel">
+
+                    <span class="section-label">
+                        PROCHAINES ÉTAPES
+                    </span>
+
+                    <h3>
+                        Comment poursuivre ?
+                    </h3>
+
+                    <ol
+                        class="next-steps"
+                        id="nextSteps"
+                    ></ol>
+
+                </article>
+
+
+                <!-- DÉMONSTRATION -->
+
+                <div class="demo-notice">
+
+                    <strong>
+                        Mode démonstration
+                    </strong>
+
+                    <p>
+                        Cette fiche est générée dans votre navigateur.
+
+                        Aucun dossier réel n'est créé
+                        et aucune information n'est transmise
+                        automatiquement à DATENSIS.
+
+                        Les prestations évoquées doivent être vérifiées
+                        avant toute proposition commerciale.
+                    </p>
+
+                </div>
+
+
+                <!-- ACTIONS -->
+
+                <div class="summary-actions">
+
+                    <button
+                        type="button"
+                        class="outline-button"
+                        id="editQualification"
+                    >
+                        <span aria-hidden="true">←</span>
+                        Modifier mes réponses
+                    </button>
+
+                    <button
+                        type="button"
+                        class="outline-button"
+                        id="emailSummary"
+                        aria-haspopup="dialog"
+                        aria-controls="emailSummaryDialog"
+                    >
+                        <span aria-hidden="true">✉</span>
+                        Recevoir ma synthèse par e-mail
+                        <span aria-hidden="true">→</span>
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- =========================================
+                 NAVIGATION
+            ========================================= -->
+
+            <div class="form-navigation">
+
+                <button
+                    type="button"
+                    class="back-button"
+                    id="previousStep"
+                    hidden
+                >
+                    ← Retour
+                </button>
+
+                <button
+                    type="button"
+                    class="next-button"
+                    id="nextStep"
+                    disabled
+                >
+                    Continuer
+                    <span aria-hidden="true">→</span>
+                </button>
+
+            </div>
+
+
+            <!-- =========================================
+                 PIED DE PAGE
+            ========================================= -->
+
+            <footer class="journey-footer">
+
+                <span>
+                    © DATENSIS — Parcours de qualification
+                </span>
+
+                <span>
+                    Prototype sans transmission automatique
+                </span>
+
+            </footer>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<!-- =========================================
+     FENÊTRE — RECEVOIR LA SYNTHÈSE PAR E-MAIL
+========================================= -->
+
+<dialog
+    id="emailSummaryDialog"
+    class="email-summary-dialog"
+    aria-labelledby="emailDialogTitle"
+    aria-describedby="emailDialogDescription"
+>
+
+    <div class="email-dialog-content">
+
+        <form
+            id="emailSummaryForm"
+            method="dialog"
+        >
+
+            <!-- FERMETURE -->
+
+            <button
+                type="button"
+                id="closeEmailDialog"
+                class="email-dialog-close"
+                aria-label="Fermer la fenêtre"
+            >
+                ×
+            </button>
+
+
+            <!-- INTRODUCTION -->
+
+            <span class="section-label">
+                VOTRE SYNTHÈSE DATENSIS
+            </span>
+
+            <div class="email-dialog-icon" aria-hidden="true">
+                ✉
+            </div>
+
+            <h2 id="emailDialogTitle">
+                Gardez une trace de votre projet.
+            </h2>
+
+            <p id="emailDialogDescription">
+                Préparez un e-mail contenant votre fiche
+                de qualification, votre orientation préliminaire
+                et les prochaines étapes.
+            </p>
+
+
+            <!-- ADRESSE E-MAIL -->
+
+            <div class="email-dialog-field">
+
+                <label for="summaryEmail">
+                    Votre adresse e-mail
+                    <span aria-hidden="true">*</span>
+                </label>
+
+                <input
+                    type="email"
+                    id="summaryEmail"
+                    name="email"
+                    placeholder="exemple@entreprise.fr"
+                    autocomplete="email"
+                    inputmode="email"
+                    maxlength="254"
+                    required
+                >
+
+            </div>
+
+
+            <!-- INFORMATIONS -->
+
+            <div class="email-dialog-information">
+
+                <span
+                    class="email-information-icon"
+                    aria-hidden="true"
+                >
+                </span>
+
+                <p>
+                    En mode démonstration, votre messagerie
+                    s'ouvrira avec un e-mail prérempli.
+
+                    Aucun envoi automatique n'est effectué.
+                    Vous devrez confirmer l'envoi depuis
+                    votre messagerie.
+                </p>
+
+            </div>
+
+
+            <!-- ACTIONS -->
+
+            <div class="email-dialog-actions">
+
+                <button
+                    type="button"
+                    class="email-dialog-cancel"
+                    id="cancelEmailDialog"
+                >
+                    Annuler
+                </button>
+
+                <button
+                    type="submit"
+                    class="email-dialog-submit"
+                    id="submitEmailSummary"
+                >
+                    Préparer mon e-mail
+                    <span aria-hidden="true">→</span>
+                </button>
+
+            </div>
+
+
+            <!-- RETOUR UTILISATEUR -->
+
+            <p
+                id="emailSummaryFeedback"
+                class="email-dialog-feedback"
+                role="status"
+                aria-live="polite"
+            ></p>
+
+        </form>
+
+    </div>
+
+</dialog>
+
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Moyens de paiement - DATENSIS</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    {% include "header.html" %}
+
+    <main class="dashboard-page">
+
+        <section class="dashboard-intro">
+
+            <div>
+
+                <p class="eyebrow">
+                    Indépendants & TPE
+                </p>
+
+                <h1>
+                    Moyens de paiement
+                </h1>
+
+                <p>
+                    Gérez vos préférences de règlement
+                    pour vos factures DATENSIS.
+                </p>
+
+            </div>
+
+            <a href="{{ url_for('main.tpe_dashboard') }}"
+               class="btn-secondary">
+                Retour au tableau de bord
+            </a>
+
+        </section>
+
+
+        <section class="journey-layout">
+
+            <article class="dashboard-card">
+
+                <div class="card-heading">
+
+                    <div>
+                        <h2>
+                            Préférences de règlement
+                        </h2>
+
+                        <p>
+                            Ces informations peuvent être modifiées à tout moment.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <form class="journey-form"
+                      id="paymentPreferencesForm">
+
+                    <div class="form-group">
+
+                        <label for="paymentMode">
+                            Mode de règlement préféré
+                        </label>
+
+                        <select id="paymentMode">
+
+                            <option>
+                                Virement bancaire
+                            </option>
+
+                            <option>
+                                Prélèvement SEPA
+                            </option>
+
+                            <option>
+                                Carte professionnelle
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="paymentDelay">
+                            Délai de règlement
+                        </label>
+
+                        <select id="paymentDelay">
+
+                            <option>
+                                À réception
+                            </option>
+
+                            <option>
+                                15 jours
+                            </option>
+
+                            <option>
+                                30 jours
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="billingEmail">
+                            E-mail de facturation
+                        </label>
+
+                        <input
+                            type="email"
+                            id="billingEmail"
+                            value="facturation@entreprise.fr"
+                        >
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="btn-primary"
+                    >
+                        Enregistrer les préférences
+                    </button>
+
+                </form>
+
+            </article>
+
+
+            <aside class="dashboard-card">
+
+                <div class="card-heading">
+
+                    <div>
+                        <h2>
+                            Informations
+                        </h2>
+                    </div>
+
+                </div>
+
+                <div class="info-box">
+
+                    <strong>
+                        Données sensibles
+                    </strong>
+
+                    <p>
+                        Les informations bancaires sensibles ne sont pas
+                        affichées directement dans votre espace.
+                    </p>
+
+                </div>
+
+                <div class="info-box">
+
+                    <strong>
+                        Facturation
+                    </strong>
+
+                    <p>
+                        L'adresse e-mail indiquée sera utilisée
+                        pour l'envoi des documents de facturation.
+                    </p>
+
+                </div>
+
+            </aside>
+
+        </section>
+
+    </main>
+
+    {% include "footer.html" %}
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,40 @@
+<header class="site-header">
+
+    <div class="header-container">
+
+        <!-- Logo DATENSIS -->
+        <a
+            href="{{ url_for('main.home') }}"
+            class="logo"
+        >
+            DATENSIS
+        </a>
+
+
+        <!-- Navigation publique -->
+        <nav
+            class="main-nav"
+            aria-label="Navigation principale"
+        >
+
+            <a href="{{ url_for('main.home') }}">
+                Accueil
+            </a>
+
+            <a href="{{ url_for('main.services') }}">
+                Services
+            </a>
+
+            <a href="{{ url_for('main.faq') }}">
+                Aide & FAQ
+            </a>
+
+            <a href="{{ url_for('main.contact') }}">
+                Contact
+            </a>
+
+        </nav>
+
+    </div>
+
+</header>

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Contrats & devis | DATENSIS</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+{% include "header.html" %}
+
+<main class="dashboard-page">
+
+    <section class="dashboard-intro">
+
+        <div>
+
+            <p class="eyebrow">
+                PME & ETI
+            </p>
+
+            <h1>
+                Contrats & devis
+            </h1>
+
+            <p>
+                Retrouvez les contrats, propositions
+                et documents commerciaux liés à vos projets.
+            </p>
+
+        </div>
+
+        <a href="{{ url_for('main.pme_dashboard') }}"
+           class="btn-secondary">
+            Retour au tableau de bord
+        </a>
+
+    </section>
+
+
+    <section class="resource-page-grid">
+
+
+        <article class="resource-detail-card">
+
+            <div class="resource-card-header">
+
+                <div>
+
+                    <span class="status status-success">
+                        Actif
+                    </span>
+
+                    <h2>
+                        Contrat d'accompagnement
+                    </h2>
+
+                    <p>
+                        Accompagnement DATENSIS pour le projet
+                        de digitalisation multi-sites.
+                    </p>
+
+                </div>
+
+                <strong class="resource-price">
+                    Contrat
+                </strong>
+
+            </div>
+
+
+            <div class="resource-meta-grid">
+
+                <div>
+                    <span>Début</span>
+                    <strong>01/09/2026</strong>
+                </div>
+
+                <div>
+                    <span>Échéance</span>
+                    <strong>31/08/2027</strong>
+                </div>
+
+                <div>
+                    <span>Référence</span>
+                    <strong>CTR-2026-021</strong>
+                </div>
+
+            </div>
+
+
+            <div class="card-actions">
+
+                <button type="button"
+                        class="btn-primary">
+                    Consulter
+                </button>
+
+                <button type="button"
+                        class="btn-secondary">
+                    Télécharger
+                </button>
+
+            </div>
+
+        </article>
+
+
+        <article class="resource-detail-card">
+
+            <div class="resource-card-header">
+
+                <div>
+
+                    <span class="status status-warning">
+                        À valider
+                    </span>
+
+                    <h2>
+                        Extension Bordeaux
+                    </h2>
+
+                    <p>
+                        Proposition complémentaire pour intégrer
+                        le site de Bordeaux au déploiement.
+                    </p>
+
+                </div>
+
+                <strong class="resource-price">
+                    4 600 € HT
+                </strong>
+
+            </div>
+
+
+            <div class="resource-meta-grid">
+
+                <div>
+                    <span>Version</span>
+                    <strong>V1</strong>
+                </div>
+
+                <div>
+                    <span>Date</span>
+                    <strong>30/09/2026</strong>
+                </div>
+
+                <div>
+                    <span>Projet</span>
+                    <strong>Digitalisation</strong>
+                </div>
+
+            </div>
+
+
+            <div class="card-actions">
+
+                <button type="button"
+                        class="btn-primary">
+                    Ouvrir la proposition
+                </button>
+
+                <button type="button"
+                        class="btn-secondary">
+                    Télécharger
+                </button>
+
+            </div>
+
+        </article>
+
+
+        <article class="resource-detail-card">
+
+            <div class="resource-card-header">
+
+                <div>
+
+                    <span class="status status-progress">
+                        En cours
+                    </span>
+
+                    <h2>
+                        Automatisation reporting
+                    </h2>
+
+                    <p>
+                        Proposition de maintenance et
+                        accompagnement après déploiement.
+                    </p>
+
+                </div>
+
+                <strong class="resource-price">
+                    1 200 € HT/an
+                </strong>
+
+            </div>
+
+
+            <div class="resource-meta-grid">
+
+                <div>
+                    <span>Type</span>
+                    <strong>Maintenance</strong>
+                </div>
+
+                <div>
+                    <span>Durée</span>
+                    <strong>12 mois</strong>
+                </div>
+
+                <div>
+                    <span>Statut</span>
+                    <strong>En discussion</strong>
+                </div>
+
+            </div>
+
+
+            <div class="card-actions">
+
+                <a href="{{ url_for('main.pme_messagerie') }}"
+                   class="btn-secondary">
+                    Échanger avec DATENSIS
+                </a>
+
+            </div>
+
+        </article>
+
+    </section>
+
+</main>
+
+{% include "footer.html" %}
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+</body>
+</html>

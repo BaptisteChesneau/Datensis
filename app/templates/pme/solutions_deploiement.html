@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Solutions & déploiement</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+{% include "pme/header_pme.html" %}
+
+<main class="pme-public-page">
+
+    <!-- =====================================================
+         HERO
+         ===================================================== -->
+
+    <section class="pme-service-hero">
+
+        <div class="pme-service-hero-content">
+
+            <p class="eyebrow">
+                PME & ETI
+            </p>
+
+            <h1>
+                Solutions & déploiement
+            </h1>
+
+            <p class="pme-service-description">
+                Comparez les solutions adaptées à votre organisation
+                et préparez leur mise en œuvre selon vos équipes,
+                vos sites et vos priorités.
+            </p>
+
+
+            <div class="pme-service-actions">
+
+                <a href="#solutions-pme"
+                   class="home-btn-primary">
+                    Comparer les solutions
+                </a>
+
+                <a href="{{ url_for('main.pme_accueil') }}"
+                   class="home-btn-secondary">
+                    Retour à l'accueil PME
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="pme-service-hero-panel">
+
+            <span class="hero-panel-label">
+                Déploiement
+            </span>
+
+
+            <div class="hero-step">
+
+                <strong>01</strong>
+
+                <div>
+                    <h3>Cadrer</h3>
+
+                    <p>
+                        Définissez le périmètre
+                        et les priorités.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="hero-step">
+
+                <strong>02</strong>
+
+                <div>
+                    <h3>Sélectionner</h3>
+
+                    <p>
+                        Choisissez l'approche
+                        adaptée à l'organisation.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="hero-step">
+
+                <strong>03</strong>
+
+                <div>
+                    <h3>Déployer</h3>
+
+                    <p>
+                        Organisez la mise en œuvre
+                        étape par étape.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         PROCESSUS
+         ===================================================== -->
+
+    <section class="process-section public-process-section">
+
+        <div class="section-heading">
+
+            <p class="eyebrow">
+                Préparer la mise en œuvre
+            </p>
+
+            <h2>
+                Un déploiement adapté à votre organisation
+            </h2>
+
+            <p>
+                Le niveau d'accompagnement peut évoluer
+                selon le nombre de sites, les équipes
+                et la complexité du projet.
+            </p>
+
+        </div>
+
+
+        <div class="process-steps">
+
+            <article class="process-step">
+
+                <span class="process-number">
+                    01
+                </span>
+
+                <h3>
+                    Besoin cadré
+                </h3>
+
+                <p>
+                    Le périmètre et les objectifs
+                    sont clairement définis.
+                </p>
+
+            </article>
+
+
+            <article class="process-step active">
+
+                <span class="process-number">
+                    02
+                </span>
+
+                <h3>
+                    Solution
+                </h3>
+
+                <p>
+                    Comparez les différentes approches
+                    adaptées à votre entreprise.
+                </p>
+
+            </article>
+
+
+            <article class="process-step">
+
+                <span class="process-number">
+                    03
+                </span>
+
+                <h3>
+                    Déploiement
+                </h3>
+
+                <p>
+                    Organisez les étapes de mise en place
+                    et les validations.
+                </p>
+
+            </article>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         SOLUTIONS
+         ===================================================== -->
+
+    <section class="public-solutions-section"
+             id="solutions-pme">
+
+        <div class="section-heading">
+
+            <p class="eyebrow">
+                Nos orientations
+            </p>
+
+            <h2>
+                Trois niveaux de déploiement
+            </h2>
+
+            <p>
+                Sélectionnez l'approche correspondant
+                au niveau de complexité de votre organisation.
+            </p>
+
+        </div>
+
+
+        <div class="public-solution-grid">
+
+            <!-- 01 -->
+
+            <article class="public-solution-card">
+
+                <span class="solution-badge">
+                    Déploiement ciblé
+                </span>
+
+                <h2>
+                    Déploiement essentiel
+                </h2>
+
+                <p>
+                    Pour un besoin précis
+                    ou un périmètre limité.
+                </p>
+
+
+                <ul class="feature-list">
+
+                    <li>1 projet principal</li>
+                    <li>1 à 2 sites</li>
+                    <li>Cadrage simplifié</li>
+                    <li>Déploiement progressif</li>
+                    <li>Suivi DATENSIS</li>
+
+                </ul>
+
+
+                <a href="{{ url_for('main.pme_creation_compte') }}"
+                   class="home-btn-secondary">
+                    Choisir cette orientation
+                </a>
+
+            </article>
+
+
+            <!-- 02 -->
+
+            <article class="public-solution-card recommended">
+
+                <div class="recommended-label">
+                    Recommandée
+                </div>
+
+                <span class="solution-badge">
+                    Déploiement évolutif
+                </span>
+
+                <h2>
+                    Déploiement évolutif
+                </h2>
+
+                <p>
+                    Pour une PME souhaitant déployer
+                    progressivement une solution
+                    sur plusieurs équipes ou sites.
+                </p>
+
+
+                <ul class="feature-list">
+
+                    <li>Déploiement multi-sites</li>
+                    <li>Planification par étapes</li>
+                    <li>Accompagnement des équipes</li>
+                    <li>Suivi des validations</li>
+                    <li>Pilotage centralisé</li>
+
+                </ul>
+
+
+                <a href="{{ url_for('main.pme_creation_compte') }}"
+                   class="home-btn-primary">
+                    Choisir cette orientation
+                </a>
+
+            </article>
+
+
+            <!-- 03 -->
+
+            <article class="public-solution-card">
+
+                <span class="solution-badge">
+                    Sur mesure
+                </span>
+
+                <h2>
+                    Déploiement personnalisé
+                </h2>
+
+                <p>
+                    Pour les organisations disposant
+                    de contraintes, processus
+                    ou infrastructures spécifiques.
+                </p>
+
+
+                <ul class="feature-list">
+
+                    <li>Périmètre personnalisé</li>
+                    <li>Plusieurs sites</li>
+                    <li>Contraintes spécifiques</li>
+                    <li>Plan de déploiement dédié</li>
+                    <li>Accompagnement renforcé</li>
+
+                </ul>
+
+
+                <a href="{{ url_for('main.contact') }}"
+                   class="home-btn-secondary">
+                    Échanger avec DATENSIS
+                </a>
+
+            </article>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         SUITE
+         ===================================================== -->
+
+    <section class="pme-next-step">
+
+        <div>
+
+            <p class="eyebrow">
+                Étape suivante
+            </p>
+
+            <h2>
+                Préparer le pilotage
+            </h2>
+
+            <p>
+                Une fois la solution définie,
+                découvrez comment suivre le déploiement,
+                les validations et les actions à réaliser.
+            </p>
+
+        </div>
+
+
+        <div class="pme-next-links">
+
+            <a href="{{ url_for('main.pme_cadrage_etude') }}"
+               class="home-btn-secondary">
+                Revoir le cadrage
+            </a>
+
+            <a href="{{ url_for('main.pme_suivi_pilotage') }}"
+               class="home-btn-primary">
+                Découvrir le suivi
+            </a>
+
+        </div>
+
+    </section>
+
+</main>
+
+{% include "footer.html" %}
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+
+</body>
+
+</html>

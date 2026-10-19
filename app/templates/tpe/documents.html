@@ -1,0 +1,416 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mes documents</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="tpe-documents-page">
+
+<div class="tpe-docs-layout">
+
+    <!-- NAVIGATION PRIVÉE -->
+    <aside class="tpe-docs-sidebar">
+        <a href="{{ url_for('main.tpe_dashboard') }}" class="tpe-docs-brand">
+            <span class="tpe-docs-brand-icon">D</span>
+            <span>
+                <strong>DATENSIS</strong>
+                <small>Indépendants & TPE</small>
+            </span>
+        </a>
+
+        <p class="tpe-docs-nav-label">MON ACTIVITÉ</p>
+
+        <nav class="tpe-docs-nav" aria-label="Navigation de mon espace">
+            <a href="{{ url_for('main.tpe_dashboard') }}">Vue d'ensemble</a>
+            <a href="{{ url_for('main.tpe_demandes') }}">Mes demandes</a>
+            <a href="{{ url_for('main.tpe_projets') }}">Mes dossiers</a>
+            <a href="{{ url_for('main.tpe_documents') }}" class="active" aria-current="page">
+                Mes documents
+            </a>
+            <a href="{{ url_for('main.tpe_factures') }}">Mes factures</a>
+        </nav>
+
+        <p class="tpe-docs-nav-label">MON COMPTE</p>
+
+        <nav class="tpe-docs-nav" aria-label="Gestion du compte">
+            <a href="{{ url_for('main.tpe_support') }}">Assistance</a>
+            <a href="{{ url_for('main.tpe_profil') }}">Mon profil</a>
+        </nav>
+
+        <div class="tpe-docs-sidebar-bottom">
+            <div class="tpe-docs-help">
+                <strong>Un document manquant ?</strong>
+                <p>Contactez votre interlocuteur pour obtenir une précision.</p>
+                <a href="{{ url_for('main.tpe_support') }}">Contacter l'équipe →</a>
+            </div>
+
+            <a href="{{ url_for('main.tpe_accueil') }}" class="tpe-docs-exit">
+                ← Retour au site TPE
+            </a>
+        </div>
+    </aside>
+
+    <!-- CONTENU -->
+    <main class="tpe-docs-main">
+
+        <header class="tpe-docs-header">
+            <div>
+                <p class="tpe-docs-breadcrumb">
+                    <a href="{{ url_for('main.tpe_dashboard') }}">Mon espace</a>
+                    / Mes documents
+                </p>
+
+                <span class="tpe-docs-eyebrow">GESTION DOCUMENTAIRE</span>
+                <h1>Mes documents</h1>
+                <p>
+                    Retrouvez les pièces associées à vos missions,
+                    consultez leur état et préparez vos transmissions.
+                </p>
+            </div>
+
+            <button type="button" class="tpe-docs-primary" id="openDocumentModal">
+                + Ajouter un document
+            </button>
+        </header>
+
+        <!-- DOCUMENT ATTENDU -->
+        <section class="tpe-docs-priority">
+            <div class="tpe-docs-priority-icon" aria-hidden="true">!</div>
+
+            <div>
+                <span>DOCUMENT À TRANSMETTRE · EXEMPLE</span>
+                <h2>Une pièce est attendue pour votre dossier</h2>
+                <p>
+                    Le dossier « Modernisation informatique » nécessite
+                    un document complémentaire avant la prochaine étape.
+                </p>
+            </div>
+
+            <button type="button" class="tpe-docs-priority-action" id="uploadPriorityDocument">
+                Préparer un dépôt →
+            </button>
+        </section>
+
+        <!-- STATISTIQUES -->
+        <section class="tpe-docs-summary" aria-label="Synthèse documentaire">
+            <article class="tpe-docs-stat">
+                <span>Documents disponibles</span>
+                <strong id="docsTotal">03</strong>
+                <small>Dans votre bibliothèque</small>
+            </article>
+
+            <article class="tpe-docs-stat">
+                <span>Comptes rendus</span>
+                <strong id="docsReports">01</strong>
+                <small>Suivi des missions</small>
+            </article>
+
+            <article class="tpe-docs-stat">
+                <span>Plannings</span>
+                <strong id="docsPlannings">01</strong>
+                <small>Organisation des étapes</small>
+            </article>
+
+            <article class="tpe-docs-stat">
+                <span>Préparation</span>
+                <strong id="docsPreparation">01</strong>
+                <small>Pièces de préparation</small>
+            </article>
+        </section>
+
+        <!-- BIBLIOTHÈQUE -->
+        <section class="tpe-docs-panel">
+
+            <div class="tpe-docs-panel-header">
+                <div>
+                    <span class="tpe-docs-eyebrow">BIBLIOTHÈQUE</span>
+                    <h2>Documents de mes dossiers</h2>
+                    <p>Recherchez un fichier par nom, type ou projet.</p>
+                </div>
+
+                <span class="tpe-docs-demo">Données de démonstration</span>
+            </div>
+
+            <div class="tpe-docs-toolbar">
+                <div class="tpe-docs-field">
+                    <label for="documentSearch">Rechercher</label>
+                    <input
+                        type="search"
+                        id="documentSearch"
+                        placeholder="Nom du fichier, dossier..."
+                    >
+                </div>
+
+                <div class="tpe-docs-field">
+                    <label for="documentType">Type</label>
+                    <select id="documentType">
+                        <option value="all">Tous les documents</option>
+                        <option value="compte-rendu">Compte rendu</option>
+                        <option value="planning">Planning</option>
+                        <option value="preparation">Préparation</option>
+                    </select>
+                </div>
+
+                <div class="tpe-docs-field">
+                    <label for="documentProject">Dossier</label>
+                    <select id="documentProject">
+                        <option value="all">Tous les dossiers</option>
+                        <option value="modernisation">Modernisation informatique</option>
+                        <option value="organisation">Organisation documentaire</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="tpe-docs-table-wrapper">
+                <table class="tpe-docs-table" id="documentsTable">
+                    <thead>
+                        <tr>
+                            <th>Document</th>
+                            <th>Dossier associé</th>
+                            <th>Type</th>
+                            <th>Date</th>
+                            <th>Version</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr data-type="compte-rendu" data-project="modernisation">
+                            <td>
+                                <div class="tpe-docs-file">
+                                    <span class="tpe-docs-file-icon pdf">PDF</span>
+                                    <div>
+                                        <strong>Compte_rendu_cadrage.pdf</strong>
+                                        <small>Compte rendu de cadrage</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Modernisation informatique</td>
+                            <td>Compte rendu</td>
+                            <td>29/09/2026</td>
+                            <td><span class="tpe-docs-version">V1</span></td>
+                            <td>
+                                <button type="button" class="tpe-docs-open"
+                                    data-document-name="Compte_rendu_cadrage.pdf"
+                                    data-document-project="Modernisation informatique"
+                                    data-document-type="Compte rendu"
+                                    data-document-date="29/09/2026"
+                                    data-document-version="V1"
+                                    data-document-description="Compte rendu de la réunion de cadrage et synthèse des besoins du projet.">
+                                    Détails →
+                                </button>
+                            </td>
+                        </tr>
+
+                        <tr data-type="planning" data-project="modernisation">
+                            <td>
+                                <div class="tpe-docs-file">
+                                    <span class="tpe-docs-file-icon xlsx">XLS</span>
+                                    <div>
+                                        <strong>Planning_mise_en_place.xlsx</strong>
+                                        <small>Calendrier de réalisation</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Modernisation informatique</td>
+                            <td>Planning</td>
+                            <td>30/09/2026</td>
+                            <td><span class="tpe-docs-version">V2</span></td>
+                            <td>
+                                <button type="button" class="tpe-docs-open"
+                                    data-document-name="Planning_mise_en_place.xlsx"
+                                    data-document-project="Modernisation informatique"
+                                    data-document-type="Planning"
+                                    data-document-date="30/09/2026"
+                                    data-document-version="V2"
+                                    data-document-description="Planning prévisionnel des étapes de mise en place.">
+                                    Détails →
+                                </button>
+                            </td>
+                        </tr>
+
+                        <tr data-type="preparation" data-project="modernisation">
+                            <td>
+                                <div class="tpe-docs-file">
+                                    <span class="tpe-docs-file-icon pdf">PDF</span>
+                                    <div>
+                                        <strong>Fiche_preparation.pdf</strong>
+                                        <small>Préparation de l'intervention</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Modernisation informatique</td>
+                            <td>Préparation</td>
+                            <td>30/09/2026</td>
+                            <td><span class="tpe-docs-version">V1</span></td>
+                            <td>
+                                <button type="button" class="tpe-docs-open"
+                                    data-document-name="Fiche_preparation.pdf"
+                                    data-document-project="Modernisation informatique"
+                                    data-document-type="Préparation"
+                                    data-document-date="30/09/2026"
+                                    data-document-version="V1"
+                                    data-document-description="Liste des éléments nécessaires avant l'intervention.">
+                                    Détails →
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p class="tpe-docs-empty" id="documentsEmpty" hidden>
+                Aucun document ne correspond à votre recherche.
+            </p>
+
+            <div class="tpe-docs-table-footer">
+                <span id="documentsCount">3 documents affichés</span>
+                <span>Bibliothèque de démonstration</span>
+            </div>
+        </section>
+
+        <section class="tpe-docs-info">
+            <div>
+                <span class="tpe-docs-eyebrow">SUIVI DES MISSIONS</span>
+                <h2>Des documents organisés par dossier</h2>
+                <p>
+                    Chaque pièce est associée à une mission pour faciliter
+                    les échanges et retrouver les informations importantes.
+                </p>
+            </div>
+
+            <a href="{{ url_for('main.tpe_projets') }}" class="tpe-docs-secondary">
+                Consulter mes dossiers →
+            </a>
+        </section>
+
+        <footer class="tpe-docs-footer">
+            <span>DATENSIS · Espace Indépendants & TPE</span>
+            <a href="{{ url_for('main.tpe_dashboard') }}">Retour au tableau de bord</a>
+        </footer>
+    </main>
+</div>
+
+<!-- MODAL : PRÉPARATION D'UN DÉPÔT -->
+<div class="tpe-docs-overlay" id="documentModal" hidden>
+    <section class="tpe-docs-modal" role="dialog" aria-modal="true"
+             aria-labelledby="documentModalTitle">
+
+        <div class="tpe-docs-modal-header">
+            <div>
+                <span class="tpe-docs-eyebrow">DOCUMENT</span>
+                <h2 id="documentModalTitle">Ajouter un document</h2>
+                <p>Sélectionnez une pièce et associez-la à votre dossier.</p>
+            </div>
+
+            <button type="button" class="tpe-docs-close"
+                    id="closeDocumentModal" aria-label="Fermer">×</button>
+        </div>
+
+        <form id="documentForm" class="tpe-docs-form">
+            <div class="tpe-docs-field full">
+                <label for="newDocumentFile">Fichier</label>
+                <input type="file" id="newDocumentFile"
+                       accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg"
+                       required>
+                <small>PDF, Word, Excel ou image · 10 Mo maximum pour cette démonstration.</small>
+            </div>
+
+            <div class="tpe-docs-field">
+                <label for="newDocumentProject">Dossier associé</label>
+                <select id="newDocumentProject" required>
+                    <option value="modernisation">Modernisation informatique</option>
+                    <option value="organisation">Organisation documentaire</option>
+                </select>
+            </div>
+
+            <div class="tpe-docs-field">
+                <label for="newDocumentType">Type de document</label>
+                <select id="newDocumentType" required>
+                    <option value="compte-rendu">Compte rendu</option>
+                    <option value="planning">Planning</option>
+                    <option value="preparation">Préparation</option>
+                </select>
+            </div>
+
+            <div class="tpe-docs-field full">
+                <label for="newDocumentDescription">Description (facultatif)</label>
+                <textarea id="newDocumentDescription" rows="4"
+                          placeholder="Précisez l'utilité du document..."></textarea>
+            </div>
+
+            <div class="tpe-docs-form-actions">
+                <button type="button" class="tpe-docs-secondary" id="cancelDocument">
+                    Annuler
+                </button>
+                <button type="submit" class="tpe-docs-primary">
+                    Ajouter à la liste
+                </button>
+            </div>
+        </form>
+    </section>
+</div>
+
+<!-- PANNEAU DE DÉTAIL -->
+<div class="tpe-docs-drawer-overlay" id="documentDrawerOverlay" hidden></div>
+
+<aside class="tpe-docs-drawer" id="documentDrawer"
+       role="dialog" aria-modal="true"
+       aria-labelledby="drawerDocumentName" aria-hidden="true">
+
+    <div class="tpe-docs-drawer-header">
+        <div>
+            <span class="tpe-docs-eyebrow">FICHE DOCUMENT</span>
+            <h2 id="drawerDocumentName">Document</h2>
+        </div>
+
+        <button type="button" class="tpe-docs-close"
+                id="closeDocumentDrawer" aria-label="Fermer">×</button>
+    </div>
+
+    <div class="tpe-docs-drawer-body">
+        <div class="tpe-docs-detail">
+            <span>Dossier associé</span>
+            <strong id="drawerDocumentProject"></strong>
+        </div>
+
+        <div class="tpe-docs-detail">
+            <span>Type</span>
+            <strong id="drawerDocumentType"></strong>
+        </div>
+
+        <div class="tpe-docs-detail">
+            <span>Date d'ajout</span>
+            <strong id="drawerDocumentDate"></strong>
+        </div>
+
+        <div class="tpe-docs-detail">
+            <span>Version</span>
+            <strong id="drawerDocumentVersion"></strong>
+        </div>
+
+        <div class="tpe-docs-detail">
+            <span>Description</span>
+            <p id="drawerDocumentDescription"></p>
+        </div>
+
+        <p class="tpe-docs-drawer-notice">
+            Les documents initiaux sont des exemples : aucun fichier réel n'est
+            associé à leurs fiches. Les fichiers ajoutés pendant cette session
+            peuvent être ouverts tant que la page reste chargée.
+        </p>
+
+        <button type="button" class="tpe-docs-primary"
+                id="openDocumentFile" hidden>
+            Ouvrir le fichier
+        </button>
+    </div>
+</aside>
+
+<script src="{{ url_for('static', filename='js/tpe.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Cabinets partenaires | Administration DATENSIS</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+{% include "header.html" %}
+
+<main class="dashboard-page">
+
+    <section class="dashboard-intro">
+
+        <div>
+            <p class="eyebrow">Administration</p>
+
+            <h1>Cabinets partenaires</h1>
+
+            <p>
+                Gérez les cabinets partenaires, leur statut
+                et leur activité dans DATENSIS.
+            </p>
+        </div>
+
+        <button type="button"
+                class="btn-primary"
+                id="openAdminCabinetModal">
+            Ajouter un cabinet
+        </button>
+
+    </section>
+
+
+    <nav class="workspace-nav">
+
+        <a href="{{ url_for('main.admin_dashboard') }}">
+            Tableau de bord
+        </a>
+
+        <a href="{{ url_for('main.admin_utilisateurs') }}">
+            Utilisateurs
+        </a>
+
+        <a href="{{ url_for('main.admin_demandes') }}">
+            Demandes
+        </a>
+
+        <a href="{{ url_for('main.admin_projets_dossiers') }}">
+            Projets & dossiers
+        </a>
+
+        <a href="{{ url_for('main.admin_cabinets') }}"
+           class="active">
+            Cabinets partenaires
+        </a>
+
+        <a href="{{ url_for('main.admin_rendez_vous') }}">
+            Rendez-vous
+        </a>
+
+        <a href="{{ url_for('main.admin_administration') }}">
+            Administration
+        </a>
+
+    </nav>
+
+
+    <section class="dashboard-card">
+
+        <div class="list-toolbar">
+
+            <div class="search-box">
+                <label for="adminCabinetSearch">
+                    Rechercher
+                </label>
+
+                <input
+                    type="search"
+                    id="adminCabinetSearch"
+                    placeholder="Nom du cabinet..."
+                >
+            </div>
+
+        </div>
+
+
+        <div class="table-wrapper">
+
+            <table class="data-table">
+
+                <thead>
+                    <tr>
+                        <th>Cabinet</th>
+                        <th>Contact</th>
+                        <th>Clients transmis</th>
+                        <th>Dossiers actifs</th>
+                        <th>Statut</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>Cabinet Horizon</td>
+                        <td>Marc Leroy</td>
+                        <td>14</td>
+                        <td>8</td>
+                        <td>
+                            <span class="status status-success">
+                                Actif
+                            </span>
+                        </td>
+                        <td>
+                            <button type="button"
+                                    class="table-action">
+                                Gérer
+                            </button>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Cabinet Nova</td>
+                        <td>Claire Bernard</td>
+                        <td>9</td>
+                        <td>4</td>
+                        <td>
+                            <span class="status status-progress">
+                                À valider
+                            </span>
+                        </td>
+                        <td>
+                            <button type="button"
+                                    class="table-action">
+                                Valider
+                            </button>
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<div class="modal-backdrop"
+     id="adminCabinetModal"
+     hidden>
+
+    <div class="modal-card">
+
+        <div class="modal-header">
+
+            <div>
+                <p class="eyebrow">Administration</p>
+                <h2>Ajouter un cabinet</h2>
+            </div>
+
+            <button type="button"
+                    class="modal-close"
+                    id="closeAdminCabinetModal">
+                ×
+            </button>
+
+        </div>
+
+
+        <form id="adminCabinetForm"
+              class="journey-form">
+
+            <div class="form-group">
+                <label for="adminCabinetName">
+                    Nom du cabinet
+                </label>
+
+                <input type="text"
+                       id="adminCabinetName"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label for="adminCabinetContact">
+                    Contact principal
+                </label>
+
+                <input type="text"
+                       id="adminCabinetContact"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label for="adminCabinetEmail">
+                    E-mail
+                </label>
+
+                <input type="email"
+                       id="adminCabinetEmail"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label for="adminCabinetPhone">
+                    Téléphone
+                </label>
+
+                <input type="tel"
+                       id="adminCabinetPhone">
+            </div>
+
+            <div class="card-actions">
+
+                <button type="button"
+                        class="btn-secondary"
+                        id="cancelAdminCabinet">
+                    Annuler
+                </button>
+
+                <button type="submit"
+                        class="btn-primary">
+                    Ajouter
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% include "footer.html" %}
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+</body>
+</html>

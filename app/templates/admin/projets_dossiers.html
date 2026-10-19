@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Projets & dossiers</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+{% include "header.html" %}
+
+<main class="dashboard-page">
+
+    <section class="dashboard-intro">
+
+        <div>
+            <p class="eyebrow">
+                Administration
+            </p>
+
+            <h1>
+                Projets & dossiers
+            </h1>
+
+            <p>
+                Supervisez les projets et dossiers actifs
+                sur l'ensemble de la plateforme.
+            </p>
+        </div>
+
+    </section>
+
+
+    <section class="kpi-grid">
+
+        <article class="kpi-card">
+            <span class="kpi-label">
+                Total actifs
+            </span>
+
+            <strong class="kpi-value">
+                42
+            </strong>
+        </article>
+
+        <article class="kpi-card">
+            <span class="kpi-label">
+                TPE
+            </span>
+
+            <strong class="kpi-value">
+                19
+            </strong>
+        </article>
+
+        <article class="kpi-card">
+            <span class="kpi-label">
+                PME
+            </span>
+
+            <strong class="kpi-value">
+                15
+            </strong>
+        </article>
+
+        <article class="kpi-card">
+            <span class="kpi-label">
+                Cabinet
+            </span>
+
+            <strong class="kpi-value">
+                8
+            </strong>
+        </article>
+
+    </section>
+
+
+    <section class="dashboard-card">
+
+        <div class="table-wrapper">
+
+            <table class="data-table">
+
+                <thead>
+                    <tr>
+                        <th>Référence</th>
+                        <th>Client</th>
+                        <th>Profil</th>
+                        <th>Projet</th>
+                        <th>Collaborateur</th>
+                        <th>Avancement</th>
+                        <th>Statut</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>DOS-2026-044</td>
+                        <td>Dupont Conseil</td>
+                        <td>TPE</td>
+                        <td>Digitalisation</td>
+                        <td>Julie Morel</td>
+                        <td>70 %</td>
+                        <td>
+                            <span class="status status-progress">
+                                En cours
+                            </span>
+                        </td>
+                        <td>
+                            <button class="table-action"
+                                    type="button">
+                                Ouvrir
+                            </button>
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>DOS-2026-052</td>
+                        <td>Société Exemple</td>
+                        <td>PME</td>
+                        <td>Déploiement multi-sites</td>
+                        <td>Thomas Bernard</td>
+                        <td>68 %</td>
+                        <td>
+                            <span class="status status-progress">
+                                En cours
+                            </span>
+                        </td>
+                        <td>
+                            <button class="table-action"
+                                    type="button">
+                                Ouvrir
+                            </button>
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>DOS-2026-038</td>
+                        <td>AGRO Centre</td>
+                        <td>PME</td>
+                        <td>Organisation documentaire</td>
+                        <td>Julie Morel</td>
+                        <td>35 %</td>
+                        <td>
+                            <span class="status status-warning">
+                                À compléter
+                            </span>
+                        </td>
+                        <td>
+                            <button class="table-action"
+                                    type="button">
+                                Ouvrir
+                            </button>
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+</main>
+
+{% include "footer.html" %}
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+</body>
+</html>

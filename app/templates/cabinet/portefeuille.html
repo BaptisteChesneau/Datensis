@@ -1,0 +1,586 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Portefeuille clients</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+</head>
+
+<body class="cab-dashboard cab-portfolio-page">
+
+<div class="cab-layout">
+
+    <!-- SIDEBAR -->
+
+    <aside class="cab-sidebar" id="cabSidebar">
+
+        <a class="cab-brand" href="{{ url_for('main.cabinet_dashboard') }}">
+            <span class="cab-brand-mark">D<span>.</span></span>
+            <span class="cab-brand-copy">
+                <strong>DATENSIS</strong>
+                <small>PARTNER WORKSPACE</small>
+            </span>
+        </a>
+
+        <div class="cab-sidebar-divider"></div>
+
+        <div class="cab-sidebar-section">VOTRE ESPACE</div>
+
+        <nav class="cab-nav" aria-label="Navigation cabinet">
+
+            <a href="{{ url_for('main.cabinet_dashboard') }}">
+                <span class="cab-nav-icon">▦</span>
+                <span>Vue d'ensemble</span>
+            </a>
+
+            <a href="{{ url_for('main.cabinet_portefeuille') }}"
+               class="active"
+               aria-current="page">
+                <span class="cab-nav-icon">♙</span>
+                <span>Portefeuille clients</span>
+            </a>
+
+            <a href="{{ url_for('main.cabinet_opportunites') }}">
+                <span class="cab-nav-icon">◇</span>
+                <span>Opportunités</span>
+                <span class="cab-nav-badge">6</span>
+            </a>
+
+            <a href="{{ url_for('main.cabinet_dossiers') }}">
+                <span class="cab-nav-icon">▤</span>
+                <span>Dossiers transmis</span>
+            </a>
+
+            <a href="{{ url_for('main.cabinet_ressources') }}">
+                <span class="cab-nav-icon">▧</span>
+                <span>Ressources</span>
+            </a>
+
+        </nav>
+
+        <div class="cab-sidebar-section">COLLABORATION</div>
+
+        <nav class="cab-nav" aria-label="Collaboration">
+
+            <a href="{{ url_for('main.cabinet_messagerie') }}">
+                <span class="cab-nav-icon">✉</span>
+                <span>Messagerie</span>
+                <span class="cab-nav-badge cab-nav-badge-coral">2</span>
+            </a>
+
+            <a href="{{ url_for('main.cabinet_rendez_vous') }}">
+                <span class="cab-nav-icon">▦</span>
+                <span>Rendez-vous</span>
+            </a>
+
+        </nav>
+
+        <div class="cab-sidebar-spacer"></div>
+
+        <div class="cab-partner-card">
+            <span class="cab-partner-card-label">VOTRE PARTENARIAT</span>
+            <strong>Un accompagnement à chaque étape.</strong>
+            <p>Un besoin spécifique pour l'un de vos clients ?</p>
+            <a href="{{ url_for('main.cabinet_messagerie') }}">
+                Contacter DATENSIS <span>↗</span>
+            </a>
+        </div>
+
+        <div class="cab-sidebar-footer">
+            <span class="cab-sidebar-status"></span>
+            Espace partenaire · Démonstration
+        </div>
+
+    </aside>
+
+    <!-- CONTENU -->
+
+    <div class="cab-main-shell">
+
+        <header class="cab-topbar">
+
+            <div class="cab-topbar-left">
+
+                <button type="button"
+                        class="cab-mobile-menu"
+                        id="cabMenuToggle"
+                        aria-label="Ouvrir le menu"
+                        aria-controls="cabSidebar"
+                        aria-expanded="false">
+                    ☰
+                </button>
+
+                <div class="cab-breadcrumb">
+                    <span>Partenariat</span>
+                    <span class="cab-breadcrumb-separator">/</span>
+                    <strong>Portefeuille clients</strong>
+                </div>
+
+            </div>
+
+            <div class="cab-topbar-right">
+
+                <span class="cab-demo-label">
+                    <span></span>
+                    Environnement démo
+                </span>
+
+                <a href="{{ url_for('main.cabinet_messagerie') }}"
+                   class="cab-topbar-notification"
+                   aria-label="Accéder à la messagerie">
+                    ✉
+                    <span>2</span>
+                </a>
+
+                <div class="cab-profile">
+                    <div class="cab-profile-avatar">CP</div>
+                    <div class="cab-profile-copy">
+                        <strong>Cabinet partenaire</strong>
+                        <small>Espace professionnel</small>
+                    </div>
+                </div>
+
+            </div>
+
+        </header>
+
+        <main class="cab-content cab-portfolio-content">
+
+            <!-- INTRODUCTION -->
+
+            <section class="cab-portfolio-hero">
+
+                <div class="cab-portfolio-hero-content">
+
+                    <span class="cab-portfolio-eyebrow">
+                        GESTION DE LA RELATION CLIENT
+                    </span>
+
+                    <h1>Votre portefeuille,<br>
+                        <em>une vision claire.</em>
+                    </h1>
+
+                    <p>
+                        Retrouvez les entreprises accompagnées,
+                        leurs besoins, leurs dossiers et
+                        l'état de leur relation avec DATENSIS.
+                    </p>
+
+                    <div class="cab-portfolio-hero-actions">
+
+                        <a href="{{ url_for('main.cabinet_qualification_besoin') }}"
+                           class="cab-btn cab-btn-light">
+                            ＋ Nouvelle opportunité
+                        </a>
+
+                        <button type="button"
+                                class="cab-btn cab-btn-outline"
+                                id="portfolioExport">
+                            ↓ Exporter la liste
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <div class="cab-portfolio-hero-art" aria-hidden="true">
+                    <div class="cab-portfolio-orbit orbit-one"></div>
+                    <div class="cab-portfolio-orbit orbit-two"></div>
+
+                    <div class="cab-portfolio-art-center">♙</div>
+
+                    <div class="cab-portfolio-art-pill pill-one">
+                        <span>●</span> Clients
+                    </div>
+
+                    <div class="cab-portfolio-art-pill pill-two">
+                        <span>●</span> Dossiers
+                    </div>
+
+                    <div class="cab-portfolio-art-pill pill-three">
+                        <span>●</span> Suivi
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- INDICATEURS -->
+
+            <div class="cab-section-heading">
+                <div>
+                    <span class="cab-section-eyebrow">PANORAMA</span>
+                    <h2>Composition du portefeuille</h2>
+                    <p>Répartition des clients par profil d'entreprise.</p>
+                </div>
+
+                <span class="cab-section-meta">
+                    Données de démonstration
+                </span>
+            </div>
+
+            <section class="cab-kpi-grid" aria-label="Statistiques clients">
+
+                <article class="cab-kpi-card cab-portfolio-stat">
+                    <div class="cab-kpi-top">
+                        <span>Clients suivis</span>
+                        <span class="cab-kpi-icon">♙</span>
+                    </div>
+
+                    <strong class="cab-kpi-value" data-counter="24">0</strong>
+
+                    <div class="cab-kpi-footer">
+                        <span>Portefeuille global</span>
+                        <span>100 %</span>
+                    </div>
+
+                    <div class="cab-kpi-accent"></div>
+                </article>
+
+                <article class="cab-kpi-card cab-portfolio-stat">
+                    <div class="cab-kpi-top">
+                        <span>Très petites entreprises</span>
+                        <span class="cab-kpi-icon mint">T</span>
+                    </div>
+
+                    <strong class="cab-kpi-value" data-counter="14">0</strong>
+
+                    <div class="cab-kpi-footer">
+                        <span>Profil TPE</span>
+                        <span>58 %</span>
+                    </div>
+
+                    <div class="cab-kpi-accent mint"></div>
+                </article>
+
+                <article class="cab-kpi-card cab-portfolio-stat">
+                    <div class="cab-kpi-top">
+                        <span>Petites et moyennes entreprises</span>
+                        <span class="cab-kpi-icon blue">P</span>
+                    </div>
+
+                    <strong class="cab-kpi-value" data-counter="8">0</strong>
+
+                    <div class="cab-kpi-footer">
+                        <span>Profil PME</span>
+                        <span>33 %</span>
+                    </div>
+
+                    <div class="cab-kpi-accent blue"></div>
+                </article>
+
+                <article class="cab-kpi-card cab-portfolio-stat">
+                    <div class="cab-kpi-top">
+                        <span>Autres profils</span>
+                        <span class="cab-kpi-icon coral">A</span>
+                    </div>
+
+                    <strong class="cab-kpi-value" data-counter="2">0</strong>
+
+                    <div class="cab-kpi-footer">
+                        <span>Autres structures</span>
+                        <span>8 %</span>
+                    </div>
+
+                    <div class="cab-kpi-accent coral"></div>
+                </article>
+
+            </section>
+
+            <!-- TABLEAU DE PILOTAGE -->
+
+            <section class="cab-portfolio-panel">
+
+                <div class="cab-portfolio-panel-heading">
+
+                    <div>
+                        <span class="cab-section-eyebrow">
+                            RÉPERTOIRE CLIENTS
+                        </span>
+
+                        <h2>Entreprises accompagnées</h2>
+
+                        <p id="portfolioResultCount" aria-live="polite">
+                            Chargement du portefeuille...
+                        </p>
+                    </div>
+
+                    <div class="cab-portfolio-view-switch"
+                         aria-label="Mode d'affichage">
+
+                        <button type="button"
+                                class="active"
+                                id="portfolioTableView"
+                                aria-label="Afficher en tableau"
+                                aria-pressed="true">
+                            ▤
+                        </button>
+
+                        <button type="button"
+                                id="portfolioCardView"
+                                aria-label="Afficher en cartes"
+                                aria-pressed="false">
+                            ▦
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <!-- OUTILS -->
+
+                <div class="cab-portfolio-toolbar">
+
+                    <label class="cab-portfolio-search">
+                        <span aria-hidden="true">⌕</span>
+
+                        <input type="search"
+                               id="clientSearch"
+                               placeholder="Nom, besoin ou référence..."
+                               aria-label="Rechercher un client">
+                    </label>
+
+                    <select id="clientType"
+                            aria-label="Filtrer par profil">
+                        <option value="all">Tous les profils</option>
+                        <option value="tpe">TPE</option>
+                        <option value="pme">PME</option>
+                        <option value="autre">Autres</option>
+                    </select>
+
+                    <select id="clientStatus"
+                            aria-label="Filtrer par statut">
+                        <option value="all">Tous les statuts</option>
+                        <option value="actif">Actif</option>
+                        <option value="en-cours">En cours</option>
+                        <option value="qualification">Qualification</option>
+                    </select>
+
+                    <select id="clientSort"
+                            aria-label="Trier les clients">
+                        <option value="name-asc">Nom A → Z</option>
+                        <option value="name-desc">Nom Z → A</option>
+                        <option value="profile">Par profil</option>
+                    </select>
+
+                </div>
+
+                <!-- FILTRES RAPIDES -->
+
+                <div class="cab-portfolio-chips" id="portfolioChips">
+
+                    <button type="button"
+                            class="active"
+                            data-profile="all"
+                            aria-pressed="true">
+                        Tous les clients
+                    </button>
+
+                    <button type="button"
+                            data-profile="tpe"
+                            aria-pressed="false">
+                        TPE
+                    </button>
+
+                    <button type="button"
+                            data-profile="pme"
+                            aria-pressed="false">
+                        PME
+                    </button>
+
+                    <button type="button"
+                            data-profile="autre"
+                            aria-pressed="false">
+                        Autres
+                    </button>
+
+                </div>
+
+                <!-- VUE TABLEAU -->
+
+                <div class="cab-portfolio-table-wrapper"
+                     id="portfolioTableContainer">
+
+                    <table class="cab-portfolio-table">
+                        <thead>
+                            <tr>
+                                <th>Entreprise</th>
+                                <th>Profil</th>
+                                <th>Besoin principal</th>
+                                <th>Statut</th>
+                                <th>Référence</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="portfolioTableBody"></tbody>
+                    </table>
+
+                </div>
+
+                <!-- VUE CARTES -->
+
+                <div class="cab-portfolio-cards"
+                     id="portfolioCardsContainer"
+                     hidden></div>
+
+                <!-- AUCUN RÉSULTAT -->
+
+                <div class="cab-portfolio-empty"
+                     id="portfolioEmpty"
+                     hidden>
+
+                    <span>⌕</span>
+                    <h3>Aucun client trouvé</h3>
+
+                    <p>
+                        Aucun résultat ne correspond à
+                        votre recherche ou à vos filtres.
+                    </p>
+
+                    <button type="button" id="portfolioReset">
+                        Réinitialiser les filtres
+                    </button>
+
+                </div>
+
+                <div class="cab-portfolio-panel-footer">
+                    <span>
+                        Les fiches présentées sont fictives.
+                    </span>
+
+                    <a href="{{ url_for('main.cabinet_opportunites') }}">
+                        Consulter les opportunités →
+                    </a>
+                </div>
+
+            </section>
+
+            <!-- PARCOURS -->
+
+            <section class="cab-portfolio-bottom-grid">
+
+                <article class="cab-portfolio-insight">
+
+                    <span class="cab-section-eyebrow">
+                        VOTRE ORGANISATION
+                    </span>
+
+                    <h2>Un portefeuille centralisé.</h2>
+
+                    <p>
+                        Accédez rapidement aux besoins identifiés,
+                        aux dossiers transmis et aux informations
+                        nécessaires pour accompagner chaque entreprise.
+                    </p>
+
+                    <div class="cab-portfolio-insight-points">
+                        <span>✓ Vue globale des clients</span>
+                        <span>✓ Suivi des besoins</span>
+                        <span>✓ Accès aux dossiers</span>
+                    </div>
+
+                </article>
+
+                <article class="cab-portfolio-nextstep">
+
+                    <span class="cab-section-eyebrow">
+                        PROCHAINE ÉTAPE
+                    </span>
+
+                    <h2>Un nouveau besoin identifié ?</h2>
+
+                    <p>
+                        Transformez une demande client
+                        en opportunité et préparez
+                        sa transmission à DATENSIS.
+                    </p>
+
+                    <a href="{{ url_for('main.cabinet_qualification_besoin') }}">
+                        Qualifier un besoin client ↗
+                    </a>
+
+                </article>
+
+            </section>
+
+            <footer class="cab-footer">
+                <span>© DATENSIS — Espace Cabinet Partenaire</span>
+                <span>Interface de démonstration</span>
+            </footer>
+
+        </main>
+
+    </div>
+
+</div>
+
+<div class="cab-mobile-overlay"
+     id="cabMobileOverlay"
+     hidden></div>
+
+<!-- FICHE CLIENT -->
+
+<div class="cab-client-modal" id="clientModal" hidden>
+
+    <div class="cab-client-modal-backdrop"
+         data-close-client></div>
+
+    <section class="cab-client-modal-dialog"
+             role="dialog"
+             aria-modal="true"
+             aria-labelledby="clientModalTitle">
+
+        <div class="cab-client-modal-heading">
+
+            <div>
+                <span class="cab-section-eyebrow">
+                    FICHE CLIENT
+                </span>
+
+                <h2 id="clientModalTitle">
+                    Détail du client
+                </h2>
+            </div>
+
+            <button type="button"
+                    id="clientModalClose"
+                    class="cab-client-modal-close"
+                    aria-label="Fermer la fiche">
+                ×
+            </button>
+
+        </div>
+
+        <div id="clientModalContent"></div>
+
+        <div class="cab-client-modal-actions">
+
+            <button type="button" id="clientModalCancel">
+                Fermer
+            </button>
+
+            <a href="{{ url_for('main.cabinet_dossiers') }}"
+               class="cab-client-modal-primary">
+                Consulter les dossiers →
+            </a>
+
+        </div>
+
+    </section>
+
+</div>
+
+<div class="cab-portfolio-toast"
+     id="portfolioToast"
+     role="status"
+     aria-live="polite"></div>
+
+</body>
+</html>

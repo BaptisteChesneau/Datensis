@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Espace Collaborateur | DATENSIS</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+{% include "header.html" %}
+
+<main class="dashboard-page">
+
+    <section class="dashboard-intro">
+
+        <div>
+            <p class="eyebrow">
+                Espace Collaborateur
+            </p>
+
+            <h1>
+                Tableau de bord collaborateur
+            </h1>
+
+            <p>
+                Suivez vos demandes affectées, vos dossiers,
+                vos messages et vos rendez-vous.
+            </p>
+        </div>
+
+        <div class="dashboard-intro-actions">
+
+            <a href="{{ url_for('main.collaborateur_demandes') }}"
+               class="btn-primary">
+                Voir mes demandes
+            </a>
+
+            <a href="{{ url_for('main.collaborateur_messagerie') }}"
+               class="btn-secondary">
+                Ouvrir la messagerie
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <nav class="workspace-nav">
+
+        <a href="{{ url_for('main.collaborateur_dashboard') }}"
+           class="active">
+            Tableau de bord
+        </a>
+
+        <a href="{{ url_for('main.collaborateur_demandes') }}">
+            Mes demandes
+        </a>
+
+        <a href="{{ url_for('main.collaborateur_dossiers') }}">
+            Mes dossiers
+        </a>
+
+        <a href="{{ url_for('main.collaborateur_messagerie') }}">
+            Messagerie
+        </a>
+
+        <a href="{{ url_for('main.collaborateur_rendez_vous') }}">
+            Rendez-vous
+        </a>
+
+        <a href="{{ url_for('main.collaborateur_documents') }}">
+            Documents
+        </a>
+
+    </nav>
+
+
+    <section class="kpi-grid">
+
+        <article class="kpi-card">
+            <span class="kpi-label">
+                Demandes affectées
+            </span>
+
+            <strong class="kpi-value">
+                8
+            </strong>
+        </article>
+
+
+        <article class="kpi-card">
+            <span class="kpi-label">
+                Dossiers actifs
+            </span>
+
+            <strong class="kpi-value">
+                6
+            </strong>
+        </article>
+
+
+        <article class="kpi-card">
+            <span class="kpi-label">
+                Messages à traiter
+            </span>
+
+            <strong class="kpi-value">
+                3
+            </strong>
+        </article>
+
+
+        <article class="kpi-card">
+            <span class="kpi-label">
+                Rendez-vous à venir
+            </span>
+
+            <strong class="kpi-value">
+                4
+            </strong>
+        </article>
+
+    </section>
+
+
+    <section class="dashboard-grid">
+
+        <article class="dashboard-card">
+
+            <div class="card-heading">
+
+                <div>
+                    <h2>
+                        Priorités
+                    </h2>
+
+                    <p>
+                        Éléments nécessitant une action rapide.
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="dashboard-list">
+
+                <div class="dashboard-list-item">
+
+                    <div>
+                        <strong>
+                            Dossier AGRO Centre
+                        </strong>
+
+                        <span>
+                            Document manquant
+                        </span>
+                    </div>
+
+                    <span class="status status-warning">
+                        Prioritaire
+                    </span>
+
+                </div>
+
+
+                <div class="dashboard-list-item">
+
+                    <div>
+                        <strong>
+                            Demande Dupont Conseil
+                        </strong>
+
+                        <span>
+                            Réponse attendue
+                        </span>
+                    </div>
+
+                    <span class="status status-progress">
+                        À traiter
+                    </span>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <article class="dashboard-card">
+
+            <div class="card-heading">
+
+                <div>
+                    <h2>
+                        Derniers échanges
+                    </h2>
+
+                    <p>
+                        Conversations récentes avec les utilisateurs.
+                    </p>
+                </div>
+
+                <a href="{{ url_for('main.collaborateur_messagerie') }}">
+                    Tout voir
+                </a>
+
+            </div>
+
+            <div class="message-preview">
+
+                <div class="message-avatar">
+                    DC
+                </div>
+
+                <div>
+                    <strong>
+                        Dupont Conseil
+                    </strong>
+
+                    <p>
+                        Bonjour, pouvez-vous confirmer la prochaine étape ?
+                    </p>
+
+                    <span>
+                        Il y a 20 min
+                    </span>
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <article class="dashboard-card">
+
+            <div class="card-heading">
+
+                <div>
+                    <h2>
+                        Prochain rendez-vous
+                    </h2>
+                </div>
+
+            </div>
+
+            <div class="appointment-card">
+
+                <div class="appointment-date">
+                    <strong>08</strong>
+                    <span>OCT</span>
+                </div>
+
+                <div class="appointment-content">
+
+                    <strong>
+                        Point projet PME
+                    </strong>
+
+                    <span>
+                        10:30 - Visioconférence
+                    </span>
+
+                    <span>
+                        Client : Société Exemple
+                    </span>
+
+                </div>
+
+            </div>
+
+            <a href="{{ url_for('main.collaborateur_rendez_vous') }}"
+               class="btn-primary">
+                Voir les rendez-vous
+            </a>
+
+        </article>
+
+
+        <article class="dashboard-card">
+
+            <div class="card-heading">
+
+                <div>
+                    <h2>
+                        Actions rapides
+                    </h2>
+                </div>
+
+            </div>
+
+            <div class="card-actions">
+
+                <a href="{{ url_for('main.collaborateur_demandes') }}"
+                   class="btn-primary">
+                    Traiter une demande
+                </a>
+
+                <a href="{{ url_for('main.collaborateur_dossiers') }}"
+                   class="btn-secondary">
+                    Ouvrir un dossier
+                </a>
+
+            </div>
+
+        </article>
+
+    </section>
+
+</main>
+
+{% include "footer.html" %}
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+</body>
+</html>

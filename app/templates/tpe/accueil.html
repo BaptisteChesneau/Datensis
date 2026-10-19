@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Indépendants & TPE</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+</head>
+
+<body>
+
+
+<!-- =========================================================
+     HEADER TPE
+     ========================================================= -->
+
+{% include "tpe/header_tpe.html" %}
+
+
+<!-- =========================================================
+     ACCUEIL TPE
+     ========================================================= -->
+
+<main class="tpe-modern-home">
+
+
+    <!-- =====================================================
+         HERO
+         ===================================================== -->
+
+    <section class="tpe-modern-hero">
+
+        <div class="tpe-modern-hero-inner">
+
+            <div class="tpe-modern-hero-content">
+
+                <p class="eyebrow">
+                    Indépendants & TPE
+                </p>
+
+                <h1>
+                    Votre activité,
+                    <span>notre accompagnement.</span>
+                </h1>
+
+                <p class="tpe-modern-hero-description">
+                    Centralisez vos demandes, trouvez les solutions
+                    adaptées et avancez simplement dans vos projets
+                    avec DATENSIS.
+                </p>
+
+
+                <div class="tpe-modern-hero-actions">
+
+                    <a
+                        href="{{ url_for('main.tpe_etude_conseil') }}"
+                        class="btn-primary"
+                    >
+                        Présenter mon besoin
+                    </a>
+
+                    <a
+                        href="{{ url_for('main.tpe_solutions') }}"
+                        class="btn-secondary"
+                    >
+                        Découvrir les solutions
+                    </a>
+
+                </div>
+
+
+                <div class="tpe-modern-hero-points">
+
+                    <span>
+                        Conseil adapté
+                    </span>
+
+                    <span>
+                        Solutions claires
+                    </span>
+
+                    <span>
+                        Accompagnement humain
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- VISUEL HERO -->
+
+            <div class="tpe-modern-hero-visual">
+
+                <div class="tpe-visual-card tpe-visual-card-main">
+
+                    <span class="tpe-visual-label">
+                        Votre parcours
+                    </span>
+
+                    <strong>
+                        Un accompagnement simple
+                    </strong>
+
+                    <p>
+                        Du premier besoin jusqu'au suivi
+                        de votre projet.
+                    </p>
+
+
+                    <div class="tpe-visual-progress">
+
+                        <div class="tpe-visual-progress-item active">
+
+                            <span>01</span>
+
+                            <div>
+                                <strong>Besoin</strong>
+                                <small>Expliquez votre situation</small>
+                            </div>
+
+                        </div>
+
+
+                        <div class="tpe-visual-progress-item">
+
+                            <span>02</span>
+
+                            <div>
+                                <strong>Solution</strong>
+                                <small>Choisissez une orientation</small>
+                            </div>
+
+                        </div>
+
+
+                        <div class="tpe-visual-progress-item">
+
+                            <span>03</span>
+
+                            <div>
+                                <strong>Accompagnement</strong>
+                                <small>Avancez avec DATENSIS</small>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+    </section>
+
+    <!-- =====================================================
+         BESOINS
+         ===================================================== -->
+
+    <section class="tpe-need-section">
+
+        <div class="tpe-need-inner">
+
+            <div class="tpe-need-heading">
+
+                <p class="eyebrow">
+                    Vos besoins
+                </p>
+
+                <h2>
+                    Par quoi souhaitez-vous commencer ?
+                </h2>
+
+                <p>
+                    Choisissez le sujet correspondant le mieux
+                    à votre situation actuelle.
+                </p>
+
+            </div>
+
+
+            <div class="tpe-need-grid">
+
+
+                <a
+                    href="{{ url_for('main.tpe_etude_conseil') }}"
+                    class="tpe-need-card"
+                >
+
+                    <span class="tpe-need-icon">
+                        01
+                    </span>
+
+                    <div>
+
+                        <h3>
+                            J'ai besoin de conseil
+                        </h3>
+
+                        <p>
+                            Faites le point sur votre situation
+                            avant de choisir une solution.
+                        </p>
+
+                    </div>
+
+                    <span class="tpe-need-arrow">
+                        →
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="{{ url_for('main.tpe_solutions') }}"
+                    class="tpe-need-card"
+                >
+
+                    <span class="tpe-need-icon">
+                        02
+                    </span>
+
+                    <div>
+
+                        <h3>
+                            Je cherche une solution
+                        </h3>
+
+                        <p>
+                            Découvrez plusieurs approches adaptées
+                            à votre activité.
+                        </p>
+
+                    </div>
+
+                    <span class="tpe-need-arrow">
+                        →
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="{{ url_for('main.tpe_suivi') }}"
+                    class="tpe-need-card"
+                >
+
+                    <span class="tpe-need-icon">
+                        03
+                    </span>
+
+                    <div>
+
+                        <h3>
+                            Je veux être accompagné
+                        </h3>
+
+                        <p>
+                            Découvrez comment DATENSIS peut suivre
+                            votre projet dans le temps.
+                        </p>
+
+                    </div>
+
+                    <span class="tpe-need-arrow">
+                        →
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="{{ url_for('main.contact') }}"
+                    class="tpe-need-card"
+                >
+
+                    <span class="tpe-need-icon">
+                        04
+                    </span>
+
+                    <div>
+
+                        <h3>
+                            Je préfère échanger
+                        </h3>
+
+                        <p>
+                            Contactez DATENSIS pour présenter
+                            directement votre besoin.
+                        </p>
+
+                    </div>
+
+                    <span class="tpe-need-arrow">
+                        →
+                    </span>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         POURQUOI DATENSIS
+         ===================================================== -->
+
+    <section class="tpe-modern-section">
+
+        <div class="tpe-modern-section-heading">
+
+            <p class="eyebrow">
+                DATENSIS
+            </p>
+
+            <h2>
+                Pensé pour les petites structures
+            </h2>
+
+            <p>
+                Un accompagnement conçu pour rester accessible,
+                lisible et adapté à votre quotidien.
+            </p>
+
+        </div>
+
+
+        <div class="tpe-benefits-grid">
+
+
+            <article class="tpe-benefit-card">
+
+                <span>
+                    01
+                </span>
+
+                <h3>
+                    Simple
+                </h3>
+
+                <p>
+                    Des parcours compréhensibles
+                    sans jargon inutile.
+                </p>
+
+            </article>
+
+
+            <article class="tpe-benefit-card">
+
+                <span>
+                    02
+                </span>
+
+                <h3>
+                    Adapté
+                </h3>
+
+                <p>
+                    Des solutions cohérentes avec
+                    votre activité et vos contraintes.
+                </p>
+
+            </article>
+
+
+            <article class="tpe-benefit-card">
+
+                <span>
+                    03
+                </span>
+
+                <h3>
+                    Humain
+                </h3>
+
+                <p>
+                    Un interlocuteur reste disponible
+                    lorsque vous avez besoin d'échanger.
+                </p>
+
+            </article>
+
+
+            <article class="tpe-benefit-card">
+
+                <span>
+                    04
+                </span>
+
+                <h3>
+                    Progressif
+                </h3>
+
+                <p>
+                    Vous avancez à votre rythme,
+                    étape après étape.
+                </p>
+
+            </article>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         CTA FINAL
+         ===================================================== -->
+
+    <section class="tpe-modern-cta">
+
+        <div>
+
+            <h2>
+                Parlons de votre projet.
+            </h2>
+
+            <p>
+                Décrivez votre besoin, nous vous guidons.
+            </p>
+
+        </div>
+
+
+        <div class="tpe-modern-cta-actions">
+
+            <a href="{{ url_for('main.presentation_besoin') }}"
+                class="btn-primary">
+                Présenter mon besoin
+                <span aria-hidden="true">↗</span>
+            </a>
+
+            <a
+                href="{{ url_for('main.contact') }}"
+                class="btn-secondary"
+            >
+                Contacter DATENSIS
+            </a>
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+<!-- =========================================================
+     CHATBOT TPE
+     ========================================================= -->
+
+<button
+    type="button"
+    class="datensis-chat-trigger"
+    id="chatbotTrigger"
+    aria-label="Ouvrir le chatbot"
+>
+
+    <span>D</span>
+
+    Besoin d'aide ?
+
+</button>
+
+
+<section
+    class="datensis-chat"
+    id="chatbotWindow"
+    hidden
+>
+
+    <header class="datensis-chat-header">
+
+        <div class="datensis-chat-agent">
+
+            <span>D</span>
+
+            <div>
+
+                <strong>
+                    Chatbot Indépendants & TPE
+                </strong>
+
+                <small>
+                    Assistance DATENSIS
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <button
+            type="button"
+            id="chatbotClose"
+            aria-label="Fermer le chatbot"
+        >
+            ×
+        </button>
+
+    </header>
+
+
+    <div
+        class="datensis-chat-body"
+        id="chatbotMessages"
+    >
+
+        <div class="chatbot-message chatbot-assistant">
+
+            Bonjour. Je peux vous aider à trouver
+            la bonne rubrique selon votre besoin.
+
+        </div>
+
+
+        <div class="chatbot-suggestions">
+
+            <button
+                type="button"
+                class="chatbot-suggestion"
+                data-message="J'ai besoin de conseil"
+            >
+                J'ai besoin de conseil
+            </button>
+
+
+            <button
+                type="button"
+                class="chatbot-suggestion"
+                data-message="Je cherche une solution"
+            >
+                Je cherche une solution
+            </button>
+
+
+            <button
+                type="button"
+                class="chatbot-suggestion"
+                data-message="Comment prendre rendez-vous ?"
+            >
+                Prendre rendez-vous
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <form
+        id="chatbotForm"
+        class="datensis-chat-form"
+    >
+
+        <input
+            type="text"
+            id="chatbotInput"
+            placeholder="Écrivez votre question..."
+            autocomplete="off"
+        >
+
+        <button type="submit">
+            Envoyer
+        </button>
+
+    </form>
+
+</section>
+
+
+<!-- =========================================================
+     FOOTER
+     ========================================================= -->
+
+{% include "footer.html" %}
+
+
+<!-- =========================================================
+     JAVASCRIPT
+     ========================================================= -->
+
+<script
+    src="{{ url_for('static', filename='js/main.js') }}"
+></script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Connexion Indépendants & TPE</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="tpe-auth login-page">
+
+<main class="dashboard-page">
+
+    <section class="auth-section">
+
+        <article class="auth-card">
+
+            <div class="auth-space-badge">
+                Indépendants & TPE
+            </div>
+
+            <h1>
+                Retrouvez votre espace
+            </h1>
+
+            <p class="auth-intro">
+                Connectez-vous pour retrouver vos demandes,
+                vos projets et vos échanges avec DATENSIS.
+            </p>
+
+
+            <form
+                id="loginForm"
+                class="datensis-login-form journey-form"
+                data-redirect="{{ url_for('main.tpe_dashboard') }}"
+            >
+
+                <div class="form-group">
+
+                    <label for="loginEmail">
+                        Adresse e-mail
+                    </label>
+
+                    <input
+                        type="email"
+                        id="loginEmail"
+                        name="email"
+                        autocomplete="email"
+                        placeholder="vous@entreprise.fr"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="loginPassword">
+                        Mot de passe
+                    </label>
+
+                    <input
+                        type="password"
+                        id="loginPassword"
+                        name="password"
+                        autocomplete="current-password"
+                        placeholder="Votre mot de passe"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="auth-login-options">
+
+                    <label class="auth-remember">
+
+                        <input
+                            type="checkbox"
+                            name="remember"
+                        >
+
+                        <span>
+                            Rester connecté
+                        </span>
+
+                    </label>
+
+                    <a href="#"
+                       class="auth-forgot">
+                        Mot de passe oublié ?
+                    </a>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="btn-primary"
+                >
+                    Accéder à mon espace
+                </button>
+
+            </form>
+
+
+            <div class="auth-separator">
+                <span>ou</span>
+            </div>
+
+
+            <div class="account-login-link">
+
+                <p>
+                    Vous n'avez pas encore de compte ?
+
+                    <a href="{{ url_for('main.tpe_creation_compte') }}">
+                        Créer un compte
+                    </a>
+                </p>
+
+            </div>
+
+
+            <div class="account-back">
+
+                <a href="{{ url_for('main.tpe_accueil') }}">
+                    ← Retour à l'accueil Indépendants & TPE
+                </a>
+
+            </div>
+
+        </article>
+
+    </section>
+
+</main>
+
+<script src="{{ url_for('static', filename='js/global.js') }}"></script>
+
+</body>
+</html>

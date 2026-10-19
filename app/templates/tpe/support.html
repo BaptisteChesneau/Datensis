@@ -1,0 +1,463 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assistance</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="tpe-support-page">
+
+<div class="tpe-support-layout">
+
+    <!-- NAVIGATION PRIVÉE -->
+    <aside class="tpe-support-sidebar">
+        <a href="{{ url_for('main.tpe_dashboard') }}" class="tpe-support-brand">
+            <span class="tpe-support-brand-icon">D</span>
+            <span>
+                <strong>DATENSIS</strong>
+                <small>Indépendants & TPE</small>
+            </span>
+        </a>
+
+        <p class="tpe-support-nav-label">MON ACTIVITÉ</p>
+
+        <nav class="tpe-support-nav" aria-label="Navigation de mon espace">
+            <a href="{{ url_for('main.tpe_dashboard') }}">Vue d'ensemble</a>
+            <a href="{{ url_for('main.tpe_demandes') }}">Mes demandes</a>
+            <a href="{{ url_for('main.tpe_projets') }}">Mes dossiers</a>
+            <a href="{{ url_for('main.tpe_documents') }}">Mes documents</a>
+            <a href="{{ url_for('main.tpe_factures') }}">Mes factures</a>
+        </nav>
+
+        <p class="tpe-support-nav-label">MON COMPTE</p>
+
+        <nav class="tpe-support-nav" aria-label="Gestion du compte">
+            <a href="{{ url_for('main.tpe_support') }}" class="active" aria-current="page">
+                Assistance
+            </a>
+            <a href="{{ url_for('main.tpe_profil') }}">Mon profil</a>
+        </nav>
+
+        <div class="tpe-support-sidebar-bottom">
+            <div class="tpe-support-help">
+                <strong>Besoin d'un échange ?</strong>
+                <p>Un interlocuteur peut vous accompagner sur vos questions spécifiques.</p>
+                <a href="{{ url_for('main.contact') }}">Nous contacter →</a>
+            </div>
+
+            <a href="{{ url_for('main.tpe_accueil') }}" class="tpe-support-exit">
+                ← Retour au site TPE
+            </a>
+        </div>
+    </aside>
+
+    <!-- CONTENU -->
+    <main class="tpe-support-main">
+
+        <header class="tpe-support-header">
+            <div>
+                <p class="tpe-support-breadcrumb">
+                    <a href="{{ url_for('main.tpe_dashboard') }}">Mon espace</a>
+                    / Assistance
+                </p>
+
+                <span class="tpe-support-eyebrow">CENTRE D'ASSISTANCE</span>
+                <h1>Comment pouvons-nous vous aider ?</h1>
+                <p>
+                    Signalez une difficulté, posez une question ou suivez
+                    vos échanges avec l'équipe DATENSIS.
+                </p>
+            </div>
+
+            <button type="button" class="tpe-support-primary" id="newSupportRequest">
+                + Nouvelle demande
+            </button>
+        </header>
+
+        <!-- ACCÈS RAPIDES -->
+        <section class="tpe-support-shortcuts" aria-label="Moyens d'assistance">
+
+            <article class="tpe-support-shortcut">
+                <div class="tpe-support-shortcut-icon">01</div>
+                <h2>Envoyer une demande</h2>
+                <p>
+                    Décrivez votre besoin et préparez un ticket
+                    à destination du support.
+                </p>
+                <button type="button" id="shortcutRequest">
+                    Rédiger une demande →
+                </button>
+            </article>
+
+            <article class="tpe-support-shortcut">
+                <div class="tpe-support-shortcut-icon">02</div>
+                <h2>Échanger avec DATENSIS</h2>
+                <p>
+                    Pour une question nécessitant une réponse personnalisée,
+                    contactez votre interlocuteur.
+                </p>
+                <a href="{{ url_for('main.contact') }}">
+                    Contacter l'équipe →
+                </a>
+            </article>
+
+            <article class="tpe-support-shortcut">
+                <div class="tpe-support-shortcut-icon">03</div>
+                <h2>Organiser un rendez-vous</h2>
+                <p>
+                    Présentez votre situation lors d'un échange
+                    adapté à votre activité.
+                </p>
+                <a href="{{ url_for('main.contact') }}">
+                    Demander un rendez-vous →
+                </a>
+            </article>
+
+        </section>
+
+        <!-- INDICATEURS -->
+        <section class="tpe-support-summary" aria-label="Suivi des demandes">
+            <article>
+                <span>Demandes enregistrées</span>
+                <strong id="supportTotal">02</strong>
+                <small>Dans cette démonstration</small>
+            </article>
+
+            <article>
+                <span>En cours</span>
+                <strong id="supportOpen">01</strong>
+                <small>Demandes non clôturées</small>
+            </article>
+
+            <article>
+                <span>Résolues</span>
+                <strong id="supportResolved">01</strong>
+                <small>Demandes terminées</small>
+            </article>
+        </section>
+
+        <!-- FORMULAIRE + CONSEILS -->
+        <section class="tpe-support-content" id="supportRequestSection">
+
+            <article class="tpe-support-panel">
+                <div class="tpe-support-panel-heading">
+                    <span class="tpe-support-eyebrow">NOUVELLE DEMANDE</span>
+                    <h2>Contacter le support</h2>
+                    <p>
+                        Plus votre demande est précise, plus il sera simple
+                        de comprendre votre situation.
+                    </p>
+                </div>
+
+                <form id="supportForm" class="tpe-support-form">
+
+                    <div class="tpe-support-field full">
+                        <label for="supportSubject">Objet de votre demande *</label>
+                        <input
+                            type="text"
+                            id="supportSubject"
+                            maxlength="120"
+                            required
+                            placeholder="Ex. Question sur mon dossier informatique"
+                        >
+                    </div>
+
+                    <div class="tpe-support-field">
+                        <label for="supportCategory">Catégorie *</label>
+                        <select id="supportCategory" required>
+                            <option value="">Sélectionner une catégorie</option>
+                            <option value="Question générale">Question générale</option>
+                            <option value="Projet">Projet</option>
+                            <option value="Document">Document</option>
+                            <option value="Facturation">Facturation</option>
+                            <option value="Rendez-vous">Rendez-vous</option>
+                            <option value="Problème technique">Problème technique</option>
+                            <option value="Autre">Autre</option>
+                        </select>
+                    </div>
+
+                    <div class="tpe-support-field">
+                        <label for="supportPriority">Priorité *</label>
+                        <select id="supportPriority" required>
+                            <option value="Normale">Normale</option>
+                            <option value="Haute">Haute</option>
+                        </select>
+                    </div>
+
+                    <div class="tpe-support-field full">
+                        <label for="supportMessage">Décrivez votre besoin *</label>
+                        <textarea
+                            id="supportMessage"
+                            rows="7"
+                            minlength="10"
+                            maxlength="3000"
+                            required
+                            placeholder="Expliquez le contexte, la difficulté rencontrée et ce que vous attendez de notre équipe..."
+                        ></textarea>
+
+                        <div class="tpe-support-field-footer">
+                            <small>10 caractères minimum.</small>
+                            <small id="supportCharacterCount">0 / 3000</small>
+                        </div>
+                    </div>
+
+                    <div class="tpe-support-field full">
+                        <label for="supportFile">Joindre un document (facultatif)</label>
+                        <input
+                            type="file"
+                            id="supportFile"
+                            accept=".pdf,.doc,.docx,.png,.jpg,.jpeg,.xlsx"
+                        >
+                        <small>PDF, Word, Excel ou image · 10 Mo maximum.</small>
+                        <p id="supportFileName" class="tpe-support-file-name" hidden></p>
+                    </div>
+
+                    <div class="tpe-support-form-actions">
+                        <span>* Champs obligatoires</span>
+                        <button type="submit" class="tpe-support-primary">
+                            Enregistrer la demande
+                        </button>
+                    </div>
+
+                    <p id="supportFeedback" class="tpe-support-feedback"
+                       role="status" aria-live="polite" hidden></p>
+
+                </form>
+            </article>
+
+            <aside class="tpe-support-side-panel">
+
+                <div class="tpe-support-tip">
+                    <span class="tpe-support-eyebrow">BONNES PRATIQUES</span>
+                    <h2>Pour faciliter votre demande</h2>
+
+                    <div class="tpe-support-tip-item">
+                        <span>1</span>
+                        <div>
+                            <strong>Indiquez le contexte</strong>
+                            <p>Précisez le dossier ou la prestation concernée.</p>
+                        </div>
+                    </div>
+
+                    <div class="tpe-support-tip-item">
+                        <span>2</span>
+                        <div>
+                            <strong>Expliquez la difficulté</strong>
+                            <p>Décrivez les étapes ou le problème rencontré.</p>
+                        </div>
+                    </div>
+
+                    <div class="tpe-support-tip-item">
+                        <span>3</span>
+                        <div>
+                            <strong>Ajoutez une pièce utile</strong>
+                            <p>Joignez un document ou une capture si nécessaire.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tpe-support-note">
+                    <strong>À propos de la priorité</strong>
+                    <p>
+                        Choisissez « Haute » si votre difficulté bloque
+                        directement votre activité. La priorité ne constitue
+                        pas une garantie de délai de réponse.
+                    </p>
+                </div>
+
+            </aside>
+        </section>
+
+        <!-- HISTORIQUE -->
+        <section class="tpe-support-panel tpe-support-history">
+
+            <div class="tpe-support-panel-heading">
+                <span class="tpe-support-eyebrow">MES ÉCHANGES</span>
+                <h2>Historique des demandes</h2>
+                <p>Consultez les demandes enregistrées dans votre espace de démonstration.</p>
+            </div>
+
+            <div class="tpe-support-history-toolbar">
+                <div class="tpe-support-field">
+                    <label for="supportSearch">Rechercher</label>
+                    <input
+                        type="search"
+                        id="supportSearch"
+                        placeholder="Référence, objet, catégorie..."
+                    >
+                </div>
+
+                <div class="tpe-support-field">
+                    <label for="supportStatusFilter">Statut</label>
+                    <select id="supportStatusFilter">
+                        <option value="all">Tous les statuts</option>
+                        <option value="en-cours">En cours</option>
+                        <option value="resolue">Résolue</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="tpe-support-table-wrapper">
+                <table class="tpe-support-table" id="supportTable">
+                    <thead>
+                        <tr>
+                            <th>Référence</th>
+                            <th>Objet</th>
+                            <th>Catégorie</th>
+                            <th>Date</th>
+                            <th>Priorité</th>
+                            <th>Statut</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr
+                            data-reference="SUP-2026-002"
+                            data-subject="Question sur mon dossier informatique"
+                            data-category="Projet"
+                            data-priority="Normale"
+                            data-status="en-cours"
+                            data-date="2026-10-02"
+                            data-message="Je souhaite obtenir des précisions sur les prochaines étapes de mon dossier de modernisation informatique."
+                        >
+                            <td><strong>SUP-2026-002</strong></td>
+                            <td>Question sur mon dossier informatique</td>
+                            <td>Projet</td>
+                            <td>02/10/2026</td>
+                            <td>Normale</td>
+                            <td>
+                                <span class="tpe-support-status ongoing">En cours</span>
+                            </td>
+                            <td>
+                                <button type="button" class="tpe-support-view">
+                                    Détails →
+                                </button>
+                            </td>
+                        </tr>
+
+                        <tr
+                            data-reference="SUP-2026-001"
+                            data-subject="Accès à un document"
+                            data-category="Document"
+                            data-priority="Normale"
+                            data-status="resolue"
+                            data-date="2026-09-25"
+                            data-message="Je ne retrouvais pas un document lié à ma prestation."
+                        >
+                            <td><strong>SUP-2026-001</strong></td>
+                            <td>Accès à un document</td>
+                            <td>Document</td>
+                            <td>25/09/2026</td>
+                            <td>Normale</td>
+                            <td>
+                                <span class="tpe-support-status resolved">Résolue</span>
+                            </td>
+                            <td>
+                                <button type="button" class="tpe-support-view">
+                                    Détails →
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p id="supportEmpty" class="tpe-support-empty" hidden>
+                Aucune demande ne correspond à votre recherche.
+            </p>
+
+            <div class="tpe-support-table-footer">
+                <span id="supportCount">2 demandes affichées</span>
+                <span>Données de démonstration</span>
+            </div>
+
+        </section>
+
+        <footer class="tpe-support-footer">
+            <span>DATENSIS · Espace Indépendants & TPE</span>
+            <a href="{{ url_for('main.tpe_dashboard') }}">
+                Retour au tableau de bord
+            </a>
+        </footer>
+
+    </main>
+</div>
+
+<!-- PANNEAU DE DÉTAIL -->
+<div class="tpe-support-drawer-overlay" id="supportDrawerOverlay" hidden></div>
+
+<aside
+    class="tpe-support-drawer"
+    id="supportDrawer"
+    role="dialog"
+    aria-modal="true"
+    aria-hidden="true"
+    aria-labelledby="supportDrawerTitle"
+>
+    <div class="tpe-support-drawer-header">
+        <div>
+            <span class="tpe-support-eyebrow">DÉTAIL DE LA DEMANDE</span>
+            <h2 id="supportDrawerTitle">Demande</h2>
+        </div>
+
+        <button type="button" class="tpe-support-close"
+                id="closeSupportDrawer" aria-label="Fermer">
+            ×
+        </button>
+    </div>
+
+    <div class="tpe-support-drawer-body">
+
+        <div class="tpe-support-drawer-status">
+            <span id="supportDrawerStatus" class="tpe-support-status"></span>
+        </div>
+
+        <div class="tpe-support-detail">
+            <span>Référence</span>
+            <strong id="supportDrawerReference"></strong>
+        </div>
+
+        <div class="tpe-support-detail">
+            <span>Catégorie</span>
+            <strong id="supportDrawerCategory"></strong>
+        </div>
+
+        <div class="tpe-support-detail">
+            <span>Priorité</span>
+            <strong id="supportDrawerPriority"></strong>
+        </div>
+
+        <div class="tpe-support-detail">
+            <span>Date de création</span>
+            <strong id="supportDrawerDate"></strong>
+        </div>
+
+        <div class="tpe-support-detail">
+            <span>Votre message</span>
+            <p id="supportDrawerMessage"></p>
+        </div>
+
+        <div class="tpe-support-detail">
+            <span>Pièce jointe</span>
+            <strong id="supportDrawerFile">Aucune</strong>
+        </div>
+
+        <div class="tpe-support-drawer-note">
+            Cette interface fonctionne en mode démonstration.
+            Les demandes ne sont pas envoyées à un collaborateur DATENSIS.
+        </div>
+
+        <a href="{{ url_for('main.contact') }}" class="tpe-support-primary">
+            Contacter DATENSIS
+        </a>
+
+    </div>
+</aside>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

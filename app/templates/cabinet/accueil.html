@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Cabinet d'expertise comptable</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+</head>
+
+<body>
+
+
+<!-- =========================================================
+     HEADER CABINET
+     ========================================================= -->
+
+{% include "cabinet/header_cabinet.html" %}
+
+
+<!-- =========================================================
+     ACCUEIL CABINET
+     ========================================================= -->
+
+<main class="cabinet-modern-home">
+
+
+    <!-- =====================================================
+         HERO
+         ===================================================== -->
+
+    <section class="cabinet-modern-hero">
+
+        <div class="cabinet-modern-hero-content">
+
+            <div class="cabinet-modern-badge">
+                Cabinet d'expertise comptable
+            </div>
+
+
+            <h1>
+                Transformez les besoins clients
+                <span>
+                    en opportunités bien qualifiées.
+                </span>
+            </h1>
+
+
+            <p class="cabinet-modern-hero-description">
+                Identifiez les besoins de vos clients,
+                structurez les informations utiles et transmettez
+                les opportunités à DATENSIS dans un parcours
+                partenaire clair.
+            </p>
+
+
+            <div class="cabinet-modern-hero-actions">
+
+                <a href="{{ url_for('main.cabinet_qualification_besoin') }}"
+                   class="home-btn-primary">
+                    Qualifier un besoin
+                </a>
+
+                <a href="#partner-path"
+                   class="home-btn-secondary">
+                    Découvrir le partenariat
+                </a>
+
+            </div>
+
+
+            <div class="cabinet-modern-points">
+
+                <div>
+                    <strong>01</strong>
+                    <span>Besoin qualifié</span>
+                </div>
+
+                <div>
+                    <strong>02</strong>
+                    <span>Transmission structurée</span>
+                </div>
+
+                <div>
+                    <strong>03</strong>
+                    <span>Suivi partenaire</span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             CARTE DYNAMIQUE PARTENAIRE
+             ================================================= -->
+
+        <div class="cabinet-partner-board">
+
+            <div class="cabinet-board-heading">
+
+                <div>
+
+                    <span class="cabinet-board-label">
+                        Parcours partenaire
+                    </span>
+
+                    <h2 id="cabinetBoardTitle">
+                        Qualification du besoin
+                    </h2>
+
+                </div>
+
+
+                <span class="cabinet-board-step"
+                      id="cabinetBoardStep">
+                    Étape 01
+                </span>
+
+            </div>
+
+
+            <div class="cabinet-board-progress">
+
+                <div
+                    class="cabinet-board-progress-bar"
+                    id="cabinetBoardProgress"
+                    style="width: 33%;"
+                >
+                </div>
+
+            </div>
+
+
+            <div class="cabinet-board-content">
+
+                <div class="cabinet-board-number"
+                     id="cabinetBoardNumber">
+                    01
+                </div>
+
+                <div>
+
+                    <strong id="cabinetBoardHeading">
+                        Comprendre la demande client
+                    </strong>
+
+                    <p id="cabinetBoardText">
+                        Rassemblez le contexte, l'objectif
+                        et les contraintes afin de préparer
+                        une opportunité exploitable.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="cabinet-board-indicators">
+
+                <div>
+
+                    <span>
+                        Besoin
+                    </span>
+
+                    <strong id="cabinetMetric1">
+                        Identifier
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Priorité
+                    </span>
+
+                    <strong id="cabinetMetric2">
+                        Évaluer
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Transmission
+                    </span>
+
+                    <strong id="cabinetMetric3">
+                        Préparer
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="cabinet-board-switcher">
+
+                <button
+                    type="button"
+                    class="cabinet-board-btn active"
+                    data-step="qualification"
+                >
+                    Qualification
+                </button>
+
+                <button
+                    type="button"
+                    class="cabinet-board-btn"
+                    data-step="relation"
+                >
+                    Mise en relation
+                </button>
+
+                <button
+                    type="button"
+                    class="cabinet-board-btn"
+                    data-step="suivi"
+                >
+                    Suivi
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         ENJEUX CABINET
+         ===================================================== -->
+
+    <section class="cabinet-challenges">
+
+        <div class="cabinet-section-heading">
+
+            <p class="eyebrow">
+                Votre rôle de partenaire
+            </p>
+
+            <h2>
+                Vous connaissez vos clients.
+                DATENSIS complète votre accompagnement.
+            </h2>
+
+            <p>
+                Le cabinet conserve sa relation client
+                tout en disposant d'un parcours structuré
+                pour transmettre les besoins nécessitant
+                un accompagnement complémentaire.
+            </p>
+
+        </div>
+
+
+        <div class="cabinet-challenges-grid">
+
+            <article>
+
+                <span>01</span>
+
+                <h3>
+                    Identifier
+                </h3>
+
+                <p>
+                    Repérez un besoin numérique,
+                    organisationnel ou matériel
+                    chez votre client.
+                </p>
+
+            </article>
+
+
+            <article>
+
+                <span>02</span>
+
+                <h3>
+                    Qualifier
+                </h3>
+
+                <p>
+                    Ajoutez le contexte,
+                    la priorité et les informations utiles.
+                </p>
+
+            </article>
+
+
+            <article>
+
+                <span>03</span>
+
+                <h3>
+                    Transmettre
+                </h3>
+
+                <p>
+                    Facilitez la mise en relation
+                    avec DATENSIS.
+                </p>
+
+            </article>
+
+
+            <article>
+
+                <span>04</span>
+
+                <h3>
+                    Suivre
+                </h3>
+
+                <p>
+                    Gardez une visibilité
+                    sur les opportunités transmises.
+                </p>
+
+            </article>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         SÉLECTEUR DE BESOIN CLIENT
+         ===================================================== -->
+
+    <section class="cabinet-client-needs"
+             id="partner-path">
+
+        <div class="cabinet-section-heading">
+
+            <p class="eyebrow">
+                Orientation partenaire
+            </p>
+
+            <h2>
+                Quel besoin avez-vous identifié
+                chez votre client ?
+            </h2>
+
+            <p>
+                Sélectionnez une situation pour afficher
+                le parcours DATENSIS recommandé.
+            </p>
+
+        </div>
+
+
+        <div class="cabinet-need-layout">
+
+            <div class="cabinet-need-options">
+
+                <button
+                    type="button"
+                    class="cabinet-need-card active"
+                    data-need="digitalisation"
+                >
+
+                    <span>01</span>
+
+                    <div>
+
+                        <strong>
+                            Digitalisation
+                        </strong>
+
+                        <p>
+                            Processus encore manuels
+                            ou outils mal adaptés.
+                        </p>
+
+                    </div>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="cabinet-need-card"
+                    data-need="organisation"
+                >
+
+                    <span>02</span>
+
+                    <div>
+
+                        <strong>
+                            Organisation documentaire
+                        </strong>
+
+                        <p>
+                            Documents dispersés
+                            ou processus difficiles à suivre.
+                        </p>
+
+                    </div>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="cabinet-need-card"
+                    data-need="equipement"
+                >
+
+                    <span>03</span>
+
+                    <div>
+
+                        <strong>
+                            Équipement informatique
+                        </strong>
+
+                        <p>
+                            Renouvellement ou évolution
+                            du matériel.
+                        </p>
+
+                    </div>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="cabinet-need-card"
+                    data-need="pilotage"
+                >
+
+                    <span>04</span>
+
+                    <div>
+
+                        <strong>
+                            Pilotage
+                        </strong>
+
+                        <p>
+                            Besoin de visibilité
+                            sur l'activité et les données.
+                        </p>
+
+                    </div>
+
+                </button>
+
+            </div>
+
+
+            <!-- RÉSULTAT -->
+
+            <div class="cabinet-need-result">
+
+                <span class="cabinet-result-label">
+                    Orientation suggérée
+                </span>
+
+
+                <div
+                    class="cabinet-result-number"
+                    id="cabinetResultNumber"
+                >
+                    01
+                </div>
+
+
+                <h3 id="cabinetResultTitle">
+                    Qualifier le besoin
+                </h3>
+
+
+                <p id="cabinetResultText">
+                    Commencez par identifier les processus concernés,
+                    les difficultés rencontrées et le résultat attendu
+                    par votre client.
+                </p>
+
+
+                <div class="cabinet-result-details">
+
+                    <div>
+
+                        <span>
+                            À identifier
+                        </span>
+
+                        <strong id="cabinetResultData">
+                            Processus et contraintes
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Prochaine étape
+                        </span>
+
+                        <strong id="cabinetResultNext">
+                            Préparer la transmission
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <a
+                    href="{{ url_for('main.cabinet_qualification_besoin') }}"
+                    class="home-btn-primary"
+                    id="cabinetResultLink"
+                >
+                    Qualifier ce besoin
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         PARCOURS PARTENAIRE
+         ===================================================== -->
+
+    <section class="cabinet-partner-path">
+
+        <div class="cabinet-section-heading">
+
+            <p class="eyebrow">
+                Le parcours DATENSIS
+            </p>
+
+            <h2>
+                De l'identification au suivi
+            </h2>
+
+            <p>
+                Trois étapes distinctes pour conserver
+                un partenariat lisible.
+            </p>
+
+        </div>
+
+
+        <div class="cabinet-path-grid">
+
+
+            <a
+                href="{{ url_for('main.cabinet_qualification_besoin') }}"
+                class="cabinet-path-card"
+            >
+
+                <div class="cabinet-path-number coral">
+                    01
+                </div>
+
+                <small>
+                    Comprendre
+                </small>
+
+                <h3>
+                    Qualification du besoin
+                </h3>
+
+                <p>
+                    Structurez les informations
+                    essentielles avant transmission.
+                </p>
+
+                <strong>
+                    Qualifier une opportunité →
+                </strong>
+
+            </a>
+
+
+            <a
+                href="{{ url_for('main.cabinet_mise_en_relation') }}"
+                class="cabinet-path-card featured"
+            >
+
+                <div class="cabinet-path-number petrol">
+                    02
+                </div>
+
+                <small>
+                    Transmettre
+                </small>
+
+                <h3>
+                    Mise en relation
+                </h3>
+
+                <p>
+                    Créez le dossier client
+                    et facilitez le premier échange.
+                </p>
+
+                <strong>
+                    Préparer la mise en relation →
+                </strong>
+
+            </a>
+
+
+            <a
+                href="{{ url_for('main.cabinet_suivi_partenariat') }}"
+                class="cabinet-path-card"
+            >
+
+                <div class="cabinet-path-number mint">
+                    03
+                </div>
+
+                <small>
+                    Suivre
+                </small>
+
+                <h3>
+                    Suivi du partenariat
+                </h3>
+
+                <p>
+                    Gardez une visibilité
+                    sur les dossiers et opportunités.
+                </p>
+
+                <strong>
+                    Découvrir le suivi →
+                </strong>
+
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         EXEMPLE CONCRET
+         ===================================================== -->
+
+    <section class="cabinet-example">
+
+        <div class="cabinet-example-content">
+
+            <p class="eyebrow">
+                Exemple partenaire
+            </p>
+
+            <h2>
+                Votre client veut moderniser
+                son organisation documentaire.
+            </h2>
+
+            <p>
+                Vous identifiez le besoin lors de vos échanges.
+                DATENSIS vous permet ensuite de structurer
+                l'opportunité avant la mise en relation.
+            </p>
+
+
+            <a
+                href="{{ url_for('main.cabinet_qualification_besoin') }}"
+                class="home-btn-primary"
+            >
+                Qualifier ce type de besoin
+            </a>
+
+        </div>
+
+
+        <div class="cabinet-example-flow">
+
+            <div>
+
+                <span>01</span>
+
+                <strong>
+                    Cabinet
+                </strong>
+
+                <p>
+                    Identifie le besoin
+                </p>
+
+            </div>
+
+
+            <div class="cabinet-example-arrow">
+                →
+            </div>
+
+
+            <div>
+
+                <span>02</span>
+
+                <strong>
+                    DATENSIS
+                </strong>
+
+                <p>
+                    Analyse l'opportunité
+                </p>
+
+            </div>
+
+
+            <div class="cabinet-example-arrow">
+                →
+            </div>
+
+
+            <div>
+
+                <span>03</span>
+
+                <strong>
+                    Client
+                </strong>
+
+                <p>
+                    Est accompagné
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         VALEUR PARTENAIRE
+         ===================================================== -->
+
+    <section class="cabinet-benefits">
+
+        <div class="cabinet-section-heading">
+
+            <p class="eyebrow">
+                Une relation complémentaire
+            </p>
+
+            <h2>
+                Vous restez au cœur
+                de la relation client.
+            </h2>
+
+        </div>
+
+
+        <div class="cabinet-benefits-grid">
+
+            <article>
+
+                <span>01</span>
+
+                <h3>
+                    Relation préservée
+                </h3>
+
+                <p>
+                    Le cabinet reste l'interlocuteur
+                    de confiance de son client.
+                </p>
+
+            </article>
+
+
+            <article>
+
+                <span>02</span>
+
+                <h3>
+                    Transmission structurée
+                </h3>
+
+                <p>
+                    Les informations utiles sont regroupées
+                    avant le premier échange.
+                </p>
+
+            </article>
+
+
+            <article>
+
+                <span>03</span>
+
+                <h3>
+                    Visibilité partenaire
+                </h3>
+
+                <p>
+                    Suivez les opportunités
+                    sans multiplier les échanges dispersés.
+                </p>
+
+            </article>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         CTA FINAL
+         ===================================================== -->
+
+    <section class="cabinet-home-cta">
+
+        <div>
+
+            <p class="eyebrow">
+                Devenir partenaire
+            </p>
+
+            <h2>
+                Un client a un besoin ?
+            </h2>
+
+            <p>
+                Commencez par qualifier l'opportunité
+                afin de préparer une prise en charge claire.
+            </p>
+
+        </div>
+
+
+        <div class="cabinet-home-cta-actions">
+
+            <a
+                href="{{ url_for('main.cabinet_qualification_besoin') }}"
+                class="home-btn-primary"
+            >
+                Qualifier un besoin
+            </a>
+
+            <a
+                href="{{ url_for('main.cabinet_creation_compte') }}"
+                class="home-btn-secondary"
+            >
+                Devenir partenaire
+            </a>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- =========================================================
+     CHATBOT CABINET
+     ========================================================= -->
+
+<button
+    type="button"
+    class="datensis-chat-trigger"
+    id="chatbotTrigger"
+    aria-label="Ouvrir le chatbot"
+>
+
+    <span>D</span>
+
+    Besoin d'aide ?
+
+</button>
+
+
+<section
+    class="datensis-chat"
+    id="chatbotWindow"
+    hidden
+>
+
+    <header class="datensis-chat-header">
+
+        <div class="datensis-chat-agent">
+
+            <span>D</span>
+
+            <div>
+
+                <strong>
+                    Chatbot Cabinet
+                </strong>
+
+                <small>
+                    Assistance DATENSIS
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <button
+            type="button"
+            id="chatbotClose"
+            aria-label="Fermer le chatbot"
+        >
+            ×
+        </button>
+
+    </header>
+
+
+    <div
+        class="datensis-chat-body"
+        id="chatbotMessages"
+    >
+
+        <div class="chatbot-message chatbot-assistant">
+
+            Bonjour. Je peux vous aider à qualifier un besoin,
+            transmettre une opportunité ou comprendre
+            le suivi du partenariat.
+
+        </div>
+
+
+        <div class="chatbot-suggestions">
+
+            <button
+                type="button"
+                class="chatbot-suggestion"
+                data-message="Je souhaite qualifier un besoin"
+            >
+                Qualifier un besoin
+            </button>
+
+
+            <button
+                type="button"
+                class="chatbot-suggestion"
+                data-message="Je souhaite transmettre une opportunité"
+            >
+                Transmettre une opportunité
+            </button>
+
+
+            <button
+                type="button"
+                class="chatbot-suggestion"
+                data-message="Comment suivre mon partenariat ?"
+            >
+                Suivre le partenariat
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <form
+        id="chatbotForm"
+        class="datensis-chat-form"
+    >
+
+        <input
+            type="text"
+            id="chatbotInput"
+            placeholder="Écrivez votre question..."
+            autocomplete="off"
+            aria-label="Votre question"
+        >
+
+        <button type="submit">
+            Envoyer
+        </button>
+
+    </form>
+
+</section>
+
+
+<!-- =========================================================
+     FOOTER
+     ========================================================= -->
+
+{% include "footer.html" %}
+
+
+<!-- =========================================================
+     JAVASCRIPT
+     ========================================================= -->
+
+<script
+    src="{{ url_for('static', filename='js/main.js') }}"
+></script>
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Notifications | Administration DATENSIS</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+{% include "header.html" %}
+
+<main class="dashboard-page">
+
+    <section class="dashboard-intro">
+
+        <div>
+            <p class="eyebrow">Administration</p>
+
+            <h1>Notifications</h1>
+
+            <p>
+                Retrouvez les événements nécessitant
+                une attention ou une action administrative.
+            </p>
+        </div>
+
+    </section>
+
+
+    <section class="dashboard-card">
+
+        <div class="notification-list">
+
+            <article class="notification-item notification-important">
+
+                <div class="notification-symbol">!</div>
+
+                <div>
+                    <span>Nouvelle demande</span>
+
+                    <h2>
+                        Demande sans collaborateur affecté
+                    </h2>
+
+                    <p>
+                        La demande de Dupont Conseil doit être affectée.
+                    </p>
+
+                    <time>
+                        Il y a 15 minutes
+                    </time>
+                </div>
+
+            </article>
+
+
+            <article class="notification-item">
+
+                <div class="notification-symbol">i</div>
+
+                <div>
+                    <span>Compte utilisateur</span>
+
+                    <h2>
+                        Nouveau cabinet à valider
+                    </h2>
+
+                    <p>
+                        Le Cabinet Nova attend la validation
+                        de son compte partenaire.
+                    </p>
+
+                    <time>
+                        Il y a 1 heure
+                    </time>
+                </div>
+
+            </article>
+
+
+            <article class="notification-item">
+
+                <div class="notification-symbol">✓</div>
+
+                <div>
+                    <span>Dossier</span>
+
+                    <h2>
+                        Étape terminée
+                    </h2>
+
+                    <p>
+                        Le dossier DOS-2026-038 a terminé
+                        sa phase de cadrage.
+                    </p>
+
+                    <time>
+                        Aujourd'hui - 09:30
+                    </time>
+                </div>
+
+            </article>
+
+        </div>
+
+    </section>
+
+</main>
+
+{% include "footer.html" %}
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+</body>
+</html>

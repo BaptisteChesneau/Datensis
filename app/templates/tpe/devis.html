@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Devis & propositions - DATENSIS</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    {% include "header.html" %}
+
+    <main class="dashboard-page">
+
+        <section class="dashboard-intro">
+
+            <div>
+
+                <p class="eyebrow">
+                    Indépendants & TPE
+                </p>
+
+                <h1>
+                    Devis & propositions
+                </h1>
+
+                <p>
+                    Retrouvez les propositions commerciales liées
+                    à vos demandes et suivez leur état de validation.
+                </p>
+
+            </div>
+
+            <a href="{{ url_for('main.tpe_dashboard') }}"
+               class="btn-secondary">
+                Retour au tableau de bord
+            </a>
+
+        </section>
+
+
+        <section class="resource-page-grid">
+
+            <article class="resource-detail-card">
+
+                <div class="resource-card-header">
+
+                    <div>
+
+                        <span class="status status-warning">
+                            À valider
+                        </span>
+
+                        <h2>
+                            Renouvellement de postes
+                        </h2>
+
+                        <p>
+                            Proposition commerciale liée à votre projet
+                            de modernisation informatique.
+                        </p>
+
+                    </div>
+
+                    <strong class="resource-price">
+                        5 850 € HT
+                    </strong>
+
+                </div>
+
+
+                <div class="resource-meta-grid">
+
+                    <div>
+                        <span>Version</span>
+                        <strong>Version 2</strong>
+                    </div>
+
+                    <div>
+                        <span>Reçue le</span>
+                        <strong>28/09/2026</strong>
+                    </div>
+
+                    <div>
+                        <span>Projet</span>
+                        <strong>Modernisation informatique</strong>
+                    </div>
+
+                </div>
+
+
+                <div class="card-actions">
+
+                    <button type="button"
+                            class="btn-primary">
+                        Ouvrir le devis
+                    </button>
+
+                    <button type="button"
+                            class="btn-secondary">
+                        Télécharger
+                    </button>
+
+                </div>
+
+            </article>
+
+
+            <article class="resource-detail-card">
+
+                <div class="resource-card-header">
+
+                    <div>
+
+                        <span class="status status-success">
+                            Validée
+                        </span>
+
+                        <h2>
+                            Étude & conseil
+                        </h2>
+
+                        <p>
+                            Cadrage initial et recommandations
+                            pour votre projet.
+                        </p>
+
+                    </div>
+
+                    <strong class="resource-price">
+                        450 € HT
+                    </strong>
+
+                </div>
+
+
+                <div class="resource-meta-grid">
+
+                    <div>
+                        <span>Version</span>
+                        <strong>Version 1</strong>
+                    </div>
+
+                    <div>
+                        <span>Reçue le</span>
+                        <strong>15/09/2026</strong>
+                    </div>
+
+                    <div>
+                        <span>Projet</span>
+                        <strong>Modernisation informatique</strong>
+                    </div>
+
+                </div>
+
+
+                <div class="card-actions">
+
+                    <button type="button"
+                            class="btn-primary">
+                        Ouvrir la proposition
+                    </button>
+
+                    <button type="button"
+                            class="btn-secondary">
+                        Télécharger
+                    </button>
+
+                </div>
+
+            </article>
+
+
+            <article class="resource-detail-card">
+
+                <div class="resource-card-header">
+
+                    <div>
+
+                        <span class="status status-progress">
+                            Optionnelle
+                        </span>
+
+                        <h2>
+                            Accompagnement complémentaire
+                        </h2>
+
+                        <p>
+                            Option de suivi renforcé après
+                            la mise en place.
+                        </p>
+
+                    </div>
+
+                    <strong class="resource-price">
+                        Sur devis
+                    </strong>
+
+                </div>
+
+
+                <div class="resource-meta-grid">
+
+                    <div>
+                        <span>Disponibilité</span>
+                        <strong>Disponible</strong>
+                    </div>
+
+                    <div>
+                        <span>Type</span>
+                        <strong>Option</strong>
+                    </div>
+
+                    <div>
+                        <span>Statut</span>
+                        <strong>Non sélectionnée</strong>
+                    </div>
+
+                </div>
+
+
+                <div class="card-actions">
+
+                    <a href="{{ url_for('main.contact') }}"
+                       class="btn-secondary">
+                        Demander des informations
+                    </a>
+
+                </div>
+
+            </article>
+
+        </section>
+
+    </main>
+
+    {% include "footer.html" %}
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+</body>
+
+</html>

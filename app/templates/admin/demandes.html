@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Demandes | Administration DATENSIS</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+{% include "header.html" %}
+
+<main class="dashboard-page">
+
+    <section class="dashboard-intro">
+
+        <div>
+            <p class="eyebrow">
+                Administration
+            </p>
+
+            <h1>
+                Demandes
+            </h1>
+
+            <p>
+                Supervisez les demandes utilisateurs
+                et leur affectation.
+            </p>
+        </div>
+
+    </section>
+
+
+    <section class="dashboard-card">
+
+        <div class="list-toolbar">
+
+            <div class="search-box">
+
+                <label for="adminRequestSearch">
+                    Rechercher
+                </label>
+
+                <input
+                    type="search"
+                    id="adminRequestSearch"
+                    placeholder="Rechercher une demande..."
+                >
+
+            </div>
+
+
+            <div class="filter-box">
+
+                <label for="adminRequestStatus">
+                    Statut
+                </label>
+
+                <select id="adminRequestStatus">
+
+                    <option value="all">
+                        Tous
+                    </option>
+
+                    <option value="nouvelle">
+                        Nouvelle
+                    </option>
+
+                    <option value="affectee">
+                        Affectée
+                    </option>
+
+                    <option value="en-cours">
+                        En cours
+                    </option>
+
+                    <option value="terminee">
+                        Terminée
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <div class="table-wrapper">
+
+            <table class="data-table"
+                   id="adminRequestsTable">
+
+                <thead>
+                    <tr>
+                        <th>Demande</th>
+                        <th>Utilisateur</th>
+                        <th>Profil</th>
+                        <th>Date</th>
+                        <th>Collaborateur</th>
+                        <th>Statut</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr data-status="nouvelle">
+                        <td>Conseil solution</td>
+                        <td>Dupont Conseil</td>
+                        <td>TPE</td>
+                        <td>02/10/2026</td>
+                        <td>Non affectée</td>
+                        <td>
+                            <span class="status status-warning">
+                                Nouvelle
+                            </span>
+                        </td>
+                        <td>
+                            <button class="table-action"
+                                    type="button">
+                                Affecter
+                            </button>
+                        </td>
+                    </tr>
+
+
+                    <tr data-status="en-cours">
+                        <td>Déploiement Lyon</td>
+                        <td>Société Exemple</td>
+                        <td>PME</td>
+                        <td>01/10/2026</td>
+                        <td>Julie Morel</td>
+                        <td>
+                            <span class="status status-progress">
+                                En cours
+                            </span>
+                        </td>
+                        <td>
+                            <button class="table-action"
+                                    type="button">
+                                Ouvrir
+                            </button>
+                        </td>
+                    </tr>
+
+
+                    <tr data-status="affectee">
+                        <td>Organisation documentaire</td>
+                        <td>AGRO Centre</td>
+                        <td>PME</td>
+                        <td>30/09/2026</td>
+                        <td>Thomas Bernard</td>
+                        <td>
+                            <span class="status status-progress">
+                                Affectée
+                            </span>
+                        </td>
+                        <td>
+                            <button class="table-action"
+                                    type="button">
+                                Ouvrir
+                            </button>
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+</main>
+
+{% include "footer.html" %}
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+</body>
+</html>
