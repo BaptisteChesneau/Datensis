@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -5,10 +6,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Créer un compte PME & ETI</title>
+    <title>Créer un compte PME & ETI | DATENSIS</title>
 
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/style.css') }}">
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
 </head>
 
 <body class="pme-auth register-page">
@@ -32,12 +35,42 @@
                 déployer et piloter vos projets.
             </p>
 
+            <!-- =====================================
+                 MESSAGES FLASK
+                 ===================================== -->
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+
+                {% if messages %}
+
+                    {% for category, message in messages %}
+
+                        <div
+                            class="form-message form-message-{{ category }}"
+                            role="alert"
+                        >
+                            {{ message }}
+                        </div>
+
+                    {% endfor %}
+
+                {% endif %}
+
+            {% endwith %}
+
+
+            <!-- =====================================
+                 FORMULAIRE CREATION DE COMPTE PME
+                 ===================================== -->
 
             <form
                 id="createAccountForm"
                 class="journey-form"
+                method="POST"
+                action="{{ url_for('main.pme_creation_compte') }}"
             >
 
+                <!-- Profil PME -->
                 <input
                     type="hidden"
                     id="selectedProfile"
@@ -46,6 +79,7 @@
                 >
 
 
+                <!-- Prénom -->
                 <div class="form-group">
 
                     <label for="accountFirstName">
@@ -57,12 +91,14 @@
                         id="accountFirstName"
                         name="first_name"
                         autocomplete="given-name"
+                        maxlength="100"
                         required
                     >
 
                 </div>
 
 
+                <!-- Nom -->
                 <div class="form-group">
 
                     <label for="accountLastName">
@@ -74,12 +110,14 @@
                         id="accountLastName"
                         name="last_name"
                         autocomplete="family-name"
+                        maxlength="100"
                         required
                     >
 
                 </div>
 
 
+                <!-- Entreprise -->
                 <div class="form-group">
 
                     <label for="accountCompany">
@@ -91,12 +129,14 @@
                         id="accountCompany"
                         name="company"
                         autocomplete="organization"
+                        maxlength="200"
                         required
                     >
 
                 </div>
 
 
+                <!-- Fonction -->
                 <div class="form-group">
 
                     <label for="accountRole">
@@ -108,12 +148,14 @@
                         id="accountRole"
                         name="role"
                         placeholder="Ex. Dirigeant, DAF, Responsable projet..."
+                        maxlength="150"
                         required
                     >
 
                 </div>
 
 
+                <!-- Adresse e-mail -->
                 <div class="form-group">
 
                     <label for="accountEmail">
@@ -125,12 +167,14 @@
                         id="accountEmail"
                         name="email"
                         autocomplete="email"
+                        maxlength="254"
                         required
                     >
 
                 </div>
 
 
+                <!-- Téléphone -->
                 <div class="form-group">
 
                     <label for="accountPhone">
@@ -142,12 +186,14 @@
                         id="accountPhone"
                         name="phone"
                         autocomplete="tel"
+                        maxlength="30"
                         required
                     >
 
                 </div>
 
 
+                <!-- Mot de passe -->
                 <div class="form-group">
 
                     <label for="accountPassword">
@@ -171,6 +217,7 @@
                 </div>
 
 
+                <!-- Confirmation mot de passe -->
                 <div class="form-group">
 
                     <label for="accountPasswordConfirm">
@@ -189,6 +236,10 @@
                 </div>
 
 
+                <!-- =====================================
+                     CONDITIONS ET CONFIDENTIALITE
+                     ===================================== -->
+
                 <div class="account-terms">
 
                     <label>
@@ -196,19 +247,26 @@
                         <input
                             type="checkbox"
                             id="accountTerms"
+                            name="terms"
+                            value="accepted"
                             required
                         >
 
                         <span>
                             J'accepte les
+
                             <a href="{{ url_for('main.mentions_legales') }}">
                                 mentions légales
                             </a>,
+
                             la
+
                             <a href="{{ url_for('main.confidentialite') }}">
                                 politique de confidentialité
                             </a>
+
                             et la
+
                             <a href="{{ url_for('main.cookies') }}">
                                 politique des cookies
                             </a>.
@@ -219,6 +277,10 @@
                 </div>
 
 
+                <!-- =====================================
+                     VALIDATION
+                     ===================================== -->
+
                 <button
                     type="submit"
                     class="btn-primary"
@@ -228,6 +290,10 @@
 
             </form>
 
+
+            <!-- =====================================
+                 LIEN DE CONNEXION
+                 ===================================== -->
 
             <div class="account-login-link">
 
@@ -241,6 +307,10 @@
 
             </div>
 
+
+            <!-- =====================================
+                 RETOUR ACCUEIL
+                 ===================================== -->
 
             <div class="account-back">
 
@@ -256,6 +326,8 @@
 
 </main>
 
+
+<!-- JavaScript global DATENSIS -->
 <script src="{{ url_for('static', filename='js/global.js') }}"></script>
 
 </body>

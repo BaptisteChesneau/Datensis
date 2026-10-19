@@ -1,14 +1,18 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-    <title>Créer un compte Indépendants & TPE</title>
+    <title>Créer un compte Indépendants & TPE | DATENSIS</title>
 
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/style.css') }}">
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
 </head>
 
 <body class="tpe-auth register-page">
@@ -23,19 +27,36 @@
                 Indépendants & TPE
             </p>
 
-            <h1>
-                Créer votre compte
-            </h1>
+            <h1>Créer votre compte</h1>
 
             <p class="auth-intro">
                 Créez votre espace DATENSIS pour centraliser
-                vos demandes, suivre vos projets et retrouver vos échanges.
+                vos demandes, suivre vos projets et retrouver
+                vos échanges.
             </p>
 
+            <!-- Messages Flask -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
 
+                        <div
+                            class="form-message form-message-{{ category }}"
+                            role="alert"
+                        >
+                            {{ message }}
+                        </div>
+
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <!-- Formulaire d'inscription -->
             <form
                 id="createAccountForm"
                 class="journey-form"
+                method="POST"
+                action="{{ url_for('main.tpe_creation_compte') }}"
             >
 
                 <input
@@ -44,7 +65,6 @@
                     name="profile"
                     value="tpe"
                 >
-
 
                 <!-- Prénom -->
                 <div class="form-group">
@@ -63,7 +83,6 @@
 
                 </div>
 
-
                 <!-- Nom -->
                 <div class="form-group">
 
@@ -80,7 +99,6 @@
                     >
 
                 </div>
-
 
                 <!-- Entreprise -->
                 <div class="form-group">
@@ -99,7 +117,6 @@
 
                 </div>
 
-
                 <!-- Fonction -->
                 <div class="form-group">
 
@@ -116,8 +133,7 @@
 
                 </div>
 
-
-                <!-- E-mail -->
+                <!-- Adresse e-mail -->
                 <div class="form-group">
 
                     <label for="accountEmail">
@@ -133,7 +149,6 @@
                     >
 
                 </div>
-
 
                 <!-- Téléphone -->
                 <div class="form-group">
@@ -151,7 +166,6 @@
                     >
 
                 </div>
-
 
                 <!-- Mot de passe -->
                 <div class="form-group">
@@ -171,11 +185,11 @@
 
                     <small class="form-help">
                         12 caractères minimum, avec au moins
-                        une majuscule, un chiffre et un caractère spécial.
+                        une majuscule, un chiffre et un
+                        caractère spécial.
                     </small>
 
                 </div>
-
 
                 <!-- Confirmation -->
                 <div class="form-group">
@@ -195,7 +209,6 @@
 
                 </div>
 
-
                 <!-- Conditions -->
                 <div class="account-terms">
 
@@ -204,6 +217,8 @@
                         <input
                             type="checkbox"
                             id="accountTerms"
+                            name="terms"
+                            value="accepted"
                             required
                         >
 
@@ -231,8 +246,7 @@
 
                 </div>
 
-
-                <!-- Validation -->
+                <!-- Bouton d'inscription -->
                 <button
                     type="submit"
                     class="btn-primary"
@@ -241,7 +255,6 @@
                 </button>
 
             </form>
-
 
             <!-- Connexion -->
             <div class="account-login-link">
@@ -255,7 +268,6 @@
                 </p>
 
             </div>
-
 
             <!-- Retour -->
             <div class="account-back">
@@ -271,7 +283,6 @@
     </section>
 
 </main>
-
 
 <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 
