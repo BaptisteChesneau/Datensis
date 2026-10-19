@@ -1,11 +1,6 @@
 from functools import wraps
+
 from flask import abort, jsonify, render_template, session
-from flask import (
-    abort,
-    jsonify,
-    render_template,
-    session,
-)
 from sqlalchemy import text
 
 from app.demandes import demandes_bp
@@ -156,9 +151,11 @@ def gestion_demandes_collaborateur():
         espace="collaborateur",
     )
 
+
 # =========================================================
 # API - CREATION DES DEMANDES
 # =========================================================
+
 
 @demandes_bp.route("/api/demandes", methods=["POST"])
 @acces_autorise("client")
@@ -169,6 +166,4 @@ def creer_demande_api():
     Seuls les utilisateurs authentifiés ayant
     le rôle client peuvent accéder à cette route.
     """
-    return jsonify({
-        "error": "Création des demandes non encore raccordée"
-    }), 501
+    return jsonify({"error": "Création des demandes non encore raccordée"}), 501
