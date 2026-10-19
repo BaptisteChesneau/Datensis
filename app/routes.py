@@ -4,7 +4,13 @@ import logging
 
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 
+from app.services.email_verification import (
+    find_resend_candidate,
+    issue_token,
+    verify_token,
+)
 from app.services.inscription import ErreurInscription, creer_compte
+from app.services.mail import send_verification_email
 
 main = Blueprint("main", __name__)
 logger = logging.getLogger(__name__)
