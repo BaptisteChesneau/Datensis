@@ -1,6 +1,8 @@
 """Fixtures isolees: ne touchent jamais database/datensis_dev.db."""
+
 import pytest
 from flask import Flask
+
 from app.extensions import db
 
 
