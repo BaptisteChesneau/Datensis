@@ -1,4 +1,6 @@
-from sqlalchemy import text
+"""Initialisation des donnees de reference DATENSIS."""
+
+from sqlalchemy import MetaData, Table, select
 
 from app import create_app
 from app.extensions import db
@@ -69,26 +71,44 @@ REFERENTIELS = {
 
 
 def initialiser():
+    """Ajouter les valeurs de reference absentes."""
+
     with app.app_context():
         with db.engine.begin() as connexion:
-            for table, (code_col, libelle_col, valeurs) in REFERENTIELS.items():
+            metadata = MetaData()
+
+            for table_name, (code_col, libelle_col, valeurs) in REFERENTIELS.items():
+                # Charger la structure reelle de la table.
+                table = Table(
+                    table_name,
+                    metadata,
+                    autoload_with=connexion,
+                )
+
                 ajouts = 0
 
                 for code, libelle in valeurs:
+                    # Verifier si le code existe deja.
+                    existe = connexion.execute(
+                        select(table.c[code_col]).where(table.c[code_col] == code)
+                    ).first()
+
+                    if existe is not None:
+                        continue
+
+                    # Inserer uniquement les valeurs manquantes.
                     resultat = connexion.execute(
-                        text(f"""
-                            INSERT INTO {table} ({code_col}, {libelle_col})
-                            SELECT :code, :libelle
-                            WHERE NOT EXISTS (
-                                SELECT 1 FROM {table}
-                                WHERE {code_col} = :code
-                            )
-                        """),
-                        {"code": code, "libelle": libelle},
+                        table.insert().values(
+                            {
+                                code_col: code,
+                                libelle_col: libelle,
+                            }
+                        )
                     )
+
                     ajouts += resultat.rowcount
 
-                print(f"{table} : {ajouts} ajout(s)")
+                print(f"{table_name} : {ajouts} ajout(s)")
 
         print("\nInitialisation DATENSIS terminée.")
 

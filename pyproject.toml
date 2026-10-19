@@ -1,7 +1,11 @@
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-ra --strict-markers"
-markers = ["integration: tests needing the complete application", "security: security regression tests"]
+markers = [
+    "integration: tests needing the complete application",
+    "security: security regression tests",
+]
 
 [tool.ruff]
 line-length = 100
@@ -10,7 +14,12 @@ exclude = [".venv", "venv", "build", "dist", "__pycache__"]
 
 [tool.ruff.lint]
 select = ["E4", "E7", "E9", "F", "I", "B", "S"]
-ignore = ["S101"] # assertions are used in pytest
+ignore = ["S101"] # Assertions autorisees dans les tests Pytest
+
+# Exceptions ciblees pour les valeurs fictives de test
+[tool.ruff.lint.per-file-ignores]
+"tests/conftest.py" = ["S106"]
+"tests/security/test_csrf.py" = ["S105"]
 
 [tool.coverage.run]
 source = ["app"]
