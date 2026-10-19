@@ -1,0 +1,283 @@
+
+# ============================================================
+# DATENSIS - .gitignore
+# Projet Flask / Python / PostgreSQL / SQLAlchemy / SMTP
+# ============================================================
+
+
+# ============================================================
+# 1. VARIABLES D'ENVIRONNEMENT ET IDENTIFIANTS
+# ============================================================
+
+.env
+.env.*
+!.env.example
+
+*.env
+*.env.local
+
+# Identifiants et secrets
+secrets/
+credentials/
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+
+# Configurations locales contenant potentiellement des secrets
+config.local.py
+settings.local.py
+
+
+# ============================================================
+# 2. ENVIRONNEMENTS VIRTUELS PYTHON
+# ============================================================
+
+venv/
+.venv/
+env/
+ENV/
+virtualenv/
+.python-version
+
+
+# ============================================================
+# 3. CACHE PYTHON
+# ============================================================
+
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.pyre/
+.pytype/
+
+.pyre_configuration.local
+
+
+# ============================================================
+# 4. FICHIERS DE COMPILATION PYTHON
+# ============================================================
+
+build/
+dist/
+downloads/
+*.egg-info/
+.eggs/
+*.egg
+
+pip-wheel-metadata/
+wheels/
+
+
+# ============================================================
+# 5. FLASK
+# ============================================================
+
+instance/
+
+.flaskenv.local
+flask_session/
+
+# Fichiers temporaires Flask
+*.log
+
+
+# ============================================================
+# 6. POSTGRESQL ET BASES DE DONNEES LOCALES
+# ============================================================
+
+# Bases SQLite de développement
+*.db
+*.sqlite
+*.sqlite3
+
+# Exports PostgreSQL locaux
+*.dump
+*.backup
+*.pgdump
+*.sql.gz
+
+# Dossiers de données PostgreSQL
+pgdata/
+postgres_data/
+postgresql_data/
+
+# Attention : les scripts SQL de structure ne sont pas ignorés.
+# Ils peuvent être versionnés sur GitHub.
+
+
+# ============================================================
+# 7. SQLALCHEMY ET MIGRATIONS
+# ============================================================
+
+# Les migrations Flask-Migrate / Alembic doivent être versionnées.
+# Ne pas ignorer le dossier migrations/.
+
+# Cache dans les migrations
+migrations/**/__pycache__/
+
+
+# ============================================================
+# 8. SMTP ET E-MAILS
+# ============================================================
+
+# Configurations SMTP locales
+smtp_config.local.py
+smtp_credentials.json
+
+# Messages et exports de test
+*.eml
+*.msg
+emails_test/
+mail_test/
+smtp_logs/
+
+
+# ============================================================
+# 9. VISUAL STUDIO CODE
+# ============================================================
+
+.vscode/*
+
+# Conserver les configurations partagées utiles
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/tasks.json
+
+# Fichiers temporaires de VS Code
+*.code-workspace
+
+
+# ============================================================
+# 10. PYCHARM ET AUTRES EDITEURS
+# ============================================================
+
+.idea/
+*.swp
+*.swo
+*~
+.vim/
+
+
+# ============================================================
+# 11. FICHIERS TEMPORAIRES
+# ============================================================
+
+tmp/
+temp/
+.cache/
+*.tmp
+*.temp
+*.bak
+*.old
+*.orig
+
+
+# ============================================================
+# 12. TESTS ET COUVERTURE
+# ============================================================
+
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+nosetests.xml
+test-results/
+.tox/
+.nox/
+hypothesis/
+
+
+# ============================================================
+# 13. FICHIERS SYSTEME WINDOWS
+# ============================================================
+
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+
+# ============================================================
+# 14. FICHIERS SYSTEME MACOS ET LINUX
+# ============================================================
+
+.DS_Store
+.AppleDouble
+.LSOverride
+.Spotlight-V100
+.Trashes
+.fseventsd/
+.directory
+
+
+# ============================================================
+# 15. NODE.JS (SI UTILISE PLUS TARD)
+# ============================================================
+
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-store/
+.next/
+.nuxt/
+
+
+# ============================================================
+# 16. FICHIERS GENERES PAR LES UTILISATEURS
+# ============================================================
+
+uploads/
+media/uploads/
+storage/
+generated/
+exports/
+private/
+
+# Les fichiers CSS, JS et HTML du site restent versionnés.
+
+
+# ============================================================
+# 17. SAUVEGARDES ET ARCHIVES
+# ============================================================
+
+backups/
+sauvegardes/
+*.zip
+*.7z
+*.rar
+*.tar.gz
+
+
+# ============================================================
+# 18. FICHIERS A CONSERVER SUR GITHUB
+# ============================================================
+
+# Les éléments suivants ne doivent PAS être ignorés :
+#
+# app/
+# templates/
+# static/
+# migrations/
+# requirements.txt
+# README.md
+# .gitignore
+# .env.example
+# pyproject.toml
+# tests/
+# scripts SQL de création et de migration
+#
+# ============================================================
+# FIN DU FICHIER DATENSIS
+# ============================================================
