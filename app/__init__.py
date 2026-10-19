@@ -1,6 +1,6 @@
+from pathlib import Path
 
 from flask import Flask
-from pathlib import Path
 
 from app.extensions import db
 
@@ -17,9 +17,7 @@ def create_app():
     chemin_bdd = dossier_projet / "database" / "datensis_dev.db"
 
     # 4. Configurer SQLAlchemy
-    app.config["SQLALCHEMY_DATABASE_URI"] = (
-        f"sqlite:///{chemin_bdd.as_posix()}"
-    )
+    app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{chemin_bdd.as_posix()}"
 
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
@@ -28,6 +26,7 @@ def create_app():
 
     # 6. Enregistrer les routes existantes
     from app.routes import main
+
     app.register_blueprint(main)
 
     # 7. Retourner l'application Flask

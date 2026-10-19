@@ -6,12 +6,12 @@ from flask import Blueprint, flash, redirect, render_template, request, url_for
 
 from app.services.inscription import ErreurInscription, creer_compte
 
-
 main = Blueprint("main", __name__)
 logger = logging.getLogger(__name__)
 
 
 # Public
+
 
 @main.route("/")
 def home():
@@ -34,6 +34,7 @@ def contact():
 
 
 # Inscription et connexion
+
 
 @main.route("/tpe/creer-un-compte", methods=["GET", "POST"])
 def tpe_creation_compte():
@@ -60,12 +61,14 @@ def tpe_connexion():
 
 # TPE
 
+
 @main.route("/presenter-mon-besoin")
 def presentation_besoin():
     return render_template("tpe/presentation_besoin.html")
 
 
 # Inscription et connexion
+
 
 @main.route("/pme/creer-un-compte", methods=["GET", "POST"])
 def pme_creation_compte():
@@ -114,6 +117,7 @@ def cabinet_connexion():
 
 
 # TPE
+
 
 @main.route("/tpe")
 def tpe_dashboard():
@@ -187,6 +191,7 @@ def tpe_profil():
 
 # PME & ETI
 
+
 @main.route("/pme")
 def pme_dashboard():
     return render_template("pme/dashboard.html")
@@ -249,6 +254,7 @@ def pme_rendez_vous():
 
 # Cabinet
 
+
 @main.route("/cabinet")
 def cabinet_dashboard():
     return render_template("cabinet/dashboard.html")
@@ -301,6 +307,7 @@ def cabinet_rendez_vous():
 
 # Collaborateur
 
+
 @main.route("/collaborateur")
 def collaborateur_dashboard():
     return render_template("collaborateur/dashboard.html")
@@ -332,6 +339,7 @@ def collaborateur_documents():
 
 
 # Administration
+
 
 @main.route("/admin")
 def admin_dashboard():
@@ -385,12 +393,14 @@ def admin_administration():
 
 # TPE
 
+
 @main.route("/tpe/accueil")
 def tpe_accueil():
     return render_template("tpe/accueil.html")
 
 
 # PME & ETI
+
 
 @main.route("/pme/accueil")
 def pme_accueil():
@@ -399,12 +409,14 @@ def pme_accueil():
 
 # Cabinet
 
+
 @main.route("/cabinet/accueil")
 def cabinet_accueil():
     return render_template("cabinet/accueil.html")
 
 
 # Public
+
 
 @main.route("/mentions-legales")
 def mentions_legales():
@@ -420,22 +432,23 @@ def confidentialite():
 def cookies():
     return render_template("public/cookies.html")
 
+
 # Vérification d'adresse e-mail (GET affiche confirmation ; POST consomme le jeton)
-@main.route('/verifier-courriel/<token>', methods=['GET', 'POST'])
+@main.route("/verifier-courriel/<token>", methods=["GET", "POST"])
 def verifier_courriel(token):
-    if request.method == 'POST':
+    if request.method == "POST":
         if verify_token(token):
-            flash('Adresse e-mail confirmée. Vous pouvez vous connecter.', 'success')
-            return redirect(url_for('main.home'))
-        flash('Lien invalide, expiré ou déjà utilisé.', 'error')
-        return redirect(url_for('main.renvoyer_verification'))
-    return render_template('public/verifier_courriel.html', token=token)
+            flash("Adresse e-mail confirmée. Vous pouvez vous connecter.", "success")
+            return redirect(url_for("main.home"))
+        flash("Lien invalide, expiré ou déjà utilisé.", "error")
+        return redirect(url_for("main.renvoyer_verification"))
+    return render_template("public/verifier_courriel.html", token=token)
 
 
-@main.route('/renvoyer-verification', methods=['GET', 'POST'])
+@main.route("/renvoyer-verification", methods=["GET", "POST"])
 def renvoyer_verification():
-    if request.method == 'POST':
-        email = request.form.get('email', '').strip().lower()
+    if request.method == "POST":
+        email = request.form.get("email", "").strip().lower()
         if len(email) <= 254:
             try:
                 user_id = find_resend_candidate(email)
@@ -443,8 +456,7 @@ def renvoyer_verification():
                     token = issue_token(user_id)
                     send_verification_email(email, token)
             except Exception:
-                logger.exception('Échec interne du renvoi de confirmation')
-        flash('Si ce compte est éligible, un e-mail de vérification sera envoyé.', 'info')
-        return redirect(url_for('main.renvoyer_verification'))
-    return render_template('public/renvoyer_verification.html')
-
+                logger.exception("Échec interne du renvoi de confirmation")
+        flash("Si ce compte est éligible, un e-mail de vérification sera envoyé.", "info")
+        return redirect(url_for("main.renvoyer_verification"))
+    return render_template("public/renvoyer_verification.html")

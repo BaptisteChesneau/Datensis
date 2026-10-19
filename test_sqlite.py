@@ -1,9 +1,7 @@
-
 from flask import current_app
 from sqlalchemy import create_engine, inspect
 
 from app import create_app
-
 
 app = create_app()
 

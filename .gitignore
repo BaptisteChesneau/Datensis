@@ -286,3 +286,15 @@ sauvegardes/
 database/*.db
 database/*.sqlite
 database/*.sqlite3
+
+.env
+.env.*
+!.env.example
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+*.db
+*.sqlite3

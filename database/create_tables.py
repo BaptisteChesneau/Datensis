@@ -1,4 +1,3 @@
-
 from pathlib import Path
 
 from sqlalchemy import (
@@ -12,13 +11,11 @@ from sqlalchemy import (
     Integer,
     String,
     Text,
-    UniqueConstraint,
     create_engine,
     event,
     func,
 )
 from sqlalchemy.orm import DeclarativeBase
-
 
 # ============================================================
 # DATENSIS - BASE DE DONNEES LOCALE SQLITE
@@ -48,6 +45,7 @@ class Base(DeclarativeBase):
 # 1. ROLE
 # ============================================================
 
+
 class Role(Base):
     __tablename__ = "role"
 
@@ -60,6 +58,7 @@ class Role(Base):
 # ============================================================
 # 2. TYPE ENTREPRISE
 # ============================================================
+
 
 class TypeEntreprise(Base):
     __tablename__ = "type_entreprise"
@@ -74,6 +73,7 @@ class TypeEntreprise(Base):
 # 3. SECTEUR ACTIVITE
 # ============================================================
 
+
 class SecteurActivite(Base):
     __tablename__ = "secteur_activite"
 
@@ -85,6 +85,7 @@ class SecteurActivite(Base):
 # ============================================================
 # 4. TYPE ACTIVITE
 # ============================================================
+
 
 class TypeActivite(Base):
     __tablename__ = "type_activite"
@@ -104,6 +105,7 @@ class TypeActivite(Base):
 # 5. BESOIN
 # ============================================================
 
+
 class Besoin(Base):
     __tablename__ = "besoin"
 
@@ -117,6 +119,7 @@ class Besoin(Base):
 # 6. STATUT DEMANDE
 # ============================================================
 
+
 class StatutDemande(Base):
     __tablename__ = "statut_demande"
 
@@ -128,6 +131,7 @@ class StatutDemande(Base):
 # ============================================================
 # 7. STATUT RENDEZ-VOUS
 # ============================================================
+
 
 class StatutRendezVous(Base):
     __tablename__ = "statut_rendez_vous"
@@ -141,6 +145,7 @@ class StatutRendezVous(Base):
 # 8. TYPE NOTIFICATION
 # ============================================================
 
+
 class TypeNotification(Base):
     __tablename__ = "type_notification"
 
@@ -152,6 +157,7 @@ class TypeNotification(Base):
 # ============================================================
 # 9. UTILISATEUR
 # ============================================================
+
 
 class Utilisateur(Base):
     __tablename__ = "utilisateur"
@@ -186,6 +192,7 @@ class Utilisateur(Base):
 # 10. ENTREPRISE
 # ============================================================
 
+
 class Entreprise(Base):
     __tablename__ = "entreprise"
 
@@ -215,18 +222,15 @@ class Entreprise(Base):
 
     __table_args__ = (
         CheckConstraint(
-            "siren IS NULL OR "
-            "(length(siren) = 9 AND siren NOT GLOB '*[^0-9]*')",
+            "siren IS NULL OR (length(siren) = 9 AND siren NOT GLOB '*[^0-9]*')",
             name="ck_entreprise_siren",
         ),
         CheckConstraint(
-            "siret IS NULL OR "
-            "(length(siret) = 14 AND siret NOT GLOB '*[^0-9]*')",
+            "siret IS NULL OR (length(siret) = 14 AND siret NOT GLOB '*[^0-9]*')",
             name="ck_entreprise_siret",
         ),
         CheckConstraint(
-            "siren IS NULL OR siret IS NULL "
-            "OR substr(siret, 1, 9) = siren",
+            "siren IS NULL OR siret IS NULL OR substr(siret, 1, 9) = siren",
             name="ck_entreprise_siret_siren",
         ),
     )
@@ -235,6 +239,7 @@ class Entreprise(Base):
 # ============================================================
 # 11. UTILISATEUR ROLE
 # ============================================================
+
 
 class UtilisateurRole(Base):
     __tablename__ = "utilisateur_role"
@@ -261,6 +266,7 @@ class UtilisateurRole(Base):
 # 12. PROFIL CLIENT
 # ============================================================
 
+
 class ProfilClient(Base):
     __tablename__ = "profil_client"
 
@@ -280,6 +286,7 @@ class ProfilClient(Base):
 # ============================================================
 # 13. COLLABORATEUR
 # ============================================================
+
 
 class Collaborateur(Base):
     __tablename__ = "collaborateur"
@@ -302,6 +309,7 @@ class Collaborateur(Base):
 # ============================================================
 # 14. ADMINISTRATEUR
 # ============================================================
+
 
 class Administrateur(Base):
     __tablename__ = "administrateur"
@@ -338,6 +346,7 @@ class Administrateur(Base):
 # 15. UTILISATEUR ENTREPRISE
 # ============================================================
 
+
 class UtilisateurEntreprise(Base):
     __tablename__ = "utilisateur_entreprise"
 
@@ -366,6 +375,7 @@ class UtilisateurEntreprise(Base):
 # ============================================================
 # 16. DEMANDE QUALIFICATION
 # ============================================================
+
 
 class DemandeQualification(Base):
     __tablename__ = "demande_qualification"
@@ -419,14 +429,13 @@ class DemandeQualification(Base):
 # 17. DEMANDE BESOIN
 # ============================================================
 
+
 class DemandeBesoin(Base):
     __tablename__ = "demande_besoin"
 
     id_demande_qualification = Column(
         Integer,
-        ForeignKey(
-            "demande_qualification.id_demande_qualification"
-        ),
+        ForeignKey("demande_qualification.id_demande_qualification"),
         primary_key=True,
     )
 
@@ -441,6 +450,7 @@ class DemandeBesoin(Base):
 # 18. HISTORIQUE DEMANDE
 # ============================================================
 
+
 class HistoriqueDemande(Base):
     __tablename__ = "historique_demande"
 
@@ -448,9 +458,7 @@ class HistoriqueDemande(Base):
 
     id_demande_qualification = Column(
         Integer,
-        ForeignKey(
-            "demande_qualification.id_demande_qualification"
-        ),
+        ForeignKey("demande_qualification.id_demande_qualification"),
         nullable=False,
     )
 
@@ -481,6 +489,7 @@ class HistoriqueDemande(Base):
 # ============================================================
 # 19. RENDEZ-VOUS
 # ============================================================
+
 
 class RendezVous(Base):
     __tablename__ = "rendez_vous"
@@ -522,8 +531,7 @@ class RendezVous(Base):
             name="ck_rdv_dates",
         ),
         CheckConstraint(
-            "mode_rendez_vous IN "
-            "('visio', 'telephone', 'presentiel')",
+            "mode_rendez_vous IN ('visio', 'telephone', 'presentiel')",
             name="ck_rdv_mode",
         ),
     )
@@ -532,6 +540,7 @@ class RendezVous(Base):
 # ============================================================
 # 20. CONVERSATION
 # ============================================================
+
 
 class Conversation(Base):
     __tablename__ = "conversation"
@@ -550,6 +559,7 @@ class Conversation(Base):
 # ============================================================
 # 21. PARTICIPANT CONVERSATION
 # ============================================================
+
 
 class ParticipantConversation(Base):
     __tablename__ = "participant_conversation"
@@ -577,6 +587,7 @@ class ParticipantConversation(Base):
 # ============================================================
 # 22. MESSAGE
 # ============================================================
+
 
 class Message(Base):
     __tablename__ = "message"
@@ -617,6 +628,7 @@ class Message(Base):
 # 23. PIECE JOINTE
 # ============================================================
 
+
 class PieceJointe(Base):
     __tablename__ = "piece_jointe"
 
@@ -650,6 +662,7 @@ class PieceJointe(Base):
 # 24. NOTIFICATION
 # ============================================================
 
+
 class Notification(Base):
     __tablename__ = "notification"
 
@@ -682,6 +695,7 @@ class Notification(Base):
 # 25. COURRIEL ENVOYE
 # ============================================================
 
+
 class CourrielEnvoye(Base):
     __tablename__ = "courriel_envoye"
 
@@ -711,8 +725,7 @@ class CourrielEnvoye(Base):
 
     __table_args__ = (
         CheckConstraint(
-            "statut_envoi IN "
-            "('en_attente', 'accepte_smtp', 'echec')",
+            "statut_envoi IN ('en_attente', 'accepte_smtp', 'echec')",
             name="ck_courriel_statut",
         ),
     )
@@ -721,6 +734,7 @@ class CourrielEnvoye(Base):
 # ============================================================
 # 26. JOURNAL AUDIT
 # ============================================================
+
 
 class JournalAudit(Base):
     __tablename__ = "journal_audit"
@@ -747,6 +761,7 @@ class JournalAudit(Base):
 # ============================================================
 # 27. PREFERENCE UTILISATEUR
 # ============================================================
+
 
 class PreferenceUtilisateur(Base):
     __tablename__ = "preference_utilisateur"
@@ -785,8 +800,7 @@ class PreferenceUtilisateur(Base):
 
     __table_args__ = (
         CheckConstraint(
-            "style_affichage IN "
-            "('moderne', 'elegant', 'dynamique')",
+            "style_affichage IN ('moderne', 'elegant', 'dynamique')",
             name="ck_preference_style",
         ),
         CheckConstraint(
@@ -849,8 +863,8 @@ Index(
 # CREATION DES TABLES
 # ============================================================
 
-def creer_tables():
 
+def creer_tables():
     DOSSIER_DATABASE.mkdir(
         parents=True,
         exist_ok=True,
@@ -863,14 +877,18 @@ def creer_tables():
     Base.metadata.create_all(engine)
 
     with engine.connect() as connexion:
-        tables = connexion.execute(
-            __import__("sqlalchemy").text(
-                "SELECT name FROM sqlite_master "
-                "WHERE type='table' "
-                "AND name NOT LIKE 'sqlite_%' "
-                "ORDER BY name"
+        tables = (
+            connexion.execute(
+                __import__("sqlalchemy").text(
+                    "SELECT name FROM sqlite_master "
+                    "WHERE type='table' "
+                    "AND name NOT LIKE 'sqlite_%' "
+                    "ORDER BY name"
+                )
             )
-        ).scalars().all()
+            .scalars()
+            .all()
+        )
 
     print("\nBase :", CHEMIN_BDD)
     print("Nombre de tables :", len(tables))

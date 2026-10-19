@@ -17633,3 +17633,54 @@ emailForm?.addEventListener("submit", event => {
         "Vous devrez confirmer son envoi.";
 });
 
+/* À charger APRÈS presentation_besoin.js, sans remplacer son parcours en 4 étapes. */
+document.addEventListener('DOMContentLoaded', () => {
+  const summary = document.querySelector('.form-step[data-step="4"]');
+  const form = document.querySelector('#qualificationForm');
+  if (!summary || !form || document.querySelector('#saveQualification')) return;
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.id = 'saveQualification';
+  button.textContent = 'Envoyer ma demande à DATENSIS';
+  const feedback = document.createElement('p');
+  feedback.id = 'saveQualificationFeedback';
+  feedback.setAttribute('role', 'status');
+  summary.append(button, feedback);
+  button.addEventListener('click', async () => {
+    const value = id => document.getElementById(id)?.value?.trim() || '';
+    const selected = document.querySelector('.sector-card.selected')?.dataset.sector || '';
+    const data = {
+      sector: selected, activity: value('activityType'),
+      needs: [...document.querySelectorAll('input[name="needs"]:checked')].map(x => x.value),
+      difficulty: value('mainDifficulty'), tools: value('currentTools'),
+      objective: value('mainObjective'), firm: value('currentFirm'),
+      expectedServices: value('expectedServices'), projects: value('projectDetails'),
+      deadline: value('deadline'), additionalInformation: value('additionalInformation')
+    };
+    if (!data.sector || !data.activity || !data.objective) {
+      feedback.textContent = 'Sélectionnez un secteur, une activité et décrivez votre objectif.';
+      return;
+    }
+    button.disabled = true;
+    feedback.textContent = 'Enregistrement en cours…';
+    try {
+      const token = document.querySelector('meta[name="csrf-token"]')?.content;
+      if (!token) throw new Error('Jeton de sécurité manquant. Rechargez la page.');
+      const response = await fetch('/api/demandes', {
+        method: 'POST', credentials: 'same-origin',
+        headers: {'Content-Type': 'application/json', 'X-CSRF-Token': token},
+        body: JSON.stringify(data), redirect: 'manual'
+      });
+      if (response.status === 0 || response.status === 302 || response.status === 403) {
+        throw new Error('Connectez-vous à votre compte TPE pour envoyer la demande.');
+      }
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(result.error || 'Enregistrement impossible.');
+      feedback.textContent = 'Demande #' + result.id + ' enregistrée. Redirection…';
+      window.location.assign('/tpe/demandes/gestion/' + result.id);
+    } catch (error) {
+      feedback.textContent = error.message || 'Une erreur est survenue.';
+      button.disabled = false;
+    }
+  });
+});
