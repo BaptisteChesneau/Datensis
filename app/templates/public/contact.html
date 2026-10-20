@@ -106,16 +106,31 @@
                     <div class="form-group">
 
                         <label for="company">
-                            Nom de votre structure (si applicable)
+                            Type de structure *
                         </label>
 
-                        <input
-                            type="text"
+                        <select
                             id="company"
                             name="company"
-                            autocomplete="organization"
-                            placeholder="Entreprise ou cabinet"
-                        >
+                            required
+                            >
+                        <option value="" selected disabled>
+                            Sélectionnez votre type de structure
+                        </option>
+
+                        <option value="entreprise">
+                            Entreprise
+                        </option>
+
+                        <option value="cabinet">
+                            Cabinet d'expertise comptable
+                        </option>
+
+                        <option value="particulier">
+                            Particulier
+                        </option>
+
+                        </select>
 
                     </div>
 
