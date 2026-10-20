@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -80,10 +81,12 @@
 
                 <div class="contact-form-grid">
 
+                    <!-- NOM ET PRÉNOM -->
+
                     <div class="form-group">
 
                         <label for="name">
-                            Nom et prénom
+                            Nom et prénom *
                         </label>
 
                         <input
@@ -91,17 +94,19 @@
                             id="name"
                             name="name"
                             autocomplete="name"
-                            placeholder="Votre nom"
+                            placeholder="Votre nom et prénom"
                             required
                         >
 
                     </div>
 
 
+                    <!-- STRUCTURE -->
+
                     <div class="form-group">
 
                         <label for="company">
-                            Entreprise / Cabinet
+                            Nom de votre structure (si applicable)
                         </label>
 
                         <input
@@ -109,16 +114,18 @@
                             id="company"
                             name="company"
                             autocomplete="organization"
-                            placeholder="Nom de votre structure"
+                            placeholder="Entreprise ou cabinet"
                         >
 
                     </div>
 
 
+                    <!-- EMAIL -->
+
                     <div class="form-group">
 
                         <label for="email">
-                            Adresse e-mail
+                            Adresse e-mail *
                         </label>
 
                         <input
@@ -126,12 +133,14 @@
                             id="email"
                             name="email"
                             autocomplete="email"
-                            placeholder="vous@entreprise.fr"
+                            placeholder="vous@exemple.fr"
                             required
                         >
 
                     </div>
 
+
+                    <!-- TÉLÉPHONE -->
 
                     <div class="form-group">
 
@@ -150,10 +159,12 @@
                     </div>
 
 
+                    <!-- PROFIL -->
+
                     <div class="form-group form-group-full">
 
                         <label for="profile">
-                            Votre profil
+                            Vous êtes *
                         </label>
 
                         <select
@@ -162,20 +173,20 @@
                             required
                         >
 
-                            <option value="">
-                                Sélectionnez votre profil
+                            <option value="" selected disabled>
+                                Sélectionnez votre catégorie
                             </option>
 
-                            <option value="tpe">
-                                Indépendants & TPE
-                            </option>
-
-                            <option value="pme">
-                                PME & ETI
+                            <option value="entreprise">
+                                Une entreprise
                             </option>
 
                             <option value="cabinet">
-                                Cabinet d'expertise comptable
+                                Un cabinet d'expertise comptable
+                            </option>
+
+                            <option value="particulier">
+                                Un particulier
                             </option>
 
                         </select>
@@ -183,10 +194,12 @@
                     </div>
 
 
+                    <!-- OBJET DE LA DEMANDE -->
+
                     <div class="form-group form-group-full">
 
                         <label for="subject">
-                            Objet de votre demande
+                            Objet de votre demande *
                         </label>
 
                         <select
@@ -195,7 +208,7 @@
                             required
                         >
 
-                            <option value="">
+                            <option value="" selected disabled>
                                 Sélectionnez un sujet
                             </option>
 
@@ -228,10 +241,12 @@
                     </div>
 
 
+                    <!-- MESSAGE -->
+
                     <div class="form-group form-group-full">
 
                         <label for="message">
-                            Votre demande
+                            Votre demande *
                         </label>
 
                         <textarea
@@ -247,13 +262,17 @@
                 </div>
 
 
+                <!-- CONSENTEMENT RGPD -->
+
                 <div class="contact-consent">
 
-                    <label>
+                    <label for="contactConsent">
 
                         <input
                             type="checkbox"
                             id="contactConsent"
+                            name="consent"
+                            value="yes"
                             required
                         >
 
@@ -271,6 +290,8 @@
                 </div>
 
 
+                <!-- ENVOI -->
+
                 <div class="contact-submit">
 
                     <button
@@ -287,7 +308,9 @@
         </article>
 
 
-        <!-- INFORMATIONS -->
+        <!-- =====================================================
+             INFORMATIONS
+             ===================================================== -->
 
         <aside class="contact-side">
 
