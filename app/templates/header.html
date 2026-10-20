@@ -1,3 +1,4 @@
+
 <header class="site-header">
 
     <div class="header-container">
@@ -6,20 +7,16 @@
         <a
             href="{{ url_for('main.home') }}"
             class="logo"
+            aria-label="DATENSIS - Retour à l'accueil"
         >
             DATENSIS
         </a>
-
 
         <!-- Navigation publique -->
         <nav
             class="main-nav"
             aria-label="Navigation principale"
         >
-
-            <a href="{{ url_for('main.home') }}">
-                Accueil
-            </a>
 
             <a href="{{ url_for('main.services') }}">
                 Services
