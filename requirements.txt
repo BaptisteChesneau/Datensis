@@ -5,8 +5,11 @@ itsdangerous==2.2.0
 Jinja2==3.1.6
 MarkupSafe==3.0.3
 Werkzeug==3.1.9
-Flask-SQLAlchemy
-SQLAlchemy
-gunicorn
-psycopg2-binary
-python-dotenv
+
+Flask-SQLAlchemy==3.1.1
+SQLAlchemy==2.1.5
+
+psycopg[binary]==3.3.6
+python-dotenv==1.2.4
+
+gunicorn==26.2.0; sys_platform != "win32"
