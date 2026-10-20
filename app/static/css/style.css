@@ -37217,123 +37217,43 @@ textarea:focus-visible {
 }
 
 
+
 /* ==========================================
-   DATENSIS - HEADER FINAL
+   DATENSIS - CORRECTION NAVIGATION HEADER
    ========================================== */
 
-.site-header {
-    width: 100%;
-    background-color: #FFFFFF;
-    border-bottom: 1px solid #E5E7EB;
-    position: relative;
-    z-index: 1000;
-}
-
-.site-header .header-container {
-    max-width: 1200px;
-    min-height: 80px;
-    margin: 0 auto;
-    padding: 16px 24px;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 24px;
-    flex-wrap: wrap;
-}
-
-/* LOGO */
-
-.site-header .logo,
-.site-header .logo:visited {
-    color: #00778B;
-    font-size: 26px;
-    font-weight: 800;
-    letter-spacing: 1px;
-    text-decoration: none;
-    opacity: 1;
-}
-
-.site-header .logo:hover,
-.site-header .logo:focus-visible {
-    color: #E96148;
-    background-color: transparent;
-    opacity: 1;
-    visibility: visible;
-}
-
-/* NAVIGATION */
-
-.site-header .main-nav {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    flex-wrap: wrap;
-}
-
-/* LIENS NORMAUX */
-
+/* Apparence normale */
 .site-header .main-nav a,
 .site-header .main-nav a:visited {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: 12px 18px;
-
     color: #00778B;
-    background-color: transparent;
-
-    font-size: 15px;
-    font-weight: 600;
-    line-height: 1.4;
+    background: transparent;
     text-decoration: none;
-
-    border-radius: 8px;
+    border: none;
+    box-shadow: none;
     opacity: 1;
-    visibility: visible;
-
-    transition:
-        color 0.2s ease,
-        background-color 0.2s ease;
 }
 
-/* SURVOL ET CLAVIER */
-
+/* Survol des boutons */
 .site-header .main-nav a:hover,
 .site-header .main-nav a:focus-visible {
-    color: #FFFFFF;
-    background-color: #00778B;
-    opacity: 1;
-    visibility: visible;
+    color: #E96148;
+    background: transparent;
     text-decoration: none;
+    border: none;
+    box-shadow: none;
+    opacity: 1;
+    transform: none;
 }
 
-/* FOCUS ACCESSIBLE */
+/* Supprime les barres décoratives ajoutées par CSS */
+.site-header .main-nav a::before,
+.site-header .main-nav a::after {
+    content: none;
+    display: none;
+}
 
-.site-header .main-nav a:focus-visible,
-.site-header .logo:focus-visible {
+/* Conserve le repère de navigation au clavier */
+.site-header .main-nav a:focus-visible {
     outline: 2px solid #E96148;
     outline-offset: 3px;
-}
-
-/* RESPONSIVE */
-
-@media (max-width: 768px) {
-
-    .site-header .header-container {
-        flex-direction: column;
-        gap: 14px;
-    }
-
-    .site-header .main-nav {
-        width: 100%;
-        gap: 8px;
-    }
-
-    .site-header .main-nav a {
-        padding: 10px 12px;
-        font-size: 14px;
-    }
 }
