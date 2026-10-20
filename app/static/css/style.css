@@ -159,136 +159,8 @@ textarea {
 
 
 /* =========================================================
-
-   HEADER
-
+   HEADER ACTIONS
    ========================================================= */
-
-
-
-.site-header {
-
-    background: var(--white);
-
-
-
-    border-bottom: 1px solid var(--border);
-
-
-
-    position: sticky;
-
-    top: 0;
-
-
-
-    z-index: 1000;
-
-}
-
-
-
-.header-container {
-
-    max-width: 1440px;
-
-
-
-    min-height: 82px;
-
-
-
-    margin: 0 auto;
-
-
-
-    padding: 0 42px;
-
-
-
-    display: flex;
-
-    align-items: center;
-
-
-
-    gap: 32px;
-
-}
-
-
-
-.logo {
-
-    color: var(--petrol);
-
-
-
-    font-size: 24px;
-
-    font-weight: 900;
-
-
-
-    letter-spacing: 0.5px;
-
-
-
-    margin-right: auto;
-
-}
-
-
-
-.main-nav {
-
-    display: flex;
-
-    align-items: center;
-
-
-
-    gap: 8px;
-
-}
-
-
-
-.main-nav a {
-
-    padding: 10px 13px;
-
-
-
-    border-radius: var(--radius-small);
-
-
-
-    color: var(--text);
-
-
-
-    font-size: 14px;
-
-    font-weight: 700;
-
-
-
-    transition: 0.2s ease;
-
-}
-
-
-
-.main-nav a:hover {
-
-    background: var(--petrol-light);
-
-    color: var(--petrol);
-
-}
-
-
 
 .header-actions {
 
@@ -2254,19 +2126,7 @@ textarea {
 
 @media (max-width: 1050px) {
 
-
-
-    .header-container {
-
-        padding-left: 24px;
-
-        padding-right: 24px;
-
-    }
-
-
-
-    .dashboard-page {
+.dashboard-page {
 
         padding-left: 24px;
 
@@ -2314,43 +2174,7 @@ textarea {
 
 @media (max-width: 760px) {
 
-
-
-    .header-container {
-
-        flex-wrap: wrap;
-
-
-
-        padding-top: 15px;
-
-        padding-bottom: 15px;
-
-    }
-
-
-
-    .logo {
-
-        width: 100%;
-
-    }
-
-
-
-    .main-nav {
-
-        width: 100%;
-
-
-
-        overflow-x: auto;
-
-    }
-
-
-
-    .header-actions {
+.header-actions {
 
         width: 100%;
 
@@ -9134,110 +8958,6 @@ main {
 
 
 /* =========================================================
-   HEADER DATENSIS
-   ========================================================= */
-
-.site-header {
-    width: 100%;
-
-    background: #00778B;
-
-    border-bottom: none;
-
-    box-shadow:
-        0 4px 18px rgba(0, 70, 82, 0.15);
-}
-
-
-.header-container {
-    max-width: 1400px;
-
-    min-height: 88px;
-
-    margin: 0 auto;
-
-    padding: 0 52px;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    gap: 40px;
-}
-
-
-/* Logo */
-
-.site-header .logo {
-    color: #FFFFFF;
-
-    font-size: 31px;
-    font-weight: 900;
-
-    letter-spacing: 0.04em;
-
-    text-decoration: none;
-}
-
-
-/* Navigation */
-
-.site-header .main-nav {
-    display: flex;
-    align-items: center;
-
-    gap: 42px;
-}
-
-
-.site-header .main-nav a {
-    position: relative;
-
-    padding: 31px 0;
-
-    color: #FFFFFF;
-
-    font-size: 16px;
-    font-weight: 700;
-
-    text-decoration: none;
-
-    transition:
-        color 0.2s ease,
-        opacity 0.2s ease;
-}
-
-
-.site-header .main-nav a::after {
-    content: "";
-
-    position: absolute;
-
-    left: 0;
-    bottom: 22px;
-
-    width: 0;
-    height: 3px;
-
-    background: #82C4A8;
-
-    border-radius: 10px;
-
-    transition: width 0.2s ease;
-}
-
-
-.site-header .main-nav a:hover {
-    color: #FFFFFF;
-}
-
-
-.site-header .main-nav a:hover::after {
-    width: 100%;
-}
-
-
-/* =========================================================
    PAGE TPE
    ========================================================= */
 
@@ -9856,12 +9576,7 @@ main {
 
 @media (max-width: 950px) {
 
-    .header-container {
-        padding: 0 28px;
-    }
-
-
-    .tpe-service-hero {
+.tpe-service-hero {
         grid-template-columns: 1fr;
 
         gap: 35px;
@@ -9893,39 +9608,7 @@ main {
 
 @media (max-width: 700px) {
 
-    .header-container {
-        min-height: auto;
-
-        padding: 22px;
-
-        flex-direction: column;
-
-        gap: 18px;
-    }
-
-
-    .site-header .main-nav {
-        width: 100%;
-
-        justify-content: center;
-
-        flex-wrap: wrap;
-
-        gap: 10px 22px;
-    }
-
-
-    .site-header .main-nav a {
-        padding: 6px 0;
-    }
-
-
-    .site-header .main-nav a::after {
-        bottom: 0;
-    }
-
-
-    .tpe-service-hero,
+.tpe-service-hero,
     .public-process-section,
     .public-journey-layout,
     .tpe-next-step {
@@ -37216,44 +36899,94 @@ textarea:focus-visible {
     }
 }
 
+/* =========================================================
+   DATENSIS - HEADER FINAL UNIFIE
+   Un seul style pour la navigation publique.
+   ========================================================= */
+.site-header {
+    width: 100%;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: #FFFFFF;
+    border-bottom: 1px solid #D7E3E5;
+    box-shadow: 0 2px 12px rgba(0, 65, 75, 0.05);
+}
 
+.header-container {
+    max-width: 1400px;
+    min-height: 82px;
+    margin: 0 auto;
+    padding: 0 42px;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+}
 
-/* ==========================================
-   DATENSIS - CORRECTION NAVIGATION HEADER
-   ========================================== */
+.site-header .logo {
+    margin-right: auto;
+    color: #00778B;
+    font-size: 26px;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+}
 
-/* Apparence normale */
+.site-header .main-nav {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
 .site-header .main-nav a,
 .site-header .main-nav a:visited {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: static;
+    padding: 12px 18px;
+    border: 0;
+    border-radius: 10px;
+    background: transparent;
     color: #00778B;
-    background: transparent;
+    font-size: 16px;
+    font-weight: 700;
     text-decoration: none;
-    border: none;
-    box-shadow: none;
     opacity: 1;
-}
-
-/* Survol des boutons */
-.site-header .main-nav a:hover,
-.site-header .main-nav a:focus-visible {
-    color: #E96148;
-    background: transparent;
-    text-decoration: none;
-    border: none;
+    filter: none;
     box-shadow: none;
-    opacity: 1;
     transform: none;
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-/* Supprime les barres décoratives ajoutées par CSS */
+.site-header .main-nav a:hover,
+.site-header .main-nav a:visited:hover {
+    background: #00778B;
+    color: #FFFFFF;
+    text-decoration: none;
+    opacity: 1;
+}
+
 .site-header .main-nav a::before,
 .site-header .main-nav a::after {
     content: none;
     display: none;
 }
 
-/* Conserve le repère de navigation au clavier */
 .site-header .main-nav a:focus-visible {
+    background: #00778B;
+    color: #FFFFFF;
     outline: 2px solid #E96148;
     outline-offset: 3px;
+}
+
+@media (max-width: 1050px) {
+    .header-container { padding-left: 24px; padding-right: 24px; }
+}
+
+@media (max-width: 760px) {
+    .header-container { flex-wrap: wrap; padding: 16px; gap: 16px; }
+    .site-header .logo { width: 100%; }
+    .site-header .main-nav { width: 100%; gap: 8px; flex-wrap: wrap; }
+    .site-header .main-nav a { padding: 10px 12px; font-size: 14px; }
 }
