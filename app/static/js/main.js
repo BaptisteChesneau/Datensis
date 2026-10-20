@@ -1060,7 +1060,10 @@ document.addEventListener(
             chatbotForm &&
             chatbotInput &&
             chatbotMessages
+        &&
+            chatbotForm.dataset.datensisChatbotInitialized !== "true"
         ) {
+            chatbotForm.dataset.datensisChatbotInitialized = "true";
 
             /* =============================================
                ESPACE COURANT
@@ -6345,7 +6348,10 @@ document.addEventListener(
             chatbotForm &&
             chatbotInput &&
             chatbotMessages
+        &&
+            chatbotForm.dataset.datensisChatbotInitialized !== "true"
         ) {
+            chatbotForm.dataset.datensisChatbotInitialized = "true";
 
             /* =============================================
                ESPACE ACTUEL
