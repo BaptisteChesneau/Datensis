@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -7,8 +8,10 @@
 
     <title>Connexion PME & ETI</title>
 
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/style.css') }}">
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
 </head>
 
 <body class="pme-auth login-page">
@@ -32,7 +35,6 @@
                 vos sites et vos prochaines actions.
             </p>
 
-
             <div class="pme-login-summary">
 
                 <div>
@@ -52,12 +54,35 @@
 
             </div>
 
+            <!-- MESSAGES FLASK -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div
+                            class="form-message form-message-{{ category }}"
+                            role="alert"
+                        >
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
 
+            <!-- FORMULAIRE DE CONNEXION PME -->
             <form
                 id="loginForm"
                 class="datensis-login-form journey-form"
+                method="POST"
+                action="{{ url_for('main.pme_connexion') }}"
                 data-redirect="{{ url_for('main.pme_dashboard') }}"
             >
+
+                <!-- PROTECTION CSRF -->
+                <input
+                    type="hidden"
+                    name="csrf_token"
+                    value="{{ csrf_token() }}"
+                >
 
                 <div class="form-group">
 
@@ -76,7 +101,6 @@
 
                 </div>
 
-
                 <div class="form-group">
 
                     <label for="loginPassword">
@@ -94,7 +118,6 @@
 
                 </div>
 
-
                 <div class="auth-login-options">
 
                     <label class="auth-remember">
@@ -110,13 +133,14 @@
 
                     </label>
 
-                    <a href="#"
-                       class="auth-forgot">
+                    <a
+                        href="#"
+                        class="auth-forgot"
+                    >
                         Mot de passe oublié ?
                     </a>
 
                 </div>
-
 
                 <button
                     type="submit"
@@ -126,7 +150,6 @@
                 </button>
 
             </form>
-
 
             <div class="account-login-link">
 
@@ -139,7 +162,6 @@
                 </p>
 
             </div>
-
 
             <div class="account-back">
 
@@ -155,7 +177,7 @@
 
 </main>
 
-<script src="{{ url_for('static', filename='js/global.js') }}"></script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
 
 </body>
 </html>

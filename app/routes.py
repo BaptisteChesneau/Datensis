@@ -60,8 +60,12 @@ def tpe_creation_compte():
     return render_template("tpe/creation_compte.html")
 
 
-@main.route("/tpe/connexion")
+@main.route("/tpe/connexion", methods=["GET", "POST"])
 def tpe_connexion():
+    if request.method == "POST":
+        flash("La vérification des identifiants n'est pas encore configurée.", "error")
+        return redirect(url_for("main.tpe_connexion"))
+
     return render_template("tpe/connexion.html")
 
 
@@ -94,8 +98,12 @@ def pme_creation_compte():
     return render_template("pme/creation_compte.html")
 
 
-@main.route("/pme/connexion")
+@main.route("/pme/connexion", methods=["GET", "POST"])
 def pme_connexion():
+    if request.method == "POST":
+        flash("La vérification des identifiants n'est pas encore configurée.", "error")
+        return redirect(url_for("main.pme_connexion"))
+
     return render_template("pme/connexion.html")
 
 
@@ -117,8 +125,12 @@ def cabinet_creation_compte():
     return render_template("cabinet/creation_compte.html")
 
 
-@main.route("/cabinet/connexion")
+@main.route("/cabinet/connexion", methods=["GET", "POST"])
 def cabinet_connexion():
+    if request.method == "POST":
+        flash("La vérification des identifiants n'est pas encore configurée.", "error")
+        return redirect(url_for("main.cabinet_connexion"))
+
     return render_template("cabinet/connexion.html")
 
 

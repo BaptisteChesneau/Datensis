@@ -547,6 +547,10 @@ class Conversation(Base):
 
     id_conversation = Column(Integer, primary_key=True)
     objet = Column(String(255))
+    id_type_conversation = Column(Integer, ForeignKey("type_conversation.id_type_conversation"))
+    id_statut_conversation = Column(
+        Integer, ForeignKey("statut_conversation.id_statut_conversation")
+    )
 
     date_creation = Column(
         DateTime,
@@ -860,6 +864,231 @@ Index(
 
 
 # ============================================================
+# 28. CONNAISSANCE CHATBOT
+# ============================================================
+
+
+class ConnaissanceChatbot(Base):
+    __tablename__ = "connaissance_chatbot"
+
+    id_connaissance_chatbot = Column(Integer, primary_key=True)
+    profil_cible = Column(String(20), nullable=False)
+    question = Column(String(500), nullable=False)
+    mots_cles = Column(Text)
+    reponse = Column(Text, nullable=False)
+    libelle_redirection = Column(String(150))
+    chemin_redirection = Column(String(500))
+    priorite = Column(Integer, nullable=False, default=0)
+    actif = Column(Boolean, nullable=False, default=True)
+    date_creation = Column(DateTime, nullable=False, server_default=func.current_timestamp())
+    date_modification = Column(DateTime)
+
+    __table_args__ = (
+        CheckConstraint(
+            "profil_cible IN ('tpe', 'pme', 'cabinet', 'tous')",
+            name="ck_connaissance_chatbot_profil",
+        ),
+        CheckConstraint("length(trim(question)) > 0", name="ck_connaissance_chatbot_question"),
+        CheckConstraint("length(trim(reponse)) > 0", name="ck_connaissance_chatbot_reponse"),
+        CheckConstraint("priorite >= 0", name="ck_connaissance_chatbot_priorite"),
+    )
+
+
+# ============================================================
+# 29. CONVERSATION CHATBOT
+# ============================================================
+
+
+class ConversationChatbot(Base):
+    __tablename__ = "conversation_chatbot"
+
+    id_conversation_chatbot = Column(Integer, primary_key=True)
+    id_utilisateur = Column(Integer, ForeignKey("utilisateur.id_utilisateur"), nullable=True)
+    profil_cible = Column(String(20), nullable=False)
+    date_creation = Column(DateTime, nullable=False, server_default=func.current_timestamp())
+    date_cloture = Column(DateTime)
+
+    __table_args__ = (
+        CheckConstraint(
+            "profil_cible IN ('tpe', 'pme', 'cabinet')", name="ck_conversation_chatbot_profil"
+        ),
+        CheckConstraint(
+            "date_cloture IS NULL OR date_cloture >= date_creation",
+            name="ck_conversation_chatbot_dates",
+        ),
+    )
+
+
+# ============================================================
+# 30. MESSAGE CHATBOT
+# ============================================================
+
+
+class MessageChatbot(Base):
+    __tablename__ = "message_chatbot"
+
+    id_message_chatbot = Column(Integer, primary_key=True)
+    id_conversation_chatbot = Column(
+        Integer, ForeignKey("conversation_chatbot.id_conversation_chatbot"), nullable=False
+    )
+    id_connaissance_chatbot = Column(
+        Integer, ForeignKey("connaissance_chatbot.id_connaissance_chatbot"), nullable=True
+    )
+    emetteur = Column(String(20), nullable=False)
+    contenu = Column(Text, nullable=False)
+    date_envoi = Column(DateTime, nullable=False, server_default=func.current_timestamp())
+
+    __table_args__ = (
+        CheckConstraint(
+            "emetteur IN ('utilisateur', 'chatbot')", name="ck_message_chatbot_emetteur"
+        ),
+        CheckConstraint("length(trim(contenu)) > 0", name="ck_message_chatbot_contenu"),
+    )
+
+
+# ============================================================
+# 31. EVALUATION CHATBOT
+# ============================================================
+
+
+class EvaluationChatbot(Base):
+    __tablename__ = "evaluation_chatbot"
+
+    id_evaluation_chatbot = Column(Integer, primary_key=True)
+    id_message_chatbot = Column(
+        Integer, ForeignKey("message_chatbot.id_message_chatbot"), unique=True, nullable=False
+    )
+    utile = Column(Boolean, nullable=False)
+    commentaire = Column(Text)
+    date_evaluation = Column(DateTime, nullable=False, server_default=func.current_timestamp())
+
+
+Index(
+    "idx_connaissance_chatbot_profil", ConnaissanceChatbot.profil_cible, ConnaissanceChatbot.actif
+)
+Index(
+    "idx_conversation_chatbot_utilisateur",
+    ConversationChatbot.id_utilisateur,
+    ConversationChatbot.date_creation,
+)
+Index(
+    "idx_message_chatbot_conversation",
+    MessageChatbot.id_conversation_chatbot,
+    MessageChatbot.date_envoi,
+)
+
+
+# ============================================================
+# 32. TYPE CONVERSATION
+# ============================================================
+
+
+class TypeConversation(Base):
+    __tablename__ = "type_conversation"
+
+    id_type_conversation = Column(Integer, primary_key=True)
+    code_type = Column(String(30), nullable=False, unique=True)
+    libelle_type = Column(String(100), nullable=False)
+    description = Column(Text)
+
+
+# ============================================================
+# 33. STATUT CONVERSATION
+# ============================================================
+
+
+class StatutConversation(Base):
+    __tablename__ = "statut_conversation"
+
+    id_statut_conversation = Column(Integer, primary_key=True)
+    code_statut = Column(String(30), nullable=False, unique=True)
+    libelle_statut = Column(String(100), nullable=False)
+    description = Column(Text)
+
+
+# ============================================================
+# 34. AFFECTATION CONVERSATION
+# ============================================================
+
+
+class AffectationConversation(Base):
+    __tablename__ = "affectation_conversation"
+
+    id_affectation = Column(Integer, primary_key=True)
+    id_conversation = Column(Integer, ForeignKey("conversation.id_conversation"), nullable=False)
+    id_collaborateur = Column(Integer, ForeignKey("collaborateur.id_collaborateur"), nullable=False)
+    date_affectation = Column(DateTime, nullable=False, server_default=func.current_timestamp())
+    date_fin_affectation = Column(DateTime)
+    actif = Column(Boolean, nullable=False, default=True)
+
+    __table_args__ = (
+        CheckConstraint(
+            "date_fin_affectation IS NULL OR date_fin_affectation >= date_affectation",
+            name="ck_affectation_conversation_dates",
+        ),
+    )
+
+
+# ============================================================
+# 35. HISTORIQUE CONVERSATION
+# ============================================================
+
+
+class HistoriqueConversation(Base):
+    __tablename__ = "historique_conversation"
+
+    id_historique_conversation = Column(Integer, primary_key=True)
+    id_conversation = Column(Integer, ForeignKey("conversation.id_conversation"), nullable=False)
+    id_utilisateur = Column(Integer, ForeignKey("utilisateur.id_utilisateur"))
+    id_ancien_statut = Column(Integer, ForeignKey("statut_conversation.id_statut_conversation"))
+    id_nouveau_statut = Column(
+        Integer, ForeignKey("statut_conversation.id_statut_conversation"), nullable=False
+    )
+    commentaire = Column(Text)
+    date_modification = Column(DateTime, nullable=False, server_default=func.current_timestamp())
+
+
+Index(
+    "idx_affectation_conversation",
+    AffectationConversation.id_conversation,
+    AffectationConversation.actif,
+)
+Index(
+    "idx_affectation_collaborateur",
+    AffectationConversation.id_collaborateur,
+    AffectationConversation.actif,
+)
+Index(
+    "idx_historique_conversation",
+    HistoriqueConversation.id_conversation,
+    HistoriqueConversation.date_modification,
+)
+
+
+# ============================================================
+# 36. REINITIALISATION MOT DE PASSE
+# ============================================================
+
+
+class ReinitialisationMotDePasse(Base):
+    __tablename__ = "reinitialisation_mot_de_passe"
+
+    id_reinitialisation = Column(Integer, primary_key=True)
+    id_utilisateur = Column(Integer, ForeignKey("utilisateur.id_utilisateur"), nullable=False)
+    profil = Column(String(20), nullable=False)
+    empreinte_jeton = Column(String(64), nullable=False, unique=True)
+    # Conserver le format texte ISO 8601 attendu par le service password_reset existant.
+    date_creation = Column(String(40), nullable=False)
+    date_expiration = Column(String(40), nullable=False)
+    date_utilisation = Column(String(40))
+
+    __table_args__ = (
+        CheckConstraint("profil IN ('tpe', 'pme', 'cabinet')", name="ck_reset_profil"),
+        Index("ix_reset_utilisateur", "id_utilisateur"),
+    )
+
+
+# ============================================================
 # CREATION DES TABLES
 # ============================================================
 
@@ -873,6 +1102,28 @@ def creer_tables():
     print("=" * 60)
     print("DATENSIS - CREATION DE LA BASE DE DONNEES")
     print("=" * 60)
+
+    # Migration additive pour une base SQLite existante : aucune donnee effacee.
+    from sqlalchemy import inspect, text
+
+    with engine.begin() as connexion:
+        noms_tables = inspect(connexion).get_table_names()
+        if "conversation" in noms_tables:
+            colonnes = {col["name"] for col in inspect(connexion).get_columns("conversation")}
+            if "id_type_conversation" not in colonnes:
+                connexion.execute(
+                    text(
+                        "ALTER TABLE conversation ADD COLUMN id_type_conversation INTEGER "
+                        "REFERENCES type_conversation(id_type_conversation)"
+                    )
+                )
+            if "id_statut_conversation" not in colonnes:
+                connexion.execute(
+                    text(
+                        "ALTER TABLE conversation ADD COLUMN id_statut_conversation INTEGER "
+                        "REFERENCES statut_conversation(id_statut_conversation)"
+                    )
+                )
 
     Base.metadata.create_all(engine)
 
@@ -896,10 +1147,10 @@ def creer_tables():
     for numero, nom in enumerate(tables, start=1):
         print(f"{numero:02d}. {nom}")
 
-    if len(tables) == 27:
-        print("\nSUCCES : les 27 tables sont créées.")
+    if len(tables) == 36:
+        print("\nSUCCES : les 36 tables sont créées.")
     else:
-        print("\nATTENTION : nombre de tables différent de 27.")
+        print("\nATTENTION : nombre de tables différent de 36.")
 
 
 if __name__ == "__main__":

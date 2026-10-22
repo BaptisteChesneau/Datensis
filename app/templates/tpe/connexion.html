@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -5,10 +6,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Connexion Indépendants & TPE</title>
+    <title>Connexion Indépendants & TPE | DATENSIS</title>
 
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/style.css') }}">
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
 </head>
 
 <body class="tpe-auth login-page">
@@ -32,12 +35,35 @@
                 vos projets et vos échanges avec DATENSIS.
             </p>
 
+            <!-- MESSAGES FLASK -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div
+                            class="form-message form-message-{{ category }}"
+                            role="alert"
+                        >
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
 
+            <!-- FORMULAIRE DE CONNEXION TPE -->
             <form
                 id="loginForm"
                 class="datensis-login-form journey-form"
+                method="POST"
+                action="{{ url_for('main.tpe_connexion') }}"
                 data-redirect="{{ url_for('main.tpe_dashboard') }}"
             >
+
+                <!-- PROTECTION CSRF -->
+                <input
+                    type="hidden"
+                    name="csrf_token"
+                    value="{{ csrf_token() }}"
+                >
 
                 <div class="form-group">
 
@@ -56,7 +82,6 @@
 
                 </div>
 
-
                 <div class="form-group">
 
                     <label for="loginPassword">
@@ -74,7 +99,6 @@
 
                 </div>
 
-
                 <div class="auth-login-options">
 
                     <label class="auth-remember">
@@ -90,13 +114,14 @@
 
                     </label>
 
-                    <a href="#"
-                       class="auth-forgot">
+                    <a
+                        href="#"
+                        class="auth-forgot"
+                    >
                         Mot de passe oublié ?
                     </a>
 
                 </div>
-
 
                 <button
                     type="submit"
@@ -107,11 +132,9 @@
 
             </form>
 
-
             <div class="auth-separator">
                 <span>ou</span>
             </div>
-
 
             <div class="account-login-link">
 
@@ -124,7 +147,6 @@
                 </p>
 
             </div>
-
 
             <div class="account-back">
 
