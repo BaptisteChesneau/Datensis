@@ -2,7 +2,7 @@
 
 import logging
 
-from flask import Blueprint, flash, redirect, render_template, request, url_for
+from flask import Blueprint, abort, flash, redirect, render_template, request, url_for
 
 from app.services.email_verification import (
     find_resend_candidate,
@@ -478,3 +478,125 @@ def renvoyer_verification():
         flash("Si ce compte est éligible, un e-mail de vérification sera envoyé.", "info")
         return redirect(url_for("main.renvoyer_verification"))
     return render_template("public/renvoyer_verification.html")
+
+
+# ============================================================
+# DATENSIS - MOT DE PASSE OUBLIE
+# ============================================================
+
+PROFILS_RESET = {
+    "tpe": {
+        "connexion": "main.tpe_connexion",
+        "dossier": "tpe",
+    },
+    "pme": {
+        "connexion": "main.pme_connexion",
+        "dossier": "pme",
+    },
+    "cabinet": {
+        "connexion": "main.cabinet_connexion",
+        "dossier": "cabinet",
+    },
+}
+
+
+# ============================================================
+# 1. DEMANDE DE REINITIALISATION
+# ============================================================
+
+
+@main.route(
+    "/<profil>/mot-de-passe-oublie",
+    methods=["GET", "POST"],
+)
+def mot_de_passe_oublie(profil):
+    configuration = PROFILS_RESET.get(profil)
+
+    if configuration is None:
+        abort(404)
+
+    if request.method == "POST":
+        email = request.form.get("email", "").strip().lower()
+
+        if not email or len(email) > 254:
+            flash("Veuillez saisir une adresse e-mail valide.", "error")
+            return redirect(url_for("main.mot_de_passe_oublie", profil=profil))
+
+        # A connecter au service app/services/password_reset.py
+        # Le service doit :
+        # - rechercher un compte eligible pour ce profil ;
+        # - generer un jeton securise ;
+        # - enregistrer son empreinte et son expiration ;
+        # - envoyer le lien par e-mail ;
+        # - ne pas reveler si le compte existe.
+
+        flash(
+            "Si un compte correspond a cette adresse, "
+            "un lien de reinitialisation vous sera envoye.",
+            "info",
+        )
+
+        return redirect(url_for("main.mot_de_passe_oublie", profil=profil))
+
+    return render_template(
+        f"{configuration['dossier']}/mot_de_passe_oublie.html",
+        profil=profil,
+    )
+
+
+# ============================================================
+# 2. REINITIALISATION DU MOT DE PASSE
+# ============================================================
+
+
+@main.route(
+    "/<profil>/reinitialiser-mot-de-passe/<token>",
+    methods=["GET", "POST"],
+)
+def reinitialiser_mot_de_passe(profil, token):
+    configuration = PROFILS_RESET.get(profil)
+
+    if configuration is None:
+        abort(404)
+
+    # A connecter au service password_reset.py :
+    # verifier l'existence, l'expiration et l'usage unique du jeton.
+
+    if request.method == "POST":
+        password = request.form.get("password", "")
+        password_confirm = request.form.get("password_confirm", "")
+
+        if password != password_confirm:
+            flash("Les mots de passe ne correspondent pas.", "error")
+            return redirect(
+                url_for(
+                    "main.reinitialiser_mot_de_passe",
+                    profil=profil,
+                    token=token,
+                )
+            )
+
+        # IMPORTANT :
+        # Ne pas modifier directement le mot de passe ici.
+        # Le service doit verifier et consommer le jeton,
+        # enregistrer le mot de passe hache,
+        # invalider les sessions et envoyer la confirmation.
+
+        flash(
+            "La reinitialisation du mot de passe n'est pas encore connectee au service.",
+            "error",
+        )
+
+        return redirect(
+            url_for(
+                "main.reinitialiser_mot_de_passe",
+                profil=profil,
+                token=token,
+            )
+        )
+
+    return render_template(
+        f"{configuration['dossier']}/reinitialiser_mot_de_passe.html",
+        profil=profil,
+        token=token,
+    )

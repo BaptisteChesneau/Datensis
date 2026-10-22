@@ -348,3 +348,24 @@ Thumbs.db
 build/
 dist/
 *.egg-info/
+
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Environnement virtuel
+.venv/
+
+# Variables sensibles
+.env
+.env.*
+
+# Bases de donnees locales
+*.db
+*.sqlite
+*.sqlite3
+
+# Cache des tests
+.pytest_cache/
+.ruff_cache/
