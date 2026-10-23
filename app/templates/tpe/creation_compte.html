@@ -72,13 +72,6 @@
                 action="{{ url_for('main.tpe_creation_compte') }}"
             >
 
-                <!-- PROTECTION CSRF DATENSIS -->
-                <input
-                    type="hidden"
-                    name="csrf_token"
-                    value="{{ csrf_token() }}"
-                >
-
                 <!-- Profil TPE -->
                 <input
                     type="hidden"

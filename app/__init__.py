@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from flask import Flask
 from werkzeug.middleware.proxy_fix import ProxyFix
 
-from app.extensions import csrf, db
+from app.extensions import db
 
 # ============================================================
 # DATENSIS - CONFIGURATION PRINCIPALE FLASK
@@ -143,7 +143,6 @@ def create_app():
     # =========================================================
 
     db.init_app(app)
-    csrf.init_app(app)
 
     # =========================================================
     # 8. ENREGISTREMENT DES ROUTES EXISTANTES

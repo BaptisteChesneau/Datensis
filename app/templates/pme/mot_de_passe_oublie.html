@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mot de passe oublié | DATENSIS</title>
+    <title>Mot de passe oublié</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body class="pme-auth login-page">
@@ -18,8 +18,7 @@
             <div class="form-message form-message-{{ category }}" role="alert">{{ message }}</div>
         {% endfor %}
     {% endwith %}
-    <form class="journey-form" method="POST" action="{{ url_for('main.mot_de_passe_oublie', profil='pme') }}}}">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <form class="journey-form" method="POST" action="{{ url_for('main.mot_de_passe_oublie', profil='pme') }}}}">>
         <label for="email">Adresse e-mail</label>
 <input id="email" type="email" name="email" autocomplete="email" maxlength="254" required>
 <button type="submit" class="btn-primary">Recevoir un lien de réinitialisation</button>

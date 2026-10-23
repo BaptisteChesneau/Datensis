@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Choisir un nouveau mot de passe | DATENSIS</title>
+    <title>Choisir un nouveau mot de passe</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body class="pme-auth login-page">
@@ -19,7 +19,6 @@
         {% endfor %}
     {% endwith %}
     <form class="journey-form" method="POST" action="{{ url_for('main.reinitialiser_mot_de_passe', profil='pme', jeton=jeton) }}}}">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <label for="password">Nouveau mot de passe</label>
 <input id="password" type="password" name="password" autocomplete="new-password" minlength="12" required>
 <small class="form-help">12 caractères minimum, une majuscule, un chiffre et un caractère spécial.</small>

@@ -74,13 +74,6 @@
                 data-redirect="{{ url_for('main.cabinet_dashboard') }}"
             >
 
-                <!-- PROTECTION CSRF -->
-                <input
-                    type="hidden"
-                    name="csrf_token"
-                    value="{{ csrf_token() }}"
-                >
-
                 <div class="form-group">
 
                     <label for="loginEmail">

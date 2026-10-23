@@ -72,13 +72,6 @@
                 action="{{ url_for('main.cabinet_creation_compte') }}"
             >
 
-                <!-- PROTECTION CSRF -->
-                <input
-                    type="hidden"
-                    name="csrf_token"
-                    value="{{ csrf_token() }}"
-                >
-
                 <!-- Profil Cabinet -->
                 <input
                     type="hidden"

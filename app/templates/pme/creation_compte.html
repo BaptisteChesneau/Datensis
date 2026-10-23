@@ -70,13 +70,6 @@
                 action="{{ url_for('main.pme_creation_compte') }}"
             >
 
-                <!-- PROTECTION CSRF -->
-                <input
-                    type="hidden"
-                    name="csrf_token"
-                    value="{{ csrf_token() }}"
-                >
-
                 <!-- Profil PME -->
                 <input
                     type="hidden"
