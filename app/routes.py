@@ -11,6 +11,15 @@ from app.services.email_verification import (
 )
 from app.services.inscription import ErreurInscription, creer_compte
 from app.services.mail import send_verification_email
+from app.services.password_reset import (
+    changer_mot_de_passe,
+    demander_reinitialisation,
+    jeton_valide,
+)
+from app.services.password_reset_mail import (
+    envoyer_confirmation_modification,
+    envoyer_lien_reinitialisation,
+)
 
 main = Blueprint("main", __name__)
 logger = logging.getLogger(__name__)
@@ -485,57 +494,38 @@ def renvoyer_verification():
 # ============================================================
 
 PROFILS_RESET = {
-    "tpe": {
-        "connexion": "main.tpe_connexion",
-        "dossier": "tpe",
-    },
-    "pme": {
-        "connexion": "main.pme_connexion",
-        "dossier": "pme",
-    },
-    "cabinet": {
-        "connexion": "main.cabinet_connexion",
-        "dossier": "cabinet",
-    },
+    "tpe": {"connexion": "main.tpe_connexion", "dossier": "tpe"},
+    "pme": {"connexion": "main.pme_connexion", "dossier": "pme"},
+    "cabinet": {"connexion": "main.cabinet_connexion", "dossier": "cabinet"},
 }
 
 
-# ============================================================
-# 1. DEMANDE DE REINITIALISATION
-# ============================================================
-
-
-@main.route(
-    "/<profil>/mot-de-passe-oublie",
-    methods=["GET", "POST"],
-)
+@main.route("/<profil>/mot-de-passe-oublie", methods=["GET", "POST"])
 def mot_de_passe_oublie(profil):
     configuration = PROFILS_RESET.get(profil)
-
     if configuration is None:
         abort(404)
 
     if request.method == "POST":
         email = request.form.get("email", "").strip().lower()
-
-        if not email or len(email) > 254:
+        if not email or len(email) > 254 or "@" not in email:
             flash("Veuillez saisir une adresse e-mail valide.", "error")
             return redirect(url_for("main.mot_de_passe_oublie", profil=profil))
 
-        # A connecter au service app/services/password_reset.py
-        # Le service doit :
-        # - rechercher un compte eligible pour ce profil ;
-        # - generer un jeton securise ;
-        # - enregistrer son empreinte et son expiration ;
-        # - envoyer le lien par e-mail ;
-        # - ne pas reveler si le compte existe.
+        try:
+            resultat = demander_reinitialisation(email, profil)
+            if resultat is not None:
+                destinataire, jeton = resultat
+                envoyer_lien_reinitialisation(destinataire, jeton, profil)
+        except Exception:
+            logger.exception("Echec interne de la demande de reinitialisation (%s)", profil)
 
+        # Ne pas reveler si un compte existe pour cette adresse.
         flash(
-            "Si un compte correspond a cette adresse, "
-            "un lien de reinitialisation vous sera envoye.",
+            "Si un compte correspond à cette adresse, "
+            "un lien de réinitialisation vous sera envoyé.",
             "info",
         )
-
         return redirect(url_for("main.mot_de_passe_oublie", profil=profil))
 
     return render_template(
@@ -544,56 +534,44 @@ def mot_de_passe_oublie(profil):
     )
 
 
-# ============================================================
-# 2. REINITIALISATION DU MOT DE PASSE
-# ============================================================
-
-
-@main.route(
-    "/<profil>/reinitialiser-mot-de-passe/<token>",
-    methods=["GET", "POST"],
-)
+@main.route("/<profil>/reinitialiser-mot-de-passe/<token>", methods=["GET", "POST"])
 def reinitialiser_mot_de_passe(profil, token):
     configuration = PROFILS_RESET.get(profil)
-
     if configuration is None:
         abort(404)
 
-    # A connecter au service password_reset.py :
-    # verifier l'existence, l'expiration et l'usage unique du jeton.
+    try:
+        valide = jeton_valide(token, profil)
+    except Exception:
+        logger.exception("Echec interne de verification du jeton (%s)", profil)
+        abort(500)
+
+    if not valide:
+        flash("Lien invalide, expiré ou déjà utilisé.", "error")
+        return redirect(url_for("main.mot_de_passe_oublie", profil=profil))
 
     if request.method == "POST":
         password = request.form.get("password", "")
-        password_confirm = request.form.get("password_confirm", "")
+        confirmation = request.form.get("password_confirm", "")
 
-        if password != password_confirm:
-            flash("Les mots de passe ne correspondent pas.", "error")
-            return redirect(
-                url_for(
-                    "main.reinitialiser_mot_de_passe",
-                    profil=profil,
-                    token=token,
-                )
+        try:
+            destinataire, date_modification = changer_mot_de_passe(
+                token, profil, password, confirmation
             )
+        except ValueError as erreur:
+            flash(str(erreur), "error")
+            return redirect(url_for("main.reinitialiser_mot_de_passe", profil=profil, token=token))
+        except Exception:
+            logger.exception("Echec interne du changement de mot de passe (%s)", profil)
+            abort(500)
 
-        # IMPORTANT :
-        # Ne pas modifier directement le mot de passe ici.
-        # Le service doit verifier et consommer le jeton,
-        # enregistrer le mot de passe hache,
-        # invalider les sessions et envoyer la confirmation.
+        try:
+            envoyer_confirmation_modification(destinataire, date_modification)
+        except Exception:
+            logger.exception("Mot de passe change, e-mail de confirmation non envoye")
 
-        flash(
-            "La reinitialisation du mot de passe n'est pas encore connectee au service.",
-            "error",
-        )
-
-        return redirect(
-            url_for(
-                "main.reinitialiser_mot_de_passe",
-                profil=profil,
-                token=token,
-            )
-        )
+        flash("Votre mot de passe a été modifié. Vous pouvez vous connecter.", "success")
+        return redirect(url_for(configuration["connexion"]))
 
     return render_template(
         f"{configuration['dossier']}/reinitialiser_mot_de_passe.html",

@@ -14,43 +14,90 @@ def _envoyer(destinataire, sujet, contenu):
     host = config.get("SMTP_HOST")
     expediteur = config.get("SMTP_FROM")
     mode = str(config.get("SMTP_SECURITY", "starttls")).lower()
+
     if not host or not expediteur or mode not in ("ssl", "starttls"):
         raise RuntimeError("Configuration SMTP incomplète.")
+
     port = int(config.get("SMTP_PORT") or (465 if mode == "ssl" else 587))
+
     message = EmailMessage()
     message["From"] = expediteur
     message["To"] = destinataire
     message["Subject"] = sujet
     message.set_content(contenu)
+
     contexte = ssl.create_default_context()
+
     if mode == "ssl":
-        smtp = smtplib.SMTP_SSL(host, port, timeout=15, context=contexte)
+        smtp = smtplib.SMTP_SSL(
+            host,
+            port,
+            timeout=15,
+            context=contexte,
+        )
     else:
         smtp = smtplib.SMTP(host, port, timeout=15)
+
     with smtp:
         smtp.ehlo()
+
         if mode == "starttls":
             smtp.starttls(context=contexte)
             smtp.ehlo()
-        if config.get("SMTP_USERNAME") and config.get("SMTP_PASSWORD"):
-            smtp.login(config["SMTP_USERNAME"], config["SMTP_PASSWORD"])
+
+        utilisateur = config.get("SMTP_USERNAME")
+        mot_de_passe = config.get("SMTP_PASSWORD")
+
+        if utilisateur and mot_de_passe:
+            smtp.login(utilisateur, mot_de_passe)
+
         smtp.send_message(message)
 
 
 def envoyer_lien_reinitialisation(destinataire, jeton, profil):
-    lien = url_for("main.reinitialiser_mot_de_passe", profil=profil, jeton=jeton, _external=True)
+    lien = url_for(
+        "main.reinitialiser_mot_de_passe",
+        profil=profil,
+        token=jeton,
+        _external=True,
+        _scheme="https" if not current_app.debug else "http",
+    )
+
+    contenu = (
+        "Bonjour,\n\n"
+        "Une demande de réinitialisation du mot de passe "
+        "de votre compte DATENSIS a été effectuée.\n\n"
+        "Pour définir un nouveau mot de passe, "
+        "ouvrez le lien suivant :\n\n"
+        f"{lien}\n\n"
+        "Ce lien est valable pendant 30 minutes "
+        "et ne peut être utilisé qu'une seule fois.\n\n"
+        "Si vous n'êtes pas à l'origine de cette demande, "
+        "ignorez cet e-mail.\n\n"
+        "L'équipe DATENSIS"
+    )
+
     _envoyer(
         destinataire,
         "DATENSIS - Réinitialisation du mot de passe",
-        f"Bonjour,\n\nPour choisir un nouveau mot de passe, ouvrez ce lien dans les 30 minutes :\n{lien}\n\nSi vous n'avez rien demandé, ignorez ce message.\n",
+        contenu,
     )
 
 
 def envoyer_confirmation_modification(destinataire, date_utc):
+    contenu = (
+        "Bonjour,\n\n"
+        "Le mot de passe de votre compte DATENSIS "
+        "a été modifié le "
+        f"{date_heure_paris(date_utc)}.\n\n"
+        "Si vous n'êtes pas à l'origine de ce changement, "
+        "contactez immédiatement le support DATENSIS.\n\n"
+        "Aucun mot de passe n'est transmis dans cet e-mail.\n\n"
+        "L'équipe DATENSIS"
+    )
+
     _envoyer(
         destinataire,
         "DATENSIS - Votre mot de passe a été modifié",
-        "Bonjour,\n\nLe mot de passe de votre compte DATENSIS a été modifié le "
-        + date_heure_paris(date_utc)
-        + ".\n\nSi vous n'êtes pas à l'origine de ce changement, contactez immédiatement le support DATENSIS.\n\nAucun mot de passe n'est transmis dans cet e-mail.\n",
+        contenu,
     )
