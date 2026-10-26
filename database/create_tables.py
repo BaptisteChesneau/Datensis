@@ -1089,6 +1089,104 @@ class ReinitialisationMotDePasse(Base):
 
 
 # ============================================================
+# 37. VERIFICATION COURRIEL
+# ============================================================
+
+
+class VerificationCourriel(Base):
+    """Jetons de confirmation de compte, conserves sous forme d'empreinte."""
+
+    __tablename__ = "verification_courriel"
+
+    id_verification = Column(Integer, primary_key=True)
+    id_utilisateur = Column(Integer, ForeignKey("utilisateur.id_utilisateur"), nullable=False)
+    empreinte_jeton = Column(String(64), nullable=False, unique=True)
+    date_creation = Column(DateTime(timezone=True), nullable=False)
+    date_expiration = Column(DateTime(timezone=True), nullable=False)
+    date_utilisation = Column(DateTime(timezone=True))
+
+    __table_args__ = (
+        Index("idx_verification_courriel_utilisateur", "id_utilisateur"),
+        CheckConstraint("date_expiration > date_creation", name="ck_verification_courriel_dates"),
+    )
+
+
+# ============================================================
+# 38. DEMANDE MAIL
+# ============================================================
+
+
+class DemandeMail(Base):
+    """Demande autorisee d'envoi d'un courriel transactionnel."""
+
+    __tablename__ = "demande_mail"
+
+    id_demande = Column(String(36), primary_key=True)
+    id_utilisateur = Column(Integer, ForeignKey("utilisateur.id_utilisateur"), nullable=False)
+    type_message = Column(String(30), nullable=False)
+    id_verification = Column(
+        Integer, ForeignKey("verification_courriel.id_verification"), unique=True
+    )
+    id_reinitialisation = Column(
+        Integer,
+        ForeignKey("reinitialisation_mot_de_passe.id_reinitialisation"),
+        unique=True,
+    )
+    date_creation = Column(
+        DateTime(timezone=True), nullable=False, server_default=func.current_timestamp()
+    )
+    date_expiration = Column(DateTime(timezone=True), nullable=False)
+
+    __table_args__ = (
+        CheckConstraint(
+            "(type_message = 'email_verification' AND id_verification IS NOT NULL "
+            "AND id_reinitialisation IS NULL) OR "
+            "(type_message = 'password_reset' AND id_reinitialisation IS NOT NULL "
+            "AND id_verification IS NULL)",
+            name="ck_demande_mail_reference",
+        ),
+        CheckConstraint("date_expiration > date_creation", name="ck_demande_mail_dates"),
+        Index("idx_demande_mail_utilisateur", "id_utilisateur"),
+    )
+
+
+# ============================================================
+# 39. FILE ATTENTE MAIL
+# ============================================================
+
+
+class FileAttenteMail(Base):
+    """File d'attente persistante pour l'envoi des courriels."""
+
+    __tablename__ = "file_attente_mail"
+
+    id_tache = Column(String(36), primary_key=True)
+    id_demande = Column(
+        String(36), ForeignKey("demande_mail.id_demande"), nullable=False, unique=True
+    )
+    type_message = Column(String(30), nullable=False)
+    statut = Column(String(20), nullable=False, server_default="queued")
+    tentatives = Column(Integer, nullable=False, server_default="0")
+    date_creation = Column(
+        DateTime(timezone=True), nullable=False, server_default=func.current_timestamp()
+    )
+    date_traitement = Column(DateTime(timezone=True))
+
+    __table_args__ = (
+        CheckConstraint(
+            "type_message IN ('password_reset', 'email_verification')",
+            name="ck_file_attente_mail_type",
+        ),
+        CheckConstraint(
+            "statut IN ('queued', 'processing', 'sent', 'failed')",
+            name="ck_file_attente_mail_statut",
+        ),
+        CheckConstraint("tentatives >= 0", name="ck_file_attente_mail_tentatives"),
+        Index("idx_file_attente_mail_statut", "statut", "date_creation"),
+    )
+
+
+# ============================================================
 # CREATION DES TABLES
 # ============================================================
 
@@ -1130,7 +1228,7 @@ def creer_tables():
     with engine.connect() as connexion:
         tables = (
             connexion.execute(
-                __import__("sqlalchemy").text(
+                text(
                     "SELECT name FROM sqlite_master "
                     "WHERE type='table' "
                     "AND name NOT LIKE 'sqlite_%' "
@@ -1147,10 +1245,10 @@ def creer_tables():
     for numero, nom in enumerate(tables, start=1):
         print(f"{numero:02d}. {nom}")
 
-    if len(tables) == 36:
-        print("\nSUCCES : les 36 tables sont créées.")
+    if len(tables) == 39:
+        print("\nSUCCES : les 39 tables sont creees.")
     else:
-        print("\nATTENTION : nombre de tables différent de 36.")
+        print("\nATTENTION : nombre de tables different de 39.")
 
 
 if __name__ == "__main__":
