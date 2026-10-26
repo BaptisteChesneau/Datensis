@@ -1,9 +1,10 @@
-"""Gestion sécurisée des jetons de vérification des e-mails DATENSIS."""
+"""Vérification sécurisée des adresses courriel DATENSIS."""
 
 import hashlib
 import re
 import secrets
 from datetime import datetime, timedelta, timezone
+from uuid import uuid4
 
 from sqlalchemy import text
 
@@ -45,152 +46,271 @@ def _valid_token(token):
     )
 
 
-def issue_token(user_id):
-    """Révoquer les anciens jetons et en créer un nouveau."""
-    if not isinstance(user_id, int) or isinstance(user_id, bool):
-        raise ValueError("Identifiant utilisateur invalide.")
+def _verrouiller_utilisateur(connexion, user_id):
+    """Verrouiller le compte pendant une opération sensible."""
+    requete = text("""
+        SELECT id_utilisateur
+        FROM utilisateur
+        WHERE id_utilisateur = :id
+    """)
 
-    now = utc_now()
+    if connexion.dialect.name == "postgresql":
+        requete = text("""
+            SELECT id_utilisateur
+            FROM utilisateur
+            WHERE id_utilisateur = :id
+            FOR UPDATE
+        """)
+
+    return connexion.execute(
+        requete,
+        {"id": user_id},
+    ).scalar_one_or_none()
+
+
+def _creer_jeton(connexion, user_id, maintenant):
+    """Créer un jeton et révoquer les précédents."""
     token = secrets.token_urlsafe(32)
 
-    with db.engine.begin() as con:
-        if con.dialect.name == "postgresql":
-            con.execute(
-                text("""
-                    SELECT id_utilisateur
-                    FROM utilisateur
-                    WHERE id_utilisateur = :id
-                    FOR UPDATE
-                """),
-                {"id": user_id},
-            )
+    connexion.execute(
+        text("""
+            UPDATE verification_courriel
+            SET date_utilisation = :maintenant
+            WHERE id_utilisateur = :id
+              AND date_utilisation IS NULL
+        """),
+        {
+            "maintenant": maintenant,
+            "id": user_id,
+        },
+    )
 
-        con.execute(
-            text("""
-                UPDATE verification_courriel
-                SET date_utilisation = :now
-                WHERE id_utilisateur = :id
-                  AND date_utilisation IS NULL
-            """),
-            {
-                "now": now,
-                "id": user_id,
-            },
+    connexion.execute(
+        text("""
+            INSERT INTO verification_courriel (
+                id_utilisateur,
+                empreinte_jeton,
+                date_expiration,
+                date_creation
+            )
+            VALUES (
+                :id,
+                :empreinte,
+                :expiration,
+                :creation
+            )
+        """),
+        {
+            "id": user_id,
+            "empreinte": _digest(token),
+            "expiration": maintenant + timedelta(minutes=TOKEN_MINUTES),
+            "creation": maintenant,
+        },
+    )
+
+    return token
+
+
+def issue_token(user_id):
+    """Créer un jeton de vérification à usage unique."""
+    if not isinstance(user_id, int) or isinstance(user_id, bool) or user_id <= 0:
+        raise ValueError("Identifiant utilisateur invalide.")
+
+    maintenant = utc_now()
+
+    with db.engine.begin() as connexion:
+        utilisateur = _verrouiller_utilisateur(
+            connexion,
+            user_id,
         )
 
-        con.execute(
-            text("""
-                INSERT INTO verification_courriel (
-                    id_utilisateur,
-                    empreinte_jeton,
-                    date_expiration,
-                    date_creation
-                )
-                VALUES (
-                    :id,
-                    :hash,
-                    :exp,
-                    :now
-                )
-            """),
-            {
-                "id": user_id,
-                "hash": _digest(token),
-                "exp": now + timedelta(minutes=TOKEN_MINUTES),
-                "now": now,
-            },
+        if utilisateur is None:
+            raise ValueError("Utilisateur introuvable.")
+
+        token = _creer_jeton(
+            connexion,
+            user_id,
+            maintenant,
         )
 
     return token
 
 
+def creer_demande_verification(user_id):
+    """Créer un jeton et enregistrer sa demande d'envoi.
+
+    Retourne (request_id, token).
+
+    Le jeton ne doit jamais être envoyé dans le JSON public
+    de l'API ni écrit dans les journaux.
+    """
+    if not isinstance(user_id, int) or isinstance(user_id, bool) or user_id <= 0:
+        raise ValueError("Identifiant utilisateur invalide.")
+
+    maintenant = utc_now()
+    request_id = str(uuid4())
+
+    with db.engine.begin() as connexion:
+        utilisateur = _verrouiller_utilisateur(
+            connexion,
+            user_id,
+        )
+
+        if utilisateur is None:
+            raise ValueError("Utilisateur introuvable.")
+
+        token = _creer_jeton(
+            connexion,
+            user_id,
+            maintenant,
+        )
+
+        connexion.execute(
+            text("""
+                INSERT INTO demande_mail (
+                    id_demande,
+                    type_message,
+                    date_creation,
+                    date_expiration
+                )
+                VALUES (
+                    :id_demande,
+                    :type_message,
+                    :date_creation,
+                    :date_expiration
+                )
+            """),
+            {
+                "id_demande": request_id,
+                "type_message": "email_verification",
+                "date_creation": maintenant,
+                "date_expiration": maintenant + timedelta(minutes=TOKEN_MINUTES),
+            },
+        )
+
+        identifiant_tache = str(uuid4())
+
+        connexion.execute(
+            text("""
+                INSERT INTO file_attente_mail (
+                    id_tache,
+                    id_demande,
+                    type_message,
+                    statut,
+                    tentatives,
+                    date_creation
+                )
+                VALUES (
+                    :id_tache,
+                    :id_demande,
+                    :type_message,
+                    'queued',
+                    0,
+                    :date_creation
+                )
+            """),
+            {
+                "id_tache": identifiant_tache,
+                "id_demande": request_id,
+                "type_message": "email_verification",
+                "date_creation": maintenant,
+            },
+        )
+
+    return request_id, token
+
+
 def verify_token(token):
-    """Vérifier et consommer un jeton à usage unique."""
+    """Vérifier un jeton et activer le compte associé."""
     if not _valid_token(token):
         return False
 
-    now = utc_now()
-    token_hash = _digest(token)
+    maintenant = utc_now()
+    empreinte = _digest(token)
 
-    with db.engine.begin() as con:
-        query = text("""
+    with db.engine.begin() as connexion:
+        requete = text("""
             SELECT
                 id_verification,
                 id_utilisateur,
                 date_expiration
             FROM verification_courriel
-            WHERE empreinte_jeton = :hash
+            WHERE empreinte_jeton = :empreinte
               AND date_utilisation IS NULL
             LIMIT 1
         """)
 
-        if con.dialect.name == "postgresql":
-            query = text("""
+        if connexion.dialect.name == "postgresql":
+            requete = text("""
                 SELECT
                     id_verification,
                     id_utilisateur,
                     date_expiration
                 FROM verification_courriel
-                WHERE empreinte_jeton = :hash
+                WHERE empreinte_jeton = :empreinte
                   AND date_utilisation IS NULL
                 LIMIT 1
                 FOR UPDATE
             """)
 
-        row = (
-            con.execute(
-                query,
-                {"hash": token_hash},
+        ligne = (
+            connexion.execute(
+                requete,
+                {"empreinte": empreinte},
             )
             .mappings()
             .first()
         )
 
-        if row is None:
+        if ligne is None:
             return False
 
-        if _normalize_date(row["date_expiration"]) <= now:
+        if _normalize_date(ligne["date_expiration"]) <= maintenant:
             return False
 
-        updated = con.execute(
+        resultat = connexion.execute(
             text("""
                 UPDATE verification_courriel
-                SET date_utilisation = :now
+                SET date_utilisation = :maintenant
                 WHERE id_verification = :id
                   AND date_utilisation IS NULL
             """),
             {
-                "now": now,
-                "id": row["id_verification"],
+                "maintenant": maintenant,
+                "id": ligne["id_verification"],
             },
         )
 
-        if updated.rowcount != 1:
+        if resultat.rowcount != 1:
             return False
 
-        activation = con.execute(
+        activation = connexion.execute(
             text("""
                 UPDATE utilisateur
-                SET courriel_verifie = 1,
-                    compte_actif = 1
+                SET courriel_verifie = :verifie,
+                    compte_actif = :actif
                 WHERE id_utilisateur = :id
             """),
-            {"id": row["id_utilisateur"]},
+            {
+                "verifie": True,
+                "actif": True,
+                "id": ligne["id_utilisateur"],
+            },
         )
 
         if activation.rowcount != 1:
             raise RuntimeError("Impossible d'activer le compte utilisateur.")
 
-        con.execute(
+        connexion.execute(
             text("""
                 UPDATE verification_courriel
-                SET date_utilisation = :now
+                SET date_utilisation = :maintenant
                 WHERE id_utilisateur = :id
                   AND date_utilisation IS NULL
             """),
             {
-                "now": now,
-                "id": row["id_utilisateur"],
+                "maintenant": maintenant,
+                "id": ligne["id_utilisateur"],
             },
         )
 
@@ -198,7 +318,7 @@ def verify_token(token):
 
 
 def find_resend_candidate(email):
-    """Identifier un compte éligible au renvoi d'un e-mail."""
+    """Identifier un compte autorisé à recevoir un nouvel e-mail."""
     if not isinstance(email, str):
         return None
 
@@ -207,26 +327,29 @@ def find_resend_candidate(email):
     if not email or len(email) > 254 or "@" not in email:
         return None
 
-    with db.engine.connect() as con:
-        row = (
-            con.execute(
+    with db.engine.connect() as connexion:
+        utilisateur = (
+            connexion.execute(
                 text("""
                     SELECT id_utilisateur
                     FROM utilisateur
                     WHERE lower(adresse_courriel) = :email
-                      AND courriel_verifie = 0
+                      AND courriel_verifie = :verifie
                     LIMIT 1
                 """),
-                {"email": email},
+                {
+                    "email": email,
+                    "verifie": False,
+                },
             )
             .mappings()
             .first()
         )
 
-        if row is None:
+        if utilisateur is None:
             return None
 
-        recent = con.execute(
+        derniere_creation = connexion.execute(
             text("""
                 SELECT date_creation
                 FROM verification_courriel
@@ -234,13 +357,13 @@ def find_resend_candidate(email):
                 ORDER BY date_creation DESC
                 LIMIT 1
             """),
-            {"id": row["id_utilisateur"]},
+            {"id": utilisateur["id_utilisateur"]},
         ).scalar_one_or_none()
 
-        if recent is not None:
-            limit = utc_now() - timedelta(seconds=RESEND_DELAY_SECONDS)
+        if derniere_creation is not None:
+            limite = utc_now() - timedelta(seconds=RESEND_DELAY_SECONDS)
 
-            if _normalize_date(recent) > limit:
+            if _normalize_date(derniere_creation) > limite:
                 return None
 
-        return row["id_utilisateur"]
+        return utilisateur["id_utilisateur"]
