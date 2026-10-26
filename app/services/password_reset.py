@@ -1,4 +1,4 @@
-"""Réinitialisation sécurisée des mots de passe DATENSIS (SQLite / PostgreSQL)."""
+"""Réinitialisation sécurisée des mots de passe DATENSIS."""
 
 import hashlib
 import re
@@ -22,17 +22,17 @@ PROFILS = {
 
 
 def _maintenant():
-    """Retourne la date et l'heure actuelles en UTC."""
+    """Retourne la date actuelle en UTC."""
     return datetime.now(timezone.utc)
 
 
 def _empreinte(jeton):
-    """Calcule l'empreinte SHA-256 du jeton."""
+    """Calcule une empreinte SHA-256 du jeton."""
     return hashlib.sha256(jeton.encode("ascii")).hexdigest()
 
 
 def _date(valeur):
-    """Convertit une date SQLite ou PostgreSQL en datetime UTC."""
+    """Normalise une date SQLite ou PostgreSQL en UTC."""
     if isinstance(valeur, datetime):
         dt = valeur
     else:
@@ -44,8 +44,17 @@ def _date(valeur):
     return dt.astimezone(timezone.utc)
 
 
+def _verifier_jeton(jeton):
+    """Vérifie le format du jeton sans le divulguer."""
+    return (
+        isinstance(jeton, str)
+        and 20 <= len(jeton) <= 200
+        and re.fullmatch(r"[A-Za-z0-9_-]+", jeton) is not None
+    )
+
+
 def _verifier_mot_de_passe(mot_de_passe, confirmation):
-    """Vérifie la confirmation et la politique de sécurité."""
+    """Applique la politique de sécurité DATENSIS."""
     if not isinstance(mot_de_passe, str):
         raise ValueError("Mot de passe invalide.")
 
@@ -60,20 +69,18 @@ def _verifier_mot_de_passe(mot_de_passe, confirmation):
         or not re.search(r"[^A-Za-z0-9]", mot_de_passe)
     ):
         raise ValueError(
-            "Le mot de passe doit contenir entre 12 et 256 caractères, "
-            "dont au moins une majuscule, un chiffre "
-            "et un caractère spécial."
+            "Le mot de passe doit contenir entre "
+            "12 et 256 caractères, au moins une "
+            "majuscule, un chiffre et un caractère spécial."
         )
 
 
 def demander_reinitialisation(email, profil):
     """
-    Crée un jeton de réinitialisation pour un compte éligible.
+    Génère un jeton pour un compte éligible.
 
     Retourne (destinataire, jeton) ou None.
-
-    Le résultat ne doit jamais être communiqué directement
-    à l'utilisateur.
+    Ne jamais exposer le jeton dans une réponse HTTP.
     """
     if profil not in PROFILS:
         return None
@@ -101,7 +108,8 @@ def demander_reinitialisation(email, profil):
                     JOIN entreprise e
                         ON e.id_entreprise = ue.id_entreprise
                     JOIN type_entreprise te
-                        ON te.id_type_entreprise = e.id_type_entreprise
+                        ON te.id_type_entreprise =
+                           e.id_type_entreprise
                     WHERE lower(u.adresse_courriel) = :email
                       AND te.code_type = :profil
                       AND u.compte_actif = 1
@@ -122,6 +130,19 @@ def demander_reinitialisation(email, profil):
 
         id_utilisateur = compte["id_utilisateur"]
 
+        # Sérialise les demandes pour ce compte
+        # sous PostgreSQL.
+        if con.dialect.name == "postgresql":
+            con.execute(
+                text("""
+                    SELECT id_utilisateur
+                    FROM utilisateur
+                    WHERE id_utilisateur = :id
+                    FOR UPDATE
+                """),
+                {"id": id_utilisateur},
+            )
+
         derniere_demande = con.execute(
             text("""
                 SELECT date_creation
@@ -134,9 +155,9 @@ def demander_reinitialisation(email, profil):
         ).scalar_one_or_none()
 
         if derniere_demande is not None:
-            derniere_date = _date(derniere_demande)
-
-            if derniere_date > maintenant - timedelta(seconds=DELAI_ENTRE_DEMANDES_SECONDES):
+            if _date(derniere_demande) > (
+                maintenant - timedelta(seconds=DELAI_ENTRE_DEMANDES_SECONDES)
+            ):
                 return None
 
         jeton = secrets.token_urlsafe(32)
@@ -176,7 +197,7 @@ def demander_reinitialisation(email, profil):
                 "profil": profil,
                 "empreinte": _empreinte(jeton),
                 "creation": maintenant,
-                "expiration": maintenant + timedelta(minutes=EXPIRATION_MINUTES),
+                "expiration": (maintenant + timedelta(minutes=EXPIRATION_MINUTES)),
             },
         )
 
@@ -184,14 +205,8 @@ def demander_reinitialisation(email, profil):
 
 
 def jeton_valide(jeton, profil):
-    """Vérifie qu'un jeton existe, n'a pas expiré et n'a pas été utilisé."""
-    if profil not in PROFILS:
-        return False
-
-    if not isinstance(jeton, str):
-        return False
-
-    if not 20 <= len(jeton) <= 200:
+    """Vérifie la validité d'un jeton non consommé."""
+    if profil not in PROFILS or not _verifier_jeton(jeton):
         return False
 
     with db.engine.connect() as con:
@@ -214,10 +229,7 @@ def jeton_valide(jeton, profil):
             .first()
         )
 
-    if ligne is None:
-        return False
-
-    return _date(ligne["date_expiration"]) > _maintenant()
+    return ligne is not None and _date(ligne["date_expiration"]) > _maintenant()
 
 
 def changer_mot_de_passe(
@@ -227,20 +239,21 @@ def changer_mot_de_passe(
     confirmation,
 ):
     """
-    Modifie le mot de passe avec un jeton valide.
+    Modifie le mot de passe avec un jeton à usage unique.
 
-    Retourne (adresse_courriel, date_utc) en cas de succès.
-    Lève ValueError en cas de validation incorrecte.
+    Retourne (adresse_courriel, date_utc).
     """
-    _verifier_mot_de_passe(mot_de_passe, confirmation)
+    _verifier_mot_de_passe(
+        mot_de_passe,
+        confirmation,
+    )
 
     if profil not in PROFILS:
         raise ValueError("Profil invalide.")
 
-    if not isinstance(jeton, str) or not 20 <= len(jeton) <= 200:
+    if not _verifier_jeton(jeton):
         raise ValueError("Lien invalide, expiré ou déjà utilisé.")
 
-    maintenant = _maintenant()
     empreinte = _empreinte(jeton)
 
     nouveau_hash = generate_password_hash(
@@ -249,25 +262,41 @@ def changer_mot_de_passe(
     )
 
     with db.engine.begin() as con:
-        # Verrouille le jeton par mise à jour conditionnelle.
-        # La comparaison de date est faite en Python pour
-        # fonctionner avec les dates SQLite et PostgreSQL.
+        # Requêtes SQL statiques : aucun fragment SQL n'est interpolé.
+        # PostgreSQL verrouille la ligne de réinitialisation uniquement.
+        if con.dialect.name == "postgresql":
+            requete = text("""
+                SELECT
+                    r.id_utilisateur,
+                    r.date_expiration,
+                    u.adresse_courriel
+                FROM reinitialisation_mot_de_passe r
+                JOIN utilisateur u
+                    ON u.id_utilisateur = r.id_utilisateur
+                WHERE r.empreinte_jeton = :empreinte
+                  AND r.profil = :profil
+                  AND r.date_utilisation IS NULL
+                LIMIT 1
+                FOR UPDATE OF r
+            """)
+        else:
+            requete = text("""
+                SELECT
+                    r.id_utilisateur,
+                    r.date_expiration,
+                    u.adresse_courriel
+                FROM reinitialisation_mot_de_passe r
+                JOIN utilisateur u
+                    ON u.id_utilisateur = r.id_utilisateur
+                WHERE r.empreinte_jeton = :empreinte
+                  AND r.profil = :profil
+                  AND r.date_utilisation IS NULL
+                LIMIT 1
+            """)
 
         ligne = (
             con.execute(
-                text("""
-                    SELECT
-                        r.id_utilisateur,
-                        r.date_expiration,
-                        u.adresse_courriel
-                    FROM reinitialisation_mot_de_passe r
-                    JOIN utilisateur u
-                        ON u.id_utilisateur = r.id_utilisateur
-                    WHERE r.empreinte_jeton = :empreinte
-                      AND r.profil = :profil
-                      AND r.date_utilisation IS NULL
-                    LIMIT 1
-                """),
+                requete,
                 {
                     "empreinte": empreinte,
                     "profil": profil,
@@ -279,6 +308,8 @@ def changer_mot_de_passe(
 
         if ligne is None:
             raise ValueError("Lien invalide, expiré ou déjà utilisé.")
+
+        maintenant = _maintenant()
 
         if _date(ligne["date_expiration"]) <= maintenant:
             raise ValueError("Lien invalide, expiré ou déjà utilisé.")
@@ -301,7 +332,7 @@ def changer_mot_de_passe(
         if resultat.rowcount != 1:
             raise ValueError("Lien invalide, expiré ou déjà utilisé.")
 
-        con.execute(
+        modification = con.execute(
             text("""
                 UPDATE utilisateur
                 SET mot_de_passe_hache = :nouveau_hash
@@ -312,6 +343,9 @@ def changer_mot_de_passe(
                 "id": ligne["id_utilisateur"],
             },
         )
+
+        if modification.rowcount != 1:
+            raise RuntimeError("Impossible de modifier le mot de passe.")
 
         con.execute(
             text("""
@@ -330,9 +364,9 @@ def changer_mot_de_passe(
 
 
 def date_heure_paris(date_utc):
-    """Formate la date de modification dans le fuseau Europe/Paris."""
-    date_utc = _date(date_utc)
-
-    return date_utc.astimezone(ZoneInfo("Europe/Paris")).strftime(
-        "%d/%m/%Y à %H:%M:%S (heure de Paris)"
+    """Affiche une date dans le fuseau Europe/Paris."""
+    return (
+        _date(date_utc)
+        .astimezone(ZoneInfo("Europe/Paris"))
+        .strftime("%d/%m/%Y à %H:%M:%S (heure de Paris)")
     )
