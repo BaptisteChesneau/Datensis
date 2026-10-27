@@ -2,6 +2,7 @@
 
 import os
 from pathlib import Path
+from urllib.parse import urlparse
 
 from dotenv import load_dotenv
 from flask import Flask
@@ -32,14 +33,7 @@ def create_app():
     # 2. ENVIRONNEMENT
     # =========================================================
 
-    environnement = (
-        os.getenv(
-            "DATENSIS_ENV",
-            "development",
-        )
-        .strip()
-        .lower()
-    )
+    environnement = os.getenv("DATENSIS_ENV", "development").strip().lower()
 
     if environnement not in ("development", "production"):
         raise RuntimeError("DATENSIS_ENV doit être 'development' ou 'production'.")
@@ -163,7 +157,7 @@ def create_app():
         app.config["TRUSTED_HOSTS"] = domaines_autorises
 
     # =========================================================
-    # 7. CONFIGURATION API DE MESSAGERIE DATENSIS
+    # 7. CONFIGURATION API INTERNE DE MESSAGERIE DATENSIS
     # =========================================================
 
     app.config.update(
@@ -189,33 +183,76 @@ def create_app():
         )
 
     # =========================================================
-    # 8. TRANSPORT HTTPS DES COURRIELS
+    # 8. TRANSPORT HTTPS RESEND
     # =========================================================
 
+    resend_api_key = os.getenv(
+        "RESEND_API_KEY",
+        "",
+    ).strip()
+
+    mail_from = os.getenv(
+        "MAIL_FROM",
+        "onboarding@resend.dev",
+    ).strip()
+
+    mail_from_name = os.getenv(
+        "MAIL_FROM_NAME",
+        "DATENSIS",
+    ).strip()
+
     app.config.update(
-        BREVO_API_KEY=os.getenv(
-            "BREVO_API_KEY",
-            "",
-        ).strip(),
-        MAIL_FROM=os.getenv(
-            "MAIL_FROM",
-            "",
-        ).strip(),
-        MAIL_FROM_NAME=os.getenv(
-            "MAIL_FROM_NAME",
-            "DATENSIS",
-        ).strip(),
+        RESEND_API_KEY=resend_api_key,
+        MAIL_FROM=mail_from,
+        MAIL_FROM_NAME=mail_from_name,
     )
 
-    transport_https_configure = bool(app.config["BREVO_API_KEY"] and app.config["MAIL_FROM"])
+    # L'API interne et Resend sont indépendants.
+    # L'API interne gère les demandes DATENSIS.
+    # Resend assure la transmission externe des courriels.
+
+    transport_https_configure = bool(resend_api_key and mail_from)
 
     app.config["DATENSIS_HTTPS_MAIL_ENABLED"] = transport_https_configure
 
     if not transport_https_configure:
-        app.logger.warning("DATENSIS : transport HTTPS des courriels non configuré.")
+        app.logger.warning(
+            "DATENSIS : transport HTTPS Resend non configuré. Vérifiez RESEND_API_KEY et MAIL_FROM."
+        )
 
     # =========================================================
-    # 9. CHIFFREMENT DES DONNEES TEMPORAIRES
+    # 9. VALIDATION DE L'URL PUBLIQUE
+    # =========================================================
+
+    public_url = (app.config.get("DATENSIS_PUBLIC_URL") or "").strip().rstrip("/")
+
+    if public_url:
+        adresse = urlparse(public_url)
+
+        if (
+            not adresse.netloc
+            or adresse.scheme not in ("http", "https")
+            or adresse.username is not None
+            or adresse.password is not None
+            or adresse.query
+            or adresse.fragment
+        ):
+            raise RuntimeError("DATENSIS_PUBLIC_URL est invalide.")
+
+        if production and adresse.scheme != "https":
+            raise RuntimeError("DATENSIS_PUBLIC_URL doit utiliser HTTPS en production.")
+
+        app.config["DATENSIS_PUBLIC_URL"] = public_url
+
+    elif production:
+        app.logger.warning(
+            "DATENSIS : DATENSIS_PUBLIC_URL est absente. "
+            "Les liens envoyés par courriel "
+            "ne pourront pas être générés."
+        )
+
+    # =========================================================
+    # 10. CHIFFREMENT DES DONNEES TEMPORAIRES
     # =========================================================
 
     app.config["MAIL_ENCRYPTION_KEY"] = os.getenv(
@@ -227,22 +264,23 @@ def create_app():
         app.logger.warning("DATENSIS : clé de chiffrement des courriels non configurée.")
 
     # =========================================================
-    # 10. INITIALISATION SQLALCHEMY
+    # 11. INITIALISATION SQLALCHEMY
     # =========================================================
 
     db.init_app(app)
 
     # =========================================================
-    # 11. ENREGISTREMENT DU WORKER DATENSIS
+    # 12. ENREGISTREMENT DU WORKER DATENSIS
     # =========================================================
 
-    # La commande est enregistrée après l'initialisation
-    # de SQLAlchemy, mais aucun courriel n'est envoyé
-    # automatiquement au démarrage de Flask.
+    # La commande est enregistrée après SQLAlchemy.
+    # Aucun courriel n'est envoyé automatiquement
+    # au démarrage de l'application.
+
     enregistrer_commande_mail(app)
 
     # =========================================================
-    # 12. ENREGISTREMENT DES ROUTES EXISTANTES
+    # 13. ENREGISTREMENT DES ROUTES EXISTANTES
     # =========================================================
 
     from app.routes import main
@@ -250,7 +288,7 @@ def create_app():
     app.register_blueprint(main)
 
     # =========================================================
-    # 13. GESTION DES DEMANDES
+    # 14. GESTION DES DEMANDES
     # =========================================================
 
     from app.demandes import demandes_bp
@@ -258,7 +296,7 @@ def create_app():
     app.register_blueprint(demandes_bp)
 
     # =========================================================
-    # 14. API DE MESSAGERIE DATENSIS
+    # 15. API DE MESSAGERIE DATENSIS
     # =========================================================
 
     from app.api.mail import mail_api
@@ -266,7 +304,7 @@ def create_app():
     app.register_blueprint(mail_api)
 
     # =========================================================
-    # 15. EN-TETES HTTP DE SECURITE
+    # 16. EN-TETES HTTP DE SECURITE
     # =========================================================
 
     @app.after_request
@@ -289,7 +327,7 @@ def create_app():
         return response
 
     # =========================================================
-    # 16. RETOUR APPLICATION
+    # 17. RETOUR APPLICATION
     # =========================================================
 
     return app

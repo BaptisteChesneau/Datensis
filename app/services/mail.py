@@ -1,13 +1,17 @@
+"""Envoi des courriels DATENSIS via l'API HTTPS Resend."""
+
 import logging
-from urllib.parse import urlparse
+from urllib.parse import urljoin, urlparse
 
 import requests
 from flask import current_app, url_for
 
 journal = logging.getLogger(__name__)
 
-BREVO_ENDPOINT = "https://api.brevo.com/v3/smtp/email"
+RESEND_ENDPOINT = "https://api.resend.com/emails"
 TIMEOUT_SECONDS = 15
+
+PROFILS_AUTORISES = {"tpe", "pme", "cabinet"}
 
 
 class ErreurEnvoiMail(RuntimeError):
@@ -15,23 +19,56 @@ class ErreurEnvoiMail(RuntimeError):
 
 
 def _configuration_mail():
-    """Vérifier la configuration du transport HTTPS."""
+    """Vérifier la configuration du service Resend."""
     configuration = current_app.config
 
-    api_key = configuration.get("BREVO_API_KEY")
+    api_key = configuration.get("RESEND_API_KEY")
     sender = configuration.get("MAIL_FROM")
-    sender_name = configuration.get(
-        "MAIL_FROM_NAME",
-        "DATENSIS",
-    )
+    sender_name = configuration.get("MAIL_FROM_NAME", "DATENSIS")
 
-    if not api_key:
-        raise ErreurEnvoiMail("Clé API du transport HTTPS manquante.")
+    if not isinstance(api_key, str) or not api_key.strip():
+        raise ErreurEnvoiMail("Clé API Resend manquante.")
 
-    if not sender:
+    if not isinstance(sender, str) or not sender.strip():
         raise ErreurEnvoiMail("Adresse d'expédition manquante.")
 
-    return api_key, sender, sender_name
+    if not isinstance(sender_name, str) or not sender_name.strip():
+        sender_name = "DATENSIS"
+
+    return api_key.strip(), sender.strip(), sender_name.strip()
+
+
+def _url_publique():
+    """Récupérer l'adresse publique HTTPS de DATENSIS."""
+    base_url = current_app.config.get("DATENSIS_PUBLIC_URL", "")
+
+    if not isinstance(base_url, str) or not base_url.strip():
+        raise ErreurEnvoiMail("DATENSIS_PUBLIC_URL doit être configurée.")
+
+    base_url = base_url.strip().rstrip("/") + "/"
+    adresse = urlparse(base_url)
+
+    if adresse.scheme != "https" and not current_app.debug:
+        raise ErreurEnvoiMail("L'adresse publique DATENSIS doit utiliser HTTPS.")
+
+    if not adresse.netloc:
+        raise ErreurEnvoiMail("Adresse publique DATENSIS invalide.")
+
+    return base_url
+
+
+def _construire_lien(endpoint, **parametres):
+    """
+    Construire un lien externe sans dépendre de SERVER_NAME.
+
+    Compatible avec les tâches exécutées hors d'une requête HTTP.
+    """
+    base_url = _url_publique()
+
+    with current_app.test_request_context(base_url=base_url):
+        chemin = url_for(endpoint, **parametres)
+
+    return urljoin(base_url, chemin.lstrip("/"))
 
 
 def _lien_verification(token):
@@ -39,66 +76,72 @@ def _lien_verification(token):
     if not isinstance(token, str) or not token:
         raise ValueError("Jeton de vérification invalide.")
 
-    lien = url_for(
+    return _construire_lien(
         "main.verifier_courriel",
         token=token,
-        _external=True,
     )
 
-    adresse = urlparse(lien)
 
-    if adresse.scheme != "https" and not current_app.debug:
-        raise ErreurEnvoiMail("Le lien de vérification doit utiliser HTTPS.")
+def _lien_reinitialisation(token, profil):
+    """Construire le lien de réinitialisation selon le profil."""
+    if not isinstance(token, str) or not token:
+        raise ValueError("Jeton de réinitialisation invalide.")
 
-    return lien
+    if not isinstance(profil, str):
+        raise ValueError("Profil utilisateur invalide.")
+
+    profil = profil.strip().lower()
+
+    if profil not in PROFILS_AUTORISES:
+        raise ValueError("Profil utilisateur non autorisé.")
+
+    return _construire_lien(
+        "main.reinitialiser_mot_de_passe",
+        profil=profil,
+        token=token,
+    )
 
 
 def _envoyer_https(destinataire, sujet, contenu):
-    """Transmettre un courriel via HTTPS."""
+    """Transmettre un courriel via l'API HTTPS Resend."""
     if not isinstance(destinataire, str) or not destinataire.strip():
         raise ValueError("Destinataire invalide.")
 
     api_key, sender, sender_name = _configuration_mail()
 
     charge_utile = {
-        "sender": {
-            "name": sender_name,
-            "email": sender,
-        },
-        "to": [
-            {
-                "email": destinataire.strip(),
-            }
-        ],
+        "from": f"{sender_name} <{sender}>",
+        "to": [destinataire.strip()],
         "subject": sujet,
-        "textContent": contenu,
+        "text": contenu,
     }
 
     entetes = {
-        "accept": "application/json",
-        "content-type": "application/json",
-        "api-key": api_key,
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json",
+        "Accept": "application/json",
     }
 
     try:
         reponse = requests.post(
-            BREVO_ENDPOINT,
+            RESEND_ENDPOINT,
             headers=entetes,
             json=charge_utile,
             timeout=TIMEOUT_SECONDS,
         )
+
     except requests.RequestException as exc:
-        journal.error("DATENSIS : transport HTTPS indisponible.")
+        journal.error("DATENSIS : impossible de contacter l'API Resend.")
         raise ErreurEnvoiMail("Impossible de contacter le service d'envoi.") from exc
 
-    if reponse.status_code not in (200, 201, 202):
+    if reponse.status_code != 200:
         journal.error(
-            "DATENSIS : transport HTTPS refusé, statut %s.",
+            "DATENSIS : Resend a refusé le courriel (HTTP %s).",
             reponse.status_code,
         )
-        raise ErreurEnvoiMail("Le service d'envoi a refusé le courriel.")
+        raise ErreurEnvoiMail("Le service Resend a refusé le courriel.")
 
-    journal.info("DATENSIS : courriel accepté par le transport HTTPS.")
+    journal.info("DATENSIS : courriel accepté par Resend.")
 
     return True
 
@@ -128,21 +171,9 @@ def send_verification_email(recipient, token):
     )
 
 
-def send_password_reset_email(recipient, token):
+def send_password_reset_email(recipient, token, profil):
     """Envoyer un lien de réinitialisation du mot de passe."""
-    if not isinstance(token, str) or not token:
-        raise ValueError("Jeton de réinitialisation invalide.")
-
-    lien = url_for(
-        "main.reinitialiser_mot_de_passe",
-        token=token,
-        _external=True,
-    )
-
-    adresse = urlparse(lien)
-
-    if adresse.scheme != "https" and not current_app.debug:
-        raise ErreurEnvoiMail("Le lien de réinitialisation doit utiliser HTTPS.")
+    lien = _lien_reinitialisation(token, profil)
 
     sujet = "DATENSIS - Réinitialisation du mot de passe"
 

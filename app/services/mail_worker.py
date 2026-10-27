@@ -4,8 +4,9 @@ Fonctionnalités :
 - réservation atomique PostgreSQL ;
 - protection contre les traitements simultanés ;
 - contrôle du destinataire et du jeton ;
+- récupération sécurisée du profil utilisateur ;
 - déchiffrement temporaire Fernet ;
-- transmission HTTPS ;
+- transmission HTTPS via Resend ;
 - gestion des erreurs et tentatives ;
 - suppression des données sensibles après traitement.
 """
@@ -37,6 +38,8 @@ STATUT_FAILED = "failed"
 MAX_TENTATIVES = 3
 DELAI_REPRISE_MINUTES = 5
 
+PROFILS_AUTORISES = {"tpe", "pme", "cabinet"}
+
 
 def maintenant_utc():
     """Retourner la date actuelle en UTC."""
@@ -45,30 +48,51 @@ def maintenant_utc():
 
 def _empreinte_jeton(jeton):
     """Calculer l'empreinte SHA-256 d'un jeton."""
-    return hashlib.sha256(jeton.encode("ascii")).hexdigest()
+    if not isinstance(jeton, str) or not jeton:
+        raise ValueError("Jeton invalide.")
+
+    return hashlib.sha256(jeton.encode("utf-8")).hexdigest()
 
 
 def recuperer_taches_bloquees():
-    """Identifier les tâches bloquées en traitement.
+    """Marquer comme échouées les tâches bloquées.
 
-    Une tâche peut rester en processing si le worker
-    s'arrête brutalement pendant son exécution.
+    Une tâche peut rester en traitement si le worker
+    s'arrête brutalement.
+
+    Par sécurité, elle n'est pas renvoyée automatiquement :
+    Resend peut avoir accepté le message avant l'arrêt.
     """
+    if db.engine.dialect.name != "postgresql":
+        raise RuntimeError("Le worker DATENSIS nécessite PostgreSQL.")
+
     limite = maintenant_utc() - timedelta(minutes=DELAI_REPRISE_MINUTES)
 
     with db.engine.begin() as connexion:
-        connexion.execute(
+        resultat = connexion.execute(
             text("""
                 UPDATE file_attente_mail
                 SET statut = 'failed',
-                    payload_chiffre = NULL
+                    payload_chiffre = NULL,
+                    date_traitement = :maintenant
                 WHERE statut = 'processing'
                   AND date_traitement < :limite
             """),
             {
                 "limite": limite,
+                "maintenant": maintenant_utc(),
             },
         )
+
+    nombre = resultat.rowcount
+
+    if nombre:
+        logger.warning(
+            "DATENSIS : %s tâche(s) bloquée(s) marquée(s) comme échouée(s).",
+            nombre,
+        )
+
+    return nombre
 
 
 def reserver_tache():
@@ -104,7 +128,7 @@ def reserver_tache():
         if tache is None:
             return None
 
-        connexion.execute(
+        resultat = connexion.execute(
             text("""
                 UPDATE file_attente_mail
                 SET statut = 'processing',
@@ -119,15 +143,37 @@ def reserver_tache():
             },
         )
 
+        if resultat.rowcount != 1:
+            raise RuntimeError("Impossible de réserver la tâche.")
+
         return dict(tache)
 
 
 def _verifier_demande(tache, donnees):
-    """Contrôler le jeton et l'adresse du destinataire."""
-    if donnees["type"] != tache["type_message"]:
-        return False
+    """Valider la demande et retourner ses informations fiables.
 
-    empreinte = _empreinte_jeton(donnees["token"])
+    Le destinataire et le jeton sont contrôlés contre
+    les données stockées en base.
+
+    Pour une réinitialisation, le profil est récupéré
+    depuis la fiche utilisateur.
+    """
+    if not isinstance(donnees, dict):
+        return None
+
+    if donnees.get("type") != tache["type_message"]:
+        return None
+
+    jeton = donnees.get("token")
+    destinataire = donnees.get("recipient")
+
+    if not isinstance(jeton, str) or not jeton:
+        return None
+
+    if not isinstance(destinataire, str) or not destinataire.strip():
+        return None
+
+    empreinte = _empreinte_jeton(jeton)
 
     parametres = {
         "id_demande": tache["id_demande"],
@@ -155,6 +201,7 @@ def _verifier_demande(tache, donnees):
         requete = text("""
             SELECT
                 u.adresse_courriel,
+                u.type_profil AS profil,
                 d.date_expiration,
                 r.date_expiration AS expiration_jeton
             FROM demande_mail AS d
@@ -169,7 +216,7 @@ def _verifier_demande(tache, donnees):
         """)
 
     else:
-        return False
+        return None
 
     with db.engine.connect() as connexion:
         resultat = (
@@ -182,19 +229,49 @@ def _verifier_demande(tache, donnees):
         )
 
     if resultat is None:
-        return False
+        return None
 
-    if normaliser_date(resultat["date_expiration"]) <= maintenant_utc():
-        return False
+    expiration_demande = normaliser_date(resultat["date_expiration"])
 
-    if normaliser_date(resultat["expiration_jeton"]) <= maintenant_utc():
-        return False
+    expiration_jeton = normaliser_date(resultat["expiration_jeton"])
+
+    if expiration_demande <= maintenant_utc():
+        return None
+
+    if expiration_jeton <= maintenant_utc():
+        return None
 
     adresse_attendue = (resultat["adresse_courriel"] or "").strip().lower()
 
-    adresse_payload = (donnees["recipient"] or "").strip().lower()
+    adresse_payload = destinataire.strip().lower()
 
-    return bool(adresse_attendue) and adresse_attendue == adresse_payload
+    if not adresse_attendue:
+        return None
+
+    if adresse_attendue != adresse_payload:
+        return None
+
+    informations = {
+        "recipient": adresse_attendue,
+        "token": jeton,
+        "type": tache["type_message"],
+    }
+
+    if tache["type_message"] == "password_reset":
+        profil = resultat["profil"]
+
+        if not isinstance(profil, str):
+            return None
+
+        profil = profil.strip().lower()
+
+        if profil not in PROFILS_AUTORISES:
+            logger.warning("DATENSIS : profil de réinitialisation non autorisé.")
+            return None
+
+        informations["profil"] = profil
+
+    return informations
 
 
 def _terminer_tache(id_tache, statut):
@@ -206,7 +283,7 @@ def _terminer_tache(id_tache, statut):
         raise ValueError("Statut final invalide.")
 
     with db.engine.begin() as connexion:
-        connexion.execute(
+        resultat = connexion.execute(
             text("""
                 UPDATE file_attente_mail
                 SET statut = :statut,
@@ -221,6 +298,16 @@ def _terminer_tache(id_tache, statut):
                 "maintenant": maintenant_utc(),
             },
         )
+
+    if resultat.rowcount != 1:
+        logger.warning(
+            "DATENSIS : impossible de finaliser la tâche %s.",
+            id_tache,
+        )
+
+        return False
+
+    return True
 
 
 def traiter_prochaine_tache():
@@ -238,10 +325,12 @@ def traiter_prochaine_tache():
     try:
         donnees = dechiffrer_payload(tache["payload_chiffre"])
 
-        if not _verifier_demande(
+        informations = _verifier_demande(
             tache,
             donnees,
-        ):
+        )
+
+        if informations is None:
             logger.warning("DATENSIS : demande invalide ou expirée.")
 
             _terminer_tache(
@@ -254,8 +343,8 @@ def traiter_prochaine_tache():
                 "status": STATUT_FAILED,
             }
 
-        destinataire = donnees["recipient"]
-        jeton = donnees["token"]
+        destinataire = informations["recipient"]
+        jeton = informations["token"]
 
         if tache["type_message"] == "email_verification":
             send_verification_email(
@@ -267,17 +356,21 @@ def traiter_prochaine_tache():
             send_password_reset_email(
                 destinataire,
                 jeton,
+                informations["profil"],
             )
 
         else:
             raise ValueError("Type de courriel non autorisé.")
 
-        _terminer_tache(
+        if not _terminer_tache(
             id_tache,
             STATUT_SENT,
-        )
+        ):
+            raise RuntimeError(
+                "Le courriel a été accepté, mais la finalisation de la tâche a échoué."
+            )
 
-        logger.info("DATENSIS : courriel accepté par HTTPS.")
+        logger.info("DATENSIS : courriel accepté par Resend.")
 
         return {
             "processed": True,
