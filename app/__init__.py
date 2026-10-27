@@ -9,6 +9,7 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 
 from app.api.config import MailAPIConfig
 from app.extensions import db
+from app.services.mail_runner import enregistrer_commande_mail
 
 # ============================================================
 # DATENSIS - CONFIGURATION PRINCIPALE FLASK
@@ -31,7 +32,14 @@ def create_app():
     # 2. ENVIRONNEMENT
     # =========================================================
 
-    environnement = os.getenv("DATENSIS_ENV", "development").strip().lower()
+    environnement = (
+        os.getenv(
+            "DATENSIS_ENV",
+            "development",
+        )
+        .strip()
+        .lower()
+    )
 
     if environnement not in ("development", "production"):
         raise RuntimeError("DATENSIS_ENV doit être 'development' ou 'production'.")
@@ -44,7 +52,10 @@ def create_app():
     # 3. CLE SECRETE
     # =========================================================
 
-    secret_key = os.getenv("DATENSIS_SECRET_KEY", "").strip()
+    secret_key = os.getenv(
+        "DATENSIS_SECRET_KEY",
+        "",
+    ).strip()
 
     if not secret_key:
         raise RuntimeError(
@@ -127,8 +138,8 @@ def create_app():
     # =========================================================
 
     if production:
-        # À utiliser derrière un proxy inverse de confiance.
-        # Vérifier la configuration des en-têtes sur Render.
+        # DATENSIS fonctionne derrière un proxy inverse
+        # de confiance, notamment sur Render.
         app.wsgi_app = ProxyFix(
             app.wsgi_app,
             x_for=1,
@@ -136,7 +147,10 @@ def create_app():
             x_host=1,
         )
 
-        domaines = os.getenv("DATENSIS_TRUSTED_HOSTS", "").strip()
+        domaines = os.getenv(
+            "DATENSIS_TRUSTED_HOSTS",
+            "",
+        ).strip()
 
         if not domaines:
             raise RuntimeError("DATENSIS_TRUSTED_HOSTS est obligatoire en production.")
@@ -163,11 +177,6 @@ def create_app():
     mail_api_key = app.config["DATENSIS_MAIL_API_KEY"]
     mail_sender = app.config["DATENSIS_MAIL_SENDER"]
 
-    # La configuration de messagerie est facultative
-    # pendant le développement de l'API.
-    #
-    # Si elle est incomplète, Flask doit continuer
-    # à fonctionner sans activer l'envoi d'e-mails.
     mail_config_complete = bool(
         mail_api_url and mail_api_key and mail_sender and len(mail_api_key) >= 32
     )
@@ -176,17 +185,64 @@ def create_app():
 
     if not mail_config_complete:
         app.logger.warning(
-            "DATENSIS : configuration mail absente ou incomplète. Le service d'envoi est désactivé."
+            "DATENSIS : configuration de l'API interne de messagerie absente ou incomplète."
         )
 
     # =========================================================
-    # 8. INITIALISATION SQLALCHEMY
+    # 8. TRANSPORT HTTPS DES COURRIELS
+    # =========================================================
+
+    app.config.update(
+        BREVO_API_KEY=os.getenv(
+            "BREVO_API_KEY",
+            "",
+        ).strip(),
+        MAIL_FROM=os.getenv(
+            "MAIL_FROM",
+            "",
+        ).strip(),
+        MAIL_FROM_NAME=os.getenv(
+            "MAIL_FROM_NAME",
+            "DATENSIS",
+        ).strip(),
+    )
+
+    transport_https_configure = bool(app.config["BREVO_API_KEY"] and app.config["MAIL_FROM"])
+
+    app.config["DATENSIS_HTTPS_MAIL_ENABLED"] = transport_https_configure
+
+    if not transport_https_configure:
+        app.logger.warning("DATENSIS : transport HTTPS des courriels non configuré.")
+
+    # =========================================================
+    # 9. CHIFFREMENT DES DONNEES TEMPORAIRES
+    # =========================================================
+
+    app.config["MAIL_ENCRYPTION_KEY"] = os.getenv(
+        "MAIL_ENCRYPTION_KEY",
+        "",
+    ).strip()
+
+    if not app.config["MAIL_ENCRYPTION_KEY"]:
+        app.logger.warning("DATENSIS : clé de chiffrement des courriels non configurée.")
+
+    # =========================================================
+    # 10. INITIALISATION SQLALCHEMY
     # =========================================================
 
     db.init_app(app)
 
     # =========================================================
-    # 9. ENREGISTREMENT DES ROUTES EXISTANTES
+    # 11. ENREGISTREMENT DU WORKER DATENSIS
+    # =========================================================
+
+    # La commande est enregistrée après l'initialisation
+    # de SQLAlchemy, mais aucun courriel n'est envoyé
+    # automatiquement au démarrage de Flask.
+    enregistrer_commande_mail(app)
+
+    # =========================================================
+    # 12. ENREGISTREMENT DES ROUTES EXISTANTES
     # =========================================================
 
     from app.routes import main
@@ -194,7 +250,7 @@ def create_app():
     app.register_blueprint(main)
 
     # =========================================================
-    # 10. GESTION DES DEMANDES
+    # 13. GESTION DES DEMANDES
     # =========================================================
 
     from app.demandes import demandes_bp
@@ -202,7 +258,7 @@ def create_app():
     app.register_blueprint(demandes_bp)
 
     # =========================================================
-    # 11. API DE MESSAGERIE DATENSIS
+    # 14. API DE MESSAGERIE DATENSIS
     # =========================================================
 
     from app.api.mail import mail_api
@@ -210,7 +266,7 @@ def create_app():
     app.register_blueprint(mail_api)
 
     # =========================================================
-    # 12. EN-TETES HTTP DE SECURITE
+    # 15. EN-TETES HTTP DE SECURITE
     # =========================================================
 
     @app.after_request
@@ -233,7 +289,7 @@ def create_app():
         return response
 
     # =========================================================
-    # 13. RETOUR APPLICATION
+    # 16. RETOUR APPLICATION
     # =========================================================
 
     return app

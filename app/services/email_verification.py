@@ -16,24 +16,29 @@ from app.services.demande_mail import (
     maintenant_utc,
     normaliser_date,
 )
+from app.services.mail_payload import chiffrer_payload
 
 TOKEN_MINUTES = 30
 RESEND_DELAY_SECONDS = 60
 
 
 def utc_now():
+    """Retourner l'heure actuelle en UTC."""
     return maintenant_utc()
 
 
 def _digest(token):
+    """Calculer l'empreinte SHA-256 d'un jeton."""
     return hashlib.sha256(token.encode("ascii")).hexdigest()
 
 
 def _normalize_date(value):
+    """Normaliser une date en UTC."""
     return normaliser_date(value)
 
 
 def _valid_token(token):
+    """Vérifier le format d'un jeton."""
     return (
         isinstance(token, str)
         and 20 <= len(token) <= 200
@@ -42,8 +47,12 @@ def _valid_token(token):
 
 
 def _verrouiller_utilisateur(connexion, user_id):
+    """Récupérer et verrouiller un utilisateur."""
     requete = """
-        SELECT id_utilisateur, courriel_verifie
+        SELECT
+            id_utilisateur,
+            adresse_courriel,
+            courriel_verifie
         FROM utilisateur
         WHERE id_utilisateur = :id
     """
@@ -62,7 +71,7 @@ def _verrouiller_utilisateur(connexion, user_id):
 
 
 def _creer_jeton(connexion, user_id, maintenant):
-    """Créer un jeton, retourner sa valeur et son ID."""
+    """Créer un jeton et retourner sa valeur et son identifiant."""
     token = secrets.token_urlsafe(32)
 
     connexion.execute(
@@ -106,6 +115,7 @@ def _creer_jeton(connexion, user_id, maintenant):
 
 
 def _valider_user_id(user_id):
+    """Contrôler l'identifiant utilisateur."""
     if not isinstance(user_id, int) or isinstance(user_id, bool) or user_id <= 0:
         raise ValueError("Identifiant utilisateur invalide.")
 
@@ -115,7 +125,10 @@ def issue_token(user_id):
     _valider_user_id(user_id)
 
     with db.engine.begin() as connexion:
-        utilisateur = _verrouiller_utilisateur(connexion, user_id)
+        utilisateur = _verrouiller_utilisateur(
+            connexion,
+            user_id,
+        )
 
         if utilisateur is None:
             raise ValueError("Utilisateur introuvable.")
@@ -123,14 +136,21 @@ def issue_token(user_id):
         if utilisateur["courriel_verifie"]:
             raise ValueError("Adresse courriel déjà vérifiée.")
 
-        token, _ = _creer_jeton(connexion, user_id, utc_now())
+        token, _ = _creer_jeton(
+            connexion,
+            user_id,
+            utc_now(),
+        )
 
     return token
 
 
 def _creer_demande_dans_transaction(connexion, user_id):
-    """Créer jeton, demande et tâche dans la même transaction."""
-    utilisateur = _verrouiller_utilisateur(connexion, user_id)
+    """Créer le jeton, la demande et la tâche chiffrée."""
+    utilisateur = _verrouiller_utilisateur(
+        connexion,
+        user_id,
+    )
 
     if utilisateur is None:
         raise ValueError("Utilisateur introuvable.")
@@ -138,6 +158,12 @@ def _creer_demande_dans_transaction(connexion, user_id):
     if utilisateur["courriel_verifie"]:
         raise ValueError("Adresse courriel déjà vérifiée.")
 
+    destinataire = utilisateur["adresse_courriel"]
+
+    if not destinataire:
+        raise ValueError("Adresse courriel utilisateur manquante.")
+
+    # Annuler les anciennes demandes de vérification.
     annuler_demandes_utilisateur(
         user_id,
         TYPE_VERIFICATION,
@@ -145,8 +171,15 @@ def _creer_demande_dans_transaction(connexion, user_id):
     )
 
     maintenant = utc_now()
-    token, id_verification = _creer_jeton(connexion, user_id, maintenant)
 
+    # Générer un nouveau jeton de vérification.
+    token, id_verification = _creer_jeton(
+        connexion,
+        user_id,
+        maintenant,
+    )
+
+    # Créer la demande DATENSIS.
     request_id = creer_demande_mail(
         user_id,
         id_verification,
@@ -154,6 +187,14 @@ def _creer_demande_dans_transaction(connexion, user_id):
         connexion=connexion,
     )
 
+    # Chiffrer le destinataire et le jeton.
+    payload_chiffre = chiffrer_payload(
+        destinataire,
+        token,
+        TYPE_VERIFICATION,
+    )
+
+    # Créer la tâche dans la même transaction.
     connexion.execute(
         text("""
             INSERT INTO file_attente_mail (
@@ -162,7 +203,8 @@ def _creer_demande_dans_transaction(connexion, user_id):
                 type_message,
                 statut,
                 tentatives,
-                date_creation
+                date_creation,
+                payload_chiffre
             )
             VALUES (
                 :id_tache,
@@ -170,7 +212,8 @@ def _creer_demande_dans_transaction(connexion, user_id):
                 :type_message,
                 'queued',
                 0,
-                :date_creation
+                :date_creation,
+                :payload_chiffre
             )
         """),
         {
@@ -178,6 +221,7 @@ def _creer_demande_dans_transaction(connexion, user_id):
             "id_demande": request_id,
             "type_message": TYPE_VERIFICATION,
             "date_creation": maintenant,
+            "payload_chiffre": payload_chiffre,
         },
     )
 
@@ -189,22 +233,28 @@ def creer_demande_verification(user_id, connexion=None):
 
     Retourne (request_id, token).
 
-    Le token est réservé au serveur. Ne jamais le retourner
-    dans une réponse JSON publique ni l'enregistrer en clair.
+    Le jeton est réservé au serveur. Ne jamais l'exposer
+    dans une réponse JSON publique ou dans les journaux.
     """
     _valider_user_id(user_id)
 
     if connexion is not None:
-        return _creer_demande_dans_transaction(connexion, user_id)
+        return _creer_demande_dans_transaction(
+            connexion,
+            user_id,
+        )
 
     with db.engine.begin() as transaction:
-        resultat = _creer_demande_dans_transaction(transaction, user_id)
+        resultat = _creer_demande_dans_transaction(
+            transaction,
+            user_id,
+        )
 
     return resultat
 
 
 def verify_token(token):
-    """Consommer un jeton et activer le compte."""
+    """Consommer un jeton et activer le compte utilisateur."""
     if not _valid_token(token):
         return False
 
@@ -239,7 +289,10 @@ def verify_token(token):
         if _normalize_date(ligne["date_expiration"]) <= maintenant:
             return False
 
-        utilisateur = _verrouiller_utilisateur(connexion, ligne["id_utilisateur"])
+        utilisateur = _verrouiller_utilisateur(
+            connexion,
+            ligne["id_utilisateur"],
+        )
 
         if utilisateur is None:
             return False
@@ -316,12 +369,12 @@ def find_resend_candidate(email):
         utilisateur = (
             connexion.execute(
                 text("""
-                SELECT id_utilisateur
-                FROM utilisateur
-                WHERE lower(adresse_courriel) = :email
-                  AND courriel_verifie = :verifie
-                LIMIT 1
-            """),
+                    SELECT id_utilisateur
+                    FROM utilisateur
+                    WHERE lower(adresse_courriel) = :email
+                      AND courriel_verifie = :verifie
+                    LIMIT 1
+                """),
                 {
                     "email": email,
                     "verifie": False,
@@ -342,7 +395,9 @@ def find_resend_candidate(email):
                 ORDER BY date_creation DESC
                 LIMIT 1
             """),
-            {"id": utilisateur["id_utilisateur"]},
+            {
+                "id": utilisateur["id_utilisateur"],
+            },
         ).scalar_one_or_none()
 
         if derniere_creation is not None:

@@ -1,16 +1,13 @@
-"""API interne de messagerie DATENSIS.
-
-Réception et validation des demandes d'envoi.
-Les demandes autorisées sont enregistrées dans la file PostgreSQL.
-"""
-
 import logging
 from uuid import UUID
 
 from flask import Blueprint, jsonify, request
 from sqlalchemy.exc import SQLAlchemyError
 
-from app.api.queue import ajouter_demande_en_file
+from app.api.queue import (
+    ajouter_demande_en_file,
+    recuperer_tache,
+)
 from app.api.security import api_key_valide
 
 logger = logging.getLogger(__name__)
@@ -42,7 +39,7 @@ def reponse_erreur(message, statut):
 
 
 def request_id_valide(valeur):
-    """Vérifier qu'un identifiant est un UUID canonique valide."""
+    """Vérifier qu'un identifiant est un UUID canonique."""
     if not isinstance(valeur, str):
         return False
 
@@ -54,17 +51,17 @@ def request_id_valide(valeur):
 
 @mail_api.post("/send")
 def envoyer_message():
-    """Valider et mettre en attente une demande d'envoi autorisée."""
+    """Valider et mettre en attente une demande autorisée."""
 
     # 1. Vérification de la clé API interne.
     if not api_key_valide():
-        logger.warning("DATENSIS : tentative d'accès non autorisée à l'API mail.")
+        logger.warning("DATENSIS : accès non autorisé à l'API mail.")
         return reponse_erreur(
             "Accès non autorisé.",
             401,
         )
 
-    # 2. Vérification de la taille du corps HTTP.
+    # 2. Vérification de la taille de la requête.
     taille_requete = request.content_length
 
     if taille_requete is None:
@@ -100,8 +97,11 @@ def envoyer_message():
             400,
         )
 
-    # 4. Seuls les champs attendus sont autorisés.
-    champs_attendus = {"type", "request_id"}
+    # 4. Vérification des champs autorisés.
+    champs_attendus = {
+        "type",
+        "request_id",
+    }
 
     if set(donnees) != champs_attendus:
         return reponse_erreur(
@@ -125,22 +125,32 @@ def envoyer_message():
             400,
         )
 
-    # 6. Vérification de l'identifiant de demande.
+    # 6. Vérification de l'identifiant.
     if not request_id_valide(request_id):
         return reponse_erreur(
             "Identifiant de demande invalide.",
             400,
         )
 
-    # 7. Enregistrement dans la file d'attente PostgreSQL.
+    # 7. Enregistrement dans la file d'attente.
     try:
         task_id = ajouter_demande_en_file(
             type_message,
             request_id,
         )
 
+        # Récupérer le statut réel de la tâche.
+        tache = recuperer_tache(task_id)
+
+        if tache is None:
+            logger.error("DATENSIS : tâche introuvable après mise en file.")
+            return reponse_erreur(
+                "Impossible de confirmer la demande.",
+                503,
+            )
+
     except ValueError:
-        logger.warning("DATENSIS : demande de messagerie inexistante, invalide ou expirée.")
+        logger.warning("DATENSIS : demande inexistante, invalide ou expirée.")
         return reponse_erreur(
             "Demande introuvable ou expirée.",
             404,
@@ -154,7 +164,7 @@ def envoyer_message():
         )
 
     except SQLAlchemyError:
-        logger.exception("DATENSIS : erreur PostgreSQL lors de la mise en attente.")
+        logger.exception("DATENSIS : erreur SQL lors de la mise en attente.")
         return reponse_erreur(
             "Service de messagerie temporairement indisponible.",
             503,
@@ -174,12 +184,12 @@ def envoyer_message():
             500,
         )
 
-    # 8. Confirmation de la mise en attente.
+    # 8. Confirmation avec le statut réellement enregistré.
     return jsonify(
         {
             "success": True,
-            "message": "Demande enregistrée dans la file d'attente.",
+            "message": "Demande de messagerie enregistrée.",
             "task_id": str(task_id),
-            "status": "queued",
+            "status": tache["status"],
         }
     ), 202

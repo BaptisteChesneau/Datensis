@@ -1,41 +1,165 @@
-"""Envoi SMTP TLS/SSL, sans journaliser les secrets ou liens de vérification."""
+import logging
+from urllib.parse import urlparse
 
-import smtplib
-import ssl
-from email.message import EmailMessage
-
+import requests
 from flask import current_app, url_for
+
+journal = logging.getLogger(__name__)
+
+BREVO_ENDPOINT = "https://api.brevo.com/v3/smtp/email"
+TIMEOUT_SECONDS = 15
+
+
+class ErreurEnvoiMail(RuntimeError):
+    """Erreur lors de la transmission d'un courriel."""
+
+
+def _configuration_mail():
+    """Vérifier la configuration du transport HTTPS."""
+    configuration = current_app.config
+
+    api_key = configuration.get("BREVO_API_KEY")
+    sender = configuration.get("MAIL_FROM")
+    sender_name = configuration.get(
+        "MAIL_FROM_NAME",
+        "DATENSIS",
+    )
+
+    if not api_key:
+        raise ErreurEnvoiMail("Clé API du transport HTTPS manquante.")
+
+    if not sender:
+        raise ErreurEnvoiMail("Adresse d'expédition manquante.")
+
+    return api_key, sender, sender_name
+
+
+def _lien_verification(token):
+    """Construire le lien public de vérification."""
+    if not isinstance(token, str) or not token:
+        raise ValueError("Jeton de vérification invalide.")
+
+    lien = url_for(
+        "main.verifier_courriel",
+        token=token,
+        _external=True,
+    )
+
+    adresse = urlparse(lien)
+
+    if adresse.scheme != "https" and not current_app.debug:
+        raise ErreurEnvoiMail("Le lien de vérification doit utiliser HTTPS.")
+
+    return lien
+
+
+def _envoyer_https(destinataire, sujet, contenu):
+    """Transmettre un courriel via HTTPS."""
+    if not isinstance(destinataire, str) or not destinataire.strip():
+        raise ValueError("Destinataire invalide.")
+
+    api_key, sender, sender_name = _configuration_mail()
+
+    charge_utile = {
+        "sender": {
+            "name": sender_name,
+            "email": sender,
+        },
+        "to": [
+            {
+                "email": destinataire.strip(),
+            }
+        ],
+        "subject": sujet,
+        "textContent": contenu,
+    }
+
+    entetes = {
+        "accept": "application/json",
+        "content-type": "application/json",
+        "api-key": api_key,
+    }
+
+    try:
+        reponse = requests.post(
+            BREVO_ENDPOINT,
+            headers=entetes,
+            json=charge_utile,
+            timeout=TIMEOUT_SECONDS,
+        )
+    except requests.RequestException as exc:
+        journal.error("DATENSIS : transport HTTPS indisponible.")
+        raise ErreurEnvoiMail("Impossible de contacter le service d'envoi.") from exc
+
+    if reponse.status_code not in (200, 201, 202):
+        journal.error(
+            "DATENSIS : transport HTTPS refusé, statut %s.",
+            reponse.status_code,
+        )
+        raise ErreurEnvoiMail("Le service d'envoi a refusé le courriel.")
+
+    journal.info("DATENSIS : courriel accepté par le transport HTTPS.")
+
+    return True
 
 
 def send_verification_email(recipient, token):
-    cfg = current_app.config
-    host = cfg.get("SMTP_HOST")
-    sender = cfg.get("SMTP_FROM")
-    mode = cfg.get("SMTP_SECURITY", "starttls").lower()
-    if not host or not sender or mode not in {"starttls", "ssl"}:
-        raise RuntimeError("Configuration SMTP incomplète ou mode TLS invalide.")
-    port = int(cfg.get("SMTP_PORT") or (465 if mode == "ssl" else 587))
-    link = url_for("main.verifier_courriel", token=token, _external=True)
-    msg = EmailMessage()
-    msg["From"] = sender
-    msg["To"] = recipient
-    msg["Subject"] = "DATENSIS - Confirmez votre adresse e-mail"
-    msg.set_content(
-        f"Bonjour,\n\nConfirmez votre adresse e-mail DATENSIS en ouvrant ce lien dans les 30 minutes :\n{link}\n\nSi vous n'êtes pas à l'origine de cette demande, ignorez cet e-mail.\n"
+    """Envoyer un lien de confirmation d'adresse e-mail."""
+    lien = _lien_verification(token)
+
+    sujet = "DATENSIS - Confirmez votre adresse e-mail"
+
+    contenu = (
+        "Bonjour,\n\n"
+        "Bienvenue sur DATENSIS.\n\n"
+        "Pour confirmer votre adresse e-mail, "
+        "ouvrez le lien suivant :\n\n"
+        f"{lien}\n\n"
+        "Ce lien est valable pendant 30 minutes.\n\n"
+        "Si vous n'êtes pas à l'origine de cette demande, "
+        "ignorez ce message.\n\n"
+        "L'équipe DATENSIS"
     )
-    context = ssl.create_default_context()
-    timeout = 15
-    if mode == "ssl":
-        connection = smtplib.SMTP_SSL(host, port, timeout=timeout, context=context)
-    else:
-        connection = smtplib.SMTP(host, port, timeout=timeout)
-    with connection as smtp:
-        smtp.ehlo()
-        if mode == "starttls":
-            smtp.starttls(context=context)
-            smtp.ehlo()
-        username = cfg.get("SMTP_USERNAME")
-        password = cfg.get("SMTP_PASSWORD")
-        if username and password:
-            smtp.login(username, password)
-        smtp.send_message(msg)
+
+    return _envoyer_https(
+        recipient,
+        sujet,
+        contenu,
+    )
+
+
+def send_password_reset_email(recipient, token):
+    """Envoyer un lien de réinitialisation du mot de passe."""
+    if not isinstance(token, str) or not token:
+        raise ValueError("Jeton de réinitialisation invalide.")
+
+    lien = url_for(
+        "main.reinitialiser_mot_de_passe",
+        token=token,
+        _external=True,
+    )
+
+    adresse = urlparse(lien)
+
+    if adresse.scheme != "https" and not current_app.debug:
+        raise ErreurEnvoiMail("Le lien de réinitialisation doit utiliser HTTPS.")
+
+    sujet = "DATENSIS - Réinitialisation du mot de passe"
+
+    contenu = (
+        "Bonjour,\n\n"
+        "Une demande de réinitialisation de votre mot "
+        "de passe DATENSIS a été effectuée.\n\n"
+        "Pour définir un nouveau mot de passe, "
+        "ouvrez le lien suivant :\n\n"
+        f"{lien}\n\n"
+        "Si vous n'avez pas demandé cette opération, "
+        "ignorez ce message.\n\n"
+        "L'équipe DATENSIS"
+    )
+
+    return _envoyer_https(
+        recipient,
+        sujet,
+        contenu,
+    )

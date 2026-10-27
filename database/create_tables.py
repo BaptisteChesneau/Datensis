@@ -1,5 +1,7 @@
+import os
 from pathlib import Path
 
+from dotenv import load_dotenv
 from sqlalchemy import (
     Boolean,
     CheckConstraint,
@@ -14,27 +16,48 @@ from sqlalchemy import (
     create_engine,
     event,
     func,
+    inspect,
+    text,
 )
 from sqlalchemy.orm import DeclarativeBase
 
 # ============================================================
-# DATENSIS - BASE DE DONNEES LOCALE SQLITE
+# DATENSIS - BASE DE DONNEES CONFIGUREE PAR L'ENVIRONNEMENT
 # ============================================================
 
 DOSSIER_DATABASE = Path(__file__).resolve().parent
-CHEMIN_BDD = DOSSIER_DATABASE / "datensis_dev.db"
+DOSSIER_PROJET = DOSSIER_DATABASE.parent
+load_dotenv(DOSSIER_PROJET / ".env", override=False)
+
+CHEMIN_BDD = DOSSIER_PROJET / "database" / "datensis_dev.db"
+DATABASE_URL = os.getenv("DATABASE_URL") or os.getenv("SCALINGO_POSTGRESQL_URL")
+
+if not DATABASE_URL:
+    if os.getenv("DATENSIS_ENV", "development").strip().lower() == "production":
+        raise RuntimeError("DATABASE_URL PostgreSQL est obligatoire en production.")
+    CHEMIN_BDD.parent.mkdir(parents=True, exist_ok=True)
+    DATABASE_URL = f"sqlite:///{CHEMIN_BDD.as_posix()}"
+
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 
 engine = create_engine(
-    f"sqlite:///{CHEMIN_BDD.as_posix()}",
+    DATABASE_URL,
     echo=False,
+    pool_pre_ping=True,
+    pool_recycle=1800,
 )
 
 
 @event.listens_for(engine, "connect")
 def activer_cles_etrangeres(connexion, _):
-    curseur = connexion.cursor()
-    curseur.execute("PRAGMA foreign_keys=ON")
-    curseur.close()
+    """Activer les cles etrangeres uniquement sur SQLite."""
+    if engine.dialect.name == "sqlite":
+        curseur = connexion.cursor()
+        try:
+            curseur.execute("PRAGMA foreign_keys=ON")
+        finally:
+            curseur.close()
 
 
 class Base(DeclarativeBase):
@@ -223,12 +246,20 @@ class Entreprise(Base):
     __table_args__ = (
         CheckConstraint(
             "siren IS NULL OR (length(siren) = 9 AND siren NOT GLOB '*[^0-9]*')",
-            name="ck_entreprise_siren",
-        ),
+            name="ck_entreprise_siren_sqlite",
+        ).ddl_if(dialect="sqlite"),
+        CheckConstraint(
+            "siren IS NULL OR siren ~ '^[0-9]{9}$'",
+            name="ck_entreprise_siren_pg",
+        ).ddl_if(dialect="postgresql"),
         CheckConstraint(
             "siret IS NULL OR (length(siret) = 14 AND siret NOT GLOB '*[^0-9]*')",
-            name="ck_entreprise_siret",
-        ),
+            name="ck_entreprise_siret_sqlite",
+        ).ddl_if(dialect="sqlite"),
+        CheckConstraint(
+            "siret IS NULL OR siret ~ '^[0-9]{14}$'",
+            name="ck_entreprise_siret_pg",
+        ).ddl_if(dialect="postgresql"),
         CheckConstraint(
             "siren IS NULL OR siret IS NULL OR substr(siret, 1, 9) = siren",
             name="ck_entreprise_siret_siren",
@@ -811,8 +842,12 @@ class PreferenceUtilisateur(Base):
             "couleur_principale GLOB "
             "'#[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f]"
             "[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f]'",
-            name="ck_preference_couleur",
-        ),
+            name="ck_preference_couleur_sqlite",
+        ).ddl_if(dialect="sqlite"),
+        CheckConstraint(
+            "couleur_principale ~ '^#[0-9A-Fa-f]{6}$'",
+            name="ck_preference_couleur_pg",
+        ).ddl_if(dialect="postgresql"),
     )
 
 
@@ -1171,6 +1206,7 @@ class FileAttenteMail(Base):
         DateTime(timezone=True), nullable=False, server_default=func.current_timestamp()
     )
     date_traitement = Column(DateTime(timezone=True))
+    payload_chiffre = Column(Text, nullable=True)
 
     __table_args__ = (
         CheckConstraint(
@@ -1191,64 +1227,75 @@ class FileAttenteMail(Base):
 # ============================================================
 
 
+def _ajouter_colonne_si_absente(connexion, table, colonne, definition):
+    """Migration additive sans suppression de donnees."""
+    inspecteur = inspect(connexion)
+    if not inspecteur.has_table(table):
+        return
+    colonnes = {element["name"] for element in inspecteur.get_columns(table)}
+    if colonne not in colonnes:
+        connexion.execute(text(f"ALTER TABLE {table} ADD COLUMN {colonne} {definition}"))
+        print(f"Migration : {table}.{colonne} ajoutee")
+
+
 def creer_tables():
-    DOSSIER_DATABASE.mkdir(
-        parents=True,
-        exist_ok=True,
-    )
-
+    """Creer les tables manquantes et ajouter les colonnes necessaires."""
     print("=" * 60)
-    print("DATENSIS - CREATION DE LA BASE DE DONNEES")
+    print("DATENSIS - VERIFICATION ET CREATION DES TABLES")
     print("=" * 60)
+    print("Dialecte :", engine.dialect.name)
 
-    # Migration additive pour une base SQLite existante : aucune donnee effacee.
-    from sqlalchemy import inspect, text
-
+    # Les migrations existantes sont conservees, sans effacer les donnees.
+    # Elles sont executees avant create_all pour eviter les ecarts de modele.
     with engine.begin() as connexion:
-        noms_tables = inspect(connexion).get_table_names()
-        if "conversation" in noms_tables:
-            colonnes = {col["name"] for col in inspect(connexion).get_columns("conversation")}
-            if "id_type_conversation" not in colonnes:
-                connexion.execute(
-                    text(
-                        "ALTER TABLE conversation ADD COLUMN id_type_conversation INTEGER "
-                        "REFERENCES type_conversation(id_type_conversation)"
-                    )
-                )
-            if "id_statut_conversation" not in colonnes:
-                connexion.execute(
-                    text(
-                        "ALTER TABLE conversation ADD COLUMN id_statut_conversation INTEGER "
-                        "REFERENCES statut_conversation(id_statut_conversation)"
-                    )
-                )
-
-    Base.metadata.create_all(engine)
-
-    with engine.connect() as connexion:
-        tables = (
-            connexion.execute(
-                text(
-                    "SELECT name FROM sqlite_master "
-                    "WHERE type='table' "
-                    "AND name NOT LIKE 'sqlite_%' "
-                    "ORDER BY name"
-                )
-            )
-            .scalars()
-            .all()
+        _ajouter_colonne_si_absente(
+            connexion,
+            "conversation",
+            "id_type_conversation",
+            "INTEGER REFERENCES type_conversation(id_type_conversation)",
+        )
+        _ajouter_colonne_si_absente(
+            connexion,
+            "conversation",
+            "id_statut_conversation",
+            "INTEGER REFERENCES statut_conversation(id_statut_conversation)",
         )
 
-    print("\nBase :", CHEMIN_BDD)
-    print("Nombre de tables :", len(tables))
+    # Cree uniquement les tables absentes. Ne modifie pas les tables existantes.
+    Base.metadata.create_all(engine, checkfirst=True)
 
+    # Nouvelle colonne necessaire au worker de courriels chiffres.
+    with engine.begin() as connexion:
+        _ajouter_colonne_si_absente(
+            connexion,
+            "file_attente_mail",
+            "payload_chiffre",
+            "TEXT",
+        )
+
+    with engine.connect() as connexion:
+        tables = sorted(inspect(connexion).get_table_names())
+        colonnes_file = (
+            {c["name"] for c in inspect(connexion).get_columns("file_attente_mail")}
+            if "file_attente_mail" in tables
+            else set()
+        )
+
+    tables_attendues = set(Base.metadata.tables.keys())
+    tables_manquantes = sorted(tables_attendues - set(tables))
+    print("\nTables definies :", len(tables_attendues))
+    print("Tables presentes :", len(tables))
     for numero, nom in enumerate(tables, start=1):
         print(f"{numero:02d}. {nom}")
 
-    if len(tables) == 39:
-        print("\nSUCCES : les 39 tables sont creees.")
+    if tables_manquantes:
+        print("\nATTENTION - tables manquantes :", ", ".join(tables_manquantes))
     else:
-        print("\nATTENTION : nombre de tables different de 39.")
+        print("\nSUCCES : toutes les tables definies sont presentes.")
+
+    if "payload_chiffre" not in colonnes_file:
+        raise RuntimeError("La colonne file_attente_mail.payload_chiffre est absente.")
+    print("SUCCES : payload_chiffre est disponible.")
 
 
 if __name__ == "__main__":
