@@ -1,11 +1,3 @@
-"""Gestion des demandes de courriel autorisées DATENSIS.
-
-Ce service relie les demandes de messagerie aux utilisateurs et aux
-jetons de vérification ou de réinitialisation existants.
-
-Il ne réalise aucun envoi de courriel.
-"""
-
 import logging
 from datetime import datetime, timedelta, timezone
 from uuid import UUID, uuid4
@@ -58,21 +50,26 @@ def normaliser_date(valeur):
     return date.astimezone(timezone.utc)
 
 
+def _verifier_identifiant(valeur, libelle):
+    """Vérifier qu'un identifiant est un entier strictement positif."""
+    if not isinstance(valeur, int) or isinstance(valeur, bool) or valeur <= 0:
+        raise ValueError(f"{libelle} invalide.")
+
+
 def _verifier_identifiants(
     id_utilisateur,
     id_jeton,
     type_message,
 ):
     """Valider les paramètres d'une demande."""
-    if (
-        not isinstance(id_utilisateur, int)
-        or isinstance(id_utilisateur, bool)
-        or id_utilisateur <= 0
-    ):
-        raise ValueError("Identifiant utilisateur invalide.")
-
-    if not isinstance(id_jeton, int) or isinstance(id_jeton, bool) or id_jeton <= 0:
-        raise ValueError("Identifiant de jeton invalide.")
+    _verifier_identifiant(
+        id_utilisateur,
+        "Identifiant utilisateur",
+    )
+    _verifier_identifiant(
+        id_jeton,
+        "Identifiant de jeton",
+    )
 
     if type_message not in TYPES_AUTORISES:
         raise ValueError("Type de message non autorisé.")
@@ -84,7 +81,11 @@ def _rechercher_jeton(
     id_jeton,
     type_message,
 ):
-    """Retrouver un jeton existant et non consommé."""
+    """Rechercher un jeton existant et non consommé.
+
+    Les requêtes sont statiques pour éviter toute
+    construction dynamique de noms de tables SQL.
+    """
     if type_message == TYPE_VERIFICATION:
         requete = text("""
             SELECT date_expiration
@@ -116,7 +117,7 @@ def _verifier_utilisateur(
     id_utilisateur,
     type_message,
 ):
-    """Vérifier l'existence et l'état du compte."""
+    """Vérifier l'existence et l'état du compte utilisateur."""
     utilisateur = (
         connexion.execute(
             text("""
@@ -136,101 +137,132 @@ def _verifier_utilisateur(
     if utilisateur is None:
         raise ValueError("Utilisateur introuvable.")
 
-    if type_message == TYPE_VERIFICATION and utilisateur["courriel_verifie"]:
-        raise ValueError("Adresse courriel déjà vérifiée.")
-
     if not utilisateur["adresse_courriel"]:
         raise ValueError("Adresse courriel manquante.")
+
+    if type_message == TYPE_VERIFICATION and utilisateur["courriel_verifie"]:
+        raise ValueError("Adresse courriel déjà vérifiée.")
 
     return utilisateur
 
 
-def creer_demande_mail(
+def _creer_demande_dans_transaction(
+    connexion,
     id_utilisateur,
     id_jeton,
     type_message,
 ):
-    """Créer une demande d'envoi autorisée.
-
-    Le jeton doit déjà être enregistré dans sa table métier.
-
-    Retourne l'identifiant UUID de la demande.
-    """
+    """Créer une demande dans une transaction SQL existante."""
     _verifier_identifiants(
         id_utilisateur,
         id_jeton,
         type_message,
     )
 
+    _verifier_utilisateur(
+        connexion,
+        id_utilisateur,
+        type_message,
+    )
+
+    expiration_jeton = _rechercher_jeton(
+        connexion,
+        id_utilisateur,
+        id_jeton,
+        type_message,
+    )
+
+    if expiration_jeton is None:
+        raise ValueError("Jeton introuvable ou déjà utilisé.")
+
     maintenant = maintenant_utc()
+    expiration = normaliser_date(expiration_jeton)
 
-    with db.engine.begin() as connexion:
-        _verifier_utilisateur(
-            connexion,
-            id_utilisateur,
-            type_message,
-        )
+    if expiration <= maintenant:
+        raise ValueError("Jeton expiré.")
 
-        expiration_jeton = _rechercher_jeton(
+    expiration_maximale = maintenant + timedelta(minutes=DUREE_MAXIMALE_MINUTES)
+
+    expiration = min(
+        expiration,
+        expiration_maximale,
+    )
+
+    id_demande = str(uuid4())
+
+    connexion.execute(
+        text("""
+            INSERT INTO demande_mail (
+                id_demande,
+                id_utilisateur,
+                type_message,
+                id_verification,
+                id_reinitialisation,
+                date_creation,
+                date_expiration
+            )
+            VALUES (
+                :id_demande,
+                :id_utilisateur,
+                :type_message,
+                :id_verification,
+                :id_reinitialisation,
+                :date_creation,
+                :date_expiration
+            )
+        """),
+        {
+            "id_demande": id_demande,
+            "id_utilisateur": id_utilisateur,
+            "type_message": type_message,
+            "id_verification": (id_jeton if type_message == TYPE_VERIFICATION else None),
+            "id_reinitialisation": (id_jeton if type_message == TYPE_REINITIALISATION else None),
+            "date_creation": maintenant,
+            "date_expiration": expiration,
+        },
+    )
+
+    return id_demande
+
+
+def creer_demande_mail(
+    id_utilisateur,
+    id_jeton,
+    type_message,
+    connexion=None,
+):
+    """Créer une demande de courriel autorisée.
+
+    Le jeton doit déjà exister dans sa table métier.
+
+    Si une connexion est fournie, la transaction est
+    gérée par l'appelant.
+
+    Retourne l'identifiant UUID de la demande.
+    """
+    if connexion is not None:
+        return _creer_demande_dans_transaction(
             connexion,
             id_utilisateur,
             id_jeton,
             type_message,
         )
 
-        if expiration_jeton is None:
-            raise ValueError("Jeton introuvable ou déjà utilisé.")
-
-        expiration = normaliser_date(expiration_jeton)
-
-        if expiration <= maintenant:
-            raise ValueError("Jeton expiré.")
-
-        expiration_maximale = maintenant + timedelta(minutes=DUREE_MAXIMALE_MINUTES)
-
-        expiration = min(
-            expiration,
-            expiration_maximale,
-        )
-
-        identifiant_demande = str(uuid4())
-
-        connexion.execute(
-            text("""
-                INSERT INTO demande_mail (
-                    id_demande,
-                    id_utilisateur,
-                    id_jeton,
-                    type_message,
-                    date_creation,
-                    date_expiration
-                )
-                VALUES (
-                    :id_demande,
-                    :id_utilisateur,
-                    :id_jeton,
-                    :type_message,
-                    :date_creation,
-                    :date_expiration
-                )
-            """),
-            {
-                "id_demande": identifiant_demande,
-                "id_utilisateur": id_utilisateur,
-                "id_jeton": id_jeton,
-                "type_message": type_message,
-                "date_creation": maintenant,
-                "date_expiration": expiration,
-            },
+    with db.engine.begin() as transaction:
+        id_demande = _creer_demande_dans_transaction(
+            transaction,
+            id_utilisateur,
+            id_jeton,
+            type_message,
         )
 
     journal.info("DATENSIS : demande de courriel autorisée créée.")
 
-    return identifiant_demande
+    return id_demande
 
 
 def recuperer_demande_mail(identifiant_demande):
-    """Récupérer une demande autorisée sans exposer le jeton."""
+    """Récupérer une demande sans exposer le jeton secret."""
     if not identifiant_valide(identifiant_demande):
         raise ValueError("Identifiant de demande invalide.")
 
@@ -241,7 +273,8 @@ def recuperer_demande_mail(identifiant_demande):
                     SELECT
                         id_demande,
                         id_utilisateur,
-                        id_jeton,
+                        id_verification,
+                        id_reinitialisation,
                         type_message,
                         date_creation,
                         date_expiration
@@ -257,73 +290,109 @@ def recuperer_demande_mail(identifiant_demande):
     if demande is None:
         return None
 
+    date_creation = normaliser_date(demande["date_creation"])
+    date_expiration = normaliser_date(demande["date_expiration"])
+
+    if demande["type_message"] == TYPE_VERIFICATION:
+        id_jeton = demande["id_verification"]
+    else:
+        id_jeton = demande["id_reinitialisation"]
+
     return {
         "id_demande": str(demande["id_demande"]),
         "id_utilisateur": demande["id_utilisateur"],
-        "id_jeton": demande["id_jeton"],
+        "id_verification": demande["id_verification"],
+        "id_reinitialisation": demande["id_reinitialisation"],
+        "id_jeton": id_jeton,
         "type_message": demande["type_message"],
-        "date_creation": normaliser_date(demande["date_creation"]).isoformat(),
-        "date_expiration": normaliser_date(demande["date_expiration"]).isoformat(),
-        "expiree": (normaliser_date(demande["date_expiration"]) <= maintenant_utc()),
+        "date_creation": date_creation.isoformat(),
+        "date_expiration": date_expiration.isoformat(),
+        "expiree": date_expiration <= maintenant_utc(),
     }
+
+
+def _annuler_dans_transaction(
+    connexion,
+    id_utilisateur,
+    type_message,
+):
+    """Annuler les tâches et demandes encore actives."""
+    maintenant = maintenant_utc()
+
+    resultat = connexion.execute(
+        text("""
+            UPDATE file_attente_mail
+            SET statut = 'failed',
+                date_traitement = :maintenant
+            WHERE statut = 'queued'
+              AND id_demande IN (
+                  SELECT id_demande
+                  FROM demande_mail
+                  WHERE id_utilisateur = :id_utilisateur
+                    AND type_message = :type_message
+                    AND date_expiration > :maintenant
+              )
+        """),
+        {
+            "maintenant": maintenant,
+            "id_utilisateur": id_utilisateur,
+            "type_message": type_message,
+        },
+    )
+
+    # Respecter la contrainte SQL :
+    # date_expiration doit être supérieure à date_creation.
+    connexion.execute(
+        text("""
+            UPDATE demande_mail
+            SET date_expiration = :maintenant
+            WHERE id_utilisateur = :id_utilisateur
+              AND type_message = :type_message
+              AND date_expiration > :maintenant
+              AND date_creation < :maintenant
+        """),
+        {
+            "maintenant": maintenant,
+            "id_utilisateur": id_utilisateur,
+            "type_message": type_message,
+        },
+    )
+
+    return resultat.rowcount
 
 
 def annuler_demandes_utilisateur(
     id_utilisateur,
     type_message,
+    connexion=None,
 ):
     """Annuler les demandes en attente d'un utilisateur.
 
-    Les demandes sont expirées et les tâches associées
-    encore en attente sont marquées comme échouées.
+    Les tâches encore en attente sont marquées comme échouées.
+    Les demandes concernées sont expirées.
+
+    Retourne le nombre de tâches annulées.
     """
-    if (
-        not isinstance(id_utilisateur, int)
-        or isinstance(id_utilisateur, bool)
-        or id_utilisateur <= 0
-    ):
-        raise ValueError("Identifiant utilisateur invalide.")
+    _verifier_identifiant(
+        id_utilisateur,
+        "Identifiant utilisateur",
+    )
 
     if type_message not in TYPES_AUTORISES:
         raise ValueError("Type de message invalide.")
 
-    maintenant = maintenant_utc()
-
-    with db.engine.begin() as connexion:
-        resultat = connexion.execute(
-            text("""
-                UPDATE file_attente_mail
-                SET statut = 'failed',
-                    date_traitement = :maintenant
-                WHERE statut = 'queued'
-                  AND id_demande IN (
-                      SELECT id_demande
-                      FROM demande_mail
-                      WHERE id_utilisateur = :id_utilisateur
-                        AND type_message = :type_message
-                        AND date_expiration > :maintenant
-                  )
-            """),
-            {
-                "maintenant": maintenant,
-                "id_utilisateur": id_utilisateur,
-                "type_message": type_message,
-            },
+    if connexion is not None:
+        return _annuler_dans_transaction(
+            connexion,
+            id_utilisateur,
+            type_message,
         )
 
-        connexion.execute(
-            text("""
-                UPDATE demande_mail
-                SET date_expiration = :maintenant
-                WHERE id_utilisateur = :id_utilisateur
-                  AND type_message = :type_message
-                  AND date_expiration > :maintenant
-            """),
-            {
-                "maintenant": maintenant,
-                "id_utilisateur": id_utilisateur,
-                "type_message": type_message,
-            },
+    with db.engine.begin() as transaction:
+        resultat = _annuler_dans_transaction(
+            transaction,
+            id_utilisateur,
+            type_message,
         )
 
-    return resultat.rowcount
+    return resultat

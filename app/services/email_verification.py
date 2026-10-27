@@ -3,42 +3,37 @@
 import hashlib
 import re
 import secrets
-from datetime import datetime, timedelta, timezone
+from datetime import timedelta
 from uuid import uuid4
 
 from sqlalchemy import text
 
 from app.extensions import db
+from app.services.demande_mail import (
+    TYPE_VERIFICATION,
+    annuler_demandes_utilisateur,
+    creer_demande_mail,
+    maintenant_utc,
+    normaliser_date,
+)
 
 TOKEN_MINUTES = 30
 RESEND_DELAY_SECONDS = 60
 
 
 def utc_now():
-    """Retourner la date actuelle en UTC."""
-    return datetime.now(timezone.utc)
+    return maintenant_utc()
 
 
 def _digest(token):
-    """Calculer l'empreinte SHA-256 d'un jeton."""
     return hashlib.sha256(token.encode("ascii")).hexdigest()
 
 
 def _normalize_date(value):
-    """Normaliser une date PostgreSQL ou SQLite en UTC."""
-    if isinstance(value, datetime):
-        result = value
-    else:
-        result = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
-
-    if result.tzinfo is None:
-        return result.replace(tzinfo=timezone.utc)
-
-    return result.astimezone(timezone.utc)
+    return normaliser_date(value)
 
 
 def _valid_token(token):
-    """Vérifier le format d'un jeton de confirmation."""
     return (
         isinstance(token, str)
         and 20 <= len(token) <= 200
@@ -47,29 +42,27 @@ def _valid_token(token):
 
 
 def _verrouiller_utilisateur(connexion, user_id):
-    """Verrouiller le compte pendant une opération sensible."""
-    requete = text("""
-        SELECT id_utilisateur
+    requete = """
+        SELECT id_utilisateur, courriel_verifie
         FROM utilisateur
         WHERE id_utilisateur = :id
-    """)
+    """
 
     if connexion.dialect.name == "postgresql":
-        requete = text("""
-            SELECT id_utilisateur
-            FROM utilisateur
-            WHERE id_utilisateur = :id
-            FOR UPDATE
-        """)
+        requete += " FOR UPDATE"
 
-    return connexion.execute(
-        requete,
-        {"id": user_id},
-    ).scalar_one_or_none()
+    return (
+        connexion.execute(
+            text(requete),
+            {"id": user_id},
+        )
+        .mappings()
+        .first()
+    )
 
 
 def _creer_jeton(connexion, user_id, maintenant):
-    """Créer un jeton et révoquer les précédents."""
+    """Créer un jeton, retourner sa valeur et son ID."""
     token = secrets.token_urlsafe(32)
 
     connexion.execute(
@@ -85,151 +78,140 @@ def _creer_jeton(connexion, user_id, maintenant):
         },
     )
 
-    connexion.execute(
+    id_verification = connexion.execute(
         text("""
             INSERT INTO verification_courriel (
                 id_utilisateur,
                 empreinte_jeton,
-                date_expiration,
-                date_creation
+                date_creation,
+                date_expiration
             )
             VALUES (
                 :id,
                 :empreinte,
-                :expiration,
-                :creation
+                :creation,
+                :expiration
             )
+            RETURNING id_verification
         """),
         {
             "id": user_id,
             "empreinte": _digest(token),
-            "expiration": maintenant + timedelta(minutes=TOKEN_MINUTES),
             "creation": maintenant,
+            "expiration": maintenant + timedelta(minutes=TOKEN_MINUTES),
         },
-    )
+    ).scalar_one()
 
-    return token
+    return token, id_verification
+
+
+def _valider_user_id(user_id):
+    if not isinstance(user_id, int) or isinstance(user_id, bool) or user_id <= 0:
+        raise ValueError("Identifiant utilisateur invalide.")
 
 
 def issue_token(user_id):
-    """Créer un jeton de vérification à usage unique."""
-    if not isinstance(user_id, int) or isinstance(user_id, bool) or user_id <= 0:
-        raise ValueError("Identifiant utilisateur invalide.")
-
-    maintenant = utc_now()
+    """Créer un jeton sans enregistrer de demande d'envoi."""
+    _valider_user_id(user_id)
 
     with db.engine.begin() as connexion:
-        utilisateur = _verrouiller_utilisateur(
-            connexion,
-            user_id,
-        )
+        utilisateur = _verrouiller_utilisateur(connexion, user_id)
 
         if utilisateur is None:
             raise ValueError("Utilisateur introuvable.")
 
-        token = _creer_jeton(
-            connexion,
-            user_id,
-            maintenant,
-        )
+        if utilisateur["courriel_verifie"]:
+            raise ValueError("Adresse courriel déjà vérifiée.")
+
+        token, _ = _creer_jeton(connexion, user_id, utc_now())
 
     return token
 
 
-def creer_demande_verification(user_id):
-    """Créer un jeton et enregistrer sa demande d'envoi.
+def _creer_demande_dans_transaction(connexion, user_id):
+    """Créer jeton, demande et tâche dans la même transaction."""
+    utilisateur = _verrouiller_utilisateur(connexion, user_id)
 
-    Retourne (request_id, token).
+    if utilisateur is None:
+        raise ValueError("Utilisateur introuvable.")
 
-    Le jeton ne doit jamais être envoyé dans le JSON public
-    de l'API ni écrit dans les journaux.
-    """
-    if not isinstance(user_id, int) or isinstance(user_id, bool) or user_id <= 0:
-        raise ValueError("Identifiant utilisateur invalide.")
+    if utilisateur["courriel_verifie"]:
+        raise ValueError("Adresse courriel déjà vérifiée.")
+
+    annuler_demandes_utilisateur(
+        user_id,
+        TYPE_VERIFICATION,
+        connexion=connexion,
+    )
 
     maintenant = utc_now()
-    request_id = str(uuid4())
+    token, id_verification = _creer_jeton(connexion, user_id, maintenant)
 
-    with db.engine.begin() as connexion:
-        utilisateur = _verrouiller_utilisateur(
-            connexion,
-            user_id,
-        )
+    request_id = creer_demande_mail(
+        user_id,
+        id_verification,
+        TYPE_VERIFICATION,
+        connexion=connexion,
+    )
 
-        if utilisateur is None:
-            raise ValueError("Utilisateur introuvable.")
-
-        token = _creer_jeton(
-            connexion,
-            user_id,
-            maintenant,
-        )
-
-        connexion.execute(
-            text("""
-                INSERT INTO demande_mail (
-                    id_demande,
-                    type_message,
-                    date_creation,
-                    date_expiration
-                )
-                VALUES (
-                    :id_demande,
-                    :type_message,
-                    :date_creation,
-                    :date_expiration
-                )
-            """),
-            {
-                "id_demande": request_id,
-                "type_message": "email_verification",
-                "date_creation": maintenant,
-                "date_expiration": maintenant + timedelta(minutes=TOKEN_MINUTES),
-            },
-        )
-
-        identifiant_tache = str(uuid4())
-
-        connexion.execute(
-            text("""
-                INSERT INTO file_attente_mail (
-                    id_tache,
-                    id_demande,
-                    type_message,
-                    statut,
-                    tentatives,
-                    date_creation
-                )
-                VALUES (
-                    :id_tache,
-                    :id_demande,
-                    :type_message,
-                    'queued',
-                    0,
-                    :date_creation
-                )
-            """),
-            {
-                "id_tache": identifiant_tache,
-                "id_demande": request_id,
-                "type_message": "email_verification",
-                "date_creation": maintenant,
-            },
-        )
+    connexion.execute(
+        text("""
+            INSERT INTO file_attente_mail (
+                id_tache,
+                id_demande,
+                type_message,
+                statut,
+                tentatives,
+                date_creation
+            )
+            VALUES (
+                :id_tache,
+                :id_demande,
+                :type_message,
+                'queued',
+                0,
+                :date_creation
+            )
+        """),
+        {
+            "id_tache": str(uuid4()),
+            "id_demande": request_id,
+            "type_message": TYPE_VERIFICATION,
+            "date_creation": maintenant,
+        },
+    )
 
     return request_id, token
 
 
+def creer_demande_verification(user_id, connexion=None):
+    """Créer une demande de vérification complète.
+
+    Retourne (request_id, token).
+
+    Le token est réservé au serveur. Ne jamais le retourner
+    dans une réponse JSON publique ni l'enregistrer en clair.
+    """
+    _valider_user_id(user_id)
+
+    if connexion is not None:
+        return _creer_demande_dans_transaction(connexion, user_id)
+
+    with db.engine.begin() as transaction:
+        resultat = _creer_demande_dans_transaction(transaction, user_id)
+
+    return resultat
+
+
 def verify_token(token):
-    """Vérifier un jeton et activer le compte associé."""
+    """Consommer un jeton et activer le compte."""
     if not _valid_token(token):
         return False
 
     maintenant = utc_now()
-    empreinte = _digest(token)
 
     with db.engine.begin() as connexion:
-        requete = text("""
+        requete = """
             SELECT
                 id_verification,
                 id_utilisateur,
@@ -237,26 +219,15 @@ def verify_token(token):
             FROM verification_courriel
             WHERE empreinte_jeton = :empreinte
               AND date_utilisation IS NULL
-            LIMIT 1
-        """)
+        """
 
         if connexion.dialect.name == "postgresql":
-            requete = text("""
-                SELECT
-                    id_verification,
-                    id_utilisateur,
-                    date_expiration
-                FROM verification_courriel
-                WHERE empreinte_jeton = :empreinte
-                  AND date_utilisation IS NULL
-                LIMIT 1
-                FOR UPDATE
-            """)
+            requete += " FOR UPDATE"
 
         ligne = (
             connexion.execute(
-                requete,
-                {"empreinte": empreinte},
+                text(requete),
+                {"empreinte": _digest(token)},
             )
             .mappings()
             .first()
@@ -266,6 +237,14 @@ def verify_token(token):
             return False
 
         if _normalize_date(ligne["date_expiration"]) <= maintenant:
+            return False
+
+        utilisateur = _verrouiller_utilisateur(connexion, ligne["id_utilisateur"])
+
+        if utilisateur is None:
+            return False
+
+        if utilisateur["courriel_verifie"]:
             return False
 
         resultat = connexion.execute(
@@ -314,11 +293,17 @@ def verify_token(token):
             },
         )
 
+        annuler_demandes_utilisateur(
+            ligne["id_utilisateur"],
+            TYPE_VERIFICATION,
+            connexion=connexion,
+        )
+
     return True
 
 
 def find_resend_candidate(email):
-    """Identifier un compte autorisé à recevoir un nouvel e-mail."""
+    """Rechercher un compte éligible au renvoi."""
     if not isinstance(email, str):
         return None
 
@@ -331,12 +316,12 @@ def find_resend_candidate(email):
         utilisateur = (
             connexion.execute(
                 text("""
-                    SELECT id_utilisateur
-                    FROM utilisateur
-                    WHERE lower(adresse_courriel) = :email
-                      AND courriel_verifie = :verifie
-                    LIMIT 1
-                """),
+                SELECT id_utilisateur
+                FROM utilisateur
+                WHERE lower(adresse_courriel) = :email
+                  AND courriel_verifie = :verifie
+                LIMIT 1
+            """),
                 {
                     "email": email,
                     "verifie": False,
