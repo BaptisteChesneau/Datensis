@@ -65,7 +65,7 @@ def create_app():
 
     chemin_bdd = dossier_projet / "database" / "datensis_dev.db"
 
-    database_url = (os.getenv("DATABASE_URL") or os.getenv("DATABASE_URL_RENDER") or "").strip()
+    database_url = os.getenv("DATABASE_URL", "").strip()
 
     if not database_url:
         if production:
