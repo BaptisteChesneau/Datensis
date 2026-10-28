@@ -1,7 +1,7 @@
 """Worker de messagerie DATENSIS.
 
 Fonctionnalités :
-- réservation atomique PostgreSQL ;
+- réservation atomique SQLite et PostgreSQL ;
 - protection contre les traitements simultanés ;
 - contrôle du destinataire et du jeton ;
 - récupération sécurisée du profil utilisateur ;
@@ -63,9 +63,6 @@ def recuperer_taches_bloquees():
     Par sécurité, elle n'est pas renvoyée automatiquement :
     Resend peut avoir accepté le message avant l'arrêt.
     """
-    if db.engine.dialect.name != "postgresql":
-        raise RuntimeError("Le worker DATENSIS nécessite PostgreSQL.")
-
     limite = maintenant_utc() - timedelta(minutes=DELAI_REPRISE_MINUTES)
 
     with db.engine.begin() as connexion:
@@ -79,8 +76,8 @@ def recuperer_taches_bloquees():
                   AND date_traitement < :limite
             """),
             {
-                "limite": limite,
-                "maintenant": maintenant_utc(),
+                "limite": _date_sql(connexion, limite),
+                "maintenant": _date_sql(connexion, maintenant_utc()),
             },
         )
 
@@ -95,57 +92,84 @@ def recuperer_taches_bloquees():
     return nombre
 
 
-def reserver_tache():
-    """Réserver atomiquement une tâche PostgreSQL."""
-    if db.engine.dialect.name != "postgresql":
-        raise RuntimeError("Le worker DATENSIS nécessite PostgreSQL.")
+def _date_sql(connexion, valeur):
+    """Adapter les dates UTC aux colonnes TEXT de SQLite."""
+    if connexion.dialect.name == "sqlite":
+        return valeur.isoformat()
+    return valeur
 
+
+def reserver_tache():
+    """Réserver une tâche de façon atomique sous SQLite ou PostgreSQL."""
     with db.engine.begin() as connexion:
+        if connexion.dialect.name == "sqlite":
+            # UPDATE ... RETURNING est atomique : deux workers ne peuvent
+            # pas réserver simultanément la même ligne.
+            tache = (
+                connexion.execute(
+                    text("""
+                    UPDATE file_attente_mail
+                    SET statut = 'processing',
+                        tentatives = tentatives + 1,
+                        date_traitement = :maintenant
+                    WHERE id_tache = (
+                        SELECT id_tache FROM file_attente_mail
+                        WHERE statut = 'queued'
+                          AND tentatives < :max_tentatives
+                        ORDER BY date_creation ASC, id_tache ASC
+                        LIMIT 1
+                    )
+                      AND statut = 'queued'
+                    RETURNING id_tache, id_demande, type_message,
+                              payload_chiffre, tentatives
+                """),
+                    {
+                        "maintenant": _date_sql(connexion, maintenant_utc()),
+                        "max_tentatives": MAX_TENTATIVES,
+                    },
+                )
+                .mappings()
+                .first()
+            )
+            return dict(tache) if tache is not None else None
+
+        if connexion.dialect.name != "postgresql":
+            raise RuntimeError("Dialecte de base non pris en charge.")
+
         tache = (
             connexion.execute(
                 text("""
-                    SELECT
-                        id_tache,
-                        id_demande,
-                        type_message,
-                        payload_chiffre,
-                        tentatives
-                    FROM file_attente_mail
-                    WHERE statut = 'queued'
-                      AND tentatives < :max_tentatives
-                    ORDER BY date_creation ASC
-                    FOR UPDATE SKIP LOCKED
-                    LIMIT 1
-                """),
-                {
-                    "max_tentatives": MAX_TENTATIVES,
-                },
+                SELECT id_tache, id_demande, type_message,
+                       payload_chiffre, tentatives
+                FROM file_attente_mail
+                WHERE statut = 'queued'
+                  AND tentatives < :max_tentatives
+                ORDER BY date_creation ASC, id_tache ASC
+                LIMIT 1
+                FOR UPDATE SKIP LOCKED
+            """),
+                {"max_tentatives": MAX_TENTATIVES},
             )
             .mappings()
             .first()
         )
-
         if tache is None:
             return None
-
         resultat = connexion.execute(
             text("""
                 UPDATE file_attente_mail
                 SET statut = 'processing',
                     tentatives = tentatives + 1,
                     date_traitement = :maintenant
-                WHERE id_tache = :id_tache
-                  AND statut = 'queued'
+                WHERE id_tache = :id_tache AND statut = 'queued'
             """),
             {
                 "id_tache": tache["id_tache"],
-                "maintenant": maintenant_utc(),
+                "maintenant": _date_sql(connexion, maintenant_utc()),
             },
         )
-
         if resultat.rowcount != 1:
             raise RuntimeError("Impossible de réserver la tâche.")
-
         return dict(tache)
 
 
@@ -201,7 +225,7 @@ def _verifier_demande(tache, donnees):
         requete = text("""
             SELECT
                 u.adresse_courriel,
-                u.type_profil AS profil,
+                r.profil AS profil,
                 d.date_expiration,
                 r.date_expiration AS expiration_jeton
             FROM demande_mail AS d
@@ -295,7 +319,7 @@ def _terminer_tache(id_tache, statut):
             {
                 "id_tache": id_tache,
                 "statut": statut,
-                "maintenant": maintenant_utc(),
+                "maintenant": _date_sql(connexion, maintenant_utc()),
             },
         )
 

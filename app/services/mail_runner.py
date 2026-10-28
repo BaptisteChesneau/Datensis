@@ -1,10 +1,11 @@
-"""Commande d'exécution du worker DATENSIS.
+"""Commande de traitement des courriels DATENSIS.
 
-Exécution :
-    flask --app run.py mail-worker
+Compatible SQLite et PostgreSQL.
 
-La commande utilise le contexte Flask et traite un nombre
-limité de tâches pour éviter les exécutions sans fin.
+Exécution locale :
+    python -m flask --app "app:create_app()" mail-worker
+
+Cette commande traite un nombre limité de tâches.
 """
 
 import logging
@@ -23,7 +24,7 @@ MAX_TACHES_PAR_EXECUTION = 20
 
 
 def enregistrer_commande_mail(app):
-    """Enregistrer la commande Flask de traitement des courriels."""
+    """Enregistrer la commande Flask du worker DATENSIS."""
 
     @app.cli.command("mail-worker")
     @click.option(
@@ -31,35 +32,49 @@ def enregistrer_commande_mail(app):
         default=MAX_TACHES_PAR_EXECUTION,
         type=click.IntRange(1, 100),
         show_default=True,
-        help="Nombre maximal de tâches à traiter.",
+        help="Nombre maximal de courriels à traiter.",
     )
     def mail_worker_command(limit):
-        """Traiter les courriels en attente DATENSIS."""
-        if current_app.extensions["sqlalchemy"].engine.dialect.name != "postgresql":
-            raise click.ClickException("Le worker nécessite une base PostgreSQL.")
+        """Traiter les courriels en attente."""
 
-        logger.info("DATENSIS : démarrage du traitement des courriels.")
+        dialecte = current_app.extensions["sqlalchemy"].engine.dialect.name
 
-        # Identifier les tâches abandonnées par un ancien worker.
-        recuperer_taches_bloquees()
+        if dialecte not in ("sqlite", "postgresql"):
+            raise click.ClickException(f"Base de données non prise en charge : {dialecte}")
 
-        traites = 0
-        envoyes = 0
-        echecs = 0
-
-        for _ in range(limit):
-            resultat = traiter_prochaine_tache()
-
-            if not resultat["processed"]:
-                break
-
-            traites += 1
-
-            if resultat["status"] == "sent":
-                envoyes += 1
-            elif resultat["status"] == "failed":
-                echecs += 1
-
-        click.echo(
-            f"DATENSIS : {traites} tâche(s) traitée(s), {envoyes} acceptée(s), {echecs} en échec."
+        logger.info(
+            "DATENSIS : démarrage du worker (%s).",
+            dialecte,
         )
+
+        try:
+            recuperer_taches_bloquees()
+
+            traites = 0
+            envoyes = 0
+            echecs = 0
+
+            for _ in range(limit):
+                resultat = traiter_prochaine_tache()
+
+                if not resultat["processed"]:
+                    break
+
+                traites += 1
+
+                if resultat["status"] == "sent":
+                    envoyes += 1
+                elif resultat["status"] == "failed":
+                    echecs += 1
+
+            click.echo(
+                f"DATENSIS : {traites} tâche(s) traitée(s), "
+                f"{envoyes} acceptée(s), "
+                f"{echecs} en échec."
+            )
+
+        except Exception as erreur:
+            logger.exception("DATENSIS : erreur pendant le traitement.")
+            raise click.ClickException(
+                "Échec du traitement des courriels. Consultez les logs du serveur."
+            ) from erreur
