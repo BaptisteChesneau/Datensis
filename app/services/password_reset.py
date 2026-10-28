@@ -11,6 +11,10 @@ from werkzeug.security import generate_password_hash
 
 from app.extensions import db
 
+# ============================================================
+# CONFIGURATION
+# ============================================================
+
 EXPIRATION_MINUTES = 30
 DELAI_ENTRE_DEMANDES_SECONDES = 60
 
@@ -21,18 +25,24 @@ PROFILS = {
 }
 
 
+# ============================================================
+# FONCTIONS UTILITAIRES
+# ============================================================
+
+
 def _maintenant():
     """Retourne la date actuelle en UTC."""
     return datetime.now(timezone.utc)
 
 
 def _empreinte(jeton):
-    """Calcule une empreinte SHA-256 du jeton."""
+    """Calcule l'empreinte SHA-256 d'un jeton."""
     return hashlib.sha256(jeton.encode("ascii")).hexdigest()
 
 
 def _date(valeur):
     """Normalise une date SQLite ou PostgreSQL en UTC."""
+
     if isinstance(valeur, datetime):
         dt = valeur
     else:
@@ -45,7 +55,8 @@ def _date(valeur):
 
 
 def _verifier_jeton(jeton):
-    """Vérifie le format du jeton sans le divulguer."""
+    """Vérifie le format d'un jeton sans le divulguer."""
+
     return (
         isinstance(jeton, str)
         and 20 <= len(jeton) <= 200
@@ -55,6 +66,7 @@ def _verifier_jeton(jeton):
 
 def _verifier_mot_de_passe(mot_de_passe, confirmation):
     """Applique la politique de sécurité DATENSIS."""
+
     if not isinstance(mot_de_passe, str):
         raise ValueError("Mot de passe invalide.")
 
@@ -75,13 +87,43 @@ def _verifier_mot_de_passe(mot_de_passe, confirmation):
         )
 
 
+def _condition_booleenne(connexion):
+    """
+    Retourne la condition SQL adaptée au moteur utilisé.
+
+    PostgreSQL : BOOLEAN = TRUE
+    SQLite : BOOLEAN = 1
+    """
+
+    if connexion.dialect.name == "postgresql":
+        return """
+            AND u.compte_actif IS TRUE
+            AND u.courriel_verifie IS TRUE
+        """
+
+    return """
+        AND u.compte_actif = 1
+        AND u.courriel_verifie = 1
+    """
+
+
+# ============================================================
+# DEMANDER UNE RÉINITIALISATION
+# ============================================================
+
+
 def demander_reinitialisation(email, profil):
     """
     Génère un jeton pour un compte éligible.
 
-    Retourne (destinataire, jeton) ou None.
-    Ne jamais exposer le jeton dans une réponse HTTP.
+    Retourne :
+        (adresse_courriel, jeton)
+        ou None.
+
+    Le jeton ne doit jamais être exposé
+    dans une réponse HTTP.
     """
+
     if profil not in PROFILS:
         return None
 
@@ -96,26 +138,35 @@ def demander_reinitialisation(email, profil):
     maintenant = _maintenant()
 
     with db.engine.begin() as con:
+        # Conditions booléennes propres au moteur.
+        # Le fragment provient exclusivement de constantes
+        # internes et non d'une entrée utilisateur.
+        condition = _condition_booleenne(con)
+
+        requete_compte = text(
+            """
+            SELECT
+                u.id_utilisateur,
+                u.adresse_courriel
+            FROM utilisateur u
+            JOIN utilisateur_entreprise ue
+                ON ue.id_utilisateur = u.id_utilisateur
+            JOIN entreprise e
+                ON e.id_entreprise = ue.id_entreprise
+            JOIN type_entreprise te
+                ON te.id_type_entreprise = e.id_type_entreprise
+            WHERE lower(u.adresse_courriel) = :email
+              AND te.code_type = :profil
+            """
+            + condition
+            + """
+            LIMIT 1
+            """
+        )
+
         compte = (
             con.execute(
-                text("""
-                    SELECT
-                        u.id_utilisateur,
-                        u.adresse_courriel
-                    FROM utilisateur u
-                    JOIN utilisateur_entreprise ue
-                        ON ue.id_utilisateur = u.id_utilisateur
-                    JOIN entreprise e
-                        ON e.id_entreprise = ue.id_entreprise
-                    JOIN type_entreprise te
-                        ON te.id_type_entreprise =
-                           e.id_type_entreprise
-                    WHERE lower(u.adresse_courriel) = :email
-                      AND te.code_type = :profil
-                      AND u.compte_actif = 1
-                      AND u.courriel_verifie = 1
-                    LIMIT 1
-                """),
+                requete_compte,
                 {
                     "email": email,
                     "profil": PROFILS[profil],
@@ -130,53 +181,65 @@ def demander_reinitialisation(email, profil):
 
         id_utilisateur = compte["id_utilisateur"]
 
-        # Sérialise les demandes pour ce compte
-        # sous PostgreSQL.
+        # Verrouillage du compte sous PostgreSQL
+        # pour sérialiser les demandes concurrentes.
         if con.dialect.name == "postgresql":
             con.execute(
-                text("""
+                text(
+                    """
                     SELECT id_utilisateur
                     FROM utilisateur
                     WHERE id_utilisateur = :id
                     FOR UPDATE
-                """),
+                    """
+                ),
                 {"id": id_utilisateur},
             )
 
+        # Recherche de la dernière demande.
         derniere_demande = con.execute(
-            text("""
+            text(
+                """
                 SELECT date_creation
                 FROM reinitialisation_mot_de_passe
                 WHERE id_utilisateur = :id
                 ORDER BY date_creation DESC
                 LIMIT 1
-            """),
+                """
+            ),
             {"id": id_utilisateur},
         ).scalar_one_or_none()
 
+        # Protection contre les demandes répétées.
         if derniere_demande is not None:
-            if _date(derniere_demande) > (
-                maintenant - timedelta(seconds=DELAI_ENTRE_DEMANDES_SECONDES)
-            ):
+            limite = maintenant - timedelta(seconds=DELAI_ENTRE_DEMANDES_SECONDES)
+
+            if _date(derniere_demande) > limite:
                 return None
 
+        # Génération d'un jeton aléatoire sécurisé.
         jeton = secrets.token_urlsafe(32)
 
+        # Invalidation des anciens jetons actifs.
         con.execute(
-            text("""
+            text(
+                """
                 UPDATE reinitialisation_mot_de_passe
                 SET date_utilisation = :maintenant
                 WHERE id_utilisateur = :id
                   AND date_utilisation IS NULL
-            """),
+                """
+            ),
             {
                 "maintenant": maintenant,
                 "id": id_utilisateur,
             },
         )
 
+        # Enregistrement de l'empreinte uniquement.
         con.execute(
-            text("""
+            text(
+                """
                 INSERT INTO reinitialisation_mot_de_passe (
                     id_utilisateur,
                     profil,
@@ -191,35 +254,50 @@ def demander_reinitialisation(email, profil):
                     :creation,
                     :expiration
                 )
-            """),
+                """
+            ),
             {
                 "id": id_utilisateur,
                 "profil": profil,
                 "empreinte": _empreinte(jeton),
                 "creation": maintenant,
-                "expiration": (maintenant + timedelta(minutes=EXPIRATION_MINUTES)),
+                "expiration": maintenant + timedelta(minutes=EXPIRATION_MINUTES),
             },
         )
 
     return compte["adresse_courriel"], jeton
 
 
+# ============================================================
+# VÉRIFICATION D'UN JETON
+# ============================================================
+
+
 def jeton_valide(jeton, profil):
-    """Vérifie la validité d'un jeton non consommé."""
-    if profil not in PROFILS or not _verifier_jeton(jeton):
+    """
+    Vérifie qu'un jeton existe, appartient au profil
+    demandé, n'a pas expiré et n'a pas été utilisé.
+    """
+
+    if profil not in PROFILS:
+        return False
+
+    if not _verifier_jeton(jeton):
         return False
 
     with db.engine.connect() as con:
         ligne = (
             con.execute(
-                text("""
+                text(
+                    """
                     SELECT date_expiration
                     FROM reinitialisation_mot_de_passe
                     WHERE empreinte_jeton = :empreinte
                       AND profil = :profil
                       AND date_utilisation IS NULL
                     LIMIT 1
-                """),
+                    """
+                ),
                 {
                     "empreinte": _empreinte(jeton),
                     "profil": profil,
@@ -229,7 +307,15 @@ def jeton_valide(jeton, profil):
             .first()
         )
 
-    return ligne is not None and _date(ligne["date_expiration"]) > _maintenant()
+    if ligne is None:
+        return False
+
+    return _date(ligne["date_expiration"]) > _maintenant()
+
+
+# ============================================================
+# MODIFICATION DU MOT DE PASSE
+# ============================================================
 
 
 def changer_mot_de_passe(
@@ -241,8 +327,13 @@ def changer_mot_de_passe(
     """
     Modifie le mot de passe avec un jeton à usage unique.
 
-    Retourne (adresse_courriel, date_utc).
+    Retourne :
+        (adresse_courriel, date_utc)
+
+    Toute l'opération est effectuée dans une transaction.
     """
+
+    # Validation du nouveau mot de passe.
     _verifier_mot_de_passe(
         mot_de_passe,
         confirmation,
@@ -256,16 +347,17 @@ def changer_mot_de_passe(
 
     empreinte = _empreinte(jeton)
 
+    # Le mot de passe n'est jamais enregistré en clair.
     nouveau_hash = generate_password_hash(
         mot_de_passe,
         method="scrypt",
     )
 
     with db.engine.begin() as con:
-        # Requêtes SQL statiques : aucun fragment SQL n'est interpolé.
-        # PostgreSQL verrouille la ligne de réinitialisation uniquement.
+        # PostgreSQL verrouille la ligne du jeton.
         if con.dialect.name == "postgresql":
-            requete = text("""
+            requete = text(
+                """
                 SELECT
                     r.id_utilisateur,
                     r.date_expiration,
@@ -278,9 +370,12 @@ def changer_mot_de_passe(
                   AND r.date_utilisation IS NULL
                 LIMIT 1
                 FOR UPDATE OF r
-            """)
+                """
+            )
+
         else:
-            requete = text("""
+            requete = text(
+                """
                 SELECT
                     r.id_utilisateur,
                     r.date_expiration,
@@ -292,7 +387,8 @@ def changer_mot_de_passe(
                   AND r.profil = :profil
                   AND r.date_utilisation IS NULL
                 LIMIT 1
-            """)
+                """
+            )
 
         ligne = (
             con.execute(
@@ -314,14 +410,17 @@ def changer_mot_de_passe(
         if _date(ligne["date_expiration"]) <= maintenant:
             raise ValueError("Lien invalide, expiré ou déjà utilisé.")
 
+        # Consommation du jeton.
         resultat = con.execute(
-            text("""
+            text(
+                """
                 UPDATE reinitialisation_mot_de_passe
                 SET date_utilisation = :maintenant
                 WHERE empreinte_jeton = :empreinte
                   AND profil = :profil
                   AND date_utilisation IS NULL
-            """),
+                """
+            ),
             {
                 "maintenant": maintenant,
                 "empreinte": empreinte,
@@ -332,12 +431,15 @@ def changer_mot_de_passe(
         if resultat.rowcount != 1:
             raise ValueError("Lien invalide, expiré ou déjà utilisé.")
 
+        # Mise à jour du mot de passe utilisateur.
         modification = con.execute(
-            text("""
+            text(
+                """
                 UPDATE utilisateur
                 SET mot_de_passe_hache = :nouveau_hash
                 WHERE id_utilisateur = :id
-            """),
+                """
+            ),
             {
                 "nouveau_hash": nouveau_hash,
                 "id": ligne["id_utilisateur"],
@@ -347,13 +449,16 @@ def changer_mot_de_passe(
         if modification.rowcount != 1:
             raise RuntimeError("Impossible de modifier le mot de passe.")
 
+        # Invalidation de tous les autres jetons actifs.
         con.execute(
-            text("""
+            text(
+                """
                 UPDATE reinitialisation_mot_de_passe
                 SET date_utilisation = :maintenant
                 WHERE id_utilisateur = :id
                   AND date_utilisation IS NULL
-            """),
+                """
+            ),
             {
                 "maintenant": maintenant,
                 "id": ligne["id_utilisateur"],
@@ -363,8 +468,14 @@ def changer_mot_de_passe(
     return ligne["adresse_courriel"], maintenant
 
 
+# ============================================================
+# FORMATAGE DES DATES
+# ============================================================
+
+
 def date_heure_paris(date_utc):
-    """Affiche une date dans le fuseau Europe/Paris."""
+    """Affiche une date dans le fuseau horaire Europe/Paris."""
+
     return (
         _date(date_utc)
         .astimezone(ZoneInfo("Europe/Paris"))
