@@ -18624,3 +18624,99 @@ document.addEventListener("DOMContentLoaded", () => {
     message("securityFeedback", "Sessions réelles indisponibles dans cette démonstration. Leur consultation nécessite une route Flask authentifiée.");
   });
 })();
+
+
+/* =========================================
+   DATENSIS - MOT DE PASSE OUBLIE
+   Communication avec le backend DATENSIS
+   ========================================= */
+
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("forgot-password-form");
+    const formContent = document.getElementById("reset-form-content");
+    const success = document.getElementById("reset-success");
+    const errorBox = document.getElementById("reset-error");
+    const submitButton = document.getElementById("reset-submit");
+    const submitLabel = form?.querySelector(".reset-submit-label");
+    const resetAgain = document.getElementById("reset-again");
+
+    if (!form || !success || !submitButton) {
+        return;
+    }
+
+    const initialLabel = submitLabel?.textContent.trim() || "Envoyer";
+
+    function showError(message) {
+        errorBox.textContent = message;
+        errorBox.hidden = false;
+    }
+
+    form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        if (!form.reportValidity()) {
+            return;
+        }
+
+        errorBox.hidden = true;
+        submitButton.disabled = true;
+
+        if (submitLabel) {
+            submitLabel.textContent = "Enregistrement de la demande...";
+        }
+
+        try {
+            const response = await fetch(form.action, {
+                method: "POST",
+                body: new FormData(form),
+                credentials: "same-origin",
+                headers: {
+                    "Accept": "application/json",
+                    "X-Requested-With": "XMLHttpRequest"
+                }
+            });
+
+            const contentType = response.headers.get("content-type") || "";
+
+            if (!contentType.includes("application/json")) {
+                throw new Error("Réponse inattendue du serveur DATENSIS.");
+            }
+
+            const data = await response.json();
+
+            if (!response.ok || data.success !== true) {
+                throw new Error(
+                    "Impossible de traiter votre demande pour le moment."
+                );
+            }
+
+            formContent.hidden = true;
+            success.hidden = false;
+            success.focus();
+
+        } catch (error) {
+            console.error("DATENSIS - Erreur de demande :", error);
+
+            showError(
+                "Une erreur est survenue. " +
+                "Veuillez réessayer dans quelques instants."
+            );
+
+        } finally {
+            submitButton.disabled = false;
+
+            if (submitLabel) {
+                submitLabel.textContent = initialLabel;
+            }
+        }
+    });
+
+    resetAgain?.addEventListener("click", () => {
+        success.hidden = true;
+        formContent.hidden = false;
+        errorBox.hidden = true;
+
+        form.reset();
+        document.getElementById("email")?.focus();
+    });
+});

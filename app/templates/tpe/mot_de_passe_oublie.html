@@ -1,33 +1,155 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mot de passe oublié</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <title>Mot de passe oublié | DATENSIS</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"
+            defer></script>
 </head>
+
 <body class="tpe-auth login-page">
+
 <main class="dashboard-page">
-<section class="auth-section">
-<article class="auth-card">
-    <div class="auth-space-badge">Indépendants & TPE</div>
-    <h1>Mot de passe oublié</h1>
-    <p class="auth-intro">Indiquez votre adresse e-mail pour recevoir un lien sécurisé valable 30 minutes.</p>
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% for category, message in messages %}
-            <div class="form-message form-message-{{ category }}" role="alert">{{ message }}</div>
-        {% endfor %}
-    {% endwith %}
-    <form class="journey-form" method="POST" action="{{ url_for('main.mot_de_passe_oublie', profil='tpe') }}">
-        <label for="email">Adresse e-mail</label>
-<input id="email" type="email" name="email" autocomplete="email" maxlength="254" required>
-<button type="submit" class="btn-primary">Recevoir un lien de réinitialisation</button>
-    </form>
-    <div class="account-back">
-        <a href="{{ url_for('main.tpe_connexion') }}">← Retour à la connexion</a>
-    </div>
-</article>
-</section>
+    <section class="auth-section">
+        <article class="auth-card reset-password-card">
+
+            <div class="auth-space-badge">
+                Indépendants &amp; TPE
+            </div>
+
+            <div id="reset-form-content">
+
+                <h1>Mot de passe oublié</h1>
+
+                <p class="auth-intro">
+                    Indiquez votre adresse e-mail pour demander
+                    un lien sécurisé de réinitialisation,
+                    valable 30 minutes.
+                </p>
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% for category, message in messages %}
+                        <div class="form-message form-message-{{ category }}"
+                             role="alert">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endwith %}
+
+                <form
+                    id="forgot-password-form"
+                    class="journey-form"
+                    method="POST"
+                    action="{{ url_for('main.mot_de_passe_oublie', profil='tpe') }}"
+                >
+                    {% if csrf_token is defined %}
+                        <input type="hidden"
+                               name="csrf_token"
+                               value="{{ csrf_token() }}">
+                    {% endif %}
+
+                    <label for="email">
+                        Adresse e-mail
+                    </label>
+
+                    <input
+                        id="email"
+                        type="email"
+                        name="email"
+                        autocomplete="email"
+                        maxlength="254"
+                        placeholder="exemple@entreprise.fr"
+                        required
+                    >
+
+                    <button
+                        id="reset-submit"
+                        type="submit"
+                        class="btn-primary"
+                    >
+                        <span class="reset-submit-label">
+                            Recevoir un lien de réinitialisation
+                        </span>
+                    </button>
+
+                    <p class="reset-api-caption">
+                        Demande traitée de manière sécurisée
+                        par le service de messagerie DATENSIS.
+                    </p>
+
+                </form>
+            </div>
+
+            <!-- CONFIRMATION DE LA DEMANDE -->
+            <section
+                id="reset-success"
+                class="reset-success"
+                role="status"
+                aria-live="polite"
+                tabindex="-1"
+                hidden
+            >
+                <div class="reset-success-icon" aria-hidden="true">
+                    ✓
+                </div>
+
+                <h2>Votre demande a bien été prise en compte</h2>
+
+                <p>
+                    Si un compte DATENSIS correspond à cette
+                    adresse e-mail, un lien de réinitialisation
+                    vous sera envoyé.
+                </p>
+
+                <div class="reset-success-notice">
+                    <strong>Consultez votre boîte mail</strong>
+                    <span>
+                        Vérifiez également le dossier des
+                        courriers indésirables.
+                    </span>
+                </div>
+
+                <p class="reset-success-security">
+                    Pour votre sécurité, le lien sera valable
+                    pendant 30 minutes.
+                </p>
+
+                <button
+                    id="reset-again"
+                    class="reset-secondary-button"
+                    type="button"
+                >
+                    Effectuer une nouvelle demande
+                </button>
+            </section>
+
+            <!-- ERREUR DE COMMUNICATION -->
+            <div
+                id="reset-error"
+                class="reset-error"
+                role="alert"
+                hidden
+            >
+                Impossible de traiter votre demande pour le moment.
+                Veuillez réessayer.
+            </div>
+
+            <div class="account-back">
+                <a href="{{ url_for('main.tpe_connexion') }}">
+                    ← Retour à la connexion
+                </a>
+            </div>
+
+        </article>
+    </section>
 </main>
+
 </body>
 </html>
