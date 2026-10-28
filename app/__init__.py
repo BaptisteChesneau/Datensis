@@ -187,7 +187,7 @@ def create_app():
     # =========================================================
 
     resend_api_key = os.getenv(
-        "RESEND_API_KEY",
+        "DATENSIS_RESEND",
         "",
     ).strip()
 
