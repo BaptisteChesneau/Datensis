@@ -233,7 +233,12 @@ def create_app():
 
     db.init_app(app)
 
-    # Initialisation des tables via database/create_tables.py, separement.
+    # Initialiser les tables manquantes sur la meme base SQLite.
+    # En mode demo Render, le systeme de fichiers peut etre reinitialise.
+    # La creation est idempotente : les tables existantes sont conservees.
+    from database.create_tables import creer_tables
+
+    creer_tables()
 
     # =========================================================
     # 12. ENREGISTREMENT DU WORKER DATENSIS
