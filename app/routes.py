@@ -2,7 +2,7 @@
 
 import logging
 
-from flask import Blueprint, abort, flash, redirect, render_template, request, url_for
+from flask import Blueprint, abort, flash, jsonify, redirect, render_template, request, url_for
 
 from app.services.email_verification import (
     find_resend_candidate,
@@ -500,6 +500,14 @@ PROFILS_RESET = {
 }
 
 
+def _demande_json():
+    """Détecter les soumissions asynchrones du formulaire."""
+    return (
+        request.headers.get("X-Requested-With") == "XMLHttpRequest"
+        or request.accept_mimetypes.best == "application/json"
+    )
+
+
 @main.route("/<profil>/mot-de-passe-oublie", methods=["GET", "POST"])
 def mot_de_passe_oublie(profil):
     configuration = PROFILS_RESET.get(profil)
@@ -508,24 +516,38 @@ def mot_de_passe_oublie(profil):
 
     if request.method == "POST":
         email = request.form.get("email", "").strip().lower()
+        ajax = _demande_json()
+
         if not email or len(email) > 254 or "@" not in email:
-            flash("Veuillez saisir une adresse e-mail valide.", "error")
+            message = "Veuillez saisir une adresse e-mail valide."
+            if ajax:
+                return jsonify(success=False, message=message), 400
+            flash(message, "error")
             return redirect(url_for("main.mot_de_passe_oublie", profil=profil))
 
         try:
             resultat = demander_reinitialisation(email, profil)
             if resultat is not None:
                 destinataire, jeton = resultat
+                # Le service existant assure l'acheminement de la demande.
                 envoyer_lien_reinitialisation(destinataire, jeton, profil)
         except Exception:
             logger.exception("Echec interne de la demande de reinitialisation (%s)", profil)
+            message = "Impossible de traiter votre demande pour le moment."
+            if ajax:
+                return jsonify(success=False, message=message), 500
+            flash(message, "error")
+            return redirect(url_for("main.mot_de_passe_oublie", profil=profil))
 
-        # Ne pas reveler si un compte existe pour cette adresse.
-        flash(
+        # Réponse identique, qu'un compte existe ou non.
+        message = (
+            "Votre demande a bien été prise en compte. "
             "Si un compte correspond à cette adresse, "
-            "un lien de réinitialisation vous sera envoyé.",
-            "info",
+            "un lien de réinitialisation vous sera envoyé."
         )
+        if ajax:
+            return jsonify(success=True, status="accepted", message=message), 200
+        flash(message, "info")
         return redirect(url_for("main.mot_de_passe_oublie", profil=profil))
 
     return render_template(
