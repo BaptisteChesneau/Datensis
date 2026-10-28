@@ -10,7 +10,7 @@ from app.services.email_verification import (
     verify_token,
 )
 from app.services.inscription import ErreurInscription, creer_compte
-from app.services.mail import send_verification_email
+from app.services.mail import send_password_reset_email, send_verification_email
 from app.services.password_reset import (
     changer_mot_de_passe,
     demander_reinitialisation,
@@ -18,7 +18,6 @@ from app.services.password_reset import (
 )
 from app.services.password_reset_mail import (
     envoyer_confirmation_modification,
-    envoyer_lien_reinitialisation,
 )
 
 main = Blueprint("main", __name__)
@@ -529,8 +528,8 @@ def mot_de_passe_oublie(profil):
             resultat = demander_reinitialisation(email, profil)
             if resultat is not None:
                 destinataire, jeton = resultat
-                # Le service existant assure l'acheminement de la demande.
-                envoyer_lien_reinitialisation(destinataire, jeton, profil)
+                # Envoi HTTPS direct, sans file d'attente ni worker.
+                send_password_reset_email(destinataire, jeton, profil)
         except Exception:
             logger.exception("Echec interne de la demande de reinitialisation (%s)", profil)
             message = "Impossible de traiter votre demande pour le moment."
