@@ -29,23 +29,27 @@ DOSSIER_DATABASE = Path(__file__).resolve().parent
 DOSSIER_PROJET = DOSSIER_DATABASE.parent
 load_dotenv(DOSSIER_PROJET / ".env", override=False)
 
-CHEMIN_BDD = DOSSIER_PROJET / "database" / "datensis_dev.db"
-DATABASE_URL = os.getenv("DATABASE_URL") or os.getenv("SCALINGO_POSTGRESQL_URL")
+CHEMIN_BDD = (
+    Path(os.getenv("DATENSIS_SQLITE_PATH", str(DOSSIER_DATABASE / "datensis_dev.db")))
+    .expanduser()
+    .resolve()
+)
 
-if not DATABASE_URL:
-    if os.getenv("DATENSIS_ENV", "development").strip().lower() == "production":
-        raise RuntimeError("DATABASE_URL PostgreSQL est obligatoire en production.")
-    CHEMIN_BDD.parent.mkdir(parents=True, exist_ok=True)
-    DATABASE_URL = f"sqlite:///{CHEMIN_BDD.as_posix()}"
-
-if DATABASE_URL.startswith("postgres://"):
-    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+production = os.getenv("DATENSIS_ENV", "development").strip().lower() == "production"
+demo = os.getenv("DATENSIS_EPHEMERAL_DEMO", "0") == "1"
+if production and not demo and not str(CHEMIN_BDD).startswith("/var/data/"):
+    raise RuntimeError(
+        "SQLite en production exige DATENSIS_SQLITE_PATH=/var/data/datensis.db "
+        "sur disque persistant, ou DATENSIS_EPHEMERAL_DEMO=1 pour un test ephemere."
+    )
+CHEMIN_BDD.parent.mkdir(parents=True, exist_ok=True)
+DATABASE_URL = f"sqlite:///{CHEMIN_BDD.as_posix()}"
 
 engine = create_engine(
     DATABASE_URL,
     echo=False,
     pool_pre_ping=True,
-    pool_recycle=1800,
+    connect_args={"timeout": 30},
 )
 
 

@@ -87,6 +87,13 @@ def _verifier_mot_de_passe(mot_de_passe, confirmation):
         )
 
 
+def _date_sql(connexion, valeur):
+    """Convertit les dates UTC en texte ISO pour les colonnes SQLite TEXT."""
+    if connexion.dialect.name == "sqlite":
+        return valeur.isoformat()
+    return valeur
+
+
 def _condition_booleenne(connexion):
     """
     Retourne la condition SQL adaptée au moteur utilisé.
@@ -231,7 +238,7 @@ def demander_reinitialisation(email, profil):
                 """
             ),
             {
-                "maintenant": maintenant,
+                "maintenant": _date_sql(con, maintenant),
                 "id": id_utilisateur,
             },
         )
@@ -260,8 +267,8 @@ def demander_reinitialisation(email, profil):
                 "id": id_utilisateur,
                 "profil": profil,
                 "empreinte": _empreinte(jeton),
-                "creation": maintenant,
-                "expiration": maintenant + timedelta(minutes=EXPIRATION_MINUTES),
+                "creation": _date_sql(con, maintenant),
+                "expiration": _date_sql(con, maintenant + timedelta(minutes=EXPIRATION_MINUTES)),
             },
         )
 
@@ -422,7 +429,7 @@ def changer_mot_de_passe(
                 """
             ),
             {
-                "maintenant": maintenant,
+                "maintenant": _date_sql(con, maintenant),
                 "empreinte": empreinte,
                 "profil": profil,
             },
@@ -460,7 +467,7 @@ def changer_mot_de_passe(
                 """
             ),
             {
-                "maintenant": maintenant,
+                "maintenant": _date_sql(con, maintenant),
                 "id": ligne["id_utilisateur"],
             },
         )

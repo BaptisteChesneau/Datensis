@@ -6,7 +6,6 @@ from urllib.parse import urlparse
 
 from dotenv import load_dotenv
 from flask import Flask
-from sqlalchemy.engine import make_url
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 from app.api.config import MailAPIConfig
@@ -62,78 +61,40 @@ def create_app():
     # =========================================================
 
     dossier_projet = Path(__file__).resolve().parent.parent
-
-    chemin_bdd = dossier_projet / "database" / "datensis_dev.db"
-
-    database_url = os.getenv("DATABASE_URL", "").strip()
-
-    if not database_url:
-        if production:
-            raise RuntimeError(
-                "DATABASE_URL est obligatoire en production. "
-                "Configurez l'Internal Database URL de Render."
-            )
-
-        chemin_bdd.parent.mkdir(
-            parents=True,
-            exist_ok=True,
+    chemin_bdd = (
+        Path(
+            os.getenv("DATENSIS_SQLITE_PATH", str(dossier_projet / "database" / "datensis_dev.db"))
         )
+        .expanduser()
+        .resolve()
+    )
 
-        database_url = f"sqlite:///{chemin_bdd.as_posix()}"
-
-    # Normalisation des anciennes URL PostgreSQL.
-    if database_url.startswith("postgres://"):
-        database_url = "postgresql://" + database_url[len("postgres://") :]
-
-    # Utilisation explicite de psycopg 3.
-    if database_url.startswith("postgresql://"):
-        database_url = "postgresql+psycopg://" + database_url[len("postgresql://") :]
-
-    # Validation de la connexion.
-    try:
-        url_bdd = make_url(database_url)
-    except Exception as erreur:
-        raise RuntimeError("DATABASE_URL est invalide. Vérifiez sa configuration.") from erreur
-
+    # Une base SQLite sur le filesystem Render standard est ephemere.
+    # Pour la production, monter un disque persistant (ex. /var/data)
+    # ou autoriser explicitement un mode de demonstration non persistant.
     if production:
-        if url_bdd.get_backend_name() != "postgresql":
-            raise RuntimeError("DATENSIS doit utiliser PostgreSQL en production.")
-
-        if url_bdd.drivername != "postgresql+psycopg":
-            raise RuntimeError("DATENSIS nécessite le pilote psycopg 3 en production.")
-
-        if not url_bdd.host:
-            raise RuntimeError("DATABASE_URL ne contient aucun hôte PostgreSQL.")
-
-        if url_bdd.host.lower() in (
-            "localhost",
-            "127.0.0.1",
-            "::1",
-        ):
+        demo = os.getenv("DATENSIS_EPHEMERAL_DEMO", "0") == "1"
+        if not demo and not str(chemin_bdd).startswith("/var/data/"):
             raise RuntimeError(
-                "Connexion PostgreSQL locale interdite "
-                "en production. Utilisez l'Internal "
-                "Database URL de Render."
+                "SQLite en production exige un disque persistant monte sous /var/data "
+                "(DATENSIS_SQLITE_PATH=/var/data/datensis.db), ou "
+                "DATENSIS_EPHEMERAL_DEMO=1 pour une demonstration sans conservation des donnees."
+            )
+        if demo:
+            app.logger.warning(
+                "MODE DEMO EPHEMERE : comptes et jetons peuvent etre perdus au redeploiement."
             )
 
-        if not url_bdd.database:
-            raise RuntimeError("DATABASE_URL ne précise aucune base de données.")
+    chemin_bdd.parent.mkdir(parents=True, exist_ok=True)
+    database_url = f"sqlite:///{chemin_bdd.as_posix()}"
 
     app.config["SQLALCHEMY_DATABASE_URI"] = database_url
-
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-
     app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
         "pool_pre_ping": True,
-        "pool_recycle": 1800,
-        "pool_timeout": 30,
+        "connect_args": {"timeout": 30},
     }
-
-    # Journalisation sans divulguer les identifiants.
-    app.logger.info(
-        "DATENSIS : moteur de base de données configuré : %s",
-        url_bdd.get_backend_name(),
-    )
+    app.logger.info("DATENSIS : SQLite configure (%s)", chemin_bdd)
 
     # =========================================================
     # 5. SECURITE SESSIONS ET COOKIES
@@ -272,8 +233,7 @@ def create_app():
 
     db.init_app(app)
 
-    # Ne pas exécuter db.create_all() automatiquement.
-    # Le schéma PostgreSQL est initialisé séparément.
+    # Initialisation des tables via database/create_tables.py, separement.
 
     # =========================================================
     # 12. ENREGISTREMENT DU WORKER DATENSIS
