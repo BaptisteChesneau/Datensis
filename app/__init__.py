@@ -6,17 +6,14 @@ from urllib.parse import urlparse
 
 from dotenv import load_dotenv
 from flask import Flask
+from sqlalchemy.engine import make_url
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 from app.api.config import MailAPIConfig
 from app.extensions import db
 from app.services.mail_runner import enregistrer_commande_mail
 
-# ============================================================
-# DATENSIS - CONFIGURATION PRINCIPALE FLASK
-# ============================================================
-
-# Les variables définies sur Render restent prioritaires.
+# Les variables d'environnement Render restent prioritaires.
 load_dotenv()
 
 
@@ -39,23 +36,18 @@ def create_app():
         raise RuntimeError("DATENSIS_ENV doit être 'development' ou 'production'.")
 
     production = environnement == "production"
-
     app.config["DATENSIS_ENV"] = environnement
 
     # =========================================================
     # 3. CLE SECRETE
     # =========================================================
 
-    secret_key = os.getenv(
-        "DATENSIS_SECRET_KEY",
-        "",
-    ).strip()
+    secret_key = os.getenv("DATENSIS_SECRET_KEY", "").strip()
 
     if not secret_key:
         raise RuntimeError(
             "DATENSIS_SECRET_KEY est obligatoire. "
-            "Définissez cette variable dans .env "
-            "ou dans les variables d'environnement Render."
+            "Définissez cette variable dans .env ou sur Render."
         )
 
     if production and len(secret_key) < 32:
@@ -66,18 +58,21 @@ def create_app():
     app.config["SECRET_KEY"] = secret_key
 
     # =========================================================
-    # 4. CONFIGURATION DE LA BASE DE DONNEES
+    # 4. CONFIGURATION BASE DE DONNEES
     # =========================================================
 
     dossier_projet = Path(__file__).resolve().parent.parent
 
     chemin_bdd = dossier_projet / "database" / "datensis_dev.db"
 
-    database_url = os.getenv("DATABASE_URL") or os.getenv("SCALINGO_POSTGRESQL_URL")
+    database_url = (os.getenv("DATABASE_URL") or os.getenv("SCALINGO_POSTGRESQL_URL") or "").strip()
 
     if not database_url:
         if production:
-            raise RuntimeError("Une base PostgreSQL est obligatoire en production.")
+            raise RuntimeError(
+                "DATABASE_URL est obligatoire en production. "
+                "Configurez l'Internal Database URL de Render."
+            )
 
         chemin_bdd.parent.mkdir(
             parents=True,
@@ -86,22 +81,43 @@ def create_app():
 
         database_url = f"sqlite:///{chemin_bdd.as_posix()}"
 
-    # Compatibilité avec les anciennes URL PostgreSQL.
+    # Normalisation des anciennes URL PostgreSQL.
     if database_url.startswith("postgres://"):
-        database_url = database_url.replace(
-            "postgres://",
-            "postgresql://",
-            1,
-        )
+        database_url = "postgresql://" + database_url[len("postgres://") :]
 
-    if production and not database_url.startswith(
-        (
-            "postgresql://",
-            "postgresql+psycopg://",
-            "postgresql+psycopg2://",
-        )
-    ):
-        raise RuntimeError("DATENSIS doit utiliser PostgreSQL en production.")
+    # Utilisation explicite de psycopg 3.
+    if database_url.startswith("postgresql://"):
+        database_url = "postgresql+psycopg://" + database_url[len("postgresql://") :]
+
+    # Validation de la connexion.
+    try:
+        url_bdd = make_url(database_url)
+    except Exception as erreur:
+        raise RuntimeError("DATABASE_URL est invalide. Vérifiez sa configuration.") from erreur
+
+    if production:
+        if url_bdd.get_backend_name() != "postgresql":
+            raise RuntimeError("DATENSIS doit utiliser PostgreSQL en production.")
+
+        if url_bdd.drivername != "postgresql+psycopg":
+            raise RuntimeError("DATENSIS nécessite le pilote psycopg 3 en production.")
+
+        if not url_bdd.host:
+            raise RuntimeError("DATABASE_URL ne contient aucun hôte PostgreSQL.")
+
+        if url_bdd.host.lower() in (
+            "localhost",
+            "127.0.0.1",
+            "::1",
+        ):
+            raise RuntimeError(
+                "Connexion PostgreSQL locale interdite "
+                "en production. Utilisez l'Internal "
+                "Database URL de Render."
+            )
+
+        if not url_bdd.database:
+            raise RuntimeError("DATABASE_URL ne précise aucune base de données.")
 
     app.config["SQLALCHEMY_DATABASE_URI"] = database_url
 
@@ -110,10 +126,17 @@ def create_app():
     app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
         "pool_pre_ping": True,
         "pool_recycle": 1800,
+        "pool_timeout": 30,
     }
 
+    # Journalisation sans divulguer les identifiants.
+    app.logger.info(
+        "DATENSIS : moteur de base de données configuré : %s",
+        url_bdd.get_backend_name(),
+    )
+
     # =========================================================
-    # 5. SECURITE DES SESSIONS ET COOKIES
+    # 5. SECURITE SESSIONS ET COOKIES
     # =========================================================
 
     app.config.update(
@@ -132,8 +155,6 @@ def create_app():
     # =========================================================
 
     if production:
-        # DATENSIS fonctionne derrière un proxy inverse
-        # de confiance, notamment sur Render.
         app.wsgi_app = ProxyFix(
             app.wsgi_app,
             x_for=1,
@@ -141,10 +162,7 @@ def create_app():
             x_host=1,
         )
 
-        domaines = os.getenv(
-            "DATENSIS_TRUSTED_HOSTS",
-            "",
-        ).strip()
+        domaines = os.getenv("DATENSIS_TRUSTED_HOSTS", "").strip()
 
         if not domaines:
             raise RuntimeError("DATENSIS_TRUSTED_HOSTS est obligatoire en production.")
@@ -157,7 +175,7 @@ def create_app():
         app.config["TRUSTED_HOSTS"] = domaines_autorises
 
     # =========================================================
-    # 7. CONFIGURATION API INTERNE DE MESSAGERIE DATENSIS
+    # 7. API INTERNE DE MESSAGERIE DATENSIS
     # =========================================================
 
     app.config.update(
@@ -186,20 +204,11 @@ def create_app():
     # 8. TRANSPORT HTTPS RESEND
     # =========================================================
 
-    resend_api_key = os.getenv(
-        "DATENSIS_RESEND",
-        "",
-    ).strip()
+    resend_api_key = os.getenv("DATENSIS_RESEND", "").strip()
 
-    mail_from = os.getenv(
-        "MAIL_FROM",
-        "onboarding@resend.dev",
-    ).strip()
+    mail_from = os.getenv("MAIL_FROM", "onboarding@resend.dev").strip()
 
-    mail_from_name = os.getenv(
-        "MAIL_FROM_NAME",
-        "DATENSIS",
-    ).strip()
+    mail_from_name = os.getenv("MAIL_FROM_NAME", "DATENSIS").strip()
 
     app.config.update(
         RESEND_API_KEY=resend_api_key,
@@ -207,17 +216,14 @@ def create_app():
         MAIL_FROM_NAME=mail_from_name,
     )
 
-    # L'API interne et Resend sont indépendants.
-    # L'API interne gère les demandes DATENSIS.
-    # Resend assure la transmission externe des courriels.
-
     transport_https_configure = bool(resend_api_key and mail_from)
 
     app.config["DATENSIS_HTTPS_MAIL_ENABLED"] = transport_https_configure
 
     if not transport_https_configure:
         app.logger.warning(
-            "DATENSIS : transport HTTPS Resend non configuré. Vérifiez RESEND_API_KEY et MAIL_FROM."
+            "DATENSIS : transport HTTPS Resend non configuré. "
+            "Vérifiez DATENSIS_RESEND et MAIL_FROM."
         )
 
     # =========================================================
@@ -247,18 +253,15 @@ def create_app():
     elif production:
         app.logger.warning(
             "DATENSIS : DATENSIS_PUBLIC_URL est absente. "
-            "Les liens envoyés par courriel "
-            "ne pourront pas être générés."
+            "Les liens envoyés par courriel ne pourront "
+            "pas être générés."
         )
 
     # =========================================================
     # 10. CHIFFREMENT DES DONNEES TEMPORAIRES
     # =========================================================
 
-    app.config["MAIL_ENCRYPTION_KEY"] = os.getenv(
-        "MAIL_ENCRYPTION_KEY",
-        "",
-    ).strip()
+    app.config["MAIL_ENCRYPTION_KEY"] = os.getenv("MAIL_ENCRYPTION_KEY", "").strip()
 
     if not app.config["MAIL_ENCRYPTION_KEY"]:
         app.logger.warning("DATENSIS : clé de chiffrement des courriels non configurée.")
@@ -269,18 +272,17 @@ def create_app():
 
     db.init_app(app)
 
+    # Ne pas exécuter db.create_all() automatiquement.
+    # Le schéma PostgreSQL est initialisé séparément.
+
     # =========================================================
     # 12. ENREGISTREMENT DU WORKER DATENSIS
     # =========================================================
 
-    # La commande est enregistrée après SQLAlchemy.
-    # Aucun courriel n'est envoyé automatiquement
-    # au démarrage de l'application.
-
     enregistrer_commande_mail(app)
 
     # =========================================================
-    # 13. ENREGISTREMENT DES ROUTES EXISTANTES
+    # 13. ROUTES PRINCIPALES
     # =========================================================
 
     from app.routes import main
@@ -296,7 +298,7 @@ def create_app():
     app.register_blueprint(demandes_bp)
 
     # =========================================================
-    # 15. API DE MESSAGERIE DATENSIS
+    # 15. API DE MESSAGERIE
     # =========================================================
 
     from app.api.mail import mail_api
