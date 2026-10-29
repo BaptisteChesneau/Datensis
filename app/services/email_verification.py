@@ -145,7 +145,7 @@ def issue_token(user_id):
     return token
 
 
-def _creer_demande_dans_transaction(connexion, user_id):
+def _creer_demande_dans_transaction(connexion, user_id, mettre_en_file=True):
     """Créer le jeton, la demande et la tâche chiffrée."""
     utilisateur = _verrouiller_utilisateur(
         connexion,
@@ -187,48 +187,49 @@ def _creer_demande_dans_transaction(connexion, user_id):
         connexion=connexion,
     )
 
-    # Chiffrer le destinataire et le jeton.
-    payload_chiffre = chiffrer_payload(
-        destinataire,
-        token,
-        TYPE_VERIFICATION,
-    )
+    if mettre_en_file:
+        # Chiffrer le destinataire et le jeton.
+        payload_chiffre = chiffrer_payload(
+            destinataire,
+            token,
+            TYPE_VERIFICATION,
+        )
 
-    # Créer la tâche dans la même transaction.
-    connexion.execute(
-        text("""
-            INSERT INTO file_attente_mail (
-                id_tache,
-                id_demande,
-                type_message,
-                statut,
-                tentatives,
-                date_creation,
-                payload_chiffre
-            )
-            VALUES (
-                :id_tache,
-                :id_demande,
-                :type_message,
-                'queued',
-                0,
-                :date_creation,
-                :payload_chiffre
-            )
-        """),
-        {
-            "id_tache": str(uuid4()),
-            "id_demande": request_id,
-            "type_message": TYPE_VERIFICATION,
-            "date_creation": maintenant,
-            "payload_chiffre": payload_chiffre,
-        },
-    )
+        # Créer la tâche dans la même transaction.
+        connexion.execute(
+            text("""
+                INSERT INTO file_attente_mail (
+                    id_tache,
+                    id_demande,
+                    type_message,
+                    statut,
+                    tentatives,
+                    date_creation,
+                    payload_chiffre
+                )
+                VALUES (
+                    :id_tache,
+                    :id_demande,
+                    :type_message,
+                    'queued',
+                    0,
+                    :date_creation,
+                    :payload_chiffre
+                )
+            """),
+            {
+                "id_tache": str(uuid4()),
+                "id_demande": request_id,
+                "type_message": TYPE_VERIFICATION,
+                "date_creation": maintenant,
+                "payload_chiffre": payload_chiffre,
+            },
+        )
 
     return request_id, token
 
 
-def creer_demande_verification(user_id, connexion=None):
+def creer_demande_verification(user_id, connexion=None, mettre_en_file=True):
     """Créer une demande de vérification complète.
 
     Retourne (request_id, token).
@@ -242,12 +243,14 @@ def creer_demande_verification(user_id, connexion=None):
         return _creer_demande_dans_transaction(
             connexion,
             user_id,
+            mettre_en_file=mettre_en_file,
         )
 
     with db.engine.begin() as transaction:
         resultat = _creer_demande_dans_transaction(
             transaction,
             user_id,
+            mettre_en_file=mettre_en_file,
         )
 
     return resultat

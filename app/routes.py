@@ -62,7 +62,10 @@ def tpe_creation_compte():
             logger.exception("Échec de l'inscription tpe")
             flash("Une erreur est survenue lors de la création du compte.", "error")
         else:
-            flash("Votre compte a été créé avec succès. Vous pouvez vous connecter.", "success")
+            flash(
+                "Votre compte a été créé. Vérifiez votre boîte e-mail pour l’activer. Si nécessaire, utilisez la page de renvoi de vérification.",
+                "success",
+            )
             return redirect(url_for("main.tpe_connexion"))
 
     return render_template("tpe/creation_compte.html")
@@ -100,7 +103,10 @@ def pme_creation_compte():
             logger.exception("Échec de l'inscription pme")
             flash("Une erreur est survenue lors de la création du compte.", "error")
         else:
-            flash("Votre compte a été créé avec succès. Vous pouvez vous connecter.", "success")
+            flash(
+                "Votre compte a été créé. Vérifiez votre boîte e-mail pour l’activer. Si nécessaire, utilisez la page de renvoi de vérification.",
+                "success",
+            )
             return redirect(url_for("main.pme_connexion"))
 
     return render_template("pme/creation_compte.html")
@@ -127,7 +133,10 @@ def cabinet_creation_compte():
             logger.exception("Échec de l'inscription cabinet")
             flash("Une erreur est survenue lors de la création du compte.", "error")
         else:
-            flash("Votre compte a été créé avec succès. Vous pouvez vous connecter.", "success")
+            flash(
+                "Votre compte a été créé. Vérifiez votre boîte e-mail pour l’activer. Si nécessaire, utilisez la page de renvoi de vérification.",
+                "success",
+            )
             return redirect(url_for("main.cabinet_connexion"))
 
     return render_template("cabinet/creation_compte.html")
