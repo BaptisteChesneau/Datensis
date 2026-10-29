@@ -2,7 +2,16 @@
 
 import logging
 
-from flask import Blueprint, abort, flash, jsonify, redirect, render_template, request, url_for
+from flask import (
+    Blueprint,
+    abort,
+    flash,
+    jsonify,
+    redirect,
+    render_template,
+    request,
+    url_for,
+)
 
 from app.services.email_verification import (
     find_resend_candidate,
@@ -483,8 +492,9 @@ def verifier_courriel(token):
 @main.route("/renvoyer-verification", methods=["GET", "POST"])
 def renvoyer_verification():
     if request.method == "POST":
-        email = request.form.get("email", "").strip().lower()
-        if len(email) <= 254:
+        email_brut = request.form.get("email", "")
+        email = email_brut.strip().lower() if isinstance(email_brut, str) else ""
+        if email and len(email) <= 254 and "@" in email:
             try:
                 user_id = find_resend_candidate(email)
                 if user_id is not None:
@@ -523,7 +533,8 @@ def mot_de_passe_oublie(profil):
         abort(404)
 
     if request.method == "POST":
-        email = request.form.get("email", "").strip().lower()
+        email_brut = request.form.get("email", "")
+        email = email_brut.strip().lower() if isinstance(email_brut, str) else ""
         ajax = _demande_json()
 
         if not email or len(email) > 254 or "@" not in email:
