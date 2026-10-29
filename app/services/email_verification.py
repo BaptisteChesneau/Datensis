@@ -47,7 +47,8 @@ def _valid_token(token):
 
 
 def _verrouiller_utilisateur(connexion, user_id):
-    """Récupérer et verrouiller un utilisateur."""
+    """Récupérer un utilisateur et verrouiller sa ligne si possible."""
+
     requete = """
         SELECT
             id_utilisateur,
@@ -72,23 +73,29 @@ def _verrouiller_utilisateur(connexion, user_id):
 
 def _creer_jeton(connexion, user_id, maintenant):
     """Créer un jeton et retourner sa valeur et son identifiant."""
+
     token = secrets.token_urlsafe(32)
 
+    # Révoquer les anciens jetons non utilisés.
     connexion.execute(
-        text("""
+        text(
+            """
             UPDATE verification_courriel
             SET date_utilisation = :maintenant
             WHERE id_utilisateur = :id
               AND date_utilisation IS NULL
-        """),
+            """
+        ),
         {
             "maintenant": maintenant,
             "id": user_id,
         },
     )
 
+    # Enregistrer uniquement l'empreinte du jeton.
     id_verification = connexion.execute(
-        text("""
+        text(
+            """
             INSERT INTO verification_courriel (
                 id_utilisateur,
                 empreinte_jeton,
@@ -102,7 +109,8 @@ def _creer_jeton(connexion, user_id, maintenant):
                 :expiration
             )
             RETURNING id_verification
-        """),
+            """
+        ),
         {
             "id": user_id,
             "empreinte": _digest(token),
@@ -116,12 +124,14 @@ def _creer_jeton(connexion, user_id, maintenant):
 
 def _valider_user_id(user_id):
     """Contrôler l'identifiant utilisateur."""
+
     if not isinstance(user_id, int) or isinstance(user_id, bool) or user_id <= 0:
         raise ValueError("Identifiant utilisateur invalide.")
 
 
 def issue_token(user_id):
     """Créer un jeton sans enregistrer de demande d'envoi."""
+
     _valider_user_id(user_id)
 
     with db.engine.begin() as connexion:
@@ -145,8 +155,13 @@ def issue_token(user_id):
     return token
 
 
-def _creer_demande_dans_transaction(connexion, user_id, mettre_en_file=True):
-    """Créer le jeton, la demande et la tâche chiffrée."""
+def _creer_demande_dans_transaction(
+    connexion,
+    user_id,
+    mettre_en_file=True,
+):
+    """Créer le jeton, la demande et éventuellement la tâche chiffrée."""
+
     utilisateur = _verrouiller_utilisateur(
         connexion,
         user_id,
@@ -172,14 +187,14 @@ def _creer_demande_dans_transaction(connexion, user_id, mettre_en_file=True):
 
     maintenant = utc_now()
 
-    # Générer un nouveau jeton de vérification.
+    # Créer un nouveau jeton de vérification.
     token, id_verification = _creer_jeton(
         connexion,
         user_id,
         maintenant,
     )
 
-    # Créer la demande DATENSIS.
+    # Enregistrer la demande DATENSIS.
     request_id = creer_demande_mail(
         user_id,
         id_verification,
@@ -195,9 +210,10 @@ def _creer_demande_dans_transaction(connexion, user_id, mettre_en_file=True):
             TYPE_VERIFICATION,
         )
 
-        # Créer la tâche dans la même transaction.
+        # Créer une tâche pour le worker existant.
         connexion.execute(
-            text("""
+            text(
+                """
                 INSERT INTO file_attente_mail (
                     id_tache,
                     id_demande,
@@ -216,7 +232,8 @@ def _creer_demande_dans_transaction(connexion, user_id, mettre_en_file=True):
                     :date_creation,
                     :payload_chiffre
                 )
-            """),
+                """
+            ),
             {
                 "id_tache": str(uuid4()),
                 "id_demande": request_id,
@@ -229,14 +246,26 @@ def _creer_demande_dans_transaction(connexion, user_id, mettre_en_file=True):
     return request_id, token
 
 
-def creer_demande_verification(user_id, connexion=None, mettre_en_file=True):
-    """Créer une demande de vérification complète.
+def creer_demande_verification(
+    user_id,
+    connexion=None,
+    mettre_en_file=True,
+):
+    """Créer une demande de vérification.
 
-    Retourne (request_id, token).
+    Retourne :
+        (request_id, token)
 
-    Le jeton est réservé au serveur. Ne jamais l'exposer
-    dans une réponse JSON publique ou dans les journaux.
+    Le jeton doit rester côté serveur.
+    Ne jamais l'exposer dans les réponses JSON ou les logs.
+
+    Pour un envoi immédiat via Resend, utiliser :
+        mettre_en_file=False
+
+    L'appelant doit ensuite envoyer le courriel après
+    validation de la transaction.
     """
+
     _valider_user_id(user_id)
 
     if connexion is not None:
@@ -257,7 +286,8 @@ def creer_demande_verification(user_id, connexion=None, mettre_en_file=True):
 
 
 def verify_token(token):
-    """Consommer un jeton et activer le compte utilisateur."""
+    """Consommer un jeton valide et activer le compte utilisateur."""
+
     if not _valid_token(token):
         return False
 
@@ -303,13 +333,16 @@ def verify_token(token):
         if utilisateur["courriel_verifie"]:
             return False
 
+        # Marquer le jeton comme utilisé.
         resultat = connexion.execute(
-            text("""
+            text(
+                """
                 UPDATE verification_courriel
                 SET date_utilisation = :maintenant
                 WHERE id_verification = :id
                   AND date_utilisation IS NULL
-            """),
+                """
+            ),
             {
                 "maintenant": maintenant,
                 "id": ligne["id_verification"],
@@ -319,13 +352,16 @@ def verify_token(token):
         if resultat.rowcount != 1:
             return False
 
+        # Activer le compte.
         activation = connexion.execute(
-            text("""
+            text(
+                """
                 UPDATE utilisateur
                 SET courriel_verifie = :verifie,
                     compte_actif = :actif
                 WHERE id_utilisateur = :id
-            """),
+                """
+            ),
             {
                 "verifie": True,
                 "actif": True,
@@ -336,19 +372,23 @@ def verify_token(token):
         if activation.rowcount != 1:
             raise RuntimeError("Impossible d'activer le compte utilisateur.")
 
+        # Révoquer les autres jetons de cet utilisateur.
         connexion.execute(
-            text("""
+            text(
+                """
                 UPDATE verification_courriel
                 SET date_utilisation = :maintenant
                 WHERE id_utilisateur = :id
                   AND date_utilisation IS NULL
-            """),
+                """
+            ),
             {
                 "maintenant": maintenant,
                 "id": ligne["id_utilisateur"],
             },
         )
 
+        # Annuler les demandes de vérification restantes.
         annuler_demandes_utilisateur(
             ligne["id_utilisateur"],
             TYPE_VERIFICATION,
@@ -359,7 +399,8 @@ def verify_token(token):
 
 
 def find_resend_candidate(email):
-    """Rechercher un compte éligible au renvoi."""
+    """Rechercher un compte autorisé à recevoir un nouveau lien."""
+
     if not isinstance(email, str):
         return None
 
@@ -371,13 +412,15 @@ def find_resend_candidate(email):
     with db.engine.connect() as connexion:
         utilisateur = (
             connexion.execute(
-                text("""
+                text(
+                    """
                     SELECT id_utilisateur
                     FROM utilisateur
                     WHERE lower(adresse_courriel) = :email
                       AND courriel_verifie = :verifie
                     LIMIT 1
-                """),
+                    """
+                ),
                 {
                     "email": email,
                     "verifie": False,
@@ -390,14 +433,17 @@ def find_resend_candidate(email):
         if utilisateur is None:
             return None
 
+        # Vérifier le délai minimal entre deux demandes.
         derniere_creation = connexion.execute(
-            text("""
+            text(
+                """
                 SELECT date_creation
                 FROM verification_courriel
                 WHERE id_utilisateur = :id
                 ORDER BY date_creation DESC
                 LIMIT 1
-            """),
+                """
+            ),
             {
                 "id": utilisateur["id_utilisateur"],
             },
