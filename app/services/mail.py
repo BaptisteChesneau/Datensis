@@ -9,6 +9,7 @@
 
 import html
 import logging
+import re
 from urllib.parse import urlparse
 
 import requests
@@ -63,7 +64,7 @@ def _configuration_mail():
     if any(c in sender for c in "\r\n<>"):
         raise ErreurEnvoiMail("Adresse MAIL_FROM invalide.")
 
-    if "@" not in sender or any(c.isspace() for c in sender):
+    if not re.fullmatch(r"[^@\s]+@[^@\s]+\.[^@\s]+", sender):
         raise ErreurEnvoiMail("Adresse MAIL_FROM invalide.")
 
     if any(c in sender_name for c in "\r\n<>"):
@@ -390,7 +391,7 @@ def _envoyer_https(
 
     destinataire = destinataire.strip()
 
-    if not destinataire or "@" not in destinataire or any(c.isspace() for c in destinataire):
+    if not re.fullmatch(r"[^@\s]+@[^@\s]+\.[^@\s]+", destinataire):
         raise ValueError("Adresse du destinataire invalide.")
 
     api_key, sender, sender_name = _configuration_mail()
@@ -426,11 +427,24 @@ def _envoyer_https(
         raise ErreurEnvoiMail("Impossible de contacter Resend.") from erreur
 
     if not 200 <= reponse.status_code < 300:
+        # Ne pas journaliser le corps brut : il peut contenir des données sensibles.
+        code_erreur = "inconnu"
+        try:
+            details = reponse.json()
+            if isinstance(details, dict):
+                code_erreur = str(details.get("name") or details.get("statusCode") or "inconnu")[
+                    :80
+                ]
+        except ValueError:
+            pass
         journal.error(
-            "DATENSIS : Resend a refusé le courriel (HTTP %s).",
+            "DATENSIS : Resend a refusé l'e-mail (HTTP %s, type=%s).",
             reponse.status_code,
+            code_erreur,
         )
-        raise ErreurEnvoiMail(f"Envoi refusé par Resend (HTTP {reponse.status_code}).")
+        raise ErreurEnvoiMail(
+            f"Envoi refusé par Resend (HTTP {reponse.status_code}, type={code_erreur})."
+        )
 
     try:
         resultat = reponse.json()
@@ -440,11 +454,18 @@ def _envoyer_https(
     if not isinstance(resultat, dict) or not resultat.get("id"):
         raise ErreurEnvoiMail("Resend n'a pas confirmé l'envoi.")
 
+    identifiant = resultat["id"]
+    if not isinstance(identifiant, str) or not identifiant.strip():
+        raise ErreurEnvoiMail("Identifiant de message Resend invalide.")
+
     journal.info(
-        "DATENSIS : e-mail accepté par Resend (HTTP %s).",
+        "DATENSIS : e-mail accepté par l'API Resend (HTTP %s, id=%s). "
+        "La livraison finale reste à vérifier dans Resend.",
         reponse.status_code,
+        identifiant,
     )
 
+    # Maintient la compatibilité avec les services DATENSIS qui attendent True.
     return True
 
 
