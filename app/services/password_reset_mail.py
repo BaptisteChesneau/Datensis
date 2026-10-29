@@ -1,7 +1,6 @@
 """Notifications de réinitialisation du mot de passe DATENSIS.
 
-Les e-mails sont envoyés via le transport HTTPS Resend
-configuré dans app/services/mail.py.
+Transport HTTPS via Resend, configuré dans app/services/mail.py.
 
 La clé API est chargée depuis la variable d'environnement
 DATENSIS-Production par app/__init__.py.
@@ -19,30 +18,79 @@ from app.services.password_reset import date_heure_paris
 logger = logging.getLogger(__name__)
 
 
+def _verifier_resultat_envoi(resultat):
+    """Vérifier le résultat renvoyé par le transport HTTPS.
+
+    Un résultat None, False ou un dictionnaire indiquant
+    explicitement un échec ne doit pas être considéré
+    comme une confirmation d'envoi.
+    """
+
+    if resultat is None or resultat is False:
+        raise RuntimeError(
+            "DATENSIS : le service de messagerie n'a pas confirmé l'acceptation de l'e-mail."
+        )
+
+    if isinstance(resultat, dict):
+        if resultat.get("error"):
+            raise RuntimeError("DATENSIS : Resend a signalé une erreur d'envoi.")
+
+        if resultat.get("success") is False:
+            raise RuntimeError("DATENSIS : la demande d'envoi a échoué.")
+
+        statut = resultat.get("status_code")
+
+        if isinstance(statut, int) and not 200 <= statut < 300:
+            raise RuntimeError(
+                f"DATENSIS : réponse HTTP non valide du service de messagerie ({statut})."
+            )
+
+    return resultat
+
+
 def envoyer_lien_reinitialisation(
     destinataire,
     jeton,
     profil,
 ):
-    """Envoyer le lien de réinitialisation via Resend.
+    """Envoyer un lien sécurisé de réinitialisation via Resend.
 
-    Cette fonction conserve son ancien nom pour assurer
-    la compatibilité avec les autres modules DATENSIS.
+    Conserve le nom historique de la fonction afin
+    de rester compatible avec les autres modules.
     """
 
+    if not isinstance(destinataire, str) or not destinataire.strip():
+        raise ValueError("Une adresse e-mail destinataire est obligatoire.")
+
+    if not isinstance(jeton, str) or not jeton.strip():
+        raise ValueError("Un jeton de réinitialisation est obligatoire.")
+
+    if profil not in {"tpe", "pme", "cabinet"}:
+        raise ValueError("Profil DATENSIS non autorisé.")
+
     logger.info(
-        "DATENSIS : demande d'envoi du lien de réinitialisation (%s).",
+        "DATENSIS : demande d'envoi du lien de réinitialisation (profil=%s).",
         profil,
     )
 
-    resultat = send_password_reset_email(
-        destinataire,
-        jeton,
-        profil,
-    )
+    try:
+        resultat = send_password_reset_email(
+            destinataire.strip(),
+            jeton,
+            profil,
+        )
+
+        resultat = _verifier_resultat_envoi(resultat)
+
+    except Exception:
+        logger.exception(
+            "DATENSIS : échec de l'envoi du lien de réinitialisation (profil=%s).",
+            profil,
+        )
+        raise
 
     logger.info(
-        "DATENSIS : lien de réinitialisation accepté par Resend (%s).",
+        "DATENSIS : demande de réinitialisation traitée par le transport HTTPS (profil=%s).",
         profil,
     )
 
@@ -202,7 +250,14 @@ aucune autre action n'est nécessaire.
     color:#183E47;
 ">
 <strong>Vous n'avez pas effectué cette modification ?</strong>
-<br>
+</p>
+
+<p style="
+    margin:8px 0 0;
+    font-size:14px;
+    line-height:1.7;
+    color:#183E47;
+">
 Contactez immédiatement le support DATENSIS
 pour sécuriser votre compte.
 </p>
@@ -266,6 +321,9 @@ def envoyer_confirmation_modification(
 ):
     """Notifier l'utilisateur après modification du mot de passe."""
 
+    if not isinstance(destinataire, str) or not destinataire.strip():
+        raise ValueError("Une adresse e-mail destinataire est obligatoire.")
+
     date_formatee = date_heure_paris(date_utc)
 
     sujet = "DATENSIS - Votre mot de passe a été modifié"
@@ -283,15 +341,24 @@ def envoyer_confirmation_modification(
 
     contenu_html = _html_confirmation_modification(date_formatee)
 
-    logger.info("DATENSIS : tentative d'envoi de la confirmation de modification du mot de passe.")
+    logger.info("DATENSIS : tentative d'envoi de la notification de modification du mot de passe.")
 
-    resultat = _envoyer_https(
-        destinataire,
-        sujet,
-        contenu_texte,
-        contenu_html,
-    )
+    try:
+        resultat = _envoyer_https(
+            destinataire.strip(),
+            sujet,
+            contenu_texte,
+            contenu_html,
+        )
 
-    logger.info("DATENSIS : notification de modification acceptée par Resend.")
+        resultat = _verifier_resultat_envoi(resultat)
+
+    except Exception:
+        logger.exception(
+            "DATENSIS : échec de l'envoi de la notification de modification du mot de passe."
+        )
+        raise
+
+    logger.info("DATENSIS : notification de modification traitée par le transport HTTPS.")
 
     return resultat
