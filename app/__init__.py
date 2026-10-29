@@ -63,54 +63,87 @@ def create_app():
     )
 
     # =========================================================
-    # 3. SQLITE
+    # 3. BASE DE DONNEES - POSTGRESQL / SQLITE
     # =========================================================
 
     dossier_projet = Path(__file__).resolve().parent.parent
 
-    chemin_bdd = (
-        Path(
-            os.getenv(
-                "DATENSIS_SQLITE_PATH",
-                str(dossier_projet / "database" / "datensis_dev.db"),
-            )
-        )
-        .expanduser()
-        .resolve()
-    )
+    database_url = os.getenv("DATABASE_URL", "").strip()
 
     if production:
-        demo = os.getenv("DATENSIS_EPHEMERAL_DEMO", "0") == "1"
-
-        if not demo and not chemin_bdd.is_relative_to(Path("/var/data")):
+        # PostgreSQL obligatoire en production.
+        if not database_url:
             raise RuntimeError(
-                "SQLite en production exige un disque persistant "
-                "sous /var/data, ou DATENSIS_EPHEMERAL_DEMO=1."
+                "DATABASE_URL est obligatoire en production. "
+                "Configurez l'Internal Database URL "
+                "de PostgreSQL dans Render."
             )
 
-        if demo:
-            app.logger.warning(
-                "DATENSIS : mode démo éphémère. Les comptes et jetons peuvent être perdus."
+        # Compatibilité avec les URL PostgreSQL.
+        if database_url.startswith("postgres://"):
+            database_url = database_url.replace(
+                "postgres://",
+                "postgresql://",
+                1,
             )
 
-    chemin_bdd.parent.mkdir(
-        parents=True,
-        exist_ok=True,
-    )
+        adresse_bdd = urlparse(database_url)
 
-    app.config.update(
-        SQLALCHEMY_DATABASE_URI=(f"sqlite:///{chemin_bdd.as_posix()}"),
-        SQLALCHEMY_TRACK_MODIFICATIONS=False,
-        SQLALCHEMY_ENGINE_OPTIONS={
+        if (
+            adresse_bdd.scheme not in {"postgresql", "postgresql+psycopg"}
+            or not adresse_bdd.hostname
+            or not adresse_bdd.path.strip("/")
+        ):
+            raise RuntimeError("DATABASE_URL doit être une URL PostgreSQL valide.")
+
+        app.config["SQLALCHEMY_DATABASE_URI"] = database_url
+
+        app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
             "pool_pre_ping": True,
-            "connect_args": {"timeout": 30},
-        },
-    )
+            "pool_recycle": 1800,
+            "pool_size": 5,
+            "max_overflow": 5,
+            "pool_timeout": 30,
+            "connect_args": {
+                "connect_timeout": 10,
+            },
+        }
 
-    app.logger.info(
-        "DATENSIS : SQLite configuré (%s)",
-        chemin_bdd,
-    )
+        app.logger.info("DATENSIS : PostgreSQL configuré en production.")
+
+    else:
+        # SQLite conservé pour le développement local.
+        chemin_bdd = (
+            Path(
+                os.getenv(
+                    "DATENSIS_SQLITE_PATH",
+                    str(dossier_projet / "database" / "datensis_dev.db"),
+                )
+            )
+            .expanduser()
+            .resolve()
+        )
+
+        chemin_bdd.parent.mkdir(
+            parents=True,
+            exist_ok=True,
+        )
+
+        app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{chemin_bdd.as_posix()}"
+
+        app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
+            "pool_pre_ping": True,
+            "connect_args": {
+                "timeout": 30,
+            },
+        }
+
+        app.logger.info(
+            "DATENSIS : SQLite local configuré (%s)",
+            chemin_bdd,
+        )
+
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
     # =========================================================
     # 4. PROXY ET DOMAINES AUTORISES
@@ -162,9 +195,15 @@ def create_app():
 
     resend_api_key = os.getenv("DATENSIS-Production", "").strip()
 
-    mail_from = os.getenv("MAIL_FROM", "onboarding@resend.dev").strip()
+    mail_from = os.getenv(
+        "MAIL_FROM",
+        "onboarding@resend.dev",
+    ).strip()
 
-    mail_from_name = os.getenv("MAIL_FROM_NAME", "DATENSIS").strip()
+    mail_from_name = os.getenv(
+        "MAIL_FROM_NAME",
+        "DATENSIS",
+    ).strip()
 
     app.config.update(
         RESEND_API_KEY=resend_api_key,
@@ -185,10 +224,7 @@ def create_app():
     # 7. URL PUBLIQUE
     # =========================================================
 
-    public_url = os.getenv(
-        "DATENSIS_PUBLIC_URL",
-        "",
-    ).strip()
+    public_url = os.getenv("DATENSIS_PUBLIC_URL", "").strip()
 
     if not public_url:
         public_url = MailAPIConfig.public_url() or ""

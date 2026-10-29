@@ -29,28 +29,31 @@ DOSSIER_DATABASE = Path(__file__).resolve().parent
 DOSSIER_PROJET = DOSSIER_DATABASE.parent
 load_dotenv(DOSSIER_PROJET / ".env", override=False)
 
-CHEMIN_BDD = (
-    Path(os.getenv("DATENSIS_SQLITE_PATH", str(DOSSIER_DATABASE / "datensis_dev.db")))
-    .expanduser()
-    .resolve()
-)
-
 production = os.getenv("DATENSIS_ENV", "development").strip().lower() == "production"
-demo = os.getenv("DATENSIS_EPHEMERAL_DEMO", "0") == "1"
-if production and not demo and not str(CHEMIN_BDD).startswith("/var/data/"):
-    raise RuntimeError(
-        "SQLite en production exige DATENSIS_SQLITE_PATH=/var/data/datensis.db "
-        "sur disque persistant, ou DATENSIS_EPHEMERAL_DEMO=1 pour un test ephemere."
-    )
-CHEMIN_BDD.parent.mkdir(parents=True, exist_ok=True)
-DATABASE_URL = f"sqlite:///{CHEMIN_BDD.as_posix()}"
 
-engine = create_engine(
-    DATABASE_URL,
-    echo=False,
-    pool_pre_ping=True,
-    connect_args={"timeout": 30},
-)
+if production:
+    DATABASE_URL = os.getenv("DATABASE_URL", "").strip()
+    if not DATABASE_URL:
+        raise RuntimeError("DATABASE_URL est obligatoire en production.")
+    if DATABASE_URL.startswith("postgres://"):
+        DATABASE_URL = "postgresql://" + DATABASE_URL[len("postgres://") :]
+    if not DATABASE_URL.startswith(("postgresql://", "postgresql+psycopg://")):
+        raise RuntimeError("DATABASE_URL doit utiliser PostgreSQL en production.")
+    engine = create_engine(DATABASE_URL, echo=False, pool_pre_ping=True)
+else:
+    CHEMIN_BDD = (
+        Path(os.getenv("DATENSIS_SQLITE_PATH", str(DOSSIER_DATABASE / "datensis_dev.db")))
+        .expanduser()
+        .resolve()
+    )
+    CHEMIN_BDD.parent.mkdir(parents=True, exist_ok=True)
+    DATABASE_URL = f"sqlite:///{CHEMIN_BDD.as_posix()}"
+    engine = create_engine(
+        DATABASE_URL,
+        echo=False,
+        pool_pre_ping=True,
+        connect_args={"timeout": 30},
+    )
 
 
 @event.listens_for(engine, "connect")
@@ -1231,14 +1234,31 @@ class FileAttenteMail(Base):
 # ============================================================
 
 
-def _ajouter_colonne_si_absente(connexion, table, colonne, definition):
-    """Migration additive sans suppression de donnees."""
+# Migrations explicitement autorisees, sans SQL dynamique.
+MIGRATIONS_AUTORISEES = {
+    ("conversation", "id_type_conversation"): (
+        "ALTER TABLE conversation ADD COLUMN id_type_conversation "
+        "INTEGER REFERENCES type_conversation(id_type_conversation)"
+    ),
+    ("conversation", "id_statut_conversation"): (
+        "ALTER TABLE conversation ADD COLUMN id_statut_conversation "
+        "INTEGER REFERENCES statut_conversation(id_statut_conversation)"
+    ),
+    ("file_attente_mail", "payload_chiffre"): (
+        "ALTER TABLE file_attente_mail ADD COLUMN payload_chiffre TEXT"
+    ),
+}
+
+
+def _ajouter_colonne_si_absente(connexion, table, colonne):
+    """Ajouter uniquement une colonne connue, sans supprimer les donnees."""
+    instruction = MIGRATIONS_AUTORISEES[(table, colonne)]
     inspecteur = inspect(connexion)
     if not inspecteur.has_table(table):
         return
     colonnes = {element["name"] for element in inspecteur.get_columns(table)}
     if colonne not in colonnes:
-        connexion.execute(text(f"ALTER TABLE {table} ADD COLUMN {colonne} {definition}"))
+        connexion.execute(text(instruction))
         print(f"Migration : {table}.{colonne} ajoutee")
 
 
@@ -1249,24 +1269,19 @@ def creer_tables():
     print("=" * 60)
     print("Dialecte :", engine.dialect.name)
 
-    # Les migrations existantes sont conservees, sans effacer les donnees.
-    # Elles sont executees avant create_all pour eviter les ecarts de modele.
+    # Creer les tables absentes avant les migrations additives.
+    Base.metadata.create_all(engine, checkfirst=True)
     with engine.begin() as connexion:
         _ajouter_colonne_si_absente(
             connexion,
             "conversation",
             "id_type_conversation",
-            "INTEGER REFERENCES type_conversation(id_type_conversation)",
         )
         _ajouter_colonne_si_absente(
             connexion,
             "conversation",
             "id_statut_conversation",
-            "INTEGER REFERENCES statut_conversation(id_statut_conversation)",
         )
-
-    # Cree uniquement les tables absentes. Ne modifie pas les tables existantes.
-    Base.metadata.create_all(engine, checkfirst=True)
 
     # Nouvelle colonne necessaire au worker de courriels chiffres.
     with engine.begin() as connexion:
@@ -1274,7 +1289,6 @@ def creer_tables():
             connexion,
             "file_attente_mail",
             "payload_chiffre",
-            "TEXT",
         )
 
     with engine.connect() as connexion:
