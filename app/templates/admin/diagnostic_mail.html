@@ -1,0 +1,355 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnostic Resend | DATENSIS</title>
+
+    <style>
+        :root {
+            --petrole: #00778B;
+            --menthe: #82C4A8;
+            --corail: #E96148;
+            --blanc: #FFFFFF;
+            --texte: #183E47;
+            --fond: #F3FAF8;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: var(--fond);
+            color: var(--texte);
+            font-family: Arial, sans-serif;
+        }
+
+        .header {
+            background: var(--petrole);
+            color: white;
+            padding: 22px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        .header a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1050px;
+            margin: 45px auto;
+            padding: 0 20px;
+        }
+
+        .intro {
+            margin-bottom: 30px;
+        }
+
+        .intro h1 {
+            color: var(--petrole);
+            font-size: 32px;
+        }
+
+        .intro p {
+            line-height: 1.7;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 22px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #D5EAE5;
+            border-radius: 18px;
+            padding: 28px;
+            box-shadow: 0 8px 25px rgba(0, 119, 139, .06);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            color: var(--petrole);
+            font-size: 21px;
+        }
+
+        .status-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid #E4EFED;
+        }
+
+        .status-row:last-child {
+            border-bottom: 0;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 8px 12px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .success {
+            background: #E2F5ED;
+            color: #197455;
+        }
+
+        .error {
+            background: #FCE9E5;
+            color: #B4412E;
+        }
+
+        .neutral {
+            background: #E7F3F6;
+            color: var(--petrole);
+        }
+
+        label {
+            display: block;
+            margin: 20px 0 8px;
+            font-weight: 600;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #B9D7D2;
+            border-radius: 10px;
+            font-size: 15px;
+        }
+
+        input:focus {
+            outline: 2px solid var(--menthe);
+            border-color: var(--petrole);
+        }
+
+        button {
+            width: 100%;
+            background: var(--petrole);
+            color: white;
+            border: 0;
+            padding: 16px;
+            margin-top: 20px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #005F70;
+        }
+
+        .notice {
+            margin-top: 22px;
+            padding: 17px;
+            border-left: 4px solid var(--corail);
+            background: #FFF5F1;
+            border-radius: 8px;
+            line-height: 1.6;
+        }
+
+        .result {
+            margin-top: 18px;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .full {
+            grid-column: 1 / -1;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 25px;
+            color: #58747A;
+            font-size: 13px;
+        }
+
+        @media (max-width: 750px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full {
+                grid-column: auto;
+            }
+
+            .header {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="header">
+    <div class="logo">DATENSIS</div>
+    <a href="{{ url_for('main.admin_dashboard') }}">
+        Retour à l'administration
+    </a>
+</header>
+
+<main class="container">
+
+    <section class="intro">
+        <h1>Diagnostic de messagerie Resend</h1>
+        <p>
+            Vérifiez la configuration du transport HTTPS
+            et effectuez un envoi de test sécurisé.
+        </p>
+    </section>
+
+    <div class="grid">
+
+        <section class="card">
+            <h2>Configuration du service</h2>
+
+            <div class="status-row">
+                <span>Clé API Resend</span>
+
+                {% if diagnostic.api_key %}
+                    <span class="badge success">Configurée</span>
+                {% else %}
+                    <span class="badge error">Manquante</span>
+                {% endif %}
+            </div>
+
+            <div class="status-row">
+                <span>Adresse expéditrice</span>
+
+                {% if diagnostic.sender %}
+                    <span class="badge success">Configurée</span>
+                {% else %}
+                    <span class="badge error">Manquante</span>
+                {% endif %}
+            </div>
+
+            <div class="status-row">
+                <span>URL publique</span>
+
+                {% if diagnostic.public_url %}
+                    <span class="badge success">Configurée</span>
+                {% else %}
+                    <span class="badge error">Manquante</span>
+                {% endif %}
+            </div>
+
+            <div class="status-row">
+                <span>Transport HTTPS</span>
+
+                {% if diagnostic.transport %}
+                    <span class="badge success">Prêt</span>
+                {% else %}
+                    <span class="badge error">Non configuré</span>
+                {% endif %}
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>Informations DATENSIS</h2>
+
+            <div class="status-row">
+                <span>Fournisseur</span>
+                <span class="badge neutral">Resend</span>
+            </div>
+
+            <div class="status-row">
+                <span>Protocole</span>
+                <span class="badge neutral">HTTPS</span>
+            </div>
+
+            <div class="status-row">
+                <span>Expéditeur</span>
+                <strong>{{ diagnostic.sender or "Non défini" }}</strong>
+            </div>
+
+            <div class="status-row">
+                <span>Environnement</span>
+                <strong>{{ diagnostic.environment }}</strong>
+            </div>
+        </section>
+
+        <section class="card full">
+            <h2>Envoyer un e-mail de test</h2>
+
+            <p>
+                Ce test permet de vérifier si Resend accepte
+                un message envoyé depuis DATENSIS.
+            </p>
+
+            <form method="POST"
+                  action="{{ url_for('main.diagnostic_mail') }}">
+
+                <input
+                    type="hidden"
+                    name="csrf_token"
+                    value="{{ csrf_token() }}"
+                >
+
+                <label for="email">
+                    Adresse e-mail de test
+                </label>
+
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="exemple@domaine.fr"
+                    autocomplete="email"
+                    required
+                    maxlength="254"
+                >
+
+                <button type="submit">
+                    Envoyer un e-mail de test
+                </button>
+            </form>
+
+            {% if resultat %}
+                <div class="result {{ 'success' if resultat.success else 'error' }}">
+                    {{ resultat.message }}
+                </div>
+            {% endif %}
+
+            <div class="notice">
+                <strong>Sécurité :</strong>
+                la clé API Resend reste uniquement sur le serveur.
+                Elle n'est jamais affichée dans cette page.
+                Un message accepté par Resend n'est pas
+                nécessairement déjà livré au destinataire.
+            </div>
+        </section>
+
+    </div>
+
+</main>
+
+<footer class="footer">
+    DATENSIS — Administration de la messagerie
+</footer>
+
+</body>
+</html>

@@ -526,17 +526,32 @@ def mot_de_passe_oublie(profil):
 
         try:
             resultat = demander_reinitialisation(email, profil)
-            if resultat is not None:
+
+            if resultat is None:
+                # Ne jamais enregistrer l'adresse ni divulguer
+                # l'existence du compte dans la réponse HTTP.
+                logger.info(
+                    "DATENSIS RESET : aucun compte eligible ou demande limitee (%s).",
+                    profil,
+                )
+            else:
                 destinataire, jeton = resultat
-                # Envoi HTTPS direct, sans file d'attente ni worker.
+                logger.info(
+                    "DATENSIS RESET : compte eligible, tentative d'envoi HTTPS (%s).",
+                    profil,
+                )
                 send_password_reset_email(destinataire, jeton, profil)
+                logger.info(
+                    "DATENSIS RESET : envoi accepte par le transport HTTPS (%s).",
+                    profil,
+                )
         except Exception:
-            logger.exception("Echec interne de la demande de reinitialisation (%s)", profil)
-            message = "Impossible de traiter votre demande pour le moment."
-            if ajax:
-                return jsonify(success=False, message=message), 500
-            flash(message, "error")
-            return redirect(url_for("main.mot_de_passe_oublie", profil=profil))
+            # Ne jamais enregistrer les jetons, les adresses ni les secrets.
+            logger.exception(
+                "DATENSIS RESET : echec interne de la demande (%s)",
+                profil,
+            )
+            # Réponse publique identique pour éviter l'énumération de comptes.
 
         # Réponse identique, qu'un compte existe ou non.
         message = (
