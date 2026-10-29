@@ -1,6 +1,7 @@
 """Configuration et initialisation de l'application Flask DATENSIS."""
 
 import os
+from datetime import timedelta
 from pathlib import Path
 from urllib.parse import urlparse
 
@@ -55,6 +56,8 @@ def create_app():
         REMEMBER_COOKIE_HTTPONLY=True,
         REMEMBER_COOKIE_SECURE=production,
         REMEMBER_COOKIE_SAMESITE="Lax",
+        PERMANENT_SESSION_LIFETIME=timedelta(minutes=30),
+        SESSION_REFRESH_EACH_REQUEST=True,
         MAX_CONTENT_LENGTH=16 * 1024 * 1024,
         PREFERRED_URL_SCHEME=("https" if production else "http"),
     )
@@ -231,7 +234,8 @@ def create_app():
 
     from database.create_tables import creer_tables
 
-    creer_tables()
+    with app.app_context():
+        creer_tables()
 
     # =========================================================
     # 10. COMMANDE DU WORKER
