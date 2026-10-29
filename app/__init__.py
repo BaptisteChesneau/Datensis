@@ -12,42 +12,34 @@ from app.api.config import MailAPIConfig
 from app.extensions import db
 from app.services.mail_runner import enregistrer_commande_mail
 
-# Les variables d'environnement Render restent prioritaires.
 load_dotenv()
 
 
 def create_app():
-    """Créer et configurer l'application Flask DATENSIS."""
+    """Créer et configurer l'application DATENSIS."""
 
     # =========================================================
-    # 1. INITIALISATION FLASK
+    # 1. INITIALISATION
     # =========================================================
 
     app = Flask(__name__)
 
-    # =========================================================
-    # 2. ENVIRONNEMENT
-    # =========================================================
-
     environnement = os.getenv("DATENSIS_ENV", "development").strip().lower()
 
-    if environnement not in ("development", "production"):
+    if environnement not in {"development", "production"}:
         raise RuntimeError("DATENSIS_ENV doit être 'development' ou 'production'.")
 
     production = environnement == "production"
     app.config["DATENSIS_ENV"] = environnement
 
     # =========================================================
-    # 3. CLE SECRETE
+    # 2. SECURITE
     # =========================================================
 
     secret_key = os.getenv("DATENSIS_SECRET_KEY", "").strip()
 
     if not secret_key:
-        raise RuntimeError(
-            "DATENSIS_SECRET_KEY est obligatoire. "
-            "Définissez cette variable dans .env ou sur Render."
-        )
+        raise RuntimeError("DATENSIS_SECRET_KEY est obligatoire.")
 
     if production and len(secret_key) < 32:
         raise RuntimeError(
@@ -55,50 +47,6 @@ def create_app():
         )
 
     app.config["SECRET_KEY"] = secret_key
-
-    # =========================================================
-    # 4. CONFIGURATION BASE DE DONNEES
-    # =========================================================
-
-    dossier_projet = Path(__file__).resolve().parent.parent
-    chemin_bdd = (
-        Path(
-            os.getenv("DATENSIS_SQLITE_PATH", str(dossier_projet / "database" / "datensis_dev.db"))
-        )
-        .expanduser()
-        .resolve()
-    )
-
-    # Une base SQLite sur le filesystem Render standard est ephemere.
-    # Pour la production, monter un disque persistant (ex. /var/data)
-    # ou autoriser explicitement un mode de demonstration non persistant.
-    if production:
-        demo = os.getenv("DATENSIS_EPHEMERAL_DEMO", "0") == "1"
-        if not demo and not str(chemin_bdd).startswith("/var/data/"):
-            raise RuntimeError(
-                "SQLite en production exige un disque persistant monte sous /var/data "
-                "(DATENSIS_SQLITE_PATH=/var/data/datensis.db), ou "
-                "DATENSIS_EPHEMERAL_DEMO=1 pour une demonstration sans conservation des donnees."
-            )
-        if demo:
-            app.logger.warning(
-                "MODE DEMO EPHEMERE : comptes et jetons peuvent etre perdus au redeploiement."
-            )
-
-    chemin_bdd.parent.mkdir(parents=True, exist_ok=True)
-    database_url = f"sqlite:///{chemin_bdd.as_posix()}"
-
-    app.config["SQLALCHEMY_DATABASE_URI"] = database_url
-    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-    app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
-        "pool_pre_ping": True,
-        "connect_args": {"timeout": 30},
-    }
-    app.logger.info("DATENSIS : SQLite configure (%s)", chemin_bdd)
-
-    # =========================================================
-    # 5. SECURITE SESSIONS ET COOKIES
-    # =========================================================
 
     app.config.update(
         SESSION_COOKIE_HTTPONLY=True,
@@ -112,7 +60,57 @@ def create_app():
     )
 
     # =========================================================
-    # 6. PROXY HTTPS ET DOMAINES AUTORISES
+    # 3. SQLITE
+    # =========================================================
+
+    dossier_projet = Path(__file__).resolve().parent.parent
+
+    chemin_bdd = (
+        Path(
+            os.getenv(
+                "DATENSIS_SQLITE_PATH",
+                str(dossier_projet / "database" / "datensis_dev.db"),
+            )
+        )
+        .expanduser()
+        .resolve()
+    )
+
+    if production:
+        demo = os.getenv("DATENSIS_EPHEMERAL_DEMO", "0") == "1"
+
+        if not demo and not chemin_bdd.is_relative_to(Path("/var/data")):
+            raise RuntimeError(
+                "SQLite en production exige un disque persistant "
+                "sous /var/data, ou DATENSIS_EPHEMERAL_DEMO=1."
+            )
+
+        if demo:
+            app.logger.warning(
+                "DATENSIS : mode démo éphémère. Les comptes et jetons peuvent être perdus."
+            )
+
+    chemin_bdd.parent.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+
+    app.config.update(
+        SQLALCHEMY_DATABASE_URI=(f"sqlite:///{chemin_bdd.as_posix()}"),
+        SQLALCHEMY_TRACK_MODIFICATIONS=False,
+        SQLALCHEMY_ENGINE_OPTIONS={
+            "pool_pre_ping": True,
+            "connect_args": {"timeout": 30},
+        },
+    )
+
+    app.logger.info(
+        "DATENSIS : SQLite configuré (%s)",
+        chemin_bdd,
+    )
+
+    # =========================================================
+    # 4. PROXY ET DOMAINES AUTORISES
     # =========================================================
 
     if production:
@@ -125,25 +123,21 @@ def create_app():
 
         domaines = os.getenv("DATENSIS_TRUSTED_HOSTS", "").strip()
 
-        if not domaines:
-            raise RuntimeError("DATENSIS_TRUSTED_HOSTS est obligatoire en production.")
-
         domaines_autorises = [domaine.strip() for domaine in domaines.split(",") if domaine.strip()]
 
         if not domaines_autorises:
-            raise RuntimeError("Aucun domaine autorisé n'a été configuré.")
+            raise RuntimeError("DATENSIS_TRUSTED_HOSTS est obligatoire en production.")
 
         app.config["TRUSTED_HOSTS"] = domaines_autorises
 
     # =========================================================
-    # 7. API INTERNE DE MESSAGERIE DATENSIS
+    # 5. API INTERNE DATENSIS
     # =========================================================
 
     app.config.update(
         DATENSIS_MAIL_API_URL=MailAPIConfig.api_url(),
         DATENSIS_MAIL_API_KEY=MailAPIConfig.api_key(),
         DATENSIS_MAIL_SENDER=MailAPIConfig.sender_email(),
-        DATENSIS_PUBLIC_URL=MailAPIConfig.public_url(),
     )
 
     mail_api_url = app.config["DATENSIS_MAIL_API_URL"]
@@ -157,15 +151,13 @@ def create_app():
     app.config["DATENSIS_MAIL_ENABLED"] = mail_config_complete
 
     if not mail_config_complete:
-        app.logger.warning(
-            "DATENSIS : configuration de l'API interne de messagerie absente ou incomplète."
-        )
+        app.logger.warning("DATENSIS : API interne de messagerie absente ou incomplète.")
 
     # =========================================================
-    # 8. TRANSPORT HTTPS RESEND
+    # 6. RESEND - DATENSIS-PRODUCTION
     # =========================================================
 
-    resend_api_key = os.getenv("DATENSIS_RESEND", "").strip()
+    resend_api_key = os.getenv("DATENSIS-Production", "").strip()
 
     mail_from = os.getenv("MAIL_FROM", "onboarding@resend.dev").strip()
 
@@ -177,101 +169,94 @@ def create_app():
         MAIL_FROM_NAME=mail_from_name,
     )
 
-    transport_https_configure = bool(resend_api_key and mail_from)
+    resend_configure = bool(resend_api_key and mail_from)
 
-    app.config["DATENSIS_HTTPS_MAIL_ENABLED"] = transport_https_configure
+    app.config["DATENSIS_HTTPS_MAIL_ENABLED"] = resend_configure
 
-    if not transport_https_configure:
-        app.logger.warning(
-            "DATENSIS : transport HTTPS Resend non configuré. "
-            "Vérifiez DATENSIS_RESEND et MAIL_FROM."
-        )
+    if resend_configure:
+        app.logger.info("DATENSIS : transport HTTPS Resend configuré.")
+    else:
+        app.logger.warning("DATENSIS : variable DATENSIS-Production ou MAIL_FROM manquante.")
 
     # =========================================================
-    # 9. VALIDATION DE L'URL PUBLIQUE
+    # 7. URL PUBLIQUE
     # =========================================================
 
-    public_url = (app.config.get("DATENSIS_PUBLIC_URL") or "").strip().rstrip("/")
+    public_url = os.getenv(
+        "DATENSIS_PUBLIC_URL",
+        "",
+    ).strip()
+
+    if not public_url:
+        public_url = MailAPIConfig.public_url() or ""
+
+    public_url = public_url.strip().rstrip("/")
 
     if public_url:
         adresse = urlparse(public_url)
 
         if (
-            not adresse.netloc
-            or adresse.scheme not in ("http", "https")
+            adresse.scheme not in {"http", "https"}
+            or not adresse.hostname
             or adresse.username is not None
             or adresse.password is not None
+            or adresse.path not in {"", "/"}
             or adresse.query
             or adresse.fragment
         ):
             raise RuntimeError("DATENSIS_PUBLIC_URL est invalide.")
 
         if production and adresse.scheme != "https":
-            raise RuntimeError("DATENSIS_PUBLIC_URL doit utiliser HTTPS en production.")
-
-        app.config["DATENSIS_PUBLIC_URL"] = public_url
+            raise RuntimeError("DATENSIS_PUBLIC_URL doit utiliser HTTPS.")
 
     elif production:
-        app.logger.warning(
-            "DATENSIS : DATENSIS_PUBLIC_URL est absente. "
-            "Les liens envoyés par courriel ne pourront "
-            "pas être générés."
-        )
+        app.logger.warning("DATENSIS_PUBLIC_URL absente : impossible de générer les liens e-mail.")
+
+    app.config["DATENSIS_PUBLIC_URL"] = public_url
 
     # =========================================================
-    # 10. CHIFFREMENT DES DONNEES TEMPORAIRES
+    # 8. CHIFFREMENT DES DONNEES TEMPORAIRES
     # =========================================================
 
     app.config["MAIL_ENCRYPTION_KEY"] = os.getenv("MAIL_ENCRYPTION_KEY", "").strip()
 
     if not app.config["MAIL_ENCRYPTION_KEY"]:
-        app.logger.warning("DATENSIS : clé de chiffrement des courriels non configurée.")
+        app.logger.warning("DATENSIS : MAIL_ENCRYPTION_KEY absente.")
 
     # =========================================================
-    # 11. INITIALISATION SQLALCHEMY
+    # 9. INITIALISATION DE LA BASE
     # =========================================================
 
     db.init_app(app)
 
-    # Initialiser les tables manquantes sur la meme base SQLite.
-    # En mode demo Render, le systeme de fichiers peut etre reinitialise.
-    # La creation est idempotente : les tables existantes sont conservees.
     from database.create_tables import creer_tables
 
     creer_tables()
 
     # =========================================================
-    # 12. ENREGISTREMENT DU WORKER DATENSIS
+    # 10. COMMANDE DU WORKER
     # =========================================================
 
     enregistrer_commande_mail(app)
 
     # =========================================================
-    # 13. ROUTES PRINCIPALES
+    # 11. BLUEPRINTS
     # =========================================================
 
     from app.routes import main
 
     app.register_blueprint(main)
 
-    # =========================================================
-    # 14. GESTION DES DEMANDES
-    # =========================================================
-
     from app.demandes import demandes_bp
 
     app.register_blueprint(demandes_bp)
-
-    # =========================================================
-    # 15. API DE MESSAGERIE
-    # =========================================================
 
     from app.api.mail import mail_api
 
     app.register_blueprint(mail_api)
 
     # =========================================================
-    # 16. EN-TETES HTTP DE SECURITE
+    # 12. EN-TETES DE SECURITE
     # =========================================================
 
     @app.after_request
@@ -279,13 +264,9 @@ def create_app():
         """Ajouter les en-têtes HTTP de sécurité."""
 
         response.headers["X-Content-Type-Options"] = "nosniff"
-
         response.headers["X-Frame-Options"] = "DENY"
-
         response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
-
         response.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()"
-
         response.headers["X-Permitted-Cross-Domain-Policies"] = "none"
 
         if production:
@@ -294,7 +275,7 @@ def create_app():
         return response
 
     # =========================================================
-    # 17. RETOUR APPLICATION
+    # 13. RETOUR APPLICATION
     # =========================================================
 
     return app
