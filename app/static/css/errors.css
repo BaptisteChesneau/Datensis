@@ -1,0 +1,123 @@
+
+
+:root {
+    --petrole: #00778B;
+    --corail: #E96148;
+    --menthe: #82C4A8;
+    --blanc: #FFFFFF;
+    --texte: #183E47;
+    --fond: #F3F9F7;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--fond);
+    color: var(--texte);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+}
+
+.error-container {
+    width: 100%;
+    max-width: 650px;
+    text-align: center;
+    background: var(--blanc);
+    border-radius: 24px;
+    padding: 56px 36px;
+    box-shadow: 0 18px 55px rgba(0, 119, 139, 0.10);
+}
+
+.brand {
+    font-size: 23px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    color: var(--petrole);
+    text-decoration: none;
+}
+
+.error-code {
+    font-size: clamp(100px, 20vw, 170px);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -8px;
+    margin: 35px 0 18px;
+    color: var(--petrole);
+}
+
+.error-code::after {
+    content: "";
+    display: block;
+    width: 75px;
+    height: 6px;
+    border-radius: 20px;
+    background: var(--corail);
+    margin: 24px auto 0;
+}
+
+h1 {
+    font-size: clamp(24px, 4vw, 34px);
+    margin: 22px 0 14px;
+}
+
+.description {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #526E74;
+    max-width: 460px;
+    margin: 0 auto 32px;
+}
+
+.actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 14px 24px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform 0.2s, background 0.2s;
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+}
+
+.btn-primary {
+    background: var(--petrole);
+    color: var(--blanc);
+}
+
+.btn-secondary {
+    background: #EAF6F1;
+    color: var(--petrole);
+}
+
+.footer-note {
+    margin-top: 40px;
+    font-size: 12px;
+    color: #789096;
+}
+
+@media (max-width: 480px) {
+    .error-container {
+        padding: 40px 22px;
+    }
+
+    .error-code {
+        letter-spacing: -5px;
+    }
+}

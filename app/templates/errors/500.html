@@ -1,0 +1,23 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>500 - Erreur interne | DATENSIS</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/errors.css') }}">
+</head>
+<body>
+    <main class="error-container">
+        <a class="brand" href="{{ url_for('main.home') }}">DATENSIS</a>
+        <div class="error-code">500</div>
+        <h1>Une erreur est survenue</h1>
+        <p class="description">Un problème technique empêche temporairement le traitement de votre demande. Nos équipes peuvent consulter les journaux techniques pour diagnostiquer l'incident.</p>
+        <div class="actions">
+            <a class="btn btn-primary" href="{{ url_for('main.home') }}">Retour à l'accueil</a>
+            <a class="btn btn-secondary" href="{{ url_for('main.contact') }}">Contacter le support</a>
+        </div>
+        <p class="footer-note">DATENSIS — Service et fiabilité.</p>
+    </main>
+</body>
+</html>
