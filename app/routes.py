@@ -13,6 +13,7 @@ from flask import (
     url_for,
 )
 
+from app.services.contact_mail import envoyer_confirmation_contact
 from app.services.email_verification import (
     find_resend_candidate,
     issue_token,
@@ -51,9 +52,47 @@ def faq():
     return render_template("public/faq.html")
 
 
-@main.route("/contact")
+@main.route("/contact", methods=["GET", "POST"])
 def contact():
-    return render_template("public/contact.html")
+    """Afficher le formulaire et traiter les demandes de contact."""
+    if request.method == "GET":
+        return render_template("public/contact.html")
+
+    champs = {
+        "nom": request.form.get("name", "").strip(),
+        "profil": request.form.get("profile", "").strip(),
+        "email": request.form.get("email", "").strip().lower(),
+        "telephone": request.form.get("phone", "").strip(),
+        "sujet": request.form.get("subject", "").strip(),
+        "message": request.form.get("message", "").strip(),
+    }
+    profils = {"entreprise", "cabinet", "particulier"}
+    sujets = {"etude", "solution", "suivi", "rendez-vous", "support", "autre"}
+
+    if (
+        not champs["nom"]
+        or len(champs["nom"]) > 150
+        or champs["profil"] not in profils
+        or not _email_reset_valide(champs["email"])
+        or len(champs["telephone"]) > 30
+        or champs["sujet"] not in sujets
+        or not champs["message"]
+        or len(champs["message"]) > 5000
+        or request.form.get("consent") != "yes"
+    ):
+        flash("Veuillez vérifier les champs du formulaire de contact.", "error")
+        return redirect(url_for("main.contact"))
+
+    try:
+        resultat = envoyer_confirmation_contact(**champs)
+        if resultat is not True:
+            raise RuntimeError("Le service d'envoi n'a pas confirmé l'acceptation.")
+    except Exception:
+        logger.exception("DATENSIS CONTACT : échec d'envoi de confirmation")
+        flash("L'envoi de la confirmation a échoué. Réessayez plus tard.", "error")
+    else:
+        flash("Votre demande a été prise en compte par le service d'envoi.", "success")
+    return redirect(url_for("main.contact"))
 
 
 # Inscription et connexion
@@ -517,81 +556,98 @@ PROFILS_RESET = {
     "cabinet": {"connexion": "main.cabinet_connexion", "dossier": "cabinet"},
 }
 
+MESSAGE_RESET = (
+    "Votre demande a bien été prise en compte. "
+    "Si un compte correspond à cette adresse e-mail, "
+    "un lien de réinitialisation vous sera envoyé."
+)
+
 
 def _demande_json():
-    """Détecter les soumissions asynchrones du formulaire."""
+    """Détecter les requêtes AJAX qui attendent une réponse JSON."""
     return (
         request.headers.get("X-Requested-With") == "XMLHttpRequest"
         or request.accept_mimetypes.best == "application/json"
     )
 
 
+def _email_reset_valide(email):
+    """Effectuer une validation simple du format de l'adresse."""
+    if not isinstance(email, str) or not email or len(email) > 254:
+        return False
+    if any(caractere.isspace() for caractere in email):
+        return False
+    if email.count("@") != 1:
+        return False
+    local, domaine = email.rsplit("@", 1)
+    return bool(local and domaine and "." in domaine)
+
+
 @main.route("/<profil>/mot-de-passe-oublie", methods=["GET", "POST"])
 def mot_de_passe_oublie(profil):
+    """Demander un lien de réinitialisation sans divulguer les comptes."""
     configuration = PROFILS_RESET.get(profil)
     if configuration is None:
         abort(404)
 
-    if request.method == "POST":
-        email_brut = request.form.get("email", "")
-        email = email_brut.strip().lower() if isinstance(email_brut, str) else ""
-        ajax = _demande_json()
-
-        if not email or len(email) > 254 or "@" not in email:
-            message = "Veuillez saisir une adresse e-mail valide."
-            if ajax:
-                return jsonify(success=False, message=message), 400
-            flash(message, "error")
-            return redirect(url_for("main.mot_de_passe_oublie", profil=profil))
-
-        try:
-            resultat = demander_reinitialisation(email, profil)
-
-            if resultat is None:
-                # Ne jamais enregistrer l'adresse ni divulguer
-                # l'existence du compte dans la réponse HTTP.
-                logger.info(
-                    "DATENSIS RESET : aucun compte eligible ou demande limitee (%s).",
-                    profil,
-                )
-            else:
-                destinataire, jeton = resultat
-                logger.info(
-                    "DATENSIS RESET : compte eligible, tentative d'envoi HTTPS (%s).",
-                    profil,
-                )
-                send_password_reset_email(destinataire, jeton, profil)
-                logger.info(
-                    "DATENSIS RESET : envoi accepte par le transport HTTPS (%s).",
-                    profil,
-                )
-        except Exception:
-            # Ne jamais enregistrer les jetons, les adresses ni les secrets.
-            logger.exception(
-                "DATENSIS RESET : echec interne de la demande (%s)",
-                profil,
-            )
-            # Réponse publique identique pour éviter l'énumération de comptes.
-
-        # Réponse identique, qu'un compte existe ou non.
-        message = (
-            "Votre demande a bien été prise en compte. "
-            "Si un compte correspond à cette adresse, "
-            "un lien de réinitialisation vous sera envoyé."
+    if request.method == "GET":
+        return render_template(
+            f"{configuration['dossier']}/mot_de_passe_oublie.html",
+            profil=profil,
         )
+
+    email_brut = request.form.get("email", "")
+    email = email_brut.strip().lower() if isinstance(email_brut, str) else ""
+    ajax = _demande_json()
+
+    if not _email_reset_valide(email):
+        message = "Veuillez saisir une adresse e-mail valide."
         if ajax:
-            return jsonify(success=True, status="accepted", message=message), 200
-        flash(message, "info")
+            return jsonify(success=False, message=message), 400
+        flash(message, "error")
         return redirect(url_for("main.mot_de_passe_oublie", profil=profil))
 
-    return render_template(
-        f"{configuration['dossier']}/mot_de_passe_oublie.html",
-        profil=profil,
-    )
+    try:
+        resultat = demander_reinitialisation(email, profil)
+        if resultat is None:
+            logger.info(
+                "DATENSIS RESET : aucun envoi requis (profil=%s).",
+                profil,
+            )
+        else:
+            destinataire, jeton = resultat
+            logger.info(
+                "DATENSIS RESET : tentative d'envoi Resend (profil=%s).",
+                profil,
+            )
+            # Le service mail.py existant retourne True après confirmation
+            # d'un HTTP 2xx et d'un identifiant de message Resend.
+            envoi = send_password_reset_email(destinataire, jeton, profil)
+            if envoi is not True:
+                raise RuntimeError("Le transport mail n'a pas confirmé l'envoi.")
+            logger.info(
+                "DATENSIS RESET : demande acceptée par Resend (profil=%s).",
+                profil,
+            )
+    except Exception:
+        # Ne jamais journaliser l'adresse, le jeton ou les secrets.
+        logger.exception(
+            "DATENSIS RESET : échec interne (profil=%s).",
+            profil,
+        )
+
+    if ajax:
+        return jsonify(success=True, status="accepted", message=MESSAGE_RESET), 200
+    flash(MESSAGE_RESET, "info")
+    return redirect(url_for("main.mot_de_passe_oublie", profil=profil))
 
 
-@main.route("/<profil>/reinitialiser-mot-de-passe/<token>", methods=["GET", "POST"])
+@main.route(
+    "/<profil>/reinitialiser-mot-de-passe/<token>",
+    methods=["GET", "POST"],
+)
 def reinitialiser_mot_de_passe(profil, token):
+    """Vérifier le jeton et permettre le changement de mot de passe."""
     configuration = PROFILS_RESET.get(profil)
     if configuration is None:
         abort(404)
@@ -599,38 +655,45 @@ def reinitialiser_mot_de_passe(profil, token):
     try:
         valide = jeton_valide(token, profil)
     except Exception:
-        logger.exception("Echec interne de verification du jeton (%s)", profil)
+        logger.exception("DATENSIS RESET : vérification du jeton impossible (%s).", profil)
         abort(500)
 
     if not valide:
         flash("Lien invalide, expiré ou déjà utilisé.", "error")
         return redirect(url_for("main.mot_de_passe_oublie", profil=profil))
 
-    if request.method == "POST":
-        password = request.form.get("password", "")
-        confirmation = request.form.get("password_confirm", "")
+    if request.method == "GET":
+        return render_template(
+            f"{configuration['dossier']}/reinitialiser_mot_de_passe.html",
+            profil=profil,
+            token=token,
+        )
 
-        try:
-            destinataire, date_modification = changer_mot_de_passe(
-                token, profil, password, confirmation
-            )
-        except ValueError as erreur:
-            flash(str(erreur), "error")
-            return redirect(url_for("main.reinitialiser_mot_de_passe", profil=profil, token=token))
-        except Exception:
-            logger.exception("Echec interne du changement de mot de passe (%s)", profil)
-            abort(500)
+    password = request.form.get("password", "")
+    confirmation = request.form.get("password_confirm", "")
 
-        try:
-            envoyer_confirmation_modification(destinataire, date_modification)
-        except Exception:
-            logger.exception("Mot de passe change, e-mail de confirmation non envoye")
+    if not password or not confirmation:
+        flash("Veuillez renseigner et confirmer votre nouveau mot de passe.", "error")
+        return redirect(url_for("main.reinitialiser_mot_de_passe", profil=profil, token=token))
 
-        flash("Votre mot de passe a été modifié. Vous pouvez vous connecter.", "success")
-        return redirect(url_for(configuration["connexion"]))
+    try:
+        destinataire, date_modification = changer_mot_de_passe(
+            token, profil, password, confirmation
+        )
+    except ValueError as erreur:
+        flash(str(erreur), "error")
+        return redirect(url_for("main.reinitialiser_mot_de_passe", profil=profil, token=token))
+    except Exception:
+        logger.exception("DATENSIS RESET : changement de mot de passe impossible (%s).", profil)
+        abort(500)
 
-    return render_template(
-        f"{configuration['dossier']}/reinitialiser_mot_de_passe.html",
-        profil=profil,
-        token=token,
-    )
+    try:
+        envoyer_confirmation_modification(destinataire, date_modification)
+    except Exception:
+        logger.exception(
+            "DATENSIS RESET : mot de passe changé, notification non envoyée (%s).",
+            profil,
+        )
+
+    flash("Votre mot de passe a été modifié. Vous pouvez vous connecter.", "success")
+    return redirect(url_for(configuration["connexion"]))
