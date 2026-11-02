@@ -18864,3 +18864,24 @@ document.addEventListener("DOMContentLoaded", () => {
         initialiserPublic();
     }
 })();
+
+'use strict';
+document.addEventListener('DOMContentLoaded', () => {
+  const toggle = document.querySelector('.public-menu-toggle');
+  const nav = document.getElementById('public-navigation');
+  if (toggle && nav) {
+    toggle.addEventListener('click', () => {
+      const open = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!open));
+      toggle.setAttribute('aria-label', open ? 'Ouvrir le menu' : 'Fermer le menu');
+      nav.classList.toggle('is-open', !open);
+    });
+    nav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+      nav.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-label', 'Ouvrir le menu');
+    }));
+  }
+  const year = document.getElementById('public-year');
+  if (year) year.textContent = String(new Date().getFullYear());
+});
