@@ -1,259 +1,37 @@
-
 <!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="DATENSIS vous accompagne avec un espace adapté à votre activité : indépendants, TPE, PME, ETI et cabinets d'expertise comptable.">
-    <meta name="theme-color" content="#00778B">
-    <title>Choisissez votre espace</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
-
-<body class="datensis-public portal-page">
-
-    {% include "header.html" %}
-
-    <main id="contenu-principal">
-
-        <section class="portal-hero">
-            <div class="portal-hero-content" data-reveal>
-
-                <span class="portal-kicker">
-                    DATENSIS / VOTRE ESPACE
-                </span>
-
-                <h1>
-                    Votre activité est unique.
-                    <span>Votre accompagnement aussi.</span>
-                </h1>
-
-                <p class="portal-hero-description">
-                    Accédez à un environnement conçu pour votre structure.
-                    Découvrez des solutions, obtenez des conseils et avancez
-                    à chaque étape de vos projets.
-                </p>
-
-                <a href="#choisir-espace" class="portal-discover-link">
-                    Découvrir les espaces
-                    <span aria-hidden="true">↓</span>
-                </a>
-            </div>
-
-            <div class="portal-hero-visual" aria-hidden="true">
-                <div class="portal-visual-ring portal-visual-ring-one"></div>
-                <div class="portal-visual-ring portal-visual-ring-two"></div>
-                <div class="portal-visual-center">D.</div>
-
-                <span class="portal-visual-tag portal-visual-tag-one">
-                    Conseil
-                </span>
-
-                <span class="portal-visual-tag portal-visual-tag-two">
-                    Solutions
-                </span>
-
-                <span class="portal-visual-tag portal-visual-tag-three">
-                    Accompagnement
-                </span>
-            </div>
-        </section>
-
-        <section
-            id="choisir-espace"
-            class="portal-spaces-section"
-            aria-labelledby="portal-spaces-title"
-        >
-            <div class="portal-section-heading" data-reveal>
-                <span class="portal-section-kicker">
-                    TROIS PARCOURS, UNE MÊME AMBITION
-                </span>
-
-                <h2 id="portal-spaces-title">
-                    Choisissez votre espace
-                </h2>
-
-                <p>
-                    Sélectionnez votre profil pour accéder aux services
-                    qui correspondent à votre organisation.
-                </p>
-            </div>
-
-            <div class="portal-spaces-grid">
-
-                <a
-                    href="{{ url_for('main.tpe_creation_compte') }}"
-                    class="portal-space-card portal-space-card-tpe"
-                    aria-label="Accéder à l'espace Indépendants et TPE"
-                    data-reveal
-                >
-                    <div class="portal-space-top">
-                        <span class="portal-space-number">01 / 03</span>
-                        <span class="portal-space-icon" aria-hidden="true">↗</span>
-                    </div>
-
-                    <div class="portal-space-symbol" aria-hidden="true">
-                        <svg viewBox="0 0 80 80" fill="none">
-                            <rect x="15" y="29" width="50" height="38" rx="7" stroke="currentColor" stroke-width="3"/>
-                            <path d="M28 29V22C28 17.6 31.6 14 36 14H44C48.4 14 52 17.6 52 22V29" stroke="currentColor" stroke-width="3"/>
-                            <path d="M15 43C29 52 51 52 65 43" stroke="currentColor" stroke-width="3"/>
-                        </svg>
-                    </div>
-
-                    <div class="portal-space-content">
-                        <span class="portal-space-category">ENTREPRENDRE</span>
-                        <h3>Indépendants &amp; TPE</h3>
-                        <p>
-                            Un accompagnement accessible pour structurer,
-                            développer et faire évoluer votre activité.
-                        </p>
-                    </div>
-
-                    <span class="portal-space-action">
-                        Explorer mon espace
-                        <span aria-hidden="true">→</span>
-                    </span>
-                </a>
-
-                <a
-                    href="{{ url_for('main.pme_creation_compte') }}"
-                    class="portal-space-card portal-space-card-pme"
-                    aria-label="Accéder à l'espace PME et ETI"
-                    data-reveal
-                >
-                    <div class="portal-space-top">
-                        <span class="portal-space-number">02 / 03</span>
-                        <span class="portal-space-icon" aria-hidden="true">↗</span>
-                    </div>
-
-                    <div class="portal-space-symbol" aria-hidden="true">
-                        <svg viewBox="0 0 80 80" fill="none">
-                            <rect x="12" y="32" width="24" height="36" rx="3" stroke="currentColor" stroke-width="3"/>
-                            <rect x="36" y="13" width="32" height="55" rx="3" stroke="currentColor" stroke-width="3"/>
-                            <path d="M20 42H28M20 51H28M45 26H57M45 37H57M45 48H57M48 68V58H57V68" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-                        </svg>
-                    </div>
-
-                    <div class="portal-space-content">
-                        <span class="portal-space-category">DÉVELOPPER</span>
-                        <h3>PME &amp; ETI</h3>
-                        <p>
-                            Des solutions adaptées à vos enjeux
-                            d'organisation, de développement
-                            et de pilotage.
-                        </p>
-                    </div>
-
-                    <span class="portal-space-action">
-                        Explorer mon espace
-                        <span aria-hidden="true">→</span>
-                    </span>
-                </a>
-
-                <a
-                    href="{{ url_for('main.cabinet_creation_compte') }}"
-                    class="portal-space-card portal-space-card-cabinet"
-                    aria-label="Accéder à l'espace Cabinet d'expertise comptable"
-                    data-reveal
-                >
-                    <div class="portal-space-top">
-                        <span class="portal-space-number">03 / 03</span>
-                        <span class="portal-space-icon" aria-hidden="true">↗</span>
-                    </div>
-
-                    <div class="portal-space-symbol" aria-hidden="true">
-                        <svg viewBox="0 0 80 80" fill="none">
-                            <path d="M12 32L40 14L68 32" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
-                            <path d="M18 33H62M18 65H62M13 70H67" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-                            <path d="M25 36V62M40 36V62M55 36V62" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
-                        </svg>
-                    </div>
-
-                    <div class="portal-space-content">
-                        <span class="portal-space-category">COLLABORER</span>
-                        <h3>Cabinets d'expertise comptable</h3>
-                        <p>
-                            Un environnement dédié pour développer
-                            les échanges et accompagner vos clients.
-                        </p>
-                    </div>
-
-                    <span class="portal-space-action">
-                        Explorer mon espace
-                        <span aria-hidden="true">→</span>
-                    </span>
-                </a>
-
-            </div>
-        </section>
-
-        <section class="portal-advantages" aria-labelledby="advantages-title">
-            <div class="portal-advantages-heading" data-reveal>
-                <span class="portal-section-kicker">
-                    L'EXPÉRIENCE DATENSIS
-                </span>
-                <h2 id="advantages-title">
-                    Un parcours pensé pour avancer.
-                </h2>
-            </div>
-
-            <div class="portal-advantages-grid">
-                <article class="portal-advantage" data-reveal>
-                    <span class="portal-advantage-index">01</span>
-                    <h3>Orientation adaptée</h3>
-                    <p>
-                        Identifiez les services qui correspondent
-                        à votre profil et à vos besoins.
-                    </p>
-                </article>
-
-                <article class="portal-advantage" data-reveal>
-                    <span class="portal-advantage-index">02</span>
-                    <h3>Demandes simplifiées</h3>
-                    <p>
-                        Retrouvez des parcours clairs pour présenter
-                        vos projets et vos questions.
-                    </p>
-                </article>
-
-                <article class="portal-advantage" data-reveal>
-                    <span class="portal-advantage-index">03</span>
-                    <h3>Accompagnement humain</h3>
-                    <p>
-                        Échangez avec DATENSIS pour obtenir
-                        une orientation personnalisée.
-                    </p>
-                </article>
-            </div>
-        </section>
-
-        <section class="portal-cta" data-reveal>
-            <div>
-                <span class="portal-section-kicker">
-                    UN PROJET EN TÊTE ?
-                </span>
-                <h2>Construisons la suite ensemble.</h2>
-                <p>
-                    Présentez votre besoin et découvrez
-                    comment DATENSIS peut vous accompagner.
-                </p>
-            </div>
-
-            <div class="portal-cta-actions">
-                <a href="{{ url_for('main.services') }}" class="portal-cta-primary">
-                    Découvrir nos services
-                    <span aria-hidden="true">→</span>
-                </a>
-                <a href="{{ url_for('main.contact') }}" class="portal-cta-secondary">
-                    Nous contacter
-                </a>
-            </div>
-        </section>
-
-    </main>
-
-    {% include "footer.html" %}
-
-    <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
-</body>
-</html>
+<html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="DATENSIS : un accompagnement adapté aux indépendants, TPE, PME, ETI et cabinets d'expertise comptable.">
+<meta name="theme-color" content="#0E2433"><title>DATENSIS — La donnée au service de vos décisions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"></head>
+<body class="datensis-public portal-page portal-v3">
+{% include "header.html" %}
+<div class="pv-progress" aria-hidden="true"><span id="pvScrollBar"></span></div>
+<main id="contenu-principal">
+<section class="pv-hero" id="haut"><div class="pv-ambient pv-ambient-a"></div><div class="pv-ambient pv-ambient-b"></div>
+<div class="pv-wrap pv-hero-grid"><div class="pv-hero-copy" data-reveal>
+<span class="pv-eyebrow"><span class="pv-live-dot"></span> UNE NOUVELLE FAÇON D'AVANCER</span>
+<h1>Vos ambitions.<br><em>Notre intelligence</em><br>collective.</h1>
+<p>De la donnée au conseil, DATENSIS simplifie votre parcours et connecte chaque besoin à la bonne solution. Un accompagnement pensé pour votre activité.</p>
+<div class="pv-hero-actions"><a class="pv-button pv-button-mint" href="#choisir-espace">Découvrir mon espace <span aria-hidden="true">↗</span></a><a class="pv-button pv-button-ghost" href="{{ url_for('main.services') }}">Explorer les services <span aria-hidden="true">→</span></a></div>
+<div class="pv-hero-proof"><span class="pv-proof-line"></span> TROIS PROFILS · UN MÊME ÉCOSYSTÈME</div>
+</div><div class="pv-hero-art" aria-label="Visualisation des trois parcours DATENSIS" data-reveal>
+<div class="pv-orbit pv-orbit-one"></div><div class="pv-orbit pv-orbit-two"></div><div class="pv-orbit pv-orbit-three"></div>
+<div class="pv-center"><span class="pv-center-mark">D<span>.</span></span><small>DATENSIS</small></div>
+<div class="pv-floating pv-floating-one"><span class="pv-floating-icon">↗</span><span><strong>Indépendants & TPE</strong><small>Entreprendre</small></span></div>
+<div class="pv-floating pv-floating-two"><span class="pv-floating-icon">▦</span><span><strong>PME & ETI</strong><small>Développer</small></span></div>
+<div class="pv-floating pv-floating-three"><span class="pv-floating-icon">◇</span><span><strong>Cabinets</strong><small>Collaborer</small></span></div>
+<div class="pv-orbit-particle"></div></div></div>
+<a href="#choisir-espace" class="pv-scroll-hint">DÉFILER POUR EXPLORER <span>↓</span></a></section>
+<div class="pv-ticker" aria-label="Nos engagements"><div class="pv-ticker-track"><span>CLARTÉ</span><i>✳</i><span>ACCOMPAGNEMENT</span><i>✳</i><span>INNOVATION</span><i>✳</i><span>PROXIMITÉ</span><i>✳</i><span>CLARTÉ</span><i>✳</i><span>ACCOMPAGNEMENT</span><i>✳</i><span>INNOVATION</span><i>✳</i><span>PROXIMITÉ</span><i>✳</i></div></div>
+<section id="choisir-espace" class="pv-section pv-spaces"><div class="pv-wrap"><div class="pv-section-head" data-reveal><div><span class="pv-label">01 / VOTRE PARCOURS</span><h2>Un espace qui vous <em>ressemble.</em></h2></div><p>Votre structure est unique. Choisissez votre profil et découvrez un parcours adapté à vos besoins.</p></div>
+<div class="pv-cards">
+<a class="pv-card pv-card-tpe" href="{{ url_for('main.tpe_creation_compte') }}" data-reveal><div class="pv-card-top"><span>01 / 03</span><span class="pv-card-arrow">↗</span></div><div class="pv-card-visual"><svg viewBox="0 0 120 120" aria-hidden="true"><rect x="21" y="45" width="78" height="56" rx="12" fill="none" stroke="currentColor" stroke-width="3"/><path d="M42 45V34a18 18 0 0 1 36 0v11M21 65q39 25 78 0" fill="none" stroke="currentColor" stroke-width="3"/></svg></div><span class="pv-card-tag">ENTREPRENDRE</span><h3>Indépendants<br>& TPE</h3><p>Des réponses concrètes pour lancer, structurer et développer votre activité.</p><span class="pv-card-link">Explorer mon espace <span>→</span></span></a>
+<a class="pv-card pv-card-pme" href="{{ url_for('main.pme_creation_compte') }}" data-reveal><div class="pv-card-top"><span>02 / 03</span><span class="pv-card-arrow">↗</span></div><div class="pv-card-visual"><svg viewBox="0 0 120 120" aria-hidden="true"><rect x="20" y="52" width="36" height="49" rx="4" fill="none" stroke="currentColor" stroke-width="3"/><rect x="56" y="22" width="44" height="79" rx="4" fill="none" stroke="currentColor" stroke-width="3"/><path d="M31 66h13M31 79h13M69 40h17M69 56h17M69 72h17" stroke="currentColor" stroke-width="3"/></svg></div><span class="pv-card-tag">DÉVELOPPER</span><h3>PME<br>& ETI</h3><p>Des solutions pour organiser vos projets, piloter et accélérer votre croissance.</p><span class="pv-card-link">Explorer mon espace <span>→</span></span></a>
+<a class="pv-card pv-card-cabinet" href="{{ url_for('main.cabinet_creation_compte') }}" data-reveal><div class="pv-card-top"><span>03 / 03</span><span class="pv-card-arrow">↗</span></div><div class="pv-card-visual"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M19 47 60 21l41 26M25 51h70M25 96h70M18 103h84M36 56v34M60 56v34M84 56v34" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="pv-card-tag">COLLABORER</span><h3>Cabinets<br>d'expertise comptable</h3><p>Un réseau d'échanges et d'opportunités pour accompagner vos clients.</p><span class="pv-card-link">Explorer mon espace <span>→</span></span></a>
+</div></div></section>
+<section class="pv-section pv-experience"><div class="pv-wrap pv-experience-grid"><div data-reveal><span class="pv-label">02 / L'EXPÉRIENCE DATENSIS</span><h2>Moins de complexité.<br><em>Plus de perspectives.</em></h2><p class="pv-lead">Un parcours fluide, du premier besoin jusqu'au suivi de votre projet.</p><a href="{{ url_for('main.services') }}" class="pv-text-link">Découvrir notre approche <span>↗</span></a></div><div class="pv-steps" data-reveal><div class="pv-step"><span>01</span><div><h3>Exprimez votre besoin</h3><p>Décrivez vos objectifs et vos enjeux simplement.</p></div><b>↗</b></div><div class="pv-step"><span>02</span><div><h3>Trouvez la bonne orientation</h3><p>Identifiez les services adaptés à votre structure.</p></div><b>↗</b></div><div class="pv-step"><span>03</span><div><h3>Avancez avec visibilité</h3><p>Gardez une lecture claire des prochaines étapes.</p></div><b>↗</b></div></div></div></section>
+<section class="pv-section pv-faq"><div class="pv-wrap pv-faq-grid"><div data-reveal><span class="pv-label">03 / QUESTIONS FRÉQUENTES</span><h2>Tout commence<br>par une <em>question.</em></h2><p>Les réponses essentielles pour démarrer avec DATENSIS.</p><a href="{{ url_for('main.faq') }}" class="pv-text-link">Consulter l'aide et la FAQ <span>↗</span></a></div><div class="pv-accordions" data-reveal><details><summary>À qui s'adresse DATENSIS ? <span>+</span></summary><p>Aux indépendants et TPE, aux PME et ETI, ainsi qu'aux cabinets d'expertise comptable.</p></details><details><summary>Comment choisir mon espace ? <span>+</span></summary><p>Sélectionnez la carte correspondant à votre structure. Vous serez dirigé vers le parcours de création de compte associé.</p></details><details><summary>Puis-je échanger avec un interlocuteur ? <span>+</span></summary><p>Oui. Vous pouvez présenter votre demande depuis la page Contact.</p></details></div></div></section>
+<section class="pv-bottom"><div class="pv-wrap pv-bottom-grid" data-reveal><div><span class="pv-label">LA SUITE COMMENCE ICI</span><h2>Prêt à donner vie<br>à vos <em>projets ?</em></h2></div><a class="pv-button pv-button-mint" href="{{ url_for('main.contact') }}">Parlons de votre projet <span>↗</span></a></div></section>
+</main>{% include "footer.html" %}<script src="{{ url_for('static', filename='js/main.js') }}" defer></script></body></html>

@@ -17039,3 +17039,37 @@ document.addEventListener('DOMContentLoaded', () => {
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initPortal);
   else initPortal();
 })();
+
+
+/* DATENSIS - accueil V3 : progression et animations non intrusives */
+(() => { 'use strict';
+  function initV3() {
+    const root = document.querySelector('.portal-v3');
+    if (!root || root.dataset.v3Ready === '1') return;
+    root.dataset.v3Ready = '1';
+    const bar = document.getElementById('pvScrollBar');
+    if (bar) {
+      let ticking = false;
+      const update = () => {
+        const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+        bar.style.width = `${Math.min(100, Math.max(0, window.scrollY / max * 100))}%`;
+        ticking = false;
+      };
+      window.addEventListener('scroll', () => {
+        if (!ticking) { ticking = true; window.requestAnimationFrame(update); }
+      }, { passive: true });
+      update();
+    }
+    const items = root.querySelectorAll('[data-reveal]');
+    if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      items.forEach(item => item.classList.add('is-visible'));
+    } else {
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('is-visible'); observer.unobserve(entry.target); } });
+      }, { threshold: 0.08, rootMargin: '0px 0px -20px 0px' });
+      items.forEach(item => observer.observe(item));
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initV3);
+  else initV3();
+})();
