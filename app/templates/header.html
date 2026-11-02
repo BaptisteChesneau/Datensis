@@ -1,15 +1,18 @@
+
 <header class="site-header" id="siteHeader">
     <div class="header-container">
 
+        <!-- Logo DATENSIS -->
         <a
             href="{{ url_for('main.home') }}"
             class="logo"
-            aria-label="Accueil"
+            aria-label="Accueil DATENSIS"
         >
             <span class="header-logo-symbol" aria-hidden="true">D.</span>
             <span class="header-logo-name">DATENSIS</span>
         </a>
 
+        <!-- Bouton du menu mobile -->
         <button
             type="button"
             class="header-menu-toggle"
@@ -23,6 +26,7 @@
             <span></span>
         </button>
 
+        <!-- Navigation principale -->
         <nav
             class="main-nav"
             id="mainNavigation"
@@ -60,22 +64,37 @@
                 Contact
             </a>
 
+            <!-- Actions visibles sur mobile -->
             <div class="header-mobile-actions">
-                <a href="{{ url_for('main.connexion') }}" class="header-login-link">
+                <a
+                    href="{{ url_for('main.tpe_connexion') }}"
+                    class="header-login-link"
+                >
                     Connexion
                 </a>
-                <a href="{{ url_for('main.creation_compte') }}" class="header-register-link">
+
+                <a
+                    href="{{ url_for('main.creation_compte') }}"
+                    class="header-register-link"
+                >
                     Créer un compte
                 </a>
             </div>
         </nav>
 
+        <!-- Actions visibles sur ordinateur -->
         <div class="header-actions">
-            <a href="{{ url_for('main.connexion') }}" class="header-login-link">
+            <a
+                href="{{ url_for('main.tpe_connexion') }}"
+                class="header-login-link"
+            >
                 Connexion
             </a>
 
-            <a href="{{ url_for('main.creation_compte') }}" class="header-register-link">
+            <a
+                href="{{ url_for('main.creation_compte') }}"
+                class="header-register-link"
+            >
                 Commencer
                 <span aria-hidden="true">↗</span>
             </a>
