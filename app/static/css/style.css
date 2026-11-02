@@ -37739,6 +37739,1069 @@ table tbody tr:hover { background-color: rgba(130, 196, 168, 0.08); }
     }
 }
 
-:root{--petrol:#00778b;--petrol-dark:#063c4c;--coral:#e96148;--mint:#82c4a8;--white:#fff;--ink:#153c46;--muted:#5f777e;--border:#dce9e9;--shadow:0 24px 70px rgba(5,65,77,.11)}
-*,*::before,*::after{box-sizing:border-box}html{scroll-behavior:smooth}body.datensis-public-home{margin:0;background:#fff;color:var(--ink);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.6}body.datensis-public-home a{color:inherit;text-decoration:none}body.datensis-public-home button{font:inherit}.public-container{width:min(1180px,calc(100% - 48px));margin-inline:auto}.skip-link{position:absolute;top:-100px;left:12px;background:#fff;padding:10px;z-index:10000}.skip-link:focus{top:12px}.public-header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.96);border-bottom:1px solid var(--border);backdrop-filter:blur(14px)}.public-header-inner{min-height:84px;display:flex;align-items:center;justify-content:space-between;gap:24px}.public-logo{display:inline-flex;align-items:center;gap:11px;font-size:22px;font-weight:850;letter-spacing:.05em;color:var(--petrol)!important}.logo-symbol{width:37px;height:37px;display:grid;place-items:center;border-radius:11px;color:#fff;background:var(--petrol);font-size:24px;font-weight:850;letter-spacing:-.1em;padding-right:3px}.public-navigation{display:flex;align-items:center;gap:28px}.public-navigation a{font-size:14px;font-weight:650;color:var(--ink)!important;transition:color .2s}.public-navigation a:hover,.public-navigation a[aria-current=page]{color:var(--petrol)!important}.public-navigation .nav-login{padding:12px 20px;border:1px solid var(--petrol);border-radius:10px;color:var(--petrol)!important}.public-navigation .nav-login:hover{background:var(--petrol);color:#fff!important}.public-menu-toggle{display:none}.public-hero{position:relative;overflow:hidden;background:linear-gradient(135deg,#f4fbfa 0%,#fff 54%,#f0f8f8 100%);padding:95px 0 110px}.public-hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}.public-eyebrow,.public-kicker{font-size:12px;font-weight:850;letter-spacing:.12em;color:var(--petrol);text-transform:uppercase}.public-eyebrow{display:inline-flex;align-items:center;gap:9px;padding:9px 14px;border-radius:50px;background:#e5f5f1;letter-spacing:.06em}.eyebrow-dot{height:8px;width:8px;border-radius:50%;background:var(--mint)}.public-hero h1{font-size:clamp(44px,5vw,72px);line-height:1.1;letter-spacing:-.055em;margin:26px 0;color:var(--petrol-dark);font-weight:850}.public-hero h1 em{color:var(--petrol);font-style:normal}.public-hero-copy>p{max-width:520px;font-size:18px;color:var(--muted);margin:0 0 32px}.public-hero-actions{display:flex;gap:13px;flex-wrap:wrap}.public-btn{display:inline-flex;align-items:center;justify-content:center;gap:16px;min-height:52px;padding:13px 22px;border-radius:11px;font-size:14px;font-weight:800;transition:transform .2s,background .2s}.public-btn:hover{transform:translateY(-2px)}.public-btn-primary{background:var(--coral);color:#fff!important;box-shadow:0 10px 24px rgba(233,97,72,.2)}.public-btn-primary:hover{background:#d9533c}.public-btn-outline{border:1px solid #bed8da;color:var(--petrol)!important;background:#fff}.public-hero-proof{display:flex;align-items:center;gap:11px;flex-wrap:wrap;margin-top:30px;color:var(--muted);font-size:13px}.proof-mark{color:var(--petrol);font-weight:900}.proof-separator{height:14px;width:1px;background:#b9d2d5}.hero-decoration{position:absolute;right:-100px;top:60px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(130,196,168,.2),transparent 70%)}.public-dashboard{padding:27px;background:#fff;border:1px solid #e1eded;border-radius:24px;box-shadow:var(--shadow);transform:rotate(1deg)}.dashboard-top,.dashboard-progress-header,.dashboard-bottom,.dashboard-steps .step{display:flex;align-items:center;justify-content:space-between}.dashboard-logo{font-size:24px;font-weight:900;color:var(--petrol)}.dashboard-logo span{color:var(--coral)}.dashboard-live{font-size:11px;color:#357b63;background:#eaf8ef;padding:7px 10px;border-radius:20px;font-weight:800}.dashboard-live span{display:inline-block;width:7px;height:7px;background:#56b58c;border-radius:50%;margin-right:5px}.dashboard-heading{padding:25px 0}.dashboard-heading small,.dashboard-heading span{display:block;color:var(--muted)}.dashboard-heading small{font-size:10px;letter-spacing:.12em;font-weight:800}.dashboard-heading strong{display:block;font-size:26px;letter-spacing:-.04em;color:var(--petrol-dark);margin:7px 0}.dashboard-heading span{font-size:13px}.dashboard-progress{padding:18px;border-radius:12px;background:#f2f8f8}.dashboard-progress-header{font-size:12px;margin-bottom:12px}.dashboard-progress-header strong{color:var(--petrol)}.progress-track{height:9px;background:#d8e9e9;border-radius:9px;overflow:hidden}.progress-fill{width:65%;height:100%;background:linear-gradient(90deg,var(--mint),var(--petrol));border-radius:9px}.dashboard-steps{padding-top:15px}.dashboard-steps .step{gap:12px;justify-content:flex-start;padding:15px 0;border-bottom:1px solid #eef3f3}.step-icon{width:36px;height:36px;border-radius:11px;background:#eef5f5;color:var(--petrol);display:grid;place-items:center;font-weight:800;font-size:12px;flex-shrink:0}.step.done .step-icon{background:#e5f5eb;color:#248a60}.step.active .step-icon{background:#e1f4f3}.step div{flex:1}.step strong,.step small{display:block}.step strong{font-size:12px}.step small{font-size:11px;color:var(--muted)}.step-status{font-size:10px;font-weight:800;color:var(--petrol)}.dashboard-bottom{justify-content:flex-start;gap:10px;font-size:12px;color:var(--muted);padding-top:17px}.dashboard-bottom-icon{color:var(--coral);font-size:20px}.public-features,.public-profiles{padding:100px 0}.public-section-heading{text-align:center;max-width:700px;margin:0 auto 46px}.public-section-heading h2{font-size:clamp(30px,3.5vw,45px);line-height:1.2;letter-spacing:-.04em;color:var(--petrol-dark);margin:14px 0}.public-section-heading h2 span{color:var(--petrol)}.public-section-heading p{color:var(--muted);margin:0}.public-feature-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}.public-feature-card{padding:30px 24px;border:1px solid var(--border);border-radius:18px;background:#fff;transition:transform .2s,box-shadow .2s}.public-feature-card:hover,.public-profile-card:hover{transform:translateY(-5px);box-shadow:0 20px 45px rgba(5,65,77,.09)}.feature-icon{display:grid;place-items:center;width:51px;height:51px;border-radius:14px;font-size:25px;font-weight:750}.feature-icon.coral{background:#fff0eb;color:var(--coral)}.feature-icon.mint{background:#eaf7ef;color:#3c9a78}.feature-icon.blue{background:#e8f5f7;color:var(--petrol)}.public-feature-card h3{font-size:17px;margin:22px 0 9px}.public-feature-card p{font-size:13px;color:var(--muted);margin:0}.public-profiles{background:#f4f9f9}.public-profile-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}.public-profile-card{background:#fff;border:1px solid var(--border);border-radius:20px;padding:26px;transition:transform .2s,box-shadow .2s}.profile-index{font-size:11px;letter-spacing:.09em;font-weight:850;color:var(--petrol)}.profile-art{height:135px;margin:20px 0;border-radius:14px;display:grid;place-items:center}.profile-art span{font-size:66px;line-height:1}.profile-art-tpe{background:linear-gradient(135deg,#fff1ec,#fbd9d0);color:var(--coral)}.profile-art-pme{background:linear-gradient(135deg,#e5f5f7,#c7e8ed);color:var(--petrol)}.profile-art-cabinet{background:linear-gradient(135deg,#e6f7ee,#cde9db);color:#479d7a}.public-profile-card h3{font-size:23px;letter-spacing:-.03em;margin:0 0 9px}.public-profile-card p{font-size:14px;color:var(--muted);min-height:68px}.public-profile-card a{display:flex;justify-content:space-between;align-items:center;margin-top:25px;padding-top:17px;border-top:1px solid var(--border);font-size:14px;font-weight:800;color:var(--petrol)!important}.public-cta{background:var(--petrol-dark);color:#fff;padding:65px 0}.public-cta-inner{display:flex;align-items:center;justify-content:space-between;gap:30px}.public-cta .public-kicker{color:var(--mint)}.public-cta h2{font-size:clamp(28px,3vw,40px);line-height:1.2;letter-spacing:-.04em;margin:12px 0}.public-cta p{margin:0;color:#d2e5e7}.public-btn-light{background:#fff;color:var(--petrol-dark)!important;white-space:nowrap}.public-footer{background:#fff;padding:44px 0}.public-footer-inner{display:grid;grid-template-columns:1.4fr 1fr auto;align-items:start;gap:25px}.public-footer p{color:var(--muted);font-size:12px}.public-footer nav{display:flex;flex-wrap:wrap;gap:20px;font-size:13px;font-weight:700}.public-footer small{font-size:11px;color:var(--muted)}
-@media(max-width:1000px){.public-hero-grid{gap:35px}.public-feature-grid{grid-template-columns:repeat(2,1fr)}.public-footer-inner{grid-template-columns:1fr 1fr}.public-footer small{grid-column:1/-1}}@media(max-width:760px){.public-container{width:min(100% - 32px,1180px)}.public-header-inner{min-height:70px}.public-menu-toggle{display:flex;flex-direction:column;justify-content:center;gap:5px;width:44px;height:44px;padding:11px;border:1px solid var(--border);border-radius:9px;background:#fff;cursor:pointer}.public-menu-toggle span{height:2px;width:100%;background:var(--petrol)}.public-navigation{display:none;position:absolute;top:70px;left:0;right:0;padding:20px 16px;background:#fff;border-bottom:1px solid var(--border);box-shadow:0 20px 30px rgba(0,0,0,.08);flex-direction:column;align-items:stretch;gap:6px}.public-navigation.is-open{display:flex}.public-navigation a{padding:12px}.public-hero{padding:55px 0 65px}.public-hero-grid{grid-template-columns:1fr;gap:38px}.public-hero h1{font-size:clamp(40px,9vw,58px)}.public-dashboard{transform:none}.public-features,.public-profiles{padding:65px 0}.public-profile-grid{grid-template-columns:1fr}.public-profile-card p{min-height:0}.public-cta-inner{align-items:flex-start;flex-direction:column}.public-footer-inner{grid-template-columns:1fr}.public-footer small{grid-column:auto}}@media(max-width:480px){.public-feature-grid{grid-template-columns:1fr}.public-hero-actions{flex-direction:column}.public-btn{width:100%}.public-dashboard{padding:18px}.dashboard-heading strong{font-size:22px}.step-status{display:none}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important;animation:none!important}}
+/* ======================================================
+   ACCUEIL PUBLIC DATENSIS - MAQUETTE V2
+   Styles isoles sous body.datensis-landing-page
+   ====================================================== */
+/* ===== Charte Datensis ===== */
+
+
+body.datensis-landing-page{
+  --navy:#0E2433; --navy-2:#163449; --navy-3:#1F4258;
+  --mint:#6FD6B6; --mint-deep:#1E8A6A; --mint-soft:#E2F6EF;
+  --coral:#FF7F6E; --coral-deep:#D2553F; --coral-soft:#FFEDEA;
+  --ink:#0E2433; --text:#2A3F4F; --muted:#5E7180;
+  --paper:#F4F7F8; --sheet:#FFFFFF; --rule:#DCE4E8; --on-navy:#B9CAD4;
+  --display:"Montserrat", system-ui, sans-serif;
+  --body:"Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --wrap:1180px; --ease:cubic-bezier(.2,.7,.2,1);
+}
+
+
+body.datensis-landing-page *{box-sizing:border-box;margin:0;padding:0}
+
+
+html:has(> body.datensis-landing-page){scroll-behavior:smooth}
+
+
+body.datensis-landing-page{font-family:var(--body);color:var(--text);background:var(--paper);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+
+body.datensis-landing-page img, body.datensis-landing-page svg{display:block}
+
+
+body.datensis-landing-page a{color:inherit}
+
+
+body.datensis-landing-page .wrap{max-width:var(--wrap);margin:0 auto;padding:0 32px;position:relative}
+
+
+body.datensis-landing-page h1, body.datensis-landing-page h2, body.datensis-landing-page h3{font-family:var(--display);color:var(--ink);letter-spacing:-.015em}
+
+
+body.datensis-landing-page h1{font-size:clamp(2.1rem,3.7vw,3.05rem);line-height:1.08;font-weight:600}
+
+
+body.datensis-landing-page h2{font-size:clamp(1.75rem,3vw,2.45rem);line-height:1.18;font-weight:600}
+
+
+body.datensis-landing-page h3{font-size:1.12rem;line-height:1.35;font-weight:600}
+
+
+body.datensis-landing-page p{max-width:62ch}
+
+
+body.datensis-landing-page .lede{font-size:1.13rem}
+
+
+body.datensis-landing-page :focus-visible{outline:3px solid var(--mint);outline-offset:3px;border-radius:4px}
+
+
+
+/* Buttons */
+
+
+body.datensis-landing-page .btn{display:inline-flex;align-items:center;gap:.6rem;font:600 .98rem/1 var(--display);padding:16px 24px;border-radius:10px;text-decoration:none;border:1.5px solid transparent;cursor:pointer;transition:transform .2s var(--ease),background .2s,color .2s,border-color .2s,box-shadow .2s;white-space:nowrap}
+
+
+body.datensis-landing-page .btn:hover{transform:translateY(-2px)}
+
+
+body.datensis-landing-page .btn-mint{background:var(--mint);color:var(--navy)}
+
+
+body.datensis-landing-page .btn-mint:hover{box-shadow:0 10px 24px -10px rgba(111,214,182,.8)}
+
+
+body.datensis-landing-page .btn-navy{background:var(--navy);color:#fff}
+
+
+body.datensis-landing-page .btn-navy:hover{box-shadow:0 10px 24px -12px rgba(14,36,51,.7)}
+
+
+body.datensis-landing-page .btn-line{border-color:currentColor;background:transparent}
+
+
+body.datensis-landing-page .btn-line.on-dark{color:#fff}
+
+
+body.datensis-landing-page .btn-line.on-dark:hover{background:#fff;color:var(--navy);border-color:#fff}
+
+
+body.datensis-landing-page .btn-line.on-light{color:var(--navy)}
+
+
+body.datensis-landing-page .btn-line.on-light:hover{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+
+
+/* Logo */
+
+
+body.datensis-landing-page .logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+
+
+body.datensis-landing-page .logo svg{width:50px;height:50px}
+
+
+body.datensis-landing-page .logo .word{font:400 1.12rem/1 var(--display);letter-spacing:.24em;color:#fff}
+
+
+
+/* Progress + header */
+
+
+body.datensis-landing-page .progress{position:fixed;top:0;left:0;height:3px;width:100%;background:var(--mint);transform-origin:0 50%;transform:scaleX(0);z-index:60}
+
+
+body.datensis-landing-page header.top{position:fixed;top:0;left:0;right:0;z-index:50;transition:background .3s,box-shadow .3s}
+
+
+body.datensis-landing-page header.top.solid{background:rgba(14,36,51,.95);backdrop-filter:blur(10px);box-shadow:0 8px 30px -18px rgba(0,0,0,.6)}
+
+
+body.datensis-landing-page .top .wrap{display:flex;align-items:center;justify-content:space-between;height:78px;gap:24px}
+
+
+body.datensis-landing-page nav.menu{display:flex;gap:28px;align-items:center}
+
+
+body.datensis-landing-page nav.menu a{text-decoration:none;font:500 .93rem var(--display);color:var(--on-navy);position:relative}
+
+
+body.datensis-landing-page nav.menu a:not(.btn)::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;background:var(--mint);transform:scaleX(0);transform-origin:left;transition:transform .25s var(--ease)}
+
+
+body.datensis-landing-page nav.menu a:not(.btn):hover{color:#fff}
+
+
+body.datensis-landing-page nav.menu a:not(.btn):hover::after{transform:scaleX(1)}
+
+
+body.datensis-landing-page nav.menu .btn{padding:12px 18px;font-size:.9rem;color:var(--navy)}
+
+
+
+/* ===== Hero ===== */
+
+
+body.datensis-landing-page .hero{background:var(--navy);color:var(--on-navy);padding:160px 0 110px;position:relative;overflow:hidden}
+
+
+body.datensis-landing-page .hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:60px;align-items:center;z-index:2}
+
+
+body.datensis-landing-page .hero h1{color:#fff;margin-bottom:22px}
+
+
+body.datensis-landing-page .hero h1 .line{display:block;overflow:hidden;padding-bottom:.06em}
+
+
+body.datensis-landing-page .hero h1 .line > span{display:block}
+
+
+body.datensis-landing-page .hero h1 .line.mint > span{color:var(--mint)}
+
+
+body.datensis-landing-page .hero .lede{color:var(--on-navy);margin-bottom:34px}
+
+
+body.datensis-landing-page .tagline{font:500 .82rem var(--display);letter-spacing:.2em;color:var(--mint);margin-bottom:22px;display:flex;align-items:center;gap:12px}
+
+
+body.datensis-landing-page .tagline i{display:inline-block;width:8px;height:8px;background:var(--coral)}
+
+
+body.datensis-landing-page .hero-ctas{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:34px}
+
+
+body.datensis-landing-page .origin{display:flex;gap:12px;align-items:flex-start;padding-top:22px;border-top:1px solid rgba(255,255,255,.12);max-width:540px;font-size:.95rem}
+
+
+body.datensis-landing-page .origin svg{flex:none;margin-top:3px}
+
+
+body.datensis-landing-page .origin strong{color:#fff;font-weight:600}
+
+
+body.datensis-landing-page .pixels{position:absolute;inset:0;z-index:1;pointer-events:none}
+
+
+body.datensis-landing-page .px{position:absolute;width:var(--s,12px);height:var(--s,12px);border-radius:2px;background:var(--c,var(--mint));opacity:var(--o,.9)}
+
+
+
+/* Hero feed card */
+
+
+body.datensis-landing-page .feed{background:var(--sheet);border-radius:16px;box-shadow:0 40px 80px -30px rgba(0,0,0,.55);overflow:hidden}
+
+
+body.datensis-landing-page .feed-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 22px;border-bottom:1px solid var(--rule)}
+
+
+body.datensis-landing-page .feed-head .t{font:600 1rem var(--display);color:var(--ink)}
+
+
+body.datensis-landing-page .feed-head .s{font-size:.8rem;color:var(--muted)}
+
+
+body.datensis-landing-page .live{display:inline-flex;align-items:center;gap:7px;font:600 .74rem var(--display);color:var(--mint-deep);background:var(--mint-soft);padding:6px 10px;border-radius:99px;white-space:nowrap}
+
+
+body.datensis-landing-page .live i{width:7px;height:7px;border-radius:2px;background:var(--mint-deep);animation:blink 1.6s infinite}
+
+
+@keyframes blink{50%{opacity:.25}}
+
+
+body.datensis-landing-page .events{list-style:none;padding:8px 22px 4px;position:relative}
+
+
+body.datensis-landing-page .events::before{content:"";position:absolute;left:35px;top:24px;bottom:24px;width:2px;background:var(--rule)}
+
+
+body.datensis-landing-page .events li{display:grid;grid-template-columns:28px 1fr;gap:14px;align-items:start;padding:10px 0;position:relative}
+
+
+body.datensis-landing-page .events .dot{width:28px;height:28px;border-radius:7px;display:grid;place-items:center;background:#fff;border:1.5px solid var(--rule);position:relative;z-index:1;transition:background .4s,border-color .4s}
+
+
+body.datensis-landing-page .events .dot svg{opacity:0;transition:opacity .3s}
+
+
+body.datensis-landing-page .events li.on .dot{background:var(--c);border-color:var(--c)}
+
+
+body.datensis-landing-page .events li.on .dot svg{opacity:1}
+
+
+body.datensis-landing-page .events .mod{display:inline-block;font:600 .7rem var(--display);letter-spacing:.02em;padding:2px 8px;border-radius:5px;background:var(--cs);color:var(--cd);margin-bottom:3px}
+
+
+body.datensis-landing-page .events .what{font-size:.92rem;color:var(--ink);font-weight:500;line-height:1.4}
+
+
+body.datensis-landing-page .feed-foot{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--rule);background:#F8FAFB}
+
+
+body.datensis-landing-page .feed-foot div{padding:14px 22px}
+
+
+body.datensis-landing-page .feed-foot div+div{border-left:1px solid var(--rule)}
+
+
+body.datensis-landing-page .feed-foot b{display:block;font:600 1.45rem var(--display);color:var(--mint-deep);line-height:1.1}
+
+
+body.datensis-landing-page .feed-foot div > span{font-size:.8rem;color:var(--muted)}
+
+
+
+/* Strip */
+
+
+body.datensis-landing-page .strip{background:var(--sheet);border-bottom:1px solid var(--rule)}
+
+
+body.datensis-landing-page .strip .wrap{display:grid;grid-template-columns:repeat(3,1fr)}
+
+
+body.datensis-landing-page .strip .item{padding:30px 28px;border-left:1px solid var(--rule);display:flex;gap:16px;align-items:flex-start}
+
+
+body.datensis-landing-page .strip .item:first-child{border-left:0;padding-left:0}
+
+
+body.datensis-landing-page .strip .sq{flex:none;width:12px;height:12px;margin-top:8px;border-radius:2px}
+
+
+body.datensis-landing-page .strip .big{font:600 1.05rem var(--display);color:var(--ink);display:block;margin-bottom:4px}
+
+
+body.datensis-landing-page .strip p{font-size:.92rem;color:var(--muted)}
+
+
+
+/* Sections */
+
+
+body.datensis-landing-page section.block{padding:112px 0;position:relative}
+
+
+body.datensis-landing-page .section-head{max-width:760px;margin-bottom:60px}
+
+
+body.datensis-landing-page .section-head p{margin-top:18px}
+
+
+body.datensis-landing-page .section-head.center{margin-left:auto;margin-right:auto;text-align:center}
+
+
+body.datensis-landing-page .section-head.center p{margin-left:auto;margin-right:auto}
+
+
+body.datensis-landing-page .kicker{display:inline-flex;align-items:center;gap:10px;font:600 .85rem var(--display);color:var(--mint-deep);margin-bottom:16px}
+
+
+body.datensis-landing-page .kicker::before{content:"";width:10px;height:10px;border-radius:2px;background:currentColor}
+
+
+body.datensis-landing-page .dark{background:var(--navy);color:var(--on-navy)}
+
+
+body.datensis-landing-page .dark h2, body.datensis-landing-page .dark h3{color:#fff}
+
+
+body.datensis-landing-page .dark .kicker{color:var(--mint)}
+
+
+
+/* Problem: stack → one */
+
+
+body.datensis-landing-page .stack .wrap{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}
+
+
+body.datensis-landing-page .stack .facts{list-style:none;margin-top:28px}
+
+
+body.datensis-landing-page .stack .facts li{padding:14px 0 14px 26px;border-top:1px solid var(--rule);position:relative}
+
+
+body.datensis-landing-page .stack .facts li:last-child{border-bottom:1px solid var(--rule)}
+
+
+body.datensis-landing-page .stack .facts li::before{content:"";position:absolute;left:0;top:23px;width:10px;height:10px;border-radius:2px;background:var(--coral)}
+
+
+body.datensis-landing-page .stack .facts strong{color:var(--ink)}
+
+
+body.datensis-landing-page .merge{position:relative;height:440px;background:var(--sheet);border:1px solid var(--rule);border-radius:18px;overflow:hidden;box-shadow:0 30px 60px -40px rgba(14,36,51,.4)}
+
+
+body.datensis-landing-page .merge .lbl{position:absolute;top:18px;left:22px;font:600 .8rem var(--display);color:var(--muted);transition:opacity .5s}
+
+
+body.datensis-landing-page .merge .lbl.after{opacity:0;color:var(--mint-deep)}
+
+
+body.datensis-landing-page .merge.merged .lbl.before{opacity:0}
+
+
+body.datensis-landing-page .merge.merged .lbl.after{opacity:1}
+
+
+body.datensis-landing-page .tool{position:absolute;width:170px;padding:12px 14px;border-radius:10px;background:#fff;border:1.5px dashed #F2B3A8;font:600 .84rem var(--display);color:var(--ink);box-shadow:0 8px 18px -12px rgba(14,36,51,.4);transition:left 1s var(--ease),top 1s var(--ease),opacity .6s,transform 1s var(--ease),border-color .6s,background .6s,color .6s,width 1s var(--ease);transition-delay:calc(var(--i)*90ms)}
+
+
+body.datensis-landing-page .tool small{display:block;font:400 .74rem var(--body);color:var(--coral-deep);margin-top:2px;transition:opacity .4s}
+
+
+body.datensis-landing-page .merge.merged .tool{left:calc(50% - 120px)!important;width:240px;border:0;background:var(--navy-3);color:#fff;transform:none!important}
+
+
+body.datensis-landing-page .merge.merged .tool small{opacity:0;height:0;margin:0}
+
+
+body.datensis-landing-page .merge .core{position:absolute;left:calc(50% - 140px);top:52px;width:280px;height:368px;border-radius:16px;background:var(--navy);opacity:0;transform:scale(.92);transition:opacity .7s var(--ease) .35s,transform .7s var(--ease) .35s}
+
+
+body.datensis-landing-page .merge.merged .core{opacity:1;transform:none}
+
+
+body.datensis-landing-page .merge .core-title{position:absolute;left:0;right:0;top:16px;text-align:center;font:400 .9rem var(--display);letter-spacing:.24em;color:#fff}
+
+
+body.datensis-landing-page .merge .core-foot{position:absolute;left:0;right:0;bottom:14px;text-align:center;font:600 .78rem var(--display);color:var(--mint)}
+
+
+body.datensis-landing-page .merge .tool{z-index:2}
+
+
+body.datensis-landing-page .merge .core{z-index:1}
+
+
+body.datensis-landing-page .merge .wires{position:absolute;inset:0;transition:opacity .5s}
+
+
+body.datensis-landing-page .merge.merged .wires{opacity:0}
+
+
+
+/* Two universes */
+
+
+body.datensis-landing-page .duo{display:grid;grid-template-columns:1fr 120px 1fr;align-items:stretch}
+
+
+body.datensis-landing-page .uni{border-radius:18px;padding:36px 32px}
+
+
+body.datensis-landing-page .uni.expert{background:var(--navy-2);color:var(--on-navy)}
+
+
+body.datensis-landing-page .uni.entre{background:#fff;color:var(--text)}
+
+
+body.datensis-landing-page .uni .for{font:600 .8rem var(--display);letter-spacing:.14em;margin-bottom:10px}
+
+
+body.datensis-landing-page .uni.expert .for{color:var(--mint)}
+
+
+body.datensis-landing-page .uni.entre .for{color:var(--coral-deep)}
+
+
+body.datensis-landing-page .uni h3{font-size:1.5rem;margin-bottom:6px;letter-spacing:.02em}
+
+
+body.datensis-landing-page .uni.entre h3{color:var(--ink)}
+
+
+body.datensis-landing-page .uni.expert h3{color:#fff}
+
+
+body.datensis-landing-page .uni .sub{font-size:.95rem;margin-bottom:20px}
+
+
+body.datensis-landing-page .uni ul{list-style:none}
+
+
+body.datensis-landing-page .uni li{padding:11px 0 11px 26px;border-top:1px solid rgba(255,255,255,.12);position:relative;font-size:.97rem}
+
+
+body.datensis-landing-page .uni.entre li{border-color:var(--rule)}
+
+
+body.datensis-landing-page .uni li::before{content:"";position:absolute;left:2px;top:19px;width:12px;height:7px;border-left:2px solid var(--mint);border-bottom:2px solid var(--mint);transform:rotate(-45deg)}
+
+
+body.datensis-landing-page .uni.entre li::before{border-color:var(--coral-deep)}
+
+
+body.datensis-landing-page .uni.expert li{color:#fff}
+
+
+body.datensis-landing-page .bridge{position:relative;display:flex;align-items:center;justify-content:center}
+
+
+body.datensis-landing-page .bridge svg{width:120px;height:100%;min-height:200px;overflow:visible}
+
+
+body.datensis-landing-page .bridge .core-chip{position:absolute;background:var(--mint);color:var(--navy);font:600 .72rem/1.25 var(--display);text-align:center;padding:10px 8px;border-radius:10px;width:104px;box-shadow:0 10px 24px -10px rgba(111,214,182,.8)}
+
+
+body.datensis-landing-page .bridge .pulse{animation:pulse 2.4s var(--ease) infinite}
+
+
+@keyframes pulse{0%{transform:translateX(0);opacity:0}15%{opacity:1}85%{opacity:1}100%{transform:translateX(var(--dx));opacity:0}}
+
+
+
+/* Levers */
+
+
+body.datensis-landing-page .levers{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+
+
+body.datensis-landing-page .lever{background:#fff;border:1px solid var(--rule);border-radius:16px;padding:28px 24px;position:relative;overflow:hidden;transition:transform .3s var(--ease),box-shadow .3s}
+
+
+body.datensis-landing-page .lever:hover{transform:translateY(-6px);box-shadow:0 30px 50px -30px rgba(14,36,51,.35)}
+
+
+body.datensis-landing-page .lever .ico{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;margin-bottom:18px}
+
+
+body.datensis-landing-page .lever h3{font-size:1.15rem;letter-spacing:.06em;margin-bottom:12px}
+
+
+body.datensis-landing-page .lever ul{list-style:none}
+
+
+body.datensis-landing-page .lever li{font-size:.92rem;padding:6px 0;border-top:1px solid var(--rule);color:var(--text)}
+
+
+body.datensis-landing-page .lever .bar{position:absolute;left:0;bottom:0;height:4px;width:100%;background:var(--c);transform:scaleX(0);transform-origin:left;transition:transform 1s var(--ease) .3s}
+
+
+body.datensis-landing-page .lever.is-in .bar{transform:scaleX(1)}
+
+
+body.datensis-landing-page .gains{display:grid;grid-template-columns:repeat(3,1fr);margin-top:56px;border-top:2px solid var(--navy)}
+
+
+body.datensis-landing-page .gain{padding:28px 28px 0 0}
+
+
+body.datensis-landing-page .gain+.gain{padding-left:28px;border-left:1px solid var(--rule)}
+
+
+body.datensis-landing-page .gain b{display:block;font:600 1.3rem var(--display);color:var(--ink);margin-bottom:6px}
+
+
+body.datensis-landing-page .gain b span{color:var(--mint-deep)}
+
+
+body.datensis-landing-page .gain p{font-size:.95rem;color:var(--muted)}
+
+
+
+/* Cycle */
+
+
+body.datensis-landing-page .cycle .wrap{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+
+
+body.datensis-landing-page .ring{position:relative;max-width:500px;margin:0 auto;width:100%}
+
+
+body.datensis-landing-page .ring svg{width:100%;height:auto;overflow:visible}
+
+
+body.datensis-landing-page .ring .arc{stroke-dasharray:1200;stroke-dashoffset:1200;transition:stroke-dashoffset 2.4s var(--ease) .2s}
+
+
+body.datensis-landing-page .ring.is-in .arc{stroke-dashoffset:0}
+
+
+body.datensis-landing-page .ring .n{opacity:0;transition:opacity .5s;transition-delay:calc(.5s + var(--i)*.35s)}
+
+
+body.datensis-landing-page .ring.is-in .n{opacity:1}
+
+
+body.datensis-landing-page .cycle .steps{list-style:none;margin-top:28px}
+
+
+body.datensis-landing-page .cycle .steps li{display:grid;grid-template-columns:18px 1fr;gap:14px;padding:13px 0;border-top:1px solid rgba(255,255,255,.12)}
+
+
+body.datensis-landing-page .cycle .steps li:last-child{border-bottom:1px solid rgba(255,255,255,.12)}
+
+
+body.datensis-landing-page .cycle .steps i{width:12px;height:12px;border-radius:2px;margin-top:7px;background:var(--mint)}
+
+
+body.datensis-landing-page .cycle .steps strong{color:#fff;font-weight:600}
+
+
+body.datensis-landing-page .example{margin-top:28px;background:var(--navy-2);border-radius:14px;padding:22px 24px;font-size:.96rem}
+
+
+body.datensis-landing-page .example strong{color:var(--mint)}
+
+
+
+/* Parcours guidés */
+
+
+body.datensis-landing-page .guided .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:72px;align-items:center}
+
+
+body.datensis-landing-page .guided ul.pts{list-style:none;margin-top:26px}
+
+
+body.datensis-landing-page .guided ul.pts li{display:flex;gap:14px;padding:14px 0;border-top:1px solid var(--rule)}
+
+
+body.datensis-landing-page .guided ul.pts li:last-child{border-bottom:1px solid var(--rule)}
+
+
+body.datensis-landing-page .guided ul.pts strong{color:var(--ink)}
+
+
+body.datensis-landing-page .app{background:#fff;border:1px solid var(--rule);border-radius:18px;box-shadow:0 30px 60px -40px rgba(14,36,51,.45);overflow:hidden}
+
+
+body.datensis-landing-page .app-head{display:flex;justify-content:space-between;align-items:center;padding:16px 22px;background:var(--navy);color:#fff}
+
+
+body.datensis-landing-page .app-head .t{font:600 .98rem var(--display)}
+
+
+body.datensis-landing-page .app-head .s{font-size:.78rem;color:var(--on-navy)}
+
+
+body.datensis-landing-page .timer{display:flex;align-items:center;gap:8px;font:600 1.1rem var(--display);color:var(--mint);font-variant-numeric:tabular-nums}
+
+
+body.datensis-landing-page .timer svg{animation:spin 6s linear infinite}
+
+
+@keyframes spin{to{transform:rotate(360deg)}}
+
+
+body.datensis-landing-page .phases{list-style:none;padding:12px 22px}
+
+
+body.datensis-landing-page .phases li{display:grid;grid-template-columns:26px 1fr auto;gap:12px;align-items:center;padding:12px 0;border-bottom:1px dashed var(--rule)}
+
+
+body.datensis-landing-page .phases li:last-child{border-bottom:0}
+
+
+body.datensis-landing-page .phases .st{width:22px;height:22px;border-radius:6px;border:1.5px solid var(--rule);display:grid;place-items:center;transition:all .4s}
+
+
+body.datensis-landing-page .phases li.done .st{background:var(--mint-deep);border-color:var(--mint-deep)}
+
+
+body.datensis-landing-page .phases li.cur .st{border-color:var(--coral);box-shadow:0 0 0 4px rgba(255,127,110,.2)}
+
+
+body.datensis-landing-page .phases .st svg{opacity:0}
+
+
+body.datensis-landing-page .phases li.done .st svg{opacity:1}
+
+
+body.datensis-landing-page .phases .nm{font-weight:600;color:var(--ink);font-size:.93rem}
+
+
+body.datensis-landing-page .phases .hint{font-size:.8rem;color:var(--muted)}
+
+
+body.datensis-landing-page .phases .tm{font:600 .85rem var(--display);color:var(--muted);font-variant-numeric:tabular-nums}
+
+
+body.datensis-landing-page .phases li.done .tm{color:var(--mint-deep)}
+
+
+body.datensis-landing-page .phases li.cur .tm{color:var(--coral-deep)}
+
+
+body.datensis-landing-page .app-foot{padding:14px 22px;background:#F8FAFB;border-top:1px solid var(--rule);display:flex;justify-content:space-between;font-size:.84rem;color:var(--muted)}
+
+
+body.datensis-landing-page .app-foot b{color:var(--ink)}
+
+
+
+/* Trust */
+
+
+body.datensis-landing-page .trust .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+
+
+body.datensis-landing-page .badge{background:var(--navy-2);border-radius:16px;padding:28px 24px;border:1px solid rgba(255,255,255,.06)}
+
+
+body.datensis-landing-page .badge .ico{width:44px;height:44px;border-radius:11px;background:rgba(111,214,182,.12);display:grid;place-items:center;margin-bottom:16px}
+
+
+body.datensis-landing-page .badge h3{font-size:1.06rem;margin-bottom:8px}
+
+
+body.datensis-landing-page .badge p{font-size:.93rem}
+
+
+body.datensis-landing-page .badge.key{background:var(--mint);}
+
+
+body.datensis-landing-page .badge.key h3{color:var(--navy)}
+
+
+body.datensis-landing-page .badge.key p{color:var(--navy)}
+
+
+body.datensis-landing-page .badge.key .ico{background:rgba(14,36,51,.12)}
+
+
+
+/* Roadmap */
+
+
+body.datensis-landing-page .road{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:20px}
+
+
+body.datensis-landing-page .col{background:#fff;border:1px solid var(--rule);border-radius:16px;padding:26px 24px}
+
+
+body.datensis-landing-page .col .state{display:inline-flex;align-items:center;gap:8px;font:600 .8rem var(--display);margin-bottom:14px}
+
+
+body.datensis-landing-page .col .state i{width:10px;height:10px;border-radius:2px;background:var(--c)}
+
+
+body.datensis-landing-page .col ul{list-style:none}
+
+
+body.datensis-landing-page .col li{padding:9px 0;border-top:1px solid var(--rule);font-size:.94rem;color:var(--ink)}
+
+
+body.datensis-landing-page .col li small{display:block;color:var(--muted);font-size:.82rem}
+
+
+body.datensis-landing-page .road-note{margin-top:22px;font-size:.88rem;color:var(--muted)}
+
+
+
+/* Story */
+
+
+body.datensis-landing-page .story{background:var(--sheet);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+
+
+body.datensis-landing-page .story .wrap{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
+
+
+body.datensis-landing-page .story .big{font:500 clamp(1.4rem,2.3vw,1.85rem)/1.38 var(--display);color:var(--ink);border-left:4px solid var(--mint);padding-left:28px;letter-spacing:-.01em}
+
+
+body.datensis-landing-page .story .body p+p{margin-top:16px}
+
+
+body.datensis-landing-page .creds{list-style:none;margin-top:28px;display:grid;gap:10px}
+
+
+body.datensis-landing-page .creds li{display:flex;gap:12px;align-items:center;font-weight:500;color:var(--ink)}
+
+
+body.datensis-landing-page .creds li i{width:10px;height:10px;border-radius:2px;background:var(--coral);flex:none}
+
+
+
+/* Offer */
+
+
+body.datensis-landing-page .offer-wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:stretch}
+
+
+body.datensis-landing-page .launch{background:var(--navy);color:var(--on-navy);border-radius:18px;padding:40px 36px;position:relative;overflow:hidden}
+
+
+body.datensis-landing-page .launch h3{color:#fff;font-size:1.6rem;margin:6px 0 10px}
+
+
+body.datensis-landing-page .launch .tag{display:inline-block;background:var(--coral);color:var(--navy);font:600 .78rem var(--display);padding:6px 12px;border-radius:99px}
+
+
+body.datensis-landing-page .launch ul{list-style:none;margin:22px 0 28px}
+
+
+body.datensis-landing-page .launch li{padding:11px 0 11px 26px;border-top:1px solid rgba(255,255,255,.12);position:relative;color:#fff}
+
+
+body.datensis-landing-page .launch li::before{content:"";position:absolute;left:2px;top:19px;width:12px;height:7px;border-left:2px solid var(--mint);border-bottom:2px solid var(--mint);transform:rotate(-45deg)}
+
+
+body.datensis-landing-page .launch li span{display:block;color:var(--on-navy);font-size:.88rem}
+
+
+body.datensis-landing-page .seats{display:grid;grid-template-columns:repeat(20,1fr);gap:4px;margin-top:6px;max-width:360px}
+
+
+body.datensis-landing-page .seats i{aspect-ratio:1;border-radius:2px;background:rgba(255,255,255,.1);transition:background .3s;transition-delay:calc(var(--i)*12ms)}
+
+
+body.datensis-landing-page .launch.is-in .seats i{background:var(--mint)}
+
+
+body.datensis-landing-page .seats-l{font-size:.82rem;margin-top:10px}
+
+
+body.datensis-landing-page .model{background:#fff;border:1px solid var(--rule);border-radius:18px;padding:36px 32px;display:flex;flex-direction:column}
+
+
+body.datensis-landing-page .model h3{font-size:1.3rem;margin-bottom:12px}
+
+
+body.datensis-landing-page .model .line{display:flex;gap:14px;padding:16px 0;border-top:1px solid var(--rule)}
+
+
+body.datensis-landing-page .model .line:last-of-type{border-bottom:1px solid var(--rule);margin-bottom:24px}
+
+
+body.datensis-landing-page .model .line i{width:12px;height:12px;border-radius:2px;flex:none;margin-top:7px}
+
+
+body.datensis-landing-page .model .line strong{display:block;color:var(--ink)}
+
+
+body.datensis-landing-page .model .line span{font-size:.92rem;color:var(--muted)}
+
+
+body.datensis-landing-page .model .btn{margin-top:auto;align-self:flex-start}
+
+
+
+/* FAQ */
+
+
+body.datensis-landing-page .faq .wrap{display:grid;grid-template-columns:.8fr 1.2fr;gap:72px}
+
+
+body.datensis-landing-page details{border-top:1px solid var(--rule)}
+
+
+body.datensis-landing-page details:last-of-type{border-bottom:1px solid var(--rule)}
+
+
+body.datensis-landing-page summary{list-style:none;cursor:pointer;padding:22px 44px 22px 0;font:600 1.02rem var(--display);color:var(--ink);position:relative;transition:color .2s}
+
+
+body.datensis-landing-page summary:hover{color:var(--mint-deep)}
+
+
+body.datensis-landing-page summary::-webkit-details-marker{display:none}
+
+
+body.datensis-landing-page summary::after{content:"";position:absolute;right:6px;top:50%;width:14px;height:14px;margin-top:-7px;background:linear-gradient(var(--ink),var(--ink)) center/14px 2px no-repeat,linear-gradient(var(--ink),var(--ink)) center/2px 14px no-repeat;transition:transform .3s var(--ease)}
+
+
+body.datensis-landing-page details[open] summary::after{transform:rotate(135deg)}
+
+
+body.datensis-landing-page details p{padding:0 0 24px;animation:open .45s var(--ease)}
+
+
+@keyframes open{from{opacity:0;transform:translateY(-8px)}}
+
+
+
+/* Contact */
+
+
+body.datensis-landing-page .contact{overflow:hidden}
+
+
+body.datensis-landing-page .contact .wrap{display:grid;grid-template-columns:1fr 1.35fr;gap:64px;z-index:2}
+
+
+body.datensis-landing-page .contact .intro p{margin-top:18px}
+
+
+body.datensis-landing-page .contact .promise{list-style:none;margin-top:34px}
+
+
+body.datensis-landing-page .contact .promise li{padding:15px 0 15px 26px;border-top:1px solid rgba(255,255,255,.12);color:#fff;font-weight:500;position:relative}
+
+
+body.datensis-landing-page .contact .promise li::before{content:"";position:absolute;left:0;top:23px;width:10px;height:10px;border-radius:2px;background:var(--mint)}
+
+
+body.datensis-landing-page .contact .promise li span{display:block;color:var(--on-navy);font-size:.92rem;font-weight:400}
+
+
+body.datensis-landing-page form{background:var(--sheet);border-radius:18px;padding:38px;color:var(--text);display:grid;grid-template-columns:1fr 1fr;gap:18px 20px;box-shadow:0 40px 80px -40px rgba(0,0,0,.6)}
+
+
+body.datensis-landing-page .field{display:flex;flex-direction:column;gap:7px}
+
+
+body.datensis-landing-page .field.full{grid-column:1/-1}
+
+
+body.datensis-landing-page label{font:600 .86rem var(--display);color:var(--ink)}
+
+
+body.datensis-landing-page label .opt{font-weight:400;color:var(--muted)}
+
+
+body.datensis-landing-page input, body.datensis-landing-page select, body.datensis-landing-page textarea{font:inherit;font-size:.97rem;padding:13px 14px;border:1.5px solid var(--rule);border-radius:10px;background:#fff;color:var(--ink);transition:border-color .2s,box-shadow .2s}
+
+
+body.datensis-landing-page input:focus, body.datensis-landing-page select:focus, body.datensis-landing-page textarea:focus{border-color:var(--mint-deep);outline:none;box-shadow:0 0 0 4px rgba(111,214,182,.3)}
+
+
+body.datensis-landing-page textarea{min-height:110px;resize:vertical}
+
+
+body.datensis-landing-page .field.consent{flex-direction:row;gap:10px;align-items:flex-start;font:400 .86rem var(--body);color:var(--muted)}
+
+
+body.datensis-landing-page .consent input{margin-top:3px;width:18px;height:18px;flex:none;accent-color:var(--mint-deep)}
+
+
+body.datensis-landing-page form .btn{justify-self:start}
+
+
+body.datensis-landing-page .form-ok{display:none;grid-column:1/-1;background:var(--mint-soft);color:var(--mint-deep);padding:16px 18px;border-radius:10px;font-weight:600;animation:open .5s var(--ease)}
+
+
+
+/* Footer */
+
+
+body.datensis-landing-page footer{padding:56px 0;background:#0A1B27;color:#8FA3B1;font-size:.9rem}
+
+
+body.datensis-landing-page footer .wrap{display:flex;justify-content:space-between;gap:32px;flex-wrap:wrap;align-items:center}
+
+
+body.datensis-landing-page footer nav{display:flex;gap:24px;flex-wrap:wrap}
+
+
+body.datensis-landing-page footer a{text-decoration:none;transition:color .2s}
+
+
+body.datensis-landing-page footer a:hover{color:#fff}
+
+
+body.datensis-landing-page footer .tag{font:500 .72rem var(--display);letter-spacing:.2em;color:var(--mint);margin-top:8px}
+
+
+
+/* ===== Révélations ===== */
+
+
+body.datensis-landing-page .js [data-reveal]{opacity:0;transform:translateY(30px);transition:opacity .9s var(--ease),transform .9s var(--ease);transition-delay:calc(var(--i,0)*110ms)}
+
+
+body.datensis-landing-page .js [data-reveal="left"]{transform:translateX(-36px)}
+
+
+body.datensis-landing-page .js [data-reveal="right"]{transform:translateX(36px)}
+
+
+body.datensis-landing-page .js [data-reveal="zoom"]{transform:scale(.94) translateY(20px)}
+
+
+body.datensis-landing-page .js [data-reveal].is-in{opacity:1;transform:none}
+
+
+body.datensis-landing-page .js .hero h1 .line > span{transform:translateY(105%);transition:transform 1s var(--ease);transition-delay:calc(.15s + var(--i)*.14s)}
+
+
+body.datensis-landing-page .js .loaded .hero h1 .line > span{transform:none}
+
+
+body.datensis-landing-page .js .hero [data-hero]{opacity:0;transform:translateY(20px);transition:opacity .8s var(--ease),transform .8s var(--ease);transition-delay:var(--d)}
+
+
+body.datensis-landing-page .js .loaded .hero [data-hero]{opacity:1;transform:none}
+
+
+body.datensis-landing-page .js .feed{opacity:0;transform:translateY(40px) rotate(1.5deg);transition:opacity 1s var(--ease) .45s,transform 1.2s var(--ease) .45s}
+
+
+body.datensis-landing-page .js .loaded .feed{opacity:1;transform:none}
+
+
+body.datensis-landing-page .js .events li{opacity:.28;transition:opacity .4s}
+
+
+body.datensis-landing-page .js .events li.on{opacity:1}
+
+
+body.datensis-landing-page .js .feed-foot b{opacity:0;transition:opacity .5s}
+
+
+body.datensis-landing-page .js .feed-foot.go b{opacity:1}
+
+
+
+@media (prefers-reduced-motion:reduce){
+
+body.datensis-landing-page *, body.datensis-landing-page *::before, body.datensis-landing-page *::after{animation:none!important;transition:none!important}
+
+
+body.datensis-landing-page .js [data-reveal], body.datensis-landing-page .js .hero [data-hero], body.datensis-landing-page .js .feed, body.datensis-landing-page .js .hero h1 .line > span, body.datensis-landing-page .ring .n{opacity:1!important;transform:none!important}
+
+
+body.datensis-landing-page .js .events li, body.datensis-landing-page .js .feed-foot b{opacity:1!important}
+
+
+body.datensis-landing-page .ring .arc{stroke-dashoffset:0!important}
+
+
+body.datensis-landing-page .lever .bar{transform:scaleX(1)!important}
+
+}
+
+
+
+/* ===== Responsive ===== */
+
+
+@media (max-width:1060px){
+
+body.datensis-landing-page .levers{grid-template-columns:repeat(2,1fr)}
+
+}
+
+
+@media (max-width:980px){
+
+body.datensis-landing-page .hero .wrap, body.datensis-landing-page .stack .wrap, body.datensis-landing-page .cycle .wrap, body.datensis-landing-page .guided .wrap, body.datensis-landing-page .story .wrap, body.datensis-landing-page .faq .wrap, body.datensis-landing-page .contact .wrap, body.datensis-landing-page .offer-wrap{grid-template-columns:1fr;gap:48px}
+
+
+body.datensis-landing-page .duo{grid-template-columns:1fr;gap:0}
+
+
+body.datensis-landing-page .bridge{height:110px}
+
+
+body.datensis-landing-page .bridge svg{transform:rotate(90deg);min-height:0;height:120px}
+
+
+body.datensis-landing-page .road{grid-template-columns:1fr}
+
+
+body.datensis-landing-page .trust .grid{grid-template-columns:1fr 1fr}
+
+
+body.datensis-landing-page nav.menu a:not(.btn){display:none}
+
+}
+
+
+@media (max-width:720px){
+
+body.datensis-landing-page .wrap{padding:0 16px}
+
+
+body.datensis-landing-page{font-size:16px}
+
+
+body.datensis-landing-page .hero{padding:124px 0 72px}
+
+
+body.datensis-landing-page section.block{padding:76px 0}
+
+
+body.datensis-landing-page .strip .wrap, body.datensis-landing-page .gains, body.datensis-landing-page .levers, body.datensis-landing-page .trust .grid{grid-template-columns:1fr}
+
+
+body.datensis-landing-page .strip .item{border-left:0;border-top:1px solid var(--rule);padding:20px 0}
+
+
+body.datensis-landing-page .strip .item:first-child{border-top:0}
+
+
+body.datensis-landing-page .gain, body.datensis-landing-page .gain+.gain{padding:22px 0 0;border-left:0}
+
+
+body.datensis-landing-page .gain+.gain{border-top:1px solid var(--rule);margin-top:20px}
+
+
+body.datensis-landing-page form{grid-template-columns:1fr;padding:24px}
+
+
+body.datensis-landing-page .logo .word{font-size:1rem;letter-spacing:.18em}
+
+
+body.datensis-landing-page .hero h1 .line{display:inline}
+
+
+body.datensis-landing-page .hero h1 .line > span{display:inline}
+
+
+body.datensis-landing-page nav.menu .btn{padding:10px 14px;font-size:.82rem}
+
+
+body.datensis-landing-page .merge{height:470px}
+
+
+body.datensis-landing-page .tool{width:150px;font-size:.78rem}
+
+
+body.datensis-landing-page .uni{padding:28px 22px}
+
+
+body.datensis-landing-page .launch, body.datensis-landing-page .model{padding:28px 22px}
+
+}
