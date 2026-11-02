@@ -18720,3 +18720,147 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("email")?.focus();
     });
 });
+
+/* ================================================================
+   DATENSIS - INTERACTIONS PUBLIQUES (NOVEMBRE 2026)
+   Ajout non destructif : conservation des modules existants.
+   ================================================================ */
+(() => {
+    "use strict";
+
+    function initialiserPublic() {
+        const header = document.querySelector("#siteHeader, .site-header");
+        if (header) {
+            const actualiserHeader = () => {
+                header.classList.toggle("is-scrolled", window.scrollY > 20);
+            };
+            actualiserHeader();
+            window.addEventListener("scroll", actualiserHeader, { passive: true });
+        }
+
+        const menuButton = document.querySelector(
+            "#headerMenuToggle, [data-menu-toggle]"
+        );
+        const navigation = document.querySelector(
+            "#mainNavigation, [data-main-navigation]"
+        );
+        if (menuButton && navigation) {
+            const fermerMenu = () => {
+                navigation.classList.remove("is-open");
+                menuButton.classList.remove("is-active");
+                menuButton.setAttribute("aria-expanded", "false");
+                menuButton.setAttribute("aria-label", "Ouvrir le menu");
+            };
+            menuButton.setAttribute(
+                "aria-expanded",
+                String(navigation.classList.contains("is-open"))
+            );
+            menuButton.addEventListener("click", () => {
+                const ouvert = navigation.classList.toggle("is-open");
+                menuButton.classList.toggle("is-active", ouvert);
+                menuButton.setAttribute("aria-expanded", String(ouvert));
+                menuButton.setAttribute(
+                    "aria-label", ouvert ? "Fermer le menu" : "Ouvrir le menu"
+                );
+            });
+            navigation.querySelectorAll("a").forEach((link) => {
+                link.addEventListener("click", fermerMenu);
+            });
+            document.addEventListener("keydown", (event) => {
+                if (event.key === "Escape") fermerMenu();
+            });
+            document.addEventListener("click", (event) => {
+                if (!navigation.contains(event.target) &&
+                    !menuButton.contains(event.target)) fermerMenu();
+            });
+            window.addEventListener("resize", () => {
+                if (window.innerWidth > 980) fermerMenu();
+            });
+        }
+
+        const reveals = document.querySelectorAll("[data-reveal]");
+        const reduceMotion = window.matchMedia(
+            "(prefers-reduced-motion: reduce)"
+        ).matches;
+        if (reduceMotion || !("IntersectionObserver" in window)) {
+            reveals.forEach((element) => element.classList.add("is-visible"));
+        } else if (reveals.length) {
+            const observer = new IntersectionObserver((entries, instance) => {
+                entries.forEach((entry) => {
+                    if (!entry.isIntersecting) return;
+                    entry.target.classList.add("is-visible");
+                    instance.unobserve(entry.target);
+                });
+            }, { threshold: 0.08, rootMargin: "0px 0px 30px 0px" });
+            reveals.forEach((element) => observer.observe(element));
+        }
+
+        // La validation et l'envoi restent pris en charge par Flask.
+        const form = document.getElementById("contactForm");
+        if (form) {
+            const message = document.getElementById("message");
+            const counter = document.getElementById("messageCounter");
+            const submit = document.getElementById("contactSubmit");
+            const label = submit?.querySelector(".contact-submit-label");
+            let submitting = false;
+
+            if (message && counter) {
+                const updateCounter = () => {
+                    const max = Number(message.maxLength) > 0
+                        ? message.maxLength : 5000;
+                    counter.textContent = `${message.value.length} / ${max}`;
+                    counter.classList.toggle(
+                        "is-near-limit", message.value.length >= max * 0.9
+                    );
+                    counter.classList.toggle(
+                        "is-at-limit", message.value.length >= max
+                    );
+                };
+                message.addEventListener("input", updateCounter);
+                updateCounter();
+            }
+
+            form.addEventListener("submit", (event) => {
+                if (submitting) {
+                    event.preventDefault();
+                    return;
+                }
+                ["name", "email", "message"].forEach((id) => {
+                    const input = form.querySelector(`[id="${id}"]`);
+                    if (input) input.value = input.value.trim();
+                });
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    form.reportValidity();
+                    return;
+                }
+                submitting = true;
+                if (submit) {
+                    submit.disabled = true;
+                    submit.classList.add("is-loading");
+                    submit.setAttribute("aria-busy", "true");
+                }
+                if (label) label.textContent = "Envoi en cours...";
+                // Pas de preventDefault : POST Flask avec jeton CSRF.
+            });
+            window.addEventListener("pageshow", () => {
+                submitting = false;
+                if (submit) {
+                    submit.disabled = false;
+                    submit.classList.remove("is-loading");
+                    submit.removeAttribute("aria-busy");
+                }
+                if (label) label.textContent = "Envoyer ma demande";
+            });
+        }
+
+        const year = document.getElementById("footerYear");
+        if (year) year.textContent = String(new Date().getFullYear());
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initialiserPublic);
+    } else {
+        initialiserPublic();
+    }
+})();

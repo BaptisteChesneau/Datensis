@@ -1,77 +1,105 @@
-<footer class="site-footer">
+
+<footer class="site-footer" id="siteFooter">
 
     <div class="footer-container">
 
-        <!-- Présentation -->
         <div class="footer-brand">
-
-            <a href="{{ url_for('main.home') }}"
-               class="footer-logo">
+            <a
+                href="{{ url_for('main.home') }}"
+                class="footer-logo"
+                aria-label="DATENSIS - Accueil"
+            >
+                <span class="footer-logo-symbol" aria-hidden="true">D.</span>
                 DATENSIS
             </a>
 
             <p>
-                Un accompagnement clair et personnalisé
-                pour vos projets.
+                Des solutions adaptées à votre activité.
+                Un accompagnement clair, humain et personnalisé
+                pour donner vie à vos projets.
             </p>
 
+            <a
+                href="{{ url_for('main.contact') }}"
+                class="footer-contact-link"
+            >
+                Parlons de votre projet
+                <span aria-hidden="true">↗</span>
+            </a>
         </div>
 
-
-        <!-- Navigation -->
         <div class="footer-column">
+            <h2>Explorer</h2>
 
-            <h3>
-                Navigation
-            </h3>
+            <a href="{{ url_for('main.home') }}">
+                Accueil
+            </a>
 
             <a href="{{ url_for('main.services') }}">
-                Services
+                Nos services
             </a>
 
             <a href="{{ url_for('main.faq') }}">
-                Aide & FAQ
+                Aide &amp; FAQ
             </a>
 
             <a href="{{ url_for('main.contact') }}">
                 Contact
             </a>
-
         </div>
 
-
-        <!-- Informations légales -->
         <div class="footer-column">
+            <h2>Vos espaces</h2>
 
-            <h3>
-                Informations
-            </h3>
+            <a href="{{ url_for('main.tpe_accueil') }}">
+                Indépendants &amp; TPE
+            </a>
+
+            <a href="{{ url_for('main.pme_accueil') }}">
+                PME &amp; ETI
+            </a>
+
+            <a href="{{ url_for('main.cabinet_accueil') }}">
+                Cabinets comptables
+            </a>
+
+            <a href="{{ url_for('main.creation_compte') }}">
+                Créer un compte
+            </a>
+        </div>
+
+        <div class="footer-column">
+            <h2>Informations</h2>
 
             <a href="{{ url_for('main.mentions_legales') }}">
                 Mentions légales
             </a>
 
             <a href="{{ url_for('main.confidentialite') }}">
-                Politique de confidentialité
+                Confidentialité
             </a>
 
             <a href="{{ url_for('main.cookies') }}">
                 Politique des cookies
             </a>
-
         </div>
 
     </div>
 
-
-    <!-- Bas du footer -->
     <div class="footer-bottom">
-
         <p>
-            &copy; 2026 DATENSIS.
+            &copy; <span id="footerYear">2026</span> DATENSIS.
             Tous droits réservés.
         </p>
 
+        <span class="footer-bottom-signature">
+            Une autre façon d'avancer.
+        </span>
+
+        <a href="#contenu-principal" class="footer-back-top">
+            Retour en haut
+            <span aria-hidden="true">↑</span>
+        </a>
     </div>
 
 </footer>

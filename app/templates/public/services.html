@@ -1,11 +1,17 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="description"
+        content="Découvrez les services DATENSIS : étude et conseil, solutions, suivi et accompagnement pour indépendants, entreprises et cabinets."
+    >
+    <meta name="theme-color" content="#00778B">
 
-    <title>Services</title>
+    <title>Nos services</title>
 
     <link
         rel="stylesheet"
@@ -13,131 +19,330 @@
     >
 </head>
 
-<body>
+<body class="datensis-public services-public-page">
 
     {% include "header.html" %}
 
-    <main class="services-page">
+    <main id="contenu-principal" class="services-page">
 
         <section class="services-header">
+            <div class="services-header-content" data-reveal>
 
-            <div class="services-header-content">
-
-                <p class="eyebrow">
-                    Nos services
-                </p>
+                <span class="services-kicker">
+                    DATENSIS / NOS SERVICES
+                </span>
 
                 <h1>
-                    Des solutions adaptées à vos projets
+                    Des solutions pour
+                    <span>chaque ambition.</span>
                 </h1>
 
                 <p>
-                    DATENSIS vous accompagne de l'étude de votre besoin
-                    jusqu'au suivi de votre projet.
+                    De la première réflexion au suivi de votre projet,
+                    DATENSIS vous aide à identifier les bonnes solutions
+                    et à avancer avec un accompagnement adapté.
                 </p>
+
+                <a href="#services-offres" class="services-hero-action">
+                    Explorer nos services
+                    <span aria-hidden="true">↓</span>
+                </a>
 
             </div>
 
+            <div class="services-header-decoration" aria-hidden="true">
+                <span class="services-deco-circle services-deco-one"></span>
+                <span class="services-deco-circle services-deco-two"></span>
+                <span class="services-deco-letter">D.</span>
+            </div>
         </section>
 
+        <section
+            id="services-offres"
+            class="services-offers"
+            aria-labelledby="services-offers-title"
+        >
 
-        <section class="services-prototype-grid">
+            <div class="services-section-heading" data-reveal>
+                <span class="services-section-kicker">
+                    NOTRE ACCOMPAGNEMENT
+                </span>
 
-            <article class="services-prototype-card">
-
-                <div>
-
-                    <h2>
-                        Étude & conseil
-                    </h2>
-
-                    <p>
-                        Analysez votre besoin et définissez clairement
-                        votre projet.
-                    </p>
-
-                </div>
-
-                <a href="{{ url_for('main.tpe_etude_conseil') }}">
-                    En savoir plus
-                </a>
-
-            </article>
-
-
-            <article class="services-prototype-card">
-
-                <div>
-
-                    <h2>
-                        Solutions
-                    </h2>
-
-                    <p>
-                        Comparez les différentes possibilités adaptées
-                        à votre situation.
-                    </p>
-
-                </div>
-
-                <a href="{{ url_for('main.tpe_solutions') }}">
-                    Voir les solutions
-                </a>
-
-            </article>
-
-
-            <article class="services-prototype-card">
-
-                <div>
-
-                    <h2>
-                        Suivi & accompagnement
-                    </h2>
-
-                    <p>
-                        Bénéficiez d'un accompagnement pendant toutes
-                        les étapes de votre projet.
-                    </p>
-
-                </div>
-
-                <a href="{{ url_for('main.tpe_suivi') }}">
-                    Découvrir
-                </a>
-
-            </article>
-
-        </section>
-
-
-        <section class="services-bottom">
-
-            <div>
-
-                <p class="eyebrow">
-                    DATENSIS
-                </p>
-
-                <h2>
-                    Un accompagnement adapté à votre structure
+                <h2 id="services-offers-title">
+                    Trois leviers pour faire avancer vos projets.
                 </h2>
 
                 <p>
-                    Indépendant, TPE, PME, ETI ou cabinet partenaire,
-                    votre parcours est adapté à votre organisation
-                    et à vos besoins.
+                    Des services complémentaires pour analyser,
+                    décider et progresser.
                 </p>
+            </div>
 
+            <div class="services-prototype-grid">
+
+                <article
+                    class="services-prototype-card services-card-study"
+                    data-reveal
+                >
+                    <div class="services-card-top">
+                        <span class="services-card-number">01</span>
+                        <span class="services-card-symbol" aria-hidden="true">◎</span>
+                    </div>
+
+                    <div class="services-card-content">
+                        <span class="services-card-label">
+                            COMPRENDRE
+                        </span>
+
+                        <h3>Étude &amp; conseil</h3>
+
+                        <p>
+                            Analysez votre situation, clarifiez
+                            vos objectifs et identifiez les enjeux
+                            de votre projet.
+                        </p>
+
+                        <ul class="services-card-points">
+                            <li>Analyse de vos besoins</li>
+                            <li>Orientation personnalisée</li>
+                            <li>Identification des priorités</li>
+                        </ul>
+                    </div>
+
+                    <a
+                        href="{{ url_for('main.tpe_etude_conseil') }}"
+                        class="services-card-link"
+                    >
+                        Découvrir le service
+                        <span aria-hidden="true">↗</span>
+                    </a>
+                </article>
+
+                <article
+                    class="services-prototype-card services-card-solutions"
+                    data-reveal
+                >
+                    <div class="services-card-top">
+                        <span class="services-card-number">02</span>
+                        <span class="services-card-symbol" aria-hidden="true">◇</span>
+                    </div>
+
+                    <div class="services-card-content">
+                        <span class="services-card-label">
+                            DÉCIDER
+                        </span>
+
+                        <h3>Solutions</h3>
+
+                        <p>
+                            Explorez les possibilités adaptées
+                            à votre organisation et choisissez
+                            une approche cohérente avec vos objectifs.
+                        </p>
+
+                        <ul class="services-card-points">
+                            <li>Recherche de solutions</li>
+                            <li>Comparaison des possibilités</li>
+                            <li>Aide à la décision</li>
+                        </ul>
+                    </div>
+
+                    <a
+                        href="{{ url_for('main.tpe_solutions') }}"
+                        class="services-card-link"
+                    >
+                        Voir les solutions
+                        <span aria-hidden="true">↗</span>
+                    </a>
+                </article>
+
+                <article
+                    class="services-prototype-card services-card-support"
+                    data-reveal
+                >
+                    <div class="services-card-top">
+                        <span class="services-card-number">03</span>
+                        <span class="services-card-symbol" aria-hidden="true">↗</span>
+                    </div>
+
+                    <div class="services-card-content">
+                        <span class="services-card-label">
+                            AVANCER
+                        </span>
+
+                        <h3>Suivi &amp; accompagnement</h3>
+
+                        <p>
+                            Gardez une vision claire de votre projet
+                            et bénéficiez d'un accompagnement
+                            à chaque étape importante.
+                        </p>
+
+                        <ul class="services-card-points">
+                            <li>Suivi des étapes</li>
+                            <li>Échanges et accompagnement</li>
+                            <li>Continuité du parcours</li>
+                        </ul>
+                    </div>
+
+                    <a
+                        href="{{ url_for('main.tpe_suivi') }}"
+                        class="services-card-link"
+                    >
+                        Découvrir le suivi
+                        <span aria-hidden="true">↗</span>
+                    </a>
+                </article>
+
+            </div>
+        </section>
+
+        <section
+            class="services-audiences"
+            aria-labelledby="services-audiences-title"
+        >
+            <div class="services-section-heading" data-reveal>
+                <span class="services-section-kicker">
+                    DES PARCOURS ADAPTÉS
+                </span>
+
+                <h2 id="services-audiences-title">
+                    À chaque structure, son environnement.
+                </h2>
+            </div>
+
+            <div class="services-audiences-grid">
+
+                <a
+                    href="{{ url_for('main.tpe_accueil') }}"
+                    class="services-audience-card"
+                    data-reveal
+                >
+                    <span class="services-audience-index">01</span>
+
+                    <h3>Indépendants &amp; TPE</h3>
+
+                    <p>
+                        Des démarches accessibles pour
+                        accompagner le développement
+                        de votre activité.
+                    </p>
+
+                    <span class="services-audience-link">
+                        Accéder à l'espace
+                        <span aria-hidden="true">→</span>
+                    </span>
+                </a>
+
+                <a
+                    href="{{ url_for('main.pme_accueil') }}"
+                    class="services-audience-card"
+                    data-reveal
+                >
+                    <span class="services-audience-index">02</span>
+
+                    <h3>PME &amp; ETI</h3>
+
+                    <p>
+                        Un parcours adapté aux enjeux
+                        de structuration, de pilotage
+                        et de développement.
+                    </p>
+
+                    <span class="services-audience-link">
+                        Accéder à l'espace
+                        <span aria-hidden="true">→</span>
+                    </span>
+                </a>
+
+                <a
+                    href="{{ url_for('main.cabinet_accueil') }}"
+                    class="services-audience-card"
+                    data-reveal
+                >
+                    <span class="services-audience-index">03</span>
+
+                    <h3>Cabinets comptables</h3>
+
+                    <p>
+                        Un espace dédié aux échanges,
+                        à la collaboration et
+                        à l'accompagnement des clients.
+                    </p>
+
+                    <span class="services-audience-link">
+                        Accéder à l'espace
+                        <span aria-hidden="true">→</span>
+                    </span>
+                </a>
+
+            </div>
+        </section>
+
+        <section class="services-process">
+            <div class="services-process-intro" data-reveal>
+                <span class="services-section-kicker">
+                    NOTRE APPROCHE
+                </span>
+
+                <h2>
+                    Une méthode simple,
+                    du besoin à l'action.
+                </h2>
+            </div>
+
+            <div class="services-process-steps">
+                <article data-reveal>
+                    <span>01</span>
+                    <h3>Vous présentez votre besoin</h3>
+                    <p>
+                        Décrivez votre situation et vos attentes.
+                    </p>
+                </article>
+
+                <article data-reveal>
+                    <span>02</span>
+                    <h3>Nous identifions les pistes</h3>
+                    <p>
+                        Explorez les solutions pertinentes
+                        pour votre projet.
+                    </p>
+                </article>
+
+                <article data-reveal>
+                    <span>03</span>
+                    <h3>Vous avancez</h3>
+                    <p>
+                        Poursuivez votre parcours avec
+                        un accompagnement adapté.
+                    </p>
+                </article>
+            </div>
+        </section>
+
+        <section class="services-bottom" data-reveal>
+            <div class="services-bottom-content">
+                <span class="services-section-kicker">
+                    PASSONS À L'ACTION
+                </span>
+
+                <h2>
+                    Votre prochain projet commence ici.
+                </h2>
+
+                <p>
+                    Créez votre espace ou contactez notre équipe
+                    pour présenter votre besoin.
+                </p>
             </div>
 
             <div class="services-bottom-actions">
-
                 <a
                     href="{{ url_for('main.creation_compte') }}"
                     class="btn-primary"
                 >
-                    Créer un compte
+                    Créer mon compte
+                    <span aria-hidden="true">→</span>
                 </a>
 
                 <a
@@ -146,9 +351,7 @@
                 >
                     Contacter DATENSIS
                 </a>
-
             </div>
-
         </section>
 
     </main>
@@ -157,8 +360,8 @@
 
     <script
         src="{{ url_for('static', filename='js/main.js') }}"
+        defer
     ></script>
 
 </body>
-
 </html>

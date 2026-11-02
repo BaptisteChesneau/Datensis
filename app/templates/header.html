@@ -1,37 +1,85 @@
-
-<header class="site-header">
-
+<header class="site-header" id="siteHeader">
     <div class="header-container">
 
-        <!-- Logo DATENSIS -->
         <a
             href="{{ url_for('main.home') }}"
             class="logo"
-            aria-label="DATENSIS - Retour à l'accueil"
+            aria-label="Accueil"
         >
-            DATENSIS
+            <span class="header-logo-symbol" aria-hidden="true">D.</span>
+            <span class="header-logo-name">DATENSIS</span>
         </a>
 
-        <!-- Navigation publique -->
+        <button
+            type="button"
+            class="header-menu-toggle"
+            id="headerMenuToggle"
+            aria-label="Ouvrir le menu"
+            aria-expanded="false"
+            aria-controls="mainNavigation"
+        >
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
         <nav
             class="main-nav"
+            id="mainNavigation"
             aria-label="Navigation principale"
         >
+            <a
+                href="{{ url_for('main.home') }}"
+                class="nav-link {% if request.endpoint == 'main.home' %}is-active{% endif %}"
+                {% if request.endpoint == 'main.home' %}aria-current="page"{% endif %}
+            >
+                Accueil
+            </a>
 
-            <a href="{{ url_for('main.services') }}">
+            <a
+                href="{{ url_for('main.services') }}"
+                class="nav-link {% if request.endpoint == 'main.services' %}is-active{% endif %}"
+                {% if request.endpoint == 'main.services' %}aria-current="page"{% endif %}
+            >
                 Services
             </a>
 
-            <a href="{{ url_for('main.faq') }}">
-                Aide & FAQ
+            <a
+                href="{{ url_for('main.faq') }}"
+                class="nav-link {% if request.endpoint == 'main.faq' %}is-active{% endif %}"
+                {% if request.endpoint == 'main.faq' %}aria-current="page"{% endif %}
+            >
+                Aide &amp; FAQ
             </a>
 
-            <a href="{{ url_for('main.contact') }}">
+            <a
+                href="{{ url_for('main.contact') }}"
+                class="nav-link {% if request.endpoint == 'main.contact' %}is-active{% endif %}"
+                {% if request.endpoint == 'main.contact' %}aria-current="page"{% endif %}
+            >
                 Contact
             </a>
 
+            <div class="header-mobile-actions">
+                <a href="{{ url_for('main.connexion') }}" class="header-login-link">
+                    Connexion
+                </a>
+                <a href="{{ url_for('main.creation_compte') }}" class="header-register-link">
+                    Créer un compte
+                </a>
+            </div>
         </nav>
 
-    </div>
+        <div class="header-actions">
+            <a href="{{ url_for('main.connexion') }}" class="header-login-link">
+                Connexion
+            </a>
 
+            <a href="{{ url_for('main.creation_compte') }}" class="header-register-link">
+                Commencer
+                <span aria-hidden="true">↗</span>
+            </a>
+        </div>
+
+    </div>
 </header>

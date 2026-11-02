@@ -4,349 +4,512 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description"
-          content="Contactez DATENSIS pour présenter votre besoin et obtenir un accompagnement adapté.">
 
-    <title>Contact</title>
+    <meta
+        name="description"
+        content="Contactez DATENSIS pour une démonstration, un conseil, un accompagnement ou une question sur nos solutions."
+    >
+    <meta name="theme-color" content="#00778B">
 
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/style.css') }}">
+    <title>Contact &amp; démonstration | DATENSIS</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
 </head>
 
-<body>
+<body class="datensis-public contact-public-page">
 
-{% include "header.html" %}
+    {% include "header.html" %}
 
-<main class="contact-page">
+    <main id="contenu-principal" class="contact-page">
 
-    <section class="contact-hero">
-        <div class="contact-hero-content">
-            <span class="contact-kicker">
-                DATENSIS / CONTACT
+        <!-- HERO -->
+
+        <section class="contact-hero">
+            <div class="contact-hero-content" data-reveal>
+
+                <span class="contact-kicker">
+                    DATENSIS / CONTACT
+                </span>
+
+                <h1>
+                    Parlons de votre
+                    <span>prochain projet.</span>
+                </h1>
+
+                <p>
+                    Vous souhaitez découvrir DATENSIS, poser une question
+                    ou présenter un besoin ? Transmettez-nous votre demande
+                    à l'aide du formulaire ci-dessous.
+                </p>
+
+                <div class="contact-hero-tags">
+                    <span>Orientation personnalisée</span>
+                    <span>Échange confidentiel</span>
+                    <span>Confirmation par e-mail</span>
+                </div>
+
+            </div>
+
+            <div class="contact-hero-decoration" aria-hidden="true">
+                <div class="contact-orbit contact-orbit-one"></div>
+                <div class="contact-orbit contact-orbit-two"></div>
+                <div class="contact-center-mark">D.</div>
+            </div>
+        </section>
+
+        <!-- INTRODUCTION -->
+
+        <section class="contact-introduction" data-reveal>
+            <span class="contact-section-label">
+                PRENONS CONTACT
             </span>
 
-            <h1>
-                Parlons de votre
-                <span>prochain projet.</span>
-            </h1>
+            <h2>
+                Un premier échange pour mieux vous orienter.
+            </h2>
 
             <p>
-                Une question, un besoin ou un projet ?
-                Décrivez votre situation et notre équipe
-                vous orientera vers la solution adaptée.
+                Chaque structure possède ses propres besoins.
+                Précisez votre situation pour nous aider à comprendre
+                votre demande.
             </p>
+        </section>
 
-            <div class="contact-hero-tags">
-                <span>Accompagnement personnalisé</span>
-                <span>Échange confidentiel</span>
-                <span>Confirmation par e-mail</span>
-            </div>
-        </div>
+        <!-- FORMULAIRE ET INFORMATIONS -->
 
-        <div class="contact-hero-decoration" aria-hidden="true">
-            <div class="contact-orbit contact-orbit-one"></div>
-            <div class="contact-orbit contact-orbit-two"></div>
-            <div class="contact-center-mark">D.</div>
-        </div>
-    </section>
+        <section class="contact-layout" aria-label="Formulaire de contact">
 
-    <section class="contact-layout">
+            <article class="contact-card" data-reveal>
 
-        <article class="contact-card">
+                <div class="contact-card-heading">
+                    <span class="contact-section-label">
+                        VOTRE DEMANDE
+                    </span>
 
-            <div class="contact-card-heading">
-                <span class="contact-section-label">
-                    FORMULAIRE DE CONTACT
-                </span>
+                    <h2>
+                        Envoyez-nous un message
+                    </h2>
 
-                <h2>Envoyez-nous votre demande</h2>
+                    <p>
+                        Complétez les champs ci-dessous.
+                        Les champs marqués d'un astérisque sont obligatoires.
+                    </p>
+                </div>
 
-                <p>
-                    Renseignez les informations ci-dessous.
-                    Vous recevrez un récapitulatif de votre
-                    demande par e-mail.
-                </p>
-            </div>
+                <!-- MESSAGES FLASK -->
 
-            {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                    <div class="contact-alerts" role="status">
-                        {% for category, message in messages %}
-                            <div class="contact-alert contact-alert-{{ category|e }}">
-                                {{ message }}
-                            </div>
-                        {% endfor %}
-                    </div>
-                {% endif %}
-            {% endwith %}
-
-            <form
-                method="POST"
-                action="{{ url_for('main.contact') }}"
-                class="contact-form"
-                id="contactForm"
-            >
-
-                {% if csrf_token is defined %}
-                    <input
-                        type="hidden"
-                        name="csrf_token"
-                        value="{{ csrf_token() }}"
-                    >
-                {% endif %}
-
-                <div class="contact-form-grid">
-
-                    <div class="form-group">
-                        <label for="name">
-                            Nom et prénom <span>*</span>
-                        </label>
-
-                        <input
-                            type="text"
-                            id="name"
-                            name="name"
-                            autocomplete="name"
-                            maxlength="150"
-                            placeholder="Jean Dupont"
-                            required
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        <div
+                            class="contact-alerts"
+                            role="status"
+                            aria-live="polite"
                         >
-                    </div>
+                            {% for category, message in messages %}
+                                <div
+                                    class="contact-alert {% if category == 'success' %}contact-alert-success{% else %}contact-alert-error{% endif %}"
+                                >
+                                    <span class="contact-alert-icon" aria-hidden="true">
+                                        {% if category == 'success' %}✓{% else %}!{% endif %}
+                                    </span>
 
-                    <div class="form-group">
-                        <label for="profile">
-                            Type de structure <span>*</span>
-                        </label>
-
-                        <select id="profile" name="profile" required>
-                            <option value="" selected disabled>
-                                Sélectionnez votre structure
-                            </option>
-                            <option value="entreprise">
-                                Entreprise
-                            </option>
-                            <option value="cabinet">
-                                Cabinet d'expertise comptable
-                            </option>
-                            <option value="particulier">
-                                Particulier
-                            </option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="email">
-                            Adresse e-mail <span>*</span>
-                        </label>
-
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            autocomplete="email"
-                            maxlength="254"
-                            placeholder="vous@exemple.fr"
-                            required
-                        >
-                    </div>
-
-                    <div class="form-group">
-                        <label for="phone">
-                            Téléphone
-                        </label>
-
-                        <input
-                            type="tel"
-                            id="phone"
-                            name="phone"
-                            autocomplete="tel"
-                            maxlength="30"
-                            placeholder="06 00 00 00 00"
-                        >
-                    </div>
-
-                    <div class="form-group form-group-full">
-                        <label for="subject">
-                            Objet de la demande <span>*</span>
-                        </label>
-
-                        <select id="subject" name="subject" required>
-                            <option value="" selected disabled>
-                                Sélectionnez un sujet
-                            </option>
-                            <option value="etude">
-                                Étude & conseil
-                            </option>
-                            <option value="solution">
-                                Recherche de solution
-                            </option>
-                            <option value="suivi">
-                                Suivi & accompagnement
-                            </option>
-                            <option value="rendez-vous">
-                                Prise de rendez-vous
-                            </option>
-                            <option value="support">
-                                Assistance
-                            </option>
-                            <option value="autre">
-                                Autre demande
-                            </option>
-                        </select>
-                    </div>
-
-                    <div class="form-group form-group-full">
-                        <label for="message">
-                            Votre message <span>*</span>
-                        </label>
-
-                        <textarea
-                            id="message"
-                            name="message"
-                            rows="7"
-                            maxlength="5000"
-                            placeholder="Décrivez votre besoin, votre contexte ou la question que vous souhaitez nous poser..."
-                            required
-                        ></textarea>
-
-                        <div class="contact-message-meta">
-                            <span>Décrivez votre besoin avec précision.</span>
-                            <span id="messageCounter">0 / 5000</span>
+                                    <span>{{ message }}</span>
+                                </div>
+                            {% endfor %}
                         </div>
-                    </div>
-                </div>
+                    {% endif %}
+                {% endwith %}
 
-                <div class="contact-consent">
-                    <label for="contactConsent">
+                <!-- FORMULAIRE CONNECTÉ À FLASK -->
+
+                <form
+                    id="contactForm"
+                    class="contact-form"
+                    action="{{ url_for('main.contact') }}"
+                    method="POST"
+                >
+
+                    {% if csrf_token is defined %}
                         <input
-                            type="checkbox"
-                            id="contactConsent"
-                            name="consent"
-                            value="yes"
-                            required
+                            type="hidden"
+                            name="csrf_token"
+                            value="{{ csrf_token() }}"
                         >
+                    {% endif %}
 
-                        <span>
-                            J'accepte que mes informations soient
-                            utilisées pour traiter ma demande.
-                            Consultez notre
-                            <a href="{{ url_for('main.confidentialite') }}">
-                                politique de confidentialité
-                            </a>.
-                        </span>
-                    </label>
-                </div>
+                    <div class="contact-form-grid">
 
-                <div class="contact-submit">
-                    <div class="contact-submit-info">
-                        <strong>Un récapitulatif vous sera envoyé.</strong>
-                        <span>
-                            Avec la date et l'heure de votre demande.
-                        </span>
+                        <!-- NOM -->
+
+                        <div class="form-group">
+                            <label for="name">
+                                Nom et prénom
+                                <span aria-hidden="true">*</span>
+                            </label>
+
+                            <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                autocomplete="name"
+                                maxlength="150"
+                                placeholder="Jean Dupont"
+                                required
+                            >
+                        </div>
+
+                        <!-- PROFIL -->
+
+                        <div class="form-group">
+                            <label for="profile">
+                                Votre structure
+                                <span aria-hidden="true">*</span>
+                            </label>
+
+                            <select
+                                id="profile"
+                                name="profile"
+                                required
+                            >
+                                <option value="" selected disabled>
+                                    Sélectionnez votre structure
+                                </option>
+
+                                <option value="entreprise">
+                                    Indépendant, TPE, PME ou ETI
+                                </option>
+
+                                <option value="cabinet">
+                                    Cabinet d'expertise comptable
+                                </option>
+
+                                <option value="particulier">
+                                    Particulier
+                                </option>
+                            </select>
+                        </div>
+
+                        <!-- EMAIL -->
+
+                        <div class="form-group">
+                            <label for="email">
+                                Adresse e-mail
+                                <span aria-hidden="true">*</span>
+                            </label>
+
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                autocomplete="email"
+                                maxlength="254"
+                                placeholder="vous@entreprise.fr"
+                                required
+                            >
+                        </div>
+
+                        <!-- TÉLÉPHONE -->
+
+                        <div class="form-group">
+                            <label for="phone">
+                                Numéro de téléphone
+                                <span class="contact-optional">
+                                    Facultatif
+                                </span>
+                            </label>
+
+                            <input
+                                type="tel"
+                                id="phone"
+                                name="phone"
+                                autocomplete="tel"
+                                maxlength="30"
+                                placeholder="06 00 00 00 00"
+                            >
+                        </div>
+
+                        <!-- OBJET -->
+
+                        <div class="form-group form-group-full">
+                            <label for="subject">
+                                Objet de votre demande
+                                <span aria-hidden="true">*</span>
+                            </label>
+
+                            <select
+                                id="subject"
+                                name="subject"
+                                required
+                            >
+                                <option value="" selected disabled>
+                                    Quel est le sujet de votre demande ?
+                                </option>
+
+                                <option value="etude">
+                                    Étude et conseil
+                                </option>
+
+                                <option value="solution">
+                                    Découverte des solutions DATENSIS
+                                </option>
+
+                                <option value="suivi">
+                                    Suivi et accompagnement
+                                </option>
+
+                                <option value="rendez-vous">
+                                    Demande de démonstration ou de rendez-vous
+                                </option>
+
+                                <option value="support">
+                                    Assistance
+                                </option>
+
+                                <option value="autre">
+                                    Autre demande
+                                </option>
+                            </select>
+                        </div>
+
+                        <!-- MESSAGE -->
+
+                        <div class="form-group form-group-full">
+                            <label for="message">
+                                Votre message
+                                <span aria-hidden="true">*</span>
+                            </label>
+
+                            <textarea
+                                id="message"
+                                name="message"
+                                rows="7"
+                                minlength="1"
+                                maxlength="5000"
+                                placeholder="Présentez votre structure, votre besoin ou les questions que vous souhaitez nous poser..."
+                                required
+                            ></textarea>
+
+                            <div class="contact-message-meta">
+                                <span>
+                                    Décrivez votre besoin aussi précisément
+                                    que possible.
+                                </span>
+
+                                <span
+                                    id="messageCounter"
+                                    aria-live="off"
+                                >
+                                    0 / 5000
+                                </span>
+                            </div>
+                        </div>
+
                     </div>
 
-                    <button
-                        type="submit"
-                        class="contact-submit-button"
-                        id="contactSubmit"
-                    >
-                        Envoyer ma demande
+                    <!-- CONSENTEMENT -->
+
+                    <div class="contact-consent">
+                        <label for="contactConsent">
+
+                            <input
+                                type="checkbox"
+                                id="contactConsent"
+                                name="consent"
+                                value="yes"
+                                required
+                            >
+
+                            <span>
+                                J'accepte que DATENSIS utilise les informations
+                                transmises pour traiter ma demande et m'adresser
+                                une confirmation par e-mail.
+
+                                Consultez notre
+                                <a href="{{ url_for('main.confidentialite') }}">
+                                    politique de confidentialité
+                                </a>.
+                            </span>
+
+                        </label>
+                    </div>
+
+                    <!-- ENVOI -->
+
+                    <div class="contact-submit">
+
+                        <div class="contact-submit-info">
+                            <strong>
+                                Une confirmation vous sera envoyée.
+                            </strong>
+
+                            <span>
+                                Elle récapitulera les informations
+                                de votre demande.
+                            </span>
+                        </div>
+
+                        <button
+                            type="submit"
+                            id="contactSubmit"
+                            class="contact-submit-button"
+                        >
+                            <span class="contact-submit-label">
+                                Envoyer ma demande
+                            </span>
+
+                            <span
+                                class="contact-submit-arrow"
+                                aria-hidden="true"
+                            >
+                                →
+                            </span>
+                        </button>
+
+                    </div>
+
+                    <p class="contact-form-disclaimer">
+                        L'envoi d'une demande de rendez-vous ne constitue
+                        pas une réservation confirmée.
+                    </p>
+
+                </form>
+
+            </article>
+
+            <!-- INFORMATIONS COMPLÉMENTAIRES -->
+
+            <aside class="contact-side" data-reveal>
+
+                <div class="contact-side-intro">
+                    <span class="contact-section-label">
+                        COMMENT ÇA MARCHE ?
+                    </span>
+
+                    <h2>
+                        Un parcours simple et transparent.
+                    </h2>
+
+                    <p>
+                        Trois étapes pour transmettre votre besoin
+                        à DATENSIS.
+                    </p>
+                </div>
+
+                <article class="contact-info-card">
+                    <span class="contact-info-number">01</span>
+
+                    <div>
+                        <h3>Présentez votre projet</h3>
+
+                        <p>
+                            Décrivez votre situation, vos attentes
+                            et les questions que vous souhaitez poser.
+                        </p>
+                    </div>
+                </article>
+
+                <article class="contact-info-card">
+                    <span class="contact-info-number">02</span>
+
+                    <div>
+                        <h3>Recevez un récapitulatif</h3>
+
+                        <p>
+                            Notre service d'envoi vous transmet
+                            une confirmation par e-mail lorsque
+                            votre demande est acceptée.
+                        </p>
+                    </div>
+                </article>
+
+                <article class="contact-info-card">
+                    <span class="contact-info-number">03</span>
+
+                    <div>
+                        <h3>Poursuivez votre démarche</h3>
+
+                        <p>
+                            Selon votre besoin, découvrez les services
+                            DATENSIS ou poursuivez vos échanges
+                            avec notre équipe.
+                        </p>
+                    </div>
+                </article>
+
+                <div class="contact-side-note">
+                    <span class="contact-side-note-icon" aria-hidden="true">
+                        ↗
+                    </span>
+
+                    <strong>
+                        Vous avez déjà un compte ?
+                    </strong>
+
+                    <p>
+                        Connectez-vous à votre espace
+                        pour retrouver les fonctionnalités
+                        disponibles pour votre profil.
+                    </p>
+
+                    <a href="{{ url_for('main.connexion') }}">
+                        Accéder à mon compte
                         <span aria-hidden="true">→</span>
-                    </button>
+                    </a>
                 </div>
-            </form>
-        </article>
 
-        <aside class="contact-side">
+                <div class="contact-side-security">
+                    <span aria-hidden="true">◈</span>
 
-            <div class="contact-side-intro">
+                    <p>
+                        Vos informations sont utilisées
+                        pour le traitement de votre demande,
+                        conformément à notre politique
+                        de confidentialité.
+                    </p>
+                </div>
+
+            </aside>
+
+        </section>
+
+        <!-- BAS DE PAGE -->
+
+        <section class="contact-bottom" data-reveal>
+            <div>
                 <span class="contact-section-label">
-                    COMMENT ÇA MARCHE ?
+                    DÉCOUVRIR DATENSIS
                 </span>
-                <h2>Un parcours simple et transparent.</h2>
+
+                <h2>
+                    Vous préférez explorer nos services ?
+                </h2>
+
                 <p>
-                    Trois étapes pour nous transmettre
-                    votre besoin.
+                    Découvrez nos solutions avant de nous
+                    transmettre votre demande.
                 </p>
             </div>
 
-            <article class="contact-info-card">
-                <span class="contact-info-number">01</span>
-                <div>
-                    <h3>Présentez votre besoin</h3>
-                    <p>
-                        Décrivez votre situation, vos attentes
-                        et vos objectifs.
-                    </p>
-                </div>
-            </article>
+            <a
+                href="{{ url_for('main.services') }}"
+                class="contact-bottom-button"
+            >
+                Découvrir les services
+                <span aria-hidden="true">→</span>
+            </a>
+        </section>
 
-            <article class="contact-info-card">
-                <span class="contact-info-number">02</span>
-                <div>
-                    <h3>Recevez votre confirmation</h3>
-                    <p>
-                        Un e-mail récapitule votre demande
-                        avec sa date et son heure.
-                    </p>
-                </div>
-            </article>
+    </main>
 
-            <article class="contact-info-card">
-                <span class="contact-info-number">03</span>
-                <div>
-                    <h3>Nous étudions votre demande</h3>
-                    <p>
-                        Notre équipe identifie le parcours
-                        le plus adapté à votre besoin.
-                    </p>
-                </div>
-            </article>
+    {% include "footer.html" %}
 
-            <div class="contact-side-note">
-                <strong>Déjà utilisateur DATENSIS ?</strong>
-                <p>
-                    Utilisez la messagerie de votre espace
-                    pour le suivi de vos demandes existantes.
-                </p>
-            </div>
-        </aside>
-
-    </section>
-</main>
-
-{% include "footer.html" %}
-
-<script src="{{ url_for('static', filename='js/main.js') }}"></script>
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    const message = document.getElementById("message");
-    const counter = document.getElementById("messageCounter");
-    const form = document.getElementById("contactForm");
-    const submit = document.getElementById("contactSubmit");
-
-    if (message && counter) {
-        const updateCounter = () => {
-            counter.textContent = `${message.value.length} / 5000`;
-        };
-
-        message.addEventListener("input", updateCounter);
-        updateCounter();
-    }
-
-    if (form && submit) {
-        form.addEventListener("submit", function () {
-            if (!form.checkValidity()) {
-                return;
-            }
-
-            submit.disabled = true;
-            submit.textContent = "Envoi en cours...";
-        });
-    }
-});
-</script>
+    <script
+        src="{{ url_for('static', filename='js/main.js') }}"
+        defer
+    ></script>
 
 </body>
 </html>
