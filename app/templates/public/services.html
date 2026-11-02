@@ -26,6 +26,8 @@
     <main id="contenu-principal" class="services-page">
 
         <section class="services-header">
+            <div class="services-ambient services-ambient-a" aria-hidden="true"></div>
+            <div class="services-ambient services-ambient-b" aria-hidden="true"></div>
             <div class="services-header-content" data-reveal>
 
                 <span class="services-kicker">
@@ -43,6 +45,7 @@
                     et à avancer avec un accompagnement adapté.
                 </p>
 
+                <div class="services-hero-points" aria-label="Nos engagements"><span><b>01</b> Comprendre</span><span><b>02</b> Décider</span><span><b>03</b> Avancer</span></div>
                 <a href="#services-offres" class="services-hero-action">
                     Explorer nos services
                     <span aria-hidden="true">↓</span>
@@ -54,6 +57,9 @@
                 <span class="services-deco-circle services-deco-one"></span>
                 <span class="services-deco-circle services-deco-two"></span>
                 <span class="services-deco-letter">D.</span>
+                <span class="services-orbit-label services-orbit-one">CONSEIL</span>
+                <span class="services-orbit-label services-orbit-two">SOLUTIONS</span>
+                <span class="services-orbit-label services-orbit-three">SUIVI</span>
             </div>
         </section>
 
@@ -78,15 +84,21 @@
                 </p>
             </div>
 
+            <div class="services-filter" role="group" aria-label="Filtrer les services">
+                <button type="button" class="services-filter-btn is-active" data-service-filter="all" aria-pressed="true">Tous les services</button>
+                <button type="button" class="services-filter-btn" data-service-filter="study" aria-pressed="false">Étude &amp; conseil</button>
+                <button type="button" class="services-filter-btn" data-service-filter="solutions" aria-pressed="false">Solutions</button>
+                <button type="button" class="services-filter-btn" data-service-filter="support" aria-pressed="false">Suivi</button>
+            </div>
             <div class="services-prototype-grid">
 
                 <article
-                    class="services-prototype-card services-card-study"
+                    class="services-prototype-card services-card-study" data-service-type="study"
                     data-reveal
                 >
                     <div class="services-card-top">
                         <span class="services-card-number">01</span>
-                        <span class="services-card-symbol" aria-hidden="true">◎</span>
+                        <span class="services-card-symbol" aria-hidden="true">✳</span>
                     </div>
 
                     <div class="services-card-content">
@@ -119,12 +131,12 @@
                 </article>
 
                 <article
-                    class="services-prototype-card services-card-solutions"
+                    class="services-prototype-card services-card-solutions" data-service-type="solutions"
                     data-reveal
                 >
                     <div class="services-card-top">
                         <span class="services-card-number">02</span>
-                        <span class="services-card-symbol" aria-hidden="true">◇</span>
+                        <span class="services-card-symbol" aria-hidden="true">⬡</span>
                     </div>
 
                     <div class="services-card-content">
@@ -157,7 +169,7 @@
                 </article>
 
                 <article
-                    class="services-prototype-card services-card-support"
+                    class="services-prototype-card services-card-support" data-service-type="support"
                     data-reveal
                 >
                     <div class="services-card-top">
@@ -321,6 +333,7 @@
         </section>
 
         <section class="services-bottom" data-reveal>
+            <span class="services-bottom-glow" aria-hidden="true"></span>
             <div class="services-bottom-content">
                 <span class="services-section-kicker">
                     PASSONS À L'ACTION
@@ -338,10 +351,10 @@
 
             <div class="services-bottom-actions">
                 <a
-                    href="{{ url_for('main.creation_compte') }}"
+                    href="{{ url_for('main.accueil') }}"
                     class="btn-primary"
                 >
-                    Créer mon compte
+                    Choisir mon espace
                     <span aria-hidden="true">→</span>
                 </a>
 
