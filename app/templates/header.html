@@ -32,6 +32,7 @@
             id="mainNavigation"
             aria-label="Navigation principale"
         >
+            <!-- Accueil -->
             <a
                 href="{{ url_for('main.home') }}"
                 class="nav-link {% if request.endpoint == 'main.home' %}is-active{% endif %}"
@@ -40,6 +41,7 @@
                 Accueil
             </a>
 
+            <!-- Services -->
             <a
                 href="{{ url_for('main.services') }}"
                 class="nav-link {% if request.endpoint == 'main.services' %}is-active{% endif %}"
@@ -48,6 +50,7 @@
                 Services
             </a>
 
+            <!-- Aide et FAQ -->
             <a
                 href="{{ url_for('main.faq') }}"
                 class="nav-link {% if request.endpoint == 'main.faq' %}is-active{% endif %}"
@@ -56,6 +59,7 @@
                 Aide &amp; FAQ
             </a>
 
+            <!-- Contact -->
             <a
                 href="{{ url_for('main.contact') }}"
                 class="nav-link {% if request.endpoint == 'main.contact' %}is-active{% endif %}"
@@ -66,6 +70,8 @@
 
             <!-- Actions visibles sur mobile -->
             <div class="header-mobile-actions">
+
+                <!-- Connexion -->
                 <a
                     href="{{ url_for('main.tpe_connexion') }}"
                     class="header-login-link"
@@ -73,17 +79,21 @@
                     Connexion
                 </a>
 
+                <!-- Création de compte -->
                 <a
-                    href="{{ url_for('main.creation_compte') }}"
+                    href="{{ url_for('main.tpe_creation_compte') }}"
                     class="header-register-link"
                 >
                     Créer un compte
                 </a>
+
             </div>
         </nav>
 
         <!-- Actions visibles sur ordinateur -->
         <div class="header-actions">
+
+            <!-- Connexion -->
             <a
                 href="{{ url_for('main.tpe_connexion') }}"
                 class="header-login-link"
@@ -91,13 +101,15 @@
                 Connexion
             </a>
 
+            <!-- Création de compte -->
             <a
-                href="{{ url_for('main.creation_compte') }}"
+                href="{{ url_for('main.tpe_creation_compte') }}"
                 class="header-register-link"
             >
                 Commencer
                 <span aria-hidden="true">↗</span>
             </a>
+
         </div>
 
     </div>
