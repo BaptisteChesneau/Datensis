@@ -3,6 +3,7 @@
 
     <div class="footer-container">
 
+        <!-- Identité DATENSIS -->
         <div class="footer-brand">
             <a
                 href="{{ url_for('main.home') }}"
@@ -28,6 +29,7 @@
             </a>
         </div>
 
+        <!-- Navigation -->
         <div class="footer-column">
             <h2>Explorer</h2>
 
@@ -48,6 +50,7 @@
             </a>
         </div>
 
+        <!-- Espaces utilisateurs -->
         <div class="footer-column">
             <h2>Vos espaces</h2>
 
@@ -63,11 +66,12 @@
                 Cabinets comptables
             </a>
 
-            <a href="{{ url_for('main.creation_compte') }}">
+            <a href="{{ url_for('main.tpe_creation_compte') }}">
                 Créer un compte
             </a>
         </div>
 
+        <!-- Informations légales -->
         <div class="footer-column">
             <h2>Informations</h2>
 
@@ -86,6 +90,7 @@
 
     </div>
 
+    <!-- Bas du footer -->
     <div class="footer-bottom">
         <p>
             &copy; <span id="footerYear">2026</span> DATENSIS.
