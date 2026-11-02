@@ -32,14 +32,6 @@
             id="mainNavigation"
             aria-label="Navigation principale"
         >
-            <!-- Accueil -->
-            <a
-                href="{{ url_for('main.home') }}"
-                class="nav-link {% if request.endpoint == 'main.home' %}is-active{% endif %}"
-                {% if request.endpoint == 'main.home' %}aria-current="page"{% endif %}
-            >
-                Accueil
-            </a>
 
             <!-- Services -->
             <a
