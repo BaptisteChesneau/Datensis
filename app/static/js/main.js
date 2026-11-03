@@ -17073,3 +17073,51 @@ document.addEventListener('DOMContentLoaded', () => {
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initV3);
   else initV3();
 })();
+
+
+/* DATENSIS — filtres de la page Services */
+(function () {
+  "use strict";
+  function initServicesFilters() {
+    const page = document.querySelector(".services-public-page");
+    if (!page || page.dataset.servicesFiltersReady === "true") return;
+    page.dataset.servicesFiltersReady = "true";
+    const buttons = Array.from(page.querySelectorAll("[data-service-filter]"));
+    const cards = Array.from(page.querySelectorAll("[data-service-type]"));
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const filter = button.dataset.serviceFilter;
+        buttons.forEach((item) => {
+          const selected = item === button;
+          item.classList.toggle("is-active", selected);
+          item.setAttribute("aria-pressed", String(selected));
+        });
+        cards.forEach((card) => {
+          card.hidden = filter !== "all" && card.dataset.serviceType !== filter;
+        });
+      });
+    });
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", initServicesFilters);
+  else initServicesFilters();
+})();
+
+
+/* DATENSIS CONTACT V4 - initialisation isolee */
+(() => {
+  const init = () => {
+    const form = document.querySelector('body.contact-public-page #contactForm');
+    if (!form || form.dataset.contactV4Ready === 'true') return;
+    form.dataset.contactV4Ready = 'true';
+    const message = form.querySelector('#message');
+    const counter = form.querySelector('#messageCounter');
+    if (message && counter) {
+      const update = () => { counter.textContent = `${message.value.length} / ${message.maxLength}`; };
+      message.addEventListener('input', update);
+      update();
+    }
+    // Ne pas intercepter l'envoi : Flask doit traiter le POST cote serveur.
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once: true });
+  else init();
+})();
