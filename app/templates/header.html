@@ -1,20 +1,23 @@
-
 <header class="site-header" id="siteHeader">
     <div class="header-container">
 
-        <!-- Logo officiel DATENSIS -->
+        <!-- Logo officiel et nom DATENSIS -->
         <a
             href="{{ url_for('main.home') }}"
-            class="logo"
+            class="logo datensis-brand"
             aria-label="DATENSIS - Retour à l'accueil"
         >
             <img
                 src="{{ url_for('static', filename='images/branding/datensis-logo.png') }}"
-                alt="DATENSIS"
+                alt="Logo DATENSIS"
                 class="header-logo-image"
-                width="190"
+                width="56"
                 height="56"
             >
+
+            <span class="datensis-brand-name" aria-hidden="true">
+                DATENSIS
+            </span>
         </a>
 
         <!-- Bouton du menu mobile -->
@@ -61,13 +64,12 @@
                 Contact
             </a>
 
-                <a
-                    href="{{ url_for('main.tpe_creation_compte') }}"
-                    class="header-register-link"
-                >
-                    Créer un compte
-                </a>
-            </div>
+            <a
+                href="{{ url_for('main.tpe_creation_compte') }}"
+                class="header-register-link"
+            >
+                Créer un compte
+            </a>
         </nav>
 
         <!-- Zone réservée aux actions desktop -->
