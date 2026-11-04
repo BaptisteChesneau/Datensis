@@ -2,14 +2,19 @@
 <header class="site-header" id="siteHeader">
     <div class="header-container">
 
-        <!-- Logo DATENSIS -->
+        <!-- Logo officiel DATENSIS -->
         <a
             href="{{ url_for('main.home') }}"
             class="logo"
-            aria-label="Accueil DATENSIS"
+            aria-label="DATENSIS - Retour à l'accueil"
         >
-            <span class="header-logo-symbol" aria-hidden="true">D.</span>
-            <span class="header-logo-name">DATENSIS</span>
+            <img
+                src="{{ url_for('static', filename='images/branding/datensis-logo.png') }}"
+                alt="DATENSIS"
+                class="header-logo-image"
+                width="190"
+                height="56"
+            >
         </a>
 
         <!-- Bouton du menu mobile -->
@@ -32,8 +37,6 @@
             id="mainNavigation"
             aria-label="Navigation principale"
         >
-
-            <!-- Services -->
             <a
                 href="{{ url_for('main.services') }}"
                 class="nav-link {% if request.endpoint == 'main.services' %}is-active{% endif %}"
@@ -42,7 +45,6 @@
                 Services
             </a>
 
-            <!-- Aide et FAQ -->
             <a
                 href="{{ url_for('main.faq') }}"
                 class="nav-link {% if request.endpoint == 'main.faq' %}is-active{% endif %}"
@@ -51,7 +53,6 @@
                 Aide &amp; FAQ
             </a>
 
-            <!-- Contact -->
             <a
                 href="{{ url_for('main.contact') }}"
                 class="nav-link {% if request.endpoint == 'main.contact' %}is-active{% endif %}"
@@ -60,32 +61,17 @@
                 Contact
             </a>
 
-            <!-- Actions visibles sur mobile -->
-            <div class="header-mobile-actions">
-
-                <!-- Connexion -->
-                <a
-                    href="{{ url_for('main.tpe_connexion') }}"
-                    class="header-login-link"
-                >
-                    Connexion
-                </a>
-
-                <!-- Création de compte -->
                 <a
                     href="{{ url_for('main.tpe_creation_compte') }}"
                     class="header-register-link"
                 >
                     Créer un compte
                 </a>
-
             </div>
         </nav>
 
-        <!-- Actions visibles sur ordinateur -->
-        <div class="header-actions">
-
-        </div>
+        <!-- Zone réservée aux actions desktop -->
+        <div class="header-actions"></div>
 
     </div>
 </header>

@@ -38939,3 +38939,33 @@ body.contact-public-page { --contact-ink:#082c3a; --contact-blue:#00778b; --cont
 @media(max-width:850px){.contact-public-page .contact-hero-v4 {grid-template-columns:1fr;padding:80px 24px}.contact-public-page .contact-hero-decoration {width:220px}.contact-public-page .contact-layout {grid-template-columns:1fr}.contact-public-page .contact-bottom {margin-inline:24px}}
 @media(max-width:580px){.contact-public-page .contact-form-grid {grid-template-columns:1fr}.contact-public-page .form-group-full {grid-column:auto}.contact-public-page .contact-hero-decoration {display:none}.contact-public-page .contact-bottom {flex-direction:column;align-items:start;padding:24px}.contact-public-page .contact-layout {padding-inline:14px}.contact-public-page .contact-card,.contact-public-page .contact-side {padding:22px}}
 @media(prefers-reduced-motion:reduce){.contact-public-page .contact-orbit {animation:none}.contact-public-page * {scroll-behavior:auto!important}}
+
+/* DATENSIS - Logo officiel dans le header et le footer */
+.site-header .logo,
+.site-footer .footer-logo {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    flex-shrink: 0;
+}
+.site-header .header-logo-image {
+    display: block;
+    width: auto;
+    height: 56px;
+    max-width: 190px;
+    object-fit: contain;
+}
+.site-footer .footer-logo-image {
+    display: block;
+    width: auto;
+    height: 70px;
+    max-width: 220px;
+    object-fit: contain;
+}
+@media (max-width: 768px) {
+    .site-header .header-logo-image { height: 44px; max-width: 150px; }
+    .site-footer .footer-logo-image { height: 58px; max-width: 180px; }
+}
+@media (max-width: 380px) {
+    .site-header .header-logo-image { height: 38px; max-width: 130px; }
+}

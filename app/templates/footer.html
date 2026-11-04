@@ -1,6 +1,5 @@
 
 <footer class="site-footer" id="siteFooter">
-
     <div class="footer-container">
 
         <!-- Identité DATENSIS -->
@@ -10,14 +9,21 @@
                 class="footer-logo"
                 aria-label="DATENSIS - Accueil"
             >
-                <span class="footer-logo-symbol" aria-hidden="true">D.</span>
-                DATENSIS
+                <img
+                    src="{{ url_for('static', filename='images/branding/datensis-logo.png') }}"
+                    alt="DATENSIS"
+                    class="footer-logo-image"
+                    width="200"
+                    height="70"
+                    loading="lazy"
+                >
             </a>
 
             <p>
-                Des solutions adaptées à votre activité.
-                Un accompagnement clair, humain et personnalisé
-                pour donner vie à vos projets.
+                Connecter les données. Simplifier les décisions.
+                DATENSIS vous accompagne avec des solutions
+                adaptées à votre activité, à vos besoins
+                et à vos projets.
             </p>
 
             <a
@@ -32,10 +38,6 @@
         <!-- Navigation -->
         <div class="footer-column">
             <h2>Explorer</h2>
-
-            <a href="{{ url_for('main.home') }}">
-                Accueil
-            </a>
 
             <a href="{{ url_for('main.services') }}">
                 Nos services
@@ -93,12 +95,12 @@
     <!-- Bas du footer -->
     <div class="footer-bottom">
         <p>
-            &copy; <span id="footerYear">2026</span> DATENSIS.
-            Tous droits réservés.
+            &copy; <span id="footerYear">2026</span>
+            DATENSIS. Tous droits réservés.
         </p>
 
         <span class="footer-bottom-signature">
-            Une autre façon d'avancer.
+            Connecter les données. Simplifier les décisions.
         </span>
 
         <a href="#contenu-principal" class="footer-back-top">
@@ -106,5 +108,4 @@
             <span aria-hidden="true">↑</span>
         </a>
     </div>
-
 </footer>
