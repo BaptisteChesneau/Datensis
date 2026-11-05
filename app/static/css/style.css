@@ -39067,3 +39067,41 @@ body.contact-public-page { --contact-ink:#082c3a; --contact-blue:#00778b; --cont
 @media(max-width:950px){.public-page .public-hero,.public-page .public-journey-layout{grid-template-columns:1fr}.public-page .public-solution-grid,.public-page .process-steps{grid-template-columns:repeat(2,minmax(0,1fr))}.public-page .pme-public-kpi-grid,.public-page .cabinet-public-kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.public-page .public-next-step{flex-direction:column;align-items:flex-start}}
 @media(max-width:650px){.public-page .public-hero{padding:56px 20px}.public-page .public-process-section,.public-page .public-profile-section{padding:52px 18px}.public-page .public-solution-grid,.public-page .process-steps,.public-page .public-support-grid,.public-page .cabinet-demo-grid{grid-template-columns:1fr}.public-page .public-profile-selector{display:grid;grid-template-columns:1fr}.public-page .public-profile-btn{width:100%}.public-page .pme-public-kpi-grid,.public-page .cabinet-public-kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.public-page .public-progress-heading{align-items:flex-start}.public-page .public-progress-value{font-size:1.5rem}.public-page .public-next-step{padding:45px 20px}.public-page .public-next-links{width:100%}.public-page .public-next-links a{width:100%}}
 @media(prefers-reduced-motion:reduce){.public-page .public-profile-content{animation:none}.public-page .home-btn-primary,.public-page .home-btn-secondary,.public-page .btn-primary,.public-page .public-profile-btn{transition:none}}
+
+/* =========================================================
+   DATENSIS - CORRECTION FINALE : CARTES SERVICES COTE A COTE
+   Compatible avec services.html et les anciennes classes.
+   ========================================================= */
+.services-public-page .services-cards-grid,
+.services-public-page .services-prototype-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+    width: 100%;
+    align-items: stretch;
+    margin: 10px 0 45px;
+}
+.services-public-page .services-cards-grid > .services-prototype-card,
+.services-public-page .services-prototype-grid > .services-prototype-card {
+    width: 100%;
+    min-width: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.services-public-page .services-cards-grid .services-card-content,
+.services-public-page .services-prototype-grid .services-card-content {
+    flex: 1;
+}
+@media (max-width: 1024px) {
+    .services-public-page .services-cards-grid,
+    .services-public-page .services-prototype-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+@media (max-width: 700px) {
+    .services-public-page .services-cards-grid,
+    .services-public-page .services-prototype-grid {
+        grid-template-columns: 1fr;
+    }
+}
