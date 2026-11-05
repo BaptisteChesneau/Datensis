@@ -39105,3 +39105,47 @@ body.contact-public-page { --contact-ink:#082c3a; --contact-blue:#00778b; --cont
         grid-template-columns: 1fr;
     }
 }
+
+/* =========================================================
+   DATENSIS - CORRECTION LISIBILITE TITRE SERVICES
+   Degrade menthe vers blanc sur fond bleu petrole.
+   ========================================================= */
+.services-public-page .services-header h1,
+.services-public-page .services-hero h1 {
+    color: #d1f5e9 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    overflow-wrap: anywhere;
+}
+.services-public-page .services-header h1 span,
+.services-public-page .services-hero h1 span {
+    color: #d1f5e9 !important;
+    background: linear-gradient(110deg, #a8ebd5 0%, #d1f5e9 48%, #ffffff 100%) !important;
+    background-clip: text !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    text-shadow: none !important;
+}
+@supports not (-webkit-background-clip: text) {
+    .services-public-page .services-header h1 span,
+    .services-public-page .services-hero h1 span {
+        background: none !important;
+        color: #d1f5e9 !important;
+        -webkit-text-fill-color: #d1f5e9 !important;
+    }
+}
+.services-public-page .services-header-content > p,
+.services-public-page .services-hero p {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    opacity: .95 !important;
+}
+@media (max-width: 768px) {
+    .services-public-page .services-header h1,
+    .services-public-page .services-hero h1 {
+        font-size: clamp(2.5rem, 10vw, 4.5rem);
+        line-height: 1.1;
+    }
+}
