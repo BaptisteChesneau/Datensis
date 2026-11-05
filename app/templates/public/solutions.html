@@ -1,0 +1,347 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solutions | DATENSIS</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+{% include "header.html" %}
+
+<main class="public-page datensis-solutions">
+
+    <section class="public-hero">
+        <div class="public-hero-content">
+            <p class="eyebrow">DATENSIS · Solutions</p>
+            <h1>Des solutions pour chaque ambition.</h1>
+            <p>
+                Comparez plusieurs orientations adaptées
+                à votre activité et préparez une mise en œuvre
+                cohérente avec vos objectifs.
+            </p>
+            <div class="public-hero-actions">
+                <a href="#solutions-profils" class="home-btn-primary">
+                    Explorer les solutions
+                </a>
+                <a href="{{ url_for('main.etude_conseil') }}"
+                   class="home-btn-secondary">
+                    Étudier mon besoin
+                </a>
+            </div>
+        </div>
+
+        <div class="public-hero-panel">
+            <div class="hero-step">
+                <strong>01</strong>
+                <div>
+                    <h3>Identifier</h3>
+                    <p>Clarifier le besoin.</p>
+                </div>
+            </div>
+            <div class="hero-step">
+                <strong>02</strong>
+                <div>
+                    <h3>Comparer</h3>
+                    <p>Étudier les différentes orientations.</p>
+                </div>
+            </div>
+            <div class="hero-step">
+                <strong>03</strong>
+                <div>
+                    <h3>Choisir</h3>
+                    <p>Préparer la solution adaptée.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="process-section public-process-section">
+        <div class="section-heading">
+            <p class="eyebrow">Notre démarche</p>
+            <h2>Trouver la bonne solution</h2>
+            <p>
+                Une approche progressive pour comparer
+                les possibilités avant de prendre une décision.
+            </p>
+        </div>
+
+        <div class="process-steps">
+            <article class="process-step active">
+                <span class="process-number">01</span>
+                <h3>Besoin</h3>
+                <p>Comprendre les objectifs et les contraintes.</p>
+            </article>
+            <article class="process-step">
+                <span class="process-number">02</span>
+                <h3>Comparaison</h3>
+                <p>Évaluer les orientations possibles.</p>
+            </article>
+            <article class="process-step">
+                <span class="process-number">03</span>
+                <h3>Déploiement</h3>
+                <p>Organiser les étapes de mise en œuvre.</p>
+            </article>
+        </div>
+    </section>
+
+    <section class="public-profile-section" id="solutions-profils">
+        <div class="section-heading">
+            <p class="eyebrow">Nos orientations</p>
+            <h2>Des solutions adaptées à votre organisation</h2>
+            <p>Sélectionnez votre profil.</p>
+        </div>
+
+        <div class="public-profile-selector" role="group"
+             aria-label="Choisir un profil">
+            <button type="button" class="public-profile-btn is-active"
+                    data-profile="tpe" aria-pressed="true">
+                Indépendants &amp; TPE
+            </button>
+            <button type="button" class="public-profile-btn"
+                    data-profile="pme" aria-pressed="false">
+                PME &amp; ETI
+            </button>
+            <button type="button" class="public-profile-btn"
+                    data-profile="cabinet" aria-pressed="false">
+                Cabinets
+            </button>
+        </div>
+
+        <!-- TPE -->
+        <section class="public-profile-content" data-content="tpe">
+            <div class="section-heading">
+                <h2>Solutions pour indépendants et TPE</h2>
+                <p>Trois niveaux d'accompagnement.</p>
+            </div>
+
+            <div class="public-solution-grid">
+                <article class="public-solution-card">
+                    <span class="solution-badge">Option 01</span>
+                    <h3>Solution essentielle</h3>
+                    <p>Pour répondre à un besoin précis et identifié.</p>
+                    <ul class="feature-list">
+                        <li>Mise en place rapide</li>
+                        <li>Budget maîtrisé</li>
+                        <li>Fonctionnalités essentielles</li>
+                    </ul>
+                    <a href="{{ url_for('main.tpe_creation_compte') }}"
+                       class="home-btn-primary">
+                        Choisir cette orientation
+                    </a>
+                </article>
+
+                <article class="public-solution-card recommended">
+                    <span class="solution-badge">Option 02</span>
+                    <h3>Solution évolutive</h3>
+                    <p>Pour accompagner le développement de l'activité.</p>
+                    <ul class="feature-list">
+                        <li>Évolution progressive</li>
+                        <li>Fonctionnalités adaptables</li>
+                        <li>Accompagnement DATENSIS</li>
+                    </ul>
+                    <a href="{{ url_for('main.tpe_creation_compte') }}"
+                       class="home-btn-primary">
+                        Choisir cette orientation
+                    </a>
+                </article>
+
+                <article class="public-solution-card">
+                    <span class="solution-badge">Option 03</span>
+                    <h3>Solution personnalisée</h3>
+                    <p>Pour les besoins nécessitant une étude approfondie.</p>
+                    <ul class="feature-list">
+                        <li>Étude détaillée</li>
+                        <li>Configuration sur mesure</li>
+                        <li>Suivi renforcé</li>
+                    </ul>
+                    <a href="{{ url_for('main.contact') }}"
+                       class="home-btn-secondary">
+                        Échanger avec DATENSIS
+                    </a>
+                </article>
+            </div>
+        </section>
+
+        <!-- PME -->
+        <section class="public-profile-content" data-content="pme" hidden>
+            <div class="section-heading">
+                <h2>Solutions &amp; déploiement PME</h2>
+                <p>
+                    Des orientations adaptées aux équipes,
+                    aux sites et à la complexité du projet.
+                </p>
+            </div>
+
+            <div class="public-solution-grid">
+                <article class="public-solution-card">
+                    <span class="solution-badge">Déploiement ciblé</span>
+                    <h3>Déploiement essentiel</h3>
+                    <p>Pour un projet précis ou un périmètre limité.</p>
+                    <ul class="feature-list">
+                        <li>Un projet principal</li>
+                        <li>Un à deux sites</li>
+                        <li>Cadrage simplifié</li>
+                        <li>Déploiement progressif</li>
+                        <li>Suivi DATENSIS</li>
+                    </ul>
+                    <a href="{{ url_for('main.pme_creation_compte') }}"
+                       class="home-btn-primary">
+                        Choisir cette orientation
+                    </a>
+                </article>
+
+                <article class="public-solution-card recommended">
+                    <span class="solution-badge">Déploiement évolutif</span>
+                    <h3>Déploiement évolutif</h3>
+                    <p>Pour plusieurs équipes ou sites.</p>
+                    <ul class="feature-list">
+                        <li>Déploiement multi-sites</li>
+                        <li>Planification par étapes</li>
+                        <li>Accompagnement des équipes</li>
+                        <li>Suivi des validations</li>
+                        <li>Pilotage centralisé</li>
+                    </ul>
+                    <a href="{{ url_for('main.pme_creation_compte') }}"
+                       class="home-btn-primary">
+                        Choisir cette orientation
+                    </a>
+                </article>
+
+                <article class="public-solution-card">
+                    <span class="solution-badge">Sur mesure</span>
+                    <h3>Déploiement personnalisé</h3>
+                    <p>Pour les organisations aux contraintes spécifiques.</p>
+                    <ul class="feature-list">
+                        <li>Périmètre personnalisé</li>
+                        <li>Plusieurs sites</li>
+                        <li>Contraintes particulières</li>
+                        <li>Plan de déploiement dédié</li>
+                        <li>Accompagnement renforcé</li>
+                    </ul>
+                    <a href="{{ url_for('main.contact') }}"
+                       class="home-btn-secondary">
+                        Échanger avec DATENSIS
+                    </a>
+                </article>
+            </div>
+        </section>
+
+        <!-- CABINET -->
+        <section class="public-profile-content" data-content="cabinet" hidden>
+            <div class="section-heading">
+                <h2>Solutions pour cabinets partenaires</h2>
+                <p>
+                    Structurez les échanges et développez
+                    votre collaboration avec DATENSIS.
+                </p>
+            </div>
+
+            <div class="public-solution-grid">
+                <article class="public-solution-card">
+                    <span class="solution-badge">Organisation</span>
+                    <h3>Centralisation des demandes</h3>
+                    <p>Une meilleure visibilité sur les besoins transmis.</p>
+                    <ul class="feature-list">
+                        <li>Réception des demandes</li>
+                        <li>Qualification des besoins</li>
+                        <li>Orientation des interlocuteurs</li>
+                    </ul>
+                    <a href="{{ url_for('main.contact') }}"
+                       class="home-btn-primary">
+                        Découvrir cette orientation
+                    </a>
+                </article>
+
+                <article class="public-solution-card recommended">
+                    <span class="solution-badge">Collaboration</span>
+                    <h3>Coordination des collaborateurs</h3>
+                    <p>Une organisation claire des échanges.</p>
+                    <ul class="feature-list">
+                        <li>Répartition des interventions</li>
+                        <li>Communication avec les clients</li>
+                        <li>Suivi des demandes</li>
+                    </ul>
+                    <a href="{{ url_for('main.contact') }}"
+                       class="home-btn-primary">
+                        Découvrir cette orientation
+                    </a>
+                </article>
+
+                <article class="public-solution-card">
+                    <span class="solution-badge">Partenariat</span>
+                    <h3>Suivi des opportunités</h3>
+                    <p>Une vision organisée du partenariat DATENSIS.</p>
+                    <ul class="feature-list">
+                        <li>Opportunités transmises</li>
+                        <li>Dossiers en cours</li>
+                        <li>Points de suivi</li>
+                    </ul>
+                    <a href="{{ url_for('main.contact') }}"
+                       class="home-btn-secondary">
+                        Échanger avec DATENSIS
+                    </a>
+                </article>
+            </div>
+        </section>
+    </section>
+
+    <section class="public-next-step">
+        <div>
+            <p class="eyebrow">La suite du parcours</p>
+            <h2>Une solution choisie, un projet à suivre.</h2>
+            <p>
+                Découvrez comment visualiser les étapes,
+                les validations et les prochaines actions.
+            </p>
+        </div>
+        <div class="public-next-links">
+            <a href="{{ url_for('main.suivi') }}"
+               class="home-btn-primary">
+                Découvrir le suivi
+            </a>
+            <a href="{{ url_for('main.contact') }}"
+               class="home-btn-secondary">
+                Contacter DATENSIS
+            </a>
+        </div>
+    </section>
+</main>
+
+{% include "footer.html" %}
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const root = document.querySelector(".datensis-solutions");
+    if (!root) return;
+
+    const buttons = root.querySelectorAll("[data-profile]");
+    const contents = root.querySelectorAll("[data-content]");
+
+    function selectProfile(profile) {
+        buttons.forEach(button => {
+            const active = button.dataset.profile === profile;
+            button.classList.toggle("is-active", active);
+            button.setAttribute("aria-pressed", String(active));
+        });
+
+        contents.forEach(content => {
+            content.hidden = content.dataset.content !== profile;
+        });
+    }
+
+    buttons.forEach(button => {
+        button.addEventListener("click", () => {
+            selectProfile(button.dataset.profile);
+        });
+    });
+
+    selectProfile("tpe");
+});
+</script>
+
+</body>
+</html>

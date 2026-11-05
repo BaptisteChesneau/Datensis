@@ -52,6 +52,21 @@ def faq():
     return render_template("public/faq.html")
 
 
+@main.route("/etude-conseil", methods=["GET"])
+def etude_conseil():
+    return render_template("public/etude_conseil.html")
+
+
+@main.route("/solutions", methods=["GET"])
+def solutions():
+    return render_template("public/solutions.html")
+
+
+@main.route("/suivi", methods=["GET"])
+def suivi():
+    return render_template("public/suivi.html")
+
+
 @main.route("/contact", methods=["GET", "POST"])
 def contact():
     """Afficher le formulaire et traiter les demandes de contact."""

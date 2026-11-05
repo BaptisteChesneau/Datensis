@@ -84,14 +84,6 @@
                 </p>
             </div>
 
-            <div class="services-filter" role="group" aria-label="Filtrer les services">
-                <button type="button" class="services-filter-btn is-active" data-service-filter="all" aria-pressed="true">Tous les services</button>
-                <button type="button" class="services-filter-btn" data-service-filter="study" aria-pressed="false">Étude &amp; conseil</button>
-                <button type="button" class="services-filter-btn" data-service-filter="solutions" aria-pressed="false">Solutions</button>
-                <button type="button" class="services-filter-btn" data-service-filter="support" aria-pressed="false">Suivi</button>
-            </div>
-            <div class="services-prototype-grid">
-
                 <article
                     class="services-prototype-card services-card-study" data-service-type="study"
                     data-reveal
@@ -122,7 +114,7 @@
                     </div>
 
                     <a
-                        href="{{ url_for('main.tpe_etude_conseil') }}"
+                        href="{{ url_for('main.etude_conseil') }}"
                         class="services-card-link"
                     >
                         Découvrir le service
@@ -160,7 +152,7 @@
                     </div>
 
                     <a
-                        href="{{ url_for('main.tpe_solutions') }}"
+                        href="{{ url_for('main.solutions') }}"
                         class="services-card-link"
                     >
                         Voir les solutions
@@ -198,7 +190,7 @@
                     </div>
 
                     <a
-                        href="{{ url_for('main.tpe_suivi') }}"
+                        href="{{ url_for('main.suivi') }}"
                         class="services-card-link"
                     >
                         Découvrir le suivi

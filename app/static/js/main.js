@@ -1,4 +1,1874 @@
-/* DATENSIS - modules existants fusionnes (doublon GLOBAL.JS supprime) */
+/* =========================================================
+   DATENSIS
+   GLOBAL.JS
+
+   Fonctionnalités communes :
+   - FAQ
+   - Création de compte
+   - Connexion
+   - Connexion interne
+   - Chatbot TPE / PME / Cabinet
+   - Collaborateur
+   - Administration
+   ========================================================= */
+
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        /* =====================================================
+           OUTILS
+           ===================================================== */
+
+        function normalizeText(text) {
+
+            return String(text || "")
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/[?!.,;:'"]/g, " ")
+                .replace(/\s+/g, " ")
+                .trim();
+
+        }
+
+
+        /* =====================================================
+           FAQ
+           ===================================================== */
+
+        const faqSearch =
+            document.getElementById("faqSearch");
+
+        const faqItems =
+            document.querySelectorAll(".faq-item");
+
+
+        if (
+            faqSearch &&
+            faqItems.length > 0
+        ) {
+
+            faqSearch.addEventListener(
+                "input",
+                () => {
+
+                    const search =
+                        normalizeText(
+                            faqSearch.value
+                        );
+
+
+                    faqItems.forEach(
+                        (item) => {
+
+                            const content =
+                                normalizeText(
+                                    item.textContent +
+                                    " " +
+                                    (item.dataset.search || "")
+                                );
+
+
+                            item.style.display =
+                                content.includes(search)
+                                    ? ""
+                                    : "none";
+
+                        }
+                    );
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           VALIDATION MOT DE PASSE
+           ===================================================== */
+
+        function isStrongPassword(password) {
+
+            return (
+                password.length >= 12 &&
+                /[A-Z]/.test(password) &&
+                /[0-9]/.test(password) &&
+                /[^A-Za-z0-9]/.test(password)
+            );
+
+        }
+
+
+        /* =====================================================
+           CRÉATION DE COMPTE
+           Compatible avec les formulaires dédiés
+           TPE / PME / CABINET
+           ===================================================== */
+
+        const accountForms =
+            document.querySelectorAll(
+                ".datensis-account-form"
+            );
+
+
+        accountForms.forEach(
+            (form) => {
+
+                form.addEventListener(
+                    "submit",
+                    (event) => {
+
+                        event.preventDefault();
+
+
+                        const password =
+                            form.querySelector(
+                                'input[name="password"], #accountPassword'
+                            );
+
+
+                        const confirmation =
+                            form.querySelector(
+                                'input[name="password_confirm"], #accountPasswordConfirm'
+                            );
+
+
+                        const terms =
+                            form.querySelector(
+                                'input[name="terms"], #accountTerms'
+                            );
+
+
+                        if (
+                            password &&
+                            !isStrongPassword(
+                                password.value
+                            )
+                        ) {
+
+                            alert(
+                                "Le mot de passe doit contenir au moins 12 caractères, une majuscule, un chiffre et un caractère spécial."
+                            );
+
+                            password.focus();
+
+                            return;
+
+                        }
+
+
+                        if (
+                            password &&
+                            confirmation &&
+                            password.value !==
+                                confirmation.value
+                        ) {
+
+                            alert(
+                                "Les deux mots de passe ne correspondent pas."
+                            );
+
+                            confirmation.focus();
+
+                            return;
+
+                        }
+
+
+                        if (
+                            terms &&
+                            !terms.checked
+                        ) {
+
+                            alert(
+                                "Vous devez accepter les conditions avant de créer votre compte."
+                            );
+
+                            return;
+
+                        }
+
+
+                        alert(
+                            "Votre compte DATENSIS a été créé."
+                        );
+
+
+                        const destination =
+                            form.dataset.redirect;
+
+
+                        if (destination) {
+
+                            window.location.href =
+                                destination;
+
+                        }
+
+                    }
+                );
+
+            }
+        );
+
+
+        /* =====================================================
+           ANCIEN FORMULAIRE GÉNÉRIQUE
+           Conservation de compatibilité
+           ===================================================== */
+
+        const createAccountForm =
+            document.getElementById(
+                "createAccountForm"
+            );
+
+
+        if (createAccountForm) {
+
+            createAccountForm.addEventListener(
+                "submit",
+                (event) => {
+
+                    event.preventDefault();
+
+
+                    const passwordElement =
+                        document.getElementById(
+                            "accountPassword"
+                        );
+
+
+                    const confirmElement =
+                        document.getElementById(
+                            "accountPasswordConfirm"
+                        );
+
+
+                    const termsElement =
+                        document.getElementById(
+                            "accountTerms"
+                        );
+
+
+                    if (
+                        passwordElement &&
+                        !isStrongPassword(
+                            passwordElement.value
+                        )
+                    ) {
+
+                        alert(
+                            "Le mot de passe doit contenir au moins 12 caractères, une majuscule, un chiffre et un caractère spécial."
+                        );
+
+                        return;
+
+                    }
+
+
+                    if (
+                        passwordElement &&
+                        confirmElement &&
+                        passwordElement.value !==
+                            confirmElement.value
+                    ) {
+
+                        alert(
+                            "Les deux mots de passe ne correspondent pas."
+                        );
+
+                        return;
+
+                    }
+
+
+                    if (
+                        termsElement &&
+                        !termsElement.checked
+                    ) {
+
+                        alert(
+                            "Vous devez accepter les conditions avant de créer votre compte."
+                        );
+
+                        return;
+
+                    }
+
+
+                    alert(
+                        "Votre compte DATENSIS a été créé."
+                    );
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           CONNEXIONS TPE / PME / CABINET
+           ===================================================== */
+
+        const loginForms =
+            document.querySelectorAll(
+                ".datensis-login-form"
+            );
+
+
+        loginForms.forEach(
+            (form) => {
+
+                form.addEventListener(
+                    "submit",
+                    (event) => {
+
+                        event.preventDefault();
+
+
+                        const email =
+                            form.querySelector(
+                                'input[type="email"]'
+                            );
+
+
+                        const password =
+                            form.querySelector(
+                                'input[type="password"]'
+                            );
+
+
+                        if (
+                            !email ||
+                            !email.value.trim()
+                        ) {
+
+                            alert(
+                                "Veuillez renseigner votre adresse e-mail."
+                            );
+
+                            return;
+
+                        }
+
+
+                        if (
+                            !password ||
+                            !password.value
+                        ) {
+
+                            alert(
+                                "Veuillez renseigner votre mot de passe."
+                            );
+
+                            return;
+
+                        }
+
+
+                        const destination =
+                            form.dataset.redirect;
+
+
+                        if (destination) {
+
+                            window.location.href =
+                                destination;
+
+                        }
+
+                    }
+                );
+
+            }
+        );
+
+
+        /* =====================================================
+           COMPATIBILITÉ ANCIEN LOGIN
+           ===================================================== */
+
+        const loginForm =
+            document.getElementById(
+                "loginForm"
+            );
+
+
+        if (loginForm) {
+
+            loginForm.addEventListener(
+                "submit",
+                (event) => {
+
+                    event.preventDefault();
+
+
+                    const profile =
+                        document.getElementById(
+                            "loginProfile"
+                        );
+
+
+                    const email =
+                        document.getElementById(
+                            "loginEmail"
+                        );
+
+
+                    const password =
+                        document.getElementById(
+                            "loginPassword"
+                        );
+
+
+                    if (
+                        profile &&
+                        !profile.value
+                    ) {
+
+                        alert(
+                            "Veuillez sélectionner votre profil."
+                        );
+
+                        return;
+
+                    }
+
+
+                    if (
+                        !email ||
+                        !email.value.trim()
+                    ) {
+
+                        alert(
+                            "Veuillez renseigner votre adresse e-mail."
+                        );
+
+                        return;
+
+                    }
+
+
+                    if (
+                        !password ||
+                        !password.value
+                    ) {
+
+                        alert(
+                            "Veuillez renseigner votre mot de passe."
+                        );
+
+                        return;
+
+                    }
+
+
+                    const destinations = {
+
+                        tpe:
+                            "/tpe/dashboard",
+
+                        pme:
+                            "/pme/dashboard",
+
+                        cabinet:
+                            "/cabinet/dashboard"
+
+                    };
+
+
+                    if (
+                        profile &&
+                        destinations[
+                            profile.value
+                        ]
+                    ) {
+
+                        window.location.href =
+                            destinations[
+                                profile.value
+                            ];
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           CONNEXION INTERNE
+           COLLABORATEUR / ADMINISTRATEUR
+           ===================================================== */
+
+        const internalLoginForm =
+            document.getElementById(
+                "internalLoginForm"
+            );
+
+
+        if (internalLoginForm) {
+
+            internalLoginForm.addEventListener(
+                "submit",
+                (event) => {
+
+                    event.preventDefault();
+
+
+                    const profile =
+                        document.getElementById(
+                            "internalProfile"
+                        );
+
+
+                    const email =
+                        document.getElementById(
+                            "internalEmail"
+                        );
+
+
+                    const password =
+                        document.getElementById(
+                            "internalPassword"
+                        );
+
+
+                    if (
+                        !profile ||
+                        !profile.value
+                    ) {
+
+                        alert(
+                            "Veuillez sélectionner votre type d'accès."
+                        );
+
+                        return;
+
+                    }
+
+
+                    if (
+                        !email ||
+                        !email.value.trim()
+                    ) {
+
+                        alert(
+                            "Veuillez renseigner votre adresse e-mail professionnelle."
+                        );
+
+                        return;
+
+                    }
+
+
+                    if (
+                        !password ||
+                        !password.value
+                    ) {
+
+                        alert(
+                            "Veuillez renseigner votre mot de passe."
+                        );
+
+                        return;
+
+                    }
+
+
+                    const destinations = {
+
+                        collaborateur:
+                            "/collaborateur",
+
+                        admin:
+                            "/admin"
+
+                    };
+
+
+                    const destination =
+                        destinations[
+                            profile.value
+                        ];
+
+
+                    if (!destination) {
+
+                        alert(
+                            "Cet accès interne n'est pas reconnu."
+                        );
+
+                        return;
+
+                    }
+
+
+                    window.location.href =
+                        destination;
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           COLLABORATEUR - MESSAGERIE
+           ===================================================== */
+
+        const collabMessageForm =
+            document.getElementById(
+                "collabMessageForm"
+            );
+
+        const collabMessageInput =
+            document.getElementById(
+                "collabMessageInput"
+            );
+
+        const collabConversationMessages =
+            document.getElementById(
+                "collabConversationMessages"
+            );
+
+
+        if (
+            collabMessageForm &&
+            collabMessageInput &&
+            collabConversationMessages
+        ) {
+
+            collabMessageForm.addEventListener(
+                "submit",
+                (event) => {
+
+                    event.preventDefault();
+
+
+                    const message =
+                        collabMessageInput
+                            .value
+                            .trim();
+
+
+                    if (!message) {
+                        return;
+                    }
+
+
+                    const element =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    element.classList.add(
+                        "chat-message",
+                        "assistant-message"
+                    );
+
+
+                    element.textContent =
+                        message;
+
+
+                    collabConversationMessages
+                        .appendChild(
+                            element
+                        );
+
+
+                    collabMessageInput.value =
+                        "";
+
+
+                    collabConversationMessages
+                        .scrollTop =
+                            collabConversationMessages
+                                .scrollHeight;
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           COLLABORATEUR - FILTRE DEMANDES
+           ===================================================== */
+
+        const collabRequestSearch =
+            document.getElementById(
+                "collabRequestSearch"
+            );
+
+        const collabRequestStatus =
+            document.getElementById(
+                "collabRequestStatus"
+            );
+
+        const collabRequestsTable =
+            document.getElementById(
+                "collabRequestsTable"
+            );
+
+
+        function filterCollaboratorRequests() {
+
+            if (!collabRequestsTable) {
+                return;
+            }
+
+
+            const search =
+                normalizeText(
+                    collabRequestSearch
+                        ? collabRequestSearch.value
+                        : ""
+                );
+
+
+            const status =
+                collabRequestStatus
+                    ? collabRequestStatus.value
+                    : "all";
+
+
+            collabRequestsTable
+                .querySelectorAll(
+                    "tbody tr"
+                )
+                .forEach(
+                    (row) => {
+
+                        const text =
+                            normalizeText(
+                                row.textContent
+                            );
+
+
+                        const rowStatus =
+                            row.dataset.status ||
+                            "";
+
+
+                        const matchesSearch =
+                            text.includes(search);
+
+
+                        const matchesStatus =
+                            status === "all" ||
+                            rowStatus === status;
+
+
+                        row.style.display =
+                            matchesSearch &&
+                            matchesStatus
+                                ? ""
+                                : "none";
+
+                    }
+                );
+
+        }
+
+
+        if (collabRequestSearch) {
+
+            collabRequestSearch.addEventListener(
+                "input",
+                filterCollaboratorRequests
+            );
+
+        }
+
+
+        if (collabRequestStatus) {
+
+            collabRequestStatus.addEventListener(
+                "change",
+                filterCollaboratorRequests
+            );
+
+        }
+
+
+        /* =====================================================
+           ADMIN - AJOUT CABINET
+           ===================================================== */
+
+        const adminCabinetModal =
+            document.getElementById(
+                "adminCabinetModal"
+            );
+
+        const openAdminCabinetModal =
+            document.getElementById(
+                "openAdminCabinetModal"
+            );
+
+        const closeAdminCabinetModal =
+            document.getElementById(
+                "closeAdminCabinetModal"
+            );
+
+        const cancelAdminCabinet =
+            document.getElementById(
+                "cancelAdminCabinet"
+            );
+
+        const adminCabinetForm =
+            document.getElementById(
+                "adminCabinetForm"
+            );
+
+
+        function showAdminCabinetModal() {
+
+            if (adminCabinetModal) {
+
+                adminCabinetModal.hidden =
+                    false;
+
+            }
+
+        }
+
+
+        function hideAdminCabinetModal() {
+
+            if (adminCabinetModal) {
+
+                adminCabinetModal.hidden =
+                    true;
+
+            }
+
+        }
+
+
+        if (openAdminCabinetModal) {
+
+            openAdminCabinetModal.addEventListener(
+                "click",
+                showAdminCabinetModal
+            );
+
+        }
+
+
+        if (closeAdminCabinetModal) {
+
+            closeAdminCabinetModal.addEventListener(
+                "click",
+                hideAdminCabinetModal
+            );
+
+        }
+
+
+        if (cancelAdminCabinet) {
+
+            cancelAdminCabinet.addEventListener(
+                "click",
+                hideAdminCabinetModal
+            );
+
+        }
+
+
+        if (adminCabinetForm) {
+
+            adminCabinetForm.addEventListener(
+                "submit",
+                (event) => {
+
+                    event.preventDefault();
+
+
+                    alert(
+                        "Le cabinet partenaire a été ajouté."
+                    );
+
+
+                    adminCabinetForm.reset();
+
+                    hideAdminCabinetModal();
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           ADMIN - MESSAGERIE
+           ===================================================== */
+
+        const adminMessageForm =
+            document.getElementById(
+                "adminMessageForm"
+            );
+
+        const adminMessageInput =
+            document.getElementById(
+                "adminMessageInput"
+            );
+
+        const adminConversationMessages =
+            document.getElementById(
+                "adminConversationMessages"
+            );
+
+
+        if (
+            adminMessageForm &&
+            adminMessageInput &&
+            adminConversationMessages
+        ) {
+
+            adminMessageForm.addEventListener(
+                "submit",
+                (event) => {
+
+                    event.preventDefault();
+
+
+                    const message =
+                        adminMessageInput
+                            .value
+                            .trim();
+
+
+                    if (!message) {
+                        return;
+                    }
+
+
+                    const element =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    element.classList.add(
+                        "chat-message",
+                        "user-message"
+                    );
+
+
+                    element.textContent =
+                        message;
+
+
+                    adminConversationMessages
+                        .appendChild(
+                            element
+                        );
+
+
+                    adminMessageInput.value =
+                        "";
+
+
+                    adminConversationMessages
+                        .scrollTop =
+                            adminConversationMessages
+                                .scrollHeight;
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           ADMIN - MODALE
+           ===================================================== */
+
+        if (adminCabinetModal) {
+
+            adminCabinetModal.addEventListener(
+                "click",
+                (event) => {
+
+                    if (
+                        event.target ===
+                        adminCabinetModal
+                    ) {
+
+                        hideAdminCabinetModal();
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           CHATBOT DATENSIS
+           ===================================================== */
+
+        const chatbotTrigger =
+            document.getElementById(
+                "chatbotTrigger"
+            );
+
+        const chatbotWindow =
+            document.getElementById(
+                "chatbotWindow"
+            );
+
+        const chatbotClose =
+            document.getElementById(
+                "chatbotClose"
+            );
+
+        const chatbotForm =
+            document.getElementById(
+                "chatbotForm"
+            );
+
+        const chatbotInput =
+            document.getElementById(
+                "chatbotInput"
+            );
+
+        const chatbotMessages =
+            document.getElementById(
+                "chatbotMessages"
+            );
+
+        const chatbotSuggestions =
+            document.querySelectorAll(
+                ".chatbot-suggestion"
+            );
+
+
+        /* Le chatbot n'est présent
+           que sur les accueils concernés. */
+
+        if (
+            chatbotTrigger &&
+            chatbotWindow &&
+            chatbotForm &&
+            chatbotInput &&
+            chatbotMessages
+        &&
+            chatbotForm.dataset.datensisChatbotInitialized !== "true"
+        ) {
+            chatbotForm.dataset.datensisChatbotInitialized = "true";
+
+            /* =============================================
+               ESPACE COURANT
+               ============================================= */
+
+            function getCurrentSpace() {
+
+                const path =
+                    window.location.pathname
+                        .toLowerCase();
+
+
+                if (
+                    path.includes("/tpe")
+                ) {
+
+                    return "tpe";
+
+                }
+
+
+                if (
+                    path.includes("/pme")
+                ) {
+
+                    return "pme";
+
+                }
+
+
+                if (
+                    path.includes("/cabinet")
+                ) {
+
+                    return "cabinet";
+
+                }
+
+
+                return "public";
+
+            }
+
+
+            /* =============================================
+               OUVERTURE / FERMETURE
+               ============================================= */
+
+            function openChatbot() {
+
+                chatbotWindow.hidden =
+                    false;
+
+                chatbotInput.disabled =
+                    false;
+
+                chatbotInput.focus();
+
+            }
+
+
+            function closeChatbot() {
+
+                chatbotWindow.hidden =
+                    true;
+
+            }
+
+
+            chatbotTrigger.addEventListener(
+                "click",
+                openChatbot
+            );
+
+
+            if (chatbotClose) {
+
+                chatbotClose.addEventListener(
+                    "click",
+                    closeChatbot
+                );
+
+            }
+
+
+            /* =============================================
+               AJOUT MESSAGE
+               ============================================= */
+
+            function addMessage(
+                message,
+                sender = "assistant"
+            ) {
+
+                const element =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                element.classList.add(
+                    "chatbot-message"
+                );
+
+
+                if (
+                    sender === "user"
+                ) {
+
+                    element.classList.add(
+                        "chatbot-user"
+                    );
+
+                } else {
+
+                    element.classList.add(
+                        "chatbot-assistant"
+                    );
+
+                }
+
+
+                element.textContent =
+                    message;
+
+
+                chatbotMessages.appendChild(
+                    element
+                );
+
+
+                chatbotMessages.scrollTop =
+                    chatbotMessages
+                        .scrollHeight;
+
+            }
+
+
+            /* =============================================
+               INTENTIONS TPE
+               ============================================= */
+
+            const tpeIntents = [
+
+                {
+                    keywords: [
+                        "rendez vous",
+                        "rdv",
+                        "prendre rendez vous",
+                        "creneau"
+                    ],
+
+                    message:
+                        "Je vous redirige vers la page de contact pour organiser votre rendez-vous.",
+
+                    link:
+                        "/contact"
+                },
+
+                {
+                    keywords: [
+                        "etude",
+                        "conseil",
+                        "cadrage",
+                        "analyser mon besoin",
+                        "definir mon besoin",
+                        "besoin de conseils"
+                    ],
+
+                    message:
+                        "Je vous redirige vers Étude & conseil.",
+
+                    link:
+                        "/tpe/etude-conseil"
+                },
+
+                {
+                    keywords: [
+                        "solution",
+                        "solutions",
+                        "trouver une solution",
+                        "comparer",
+                        "offre"
+                    ],
+
+                    message:
+                        "Je vous redirige vers les solutions adaptées à votre activité.",
+
+                    link:
+                        "/tpe/solutions"
+                },
+
+                {
+                    keywords: [
+                        "suivre mon projet",
+                        "ou en est mon projet",
+                        "avancement",
+                        "progression",
+                        "suivi",
+                        "accompagnement"
+                    ],
+
+                    message:
+                        "Je vous redirige vers Suivi & accompagnement.",
+
+                    link:
+                        "/tpe/suivi-accompagnement"
+                },
+
+                {
+                    keywords: [
+                        "contact",
+                        "parler a quelqu un",
+                        "interlocuteur",
+                        "contacter datensis"
+                    ],
+
+                    message:
+                        "Je vous redirige vers la page Contact.",
+
+                    link:
+                        "/contact"
+                }
+
+            ];
+
+
+            /* =============================================
+               INTENTIONS PME
+               ============================================= */
+
+            const pmeIntents = [
+
+                {
+                    keywords: [
+                        "rendez vous",
+                        "rdv",
+                        "creneau"
+                    ],
+
+                    message:
+                        "Je vous redirige vers la page de contact pour organiser votre rendez-vous.",
+
+                    link:
+                        "/contact"
+                },
+
+                {
+                    keywords: [
+                        "cadrage",
+                        "cadrer",
+                        "etude",
+                        "perimetre",
+                        "objectif"
+                    ],
+
+                    message:
+                        "Je vous redirige vers Cadrage & étude.",
+
+                    link:
+                        "/pme/cadrage-etude"
+                },
+
+                {
+                    keywords: [
+                        "solution",
+                        "deploiement",
+                        "deployer",
+                        "mise en place"
+                    ],
+
+                    message:
+                        "Je vous redirige vers Solutions & déploiement.",
+
+                    link:
+                        "/pme/solutions-deploiement"
+                },
+
+                {
+                    keywords: [
+                        "pilotage",
+                        "suivi",
+                        "avancement",
+                        "progression",
+                        "kpi"
+                    ],
+
+                    message:
+                        "Je vous redirige vers Suivi & pilotage.",
+
+                    link:
+                        "/pme/suivi-pilotage"
+                },
+
+                {
+                    keywords: [
+                        "contact",
+                        "interlocuteur",
+                        "parler a quelqu un"
+                    ],
+
+                    message:
+                        "Je vous redirige vers la page Contact.",
+
+                    link:
+                        "/contact"
+                }
+
+            ];
+
+
+            /* =============================================
+               INTENTIONS CABINET
+               ============================================= */
+
+            const cabinetIntents = [
+
+                {
+                    keywords: [
+                        "rendez vous",
+                        "rdv",
+                        "creneau"
+                    ],
+
+                    message:
+                        "Je vous redirige vers la page de contact pour organiser votre rendez-vous.",
+
+                    link:
+                        "/contact"
+                },
+
+                {
+                    keywords: [
+                        "qualifier",
+                        "qualification",
+                        "besoin client",
+                        "nouveau besoin"
+                    ],
+
+                    message:
+                        "Je vous redirige vers Qualification du besoin.",
+
+                    link:
+                        "/cabinet/qualification-besoin"
+                },
+
+                {
+                    keywords: [
+                        "mise en relation",
+                        "mettre en relation",
+                        "transmettre",
+                        "transmission",
+                        "opportunite"
+                    ],
+
+                    message:
+                        "Je vous redirige vers Mise en relation.",
+
+                    link:
+                        "/cabinet/mise-en-relation"
+                },
+
+                {
+                    keywords: [
+                        "suivi partenariat",
+                        "partenariat",
+                        "suivre partenariat",
+                        "suivi"
+                    ],
+
+                    message:
+                        "Je vous redirige vers Suivi du partenariat.",
+
+                    link:
+                        "/cabinet/suivi-partenariat"
+                },
+
+                {
+                    keywords: [
+                        "contact",
+                        "contacter",
+                        "echanger",
+                        "parler a quelqu un"
+                    ],
+
+                    message:
+                        "Je vous redirige vers la page Contact.",
+
+                    link:
+                        "/contact"
+                }
+
+            ];
+
+
+            /* =============================================
+               RECHERCHE MEILLEURE INTENTION
+               ============================================= */
+
+            function findIntent(
+                text,
+                intents
+            ) {
+
+                let bestIntent =
+                    null;
+
+                let bestScore =
+                    0;
+
+
+                intents.forEach(
+                    (intent) => {
+
+                        let score =
+                            0;
+
+
+                        intent.keywords.forEach(
+                            (keyword) => {
+
+                                const normalizedKeyword =
+                                    normalizeText(
+                                        keyword
+                                    );
+
+
+                                if (
+                                    text.includes(
+                                        normalizedKeyword
+                                    )
+                                ) {
+
+                                    const wordCount =
+                                        normalizedKeyword
+                                            .split(" ")
+                                            .length;
+
+
+                                    score +=
+                                        (
+                                            wordCount *
+                                            10
+                                        ) +
+                                        normalizedKeyword
+                                            .length;
+
+                                }
+
+                            }
+                        );
+
+
+                        if (
+                            score >
+                            bestScore
+                        ) {
+
+                            bestScore =
+                                score;
+
+                            bestIntent =
+                                intent;
+
+                        }
+
+                    }
+                );
+
+
+                return bestIntent;
+
+            }
+
+
+            /* =============================================
+               RÉPONSE
+               ============================================= */
+
+            function getChatbotResponse(
+                message
+            ) {
+
+                const text =
+                    normalizeText(
+                        message
+                    );
+
+
+                const space =
+                    getCurrentSpace();
+
+
+                let intents =
+                    [];
+
+
+                if (
+                    space === "tpe"
+                ) {
+
+                    intents =
+                        tpeIntents;
+
+                }
+
+
+                if (
+                    space === "pme"
+                ) {
+
+                    intents =
+                        pmeIntents;
+
+                }
+
+
+                if (
+                    space === "cabinet"
+                ) {
+
+                    intents =
+                        cabinetIntents;
+
+                }
+
+
+                const intent =
+                    findIntent(
+                        text,
+                        intents
+                    );
+
+
+                if (intent) {
+
+                    return {
+
+                        found:
+                            true,
+
+                        message:
+                            intent.message,
+
+                        link:
+                            intent.link
+
+                    };
+
+                }
+
+
+                if (
+                    space === "tpe"
+                ) {
+
+                    return {
+
+                        found:
+                            false,
+
+                        message:
+                            "Je peux vous orienter vers Étude & conseil, Solutions, Suivi & accompagnement ou la page Contact."
+
+                    };
+
+                }
+
+
+                if (
+                    space === "pme"
+                ) {
+
+                    return {
+
+                        found:
+                            false,
+
+                        message:
+                            "Je peux vous orienter vers le cadrage, le déploiement, le pilotage ou la page Contact."
+
+                    };
+
+                }
+
+
+                if (
+                    space === "cabinet"
+                ) {
+
+                    return {
+
+                        found:
+                            false,
+
+                        message:
+                            "Je peux vous orienter vers la qualification, la mise en relation, le suivi du partenariat ou la page Contact."
+
+                    };
+
+                }
+
+
+                return {
+
+                    found:
+                        false,
+
+                    message:
+                        "Pouvez-vous préciser votre demande ?"
+
+                };
+
+            }
+
+
+            /* =============================================
+               AFFICHAGE RÉPONSE
+               ============================================= */
+
+            function displayResponse(
+                response
+            ) {
+
+                if (!response) {
+                    return;
+                }
+
+
+                addMessage(
+                    response.message,
+                    "assistant"
+                );
+
+
+                if (
+                    response.found &&
+                    response.link
+                ) {
+
+                    chatbotInput.disabled =
+                        true;
+
+
+                    window.setTimeout(
+                        () => {
+
+                            window.location.href =
+                                response.link;
+
+                        },
+                        1100
+                    );
+
+                }
+
+            }
+
+
+            /* =============================================
+               ENVOI
+               ============================================= */
+
+            function sendMessage(
+                message
+            ) {
+
+                const cleanMessage =
+                    message.trim();
+
+
+                if (!cleanMessage) {
+                    return;
+                }
+
+
+                addMessage(
+                    cleanMessage,
+                    "user"
+                );
+
+
+                chatbotInput.value =
+                    "";
+
+
+                window.setTimeout(
+                    () => {
+
+                        const response =
+                            getChatbotResponse(
+                                cleanMessage
+                            );
+
+
+                        displayResponse(
+                            response
+                        );
+
+                    },
+                    250
+                );
+
+            }
+
+
+            chatbotForm.addEventListener(
+                "submit",
+                (event) => {
+
+                    event.preventDefault();
+
+
+                    sendMessage(
+                        chatbotInput.value
+                    );
+
+                }
+            );
+
+
+            chatbotSuggestions.forEach(
+                (button) => {
+
+                    button.addEventListener(
+                        "click",
+                        () => {
+
+                            const message =
+                                button.dataset.message;
+
+
+                            if (!message) {
+                                return;
+                            }
+
+
+                            sendMessage(
+                                message
+                            );
+
+                        }
+                    );
+
+                }
+            );
+
+
+            /* =============================================
+               ÉCHAP
+               ============================================= */
+
+            document.addEventListener(
+                "keydown",
+                (event) => {
+
+                    if (
+                        event.key ===
+                            "Escape" &&
+                        !chatbotWindow.hidden
+                    ) {
+
+                        closeChatbot();
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           ÉCHAP GLOBAL
+           ===================================================== */
+
+        document.addEventListener(
+            "keydown",
+            (event) => {
+
+                if (
+                    event.key !==
+                    "Escape"
+                ) {
+
+                    return;
+
+                }
+
+
+                if (
+                    adminCabinetModal &&
+                    !adminCabinetModal.hidden
+                ) {
+
+                    hideAdminCabinetModal();
+
+                }
+
+            }
+        );
+
+    }
+);
+
 /* =========================================================
    DATENSIS
    TPE.JS
@@ -2150,6 +4020,8 @@ document.addEventListener(
 
     }
 );
+
+
 
 /* =========================================================
    DATENSIS
@@ -5650,6 +7522,8 @@ document.addEventListener("DOMContentLoaded", () => {
    DATENSIS - MES PROJETS TPE
    Démonstration côté navigateur
    ========================================================= */
+
+
 
 document.addEventListener("DOMContentLoaded", () => {
     if (!document.body.classList.contains("tpe-projects-page")) {
@@ -9228,6 +11102,8 @@ document.addEventListener("DOMContentLoaded", () => {
     renderSites();
     renderDistribution();
 });
+
+
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -13215,6 +15091,8 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
+
+
 document.addEventListener("DOMContentLoaded", () => {
     "use strict";
 
@@ -16995,129 +18873,46 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 })();
 
-'use strict';
-document.addEventListener('DOMContentLoaded', () => {
-  const toggle = document.querySelector('.public-menu-toggle');
-  const nav = document.getElementById('public-navigation');
-  if (toggle && nav) {
-    toggle.addEventListener('click', () => {
-      const open = toggle.getAttribute('aria-expanded') === 'true';
-      toggle.setAttribute('aria-expanded', String(!open));
-      toggle.setAttribute('aria-label', open ? 'Ouvrir le menu' : 'Fermer le menu');
-      nav.classList.toggle('is-open', !open);
+
+/* ============================================================
+   DATENSIS - SELECTEURS DES 3 PAGES PUBLIQUES
+   ============================================================ */
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".public-page").forEach((page) => {
+        const buttons = Array.from(page.querySelectorAll(".public-profile-btn[data-profile]"));
+        const panels = Array.from(page.querySelectorAll(".public-profile-content[data-content]"));
+        if (!buttons.length || !panels.length) return;
+
+        function showProfile(profile) {
+            buttons.forEach((button) => {
+                const active = button.dataset.profile === profile;
+                button.classList.toggle("is-active", active);
+                button.setAttribute("aria-pressed", String(active));
+            });
+            panels.forEach((panel) => {
+                panel.hidden = panel.dataset.content !== profile;
+            });
+        }
+
+        buttons.forEach((button) => {
+            button.addEventListener("click", () => showProfile(button.dataset.profile));
+        });
+        const initial = buttons.find((button) => button.classList.contains("is-active"));
+        showProfile(initial ? initial.dataset.profile : buttons[0].dataset.profile);
+
+        // Demonstration publique uniquement : aucune soumission serveur.
+        if (page.classList.contains("datensis-study")) {
+            page.querySelectorAll(".public-profile-content form").forEach((form) => {
+                form.addEventListener("submit", (event) => {
+                    event.preventDefault();
+                    event.stopImmediatePropagation();
+                    if (!form.reportValidity()) return;
+                    const feedback = form.querySelector(".public-form-feedback");
+                    if (feedback) {
+                        feedback.textContent = "Votre étude est prête à être transmise. L'envoi sera activé après intégration du traitement sécurisé DATENSIS.";
+                    }
+                }, true);
+            });
+        }
     });
-    nav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
-      nav.classList.remove('is-open');
-      toggle.setAttribute('aria-expanded', 'false');
-      toggle.setAttribute('aria-label', 'Ouvrir le menu');
-    }));
-  }
-  const year = document.getElementById('public-year');
-  if (year) year.textContent = String(new Date().getFullYear());
 });
-
-
-/* DATENSIS - accueil public / portail */
-(() => {
-  'use strict';
-  function initPortal() {
-    const portal = document.querySelector('.portal-page');
-    if (!portal || portal.dataset.portalInitialized === 'true') return;
-    portal.dataset.portalInitialized = 'true';
-    const targets = portal.querySelectorAll('[data-reveal]');
-    if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      targets.forEach(el => el.classList.add('is-visible'));
-      return;
-    }
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) { entry.target.classList.add('is-visible'); observer.unobserve(entry.target); }
-      });
-    }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
-    targets.forEach(el => observer.observe(el));
-  }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initPortal);
-  else initPortal();
-})();
-
-
-/* DATENSIS - accueil V3 : progression et animations non intrusives */
-(() => { 'use strict';
-  function initV3() {
-    const root = document.querySelector('.portal-v3');
-    if (!root || root.dataset.v3Ready === '1') return;
-    root.dataset.v3Ready = '1';
-    const bar = document.getElementById('pvScrollBar');
-    if (bar) {
-      let ticking = false;
-      const update = () => {
-        const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-        bar.style.width = `${Math.min(100, Math.max(0, window.scrollY / max * 100))}%`;
-        ticking = false;
-      };
-      window.addEventListener('scroll', () => {
-        if (!ticking) { ticking = true; window.requestAnimationFrame(update); }
-      }, { passive: true });
-      update();
-    }
-    const items = root.querySelectorAll('[data-reveal]');
-    if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      items.forEach(item => item.classList.add('is-visible'));
-    } else {
-      const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('is-visible'); observer.unobserve(entry.target); } });
-      }, { threshold: 0.08, rootMargin: '0px 0px -20px 0px' });
-      items.forEach(item => observer.observe(item));
-    }
-  }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initV3);
-  else initV3();
-})();
-
-
-/* DATENSIS — filtres de la page Services */
-(function () {
-  "use strict";
-  function initServicesFilters() {
-    const page = document.querySelector(".services-public-page");
-    if (!page || page.dataset.servicesFiltersReady === "true") return;
-    page.dataset.servicesFiltersReady = "true";
-    const buttons = Array.from(page.querySelectorAll("[data-service-filter]"));
-    const cards = Array.from(page.querySelectorAll("[data-service-type]"));
-    buttons.forEach((button) => {
-      button.addEventListener("click", () => {
-        const filter = button.dataset.serviceFilter;
-        buttons.forEach((item) => {
-          const selected = item === button;
-          item.classList.toggle("is-active", selected);
-          item.setAttribute("aria-pressed", String(selected));
-        });
-        cards.forEach((card) => {
-          card.hidden = filter !== "all" && card.dataset.serviceType !== filter;
-        });
-      });
-    });
-  }
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", initServicesFilters);
-  else initServicesFilters();
-})();
-
-
-/* DATENSIS CONTACT V4 - initialisation isolee */
-(() => {
-  const init = () => {
-    const form = document.querySelector('body.contact-public-page #contactForm');
-    if (!form || form.dataset.contactV4Ready === 'true') return;
-    form.dataset.contactV4Ready = 'true';
-    const message = form.querySelector('#message');
-    const counter = form.querySelector('#messageCounter');
-    if (message && counter) {
-      const update = () => { counter.textContent = `${message.value.length} / ${message.maxLength}`; };
-      message.addEventListener('input', update);
-      update();
-    }
-    // Ne pas intercepter l'envoi : Flask doit traiter le POST cote serveur.
-  };
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once: true });
-  else init();
-})();

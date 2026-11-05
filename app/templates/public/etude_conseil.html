@@ -1,0 +1,426 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Étude & conseil | DATENSIS</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+{% include "header.html" %}
+
+<main class="public-page datensis-study">
+
+    <section class="public-hero">
+        <div class="public-hero-content">
+            <p class="eyebrow">DATENSIS · Étude & conseil</p>
+            <h1>Construisons votre projet sur des bases solides.</h1>
+            <p>
+                Présentez votre besoin, identifiez vos contraintes
+                et découvrez une méthode adaptée à votre organisation.
+            </p>
+            <a href="#etude-profils" class="home-btn-primary">
+                Commencer mon étude
+            </a>
+        </div>
+        <div class="public-hero-panel">
+            <div class="hero-step">
+                <strong>01</strong>
+                <div>
+                    <h3>Comprendre</h3>
+                    <p>Identifier votre besoin et vos objectifs.</p>
+                </div>
+            </div>
+            <div class="hero-step">
+                <strong>02</strong>
+                <div>
+                    <h3>Analyser</h3>
+                    <p>Étudier le contexte et les contraintes.</p>
+                </div>
+            </div>
+            <div class="hero-step">
+                <strong>03</strong>
+                <div>
+                    <h3>Cadrer</h3>
+                    <p>Définir les priorités et les prochaines étapes.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="process-section public-process-section">
+        <div class="section-heading">
+            <p class="eyebrow">Notre méthode</p>
+            <h2>Une étude en trois étapes</h2>
+            <p>Une démarche structurée avant de choisir une solution.</p>
+        </div>
+
+        <div class="process-steps">
+            <article class="process-step active">
+                <span class="process-number">01</span>
+                <h3>Décrire le besoin</h3>
+                <p>Présentez votre situation et votre objectif.</p>
+            </article>
+            <article class="process-step">
+                <span class="process-number">02</span>
+                <h3>Analyser le contexte</h3>
+                <p>Identifiez vos ressources et vos contraintes.</p>
+            </article>
+            <article class="process-step">
+                <span class="process-number">03</span>
+                <h3>Préparer la suite</h3>
+                <p>Définissez les priorités de votre projet.</p>
+            </article>
+        </div>
+    </section>
+
+    <section class="public-profile-section" id="etude-profils">
+        <div class="section-heading">
+            <p class="eyebrow">Votre organisation</p>
+            <h2>Une étude adaptée à votre profil</h2>
+            <p>Sélectionnez votre type d'organisation.</p>
+        </div>
+
+        <div class="public-profile-selector" role="group"
+             aria-label="Choisir votre profil">
+            <button type="button" class="public-profile-btn is-active"
+                    data-profile="tpe" aria-pressed="true">
+                Indépendants &amp; TPE
+            </button>
+            <button type="button" class="public-profile-btn"
+                    data-profile="pme" aria-pressed="false">
+                PME &amp; ETI
+            </button>
+            <button type="button" class="public-profile-btn"
+                    data-profile="cabinet" aria-pressed="false">
+                Cabinets
+            </button>
+        </div>
+
+        <!-- FORMULAIRE TPE -->
+        <section class="public-profile-content" data-content="tpe">
+            <div class="public-journey-layout">
+                <article class="dashboard-card">
+                    <div class="card-heading">
+                        <div>
+                            <p class="eyebrow">Indépendants &amp; TPE</p>
+                            <h2>Comprendre votre besoin</h2>
+                            <p>Décrivez votre situation et votre objectif.</p>
+                        </div>
+                    </div>
+
+                    <form class="journey-form" id="tpeStudyForm">
+                        <div class="form-group">
+                            <label for="tpe-besoin">Besoin principal</label>
+                            <select id="tpe-besoin" name="besoin" required>
+                                <option value="">Sélectionnez votre besoin</option>
+                                <option value="materiel">Renouvellement de matériel</option>
+                                <option value="organisation">Organisation numérique</option>
+                                <option value="solution">Conseil sur une solution</option>
+                                <option value="projet">Nouveau projet</option>
+                                <option value="autre">Autre</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tpe-objectif">Votre objectif</label>
+                            <textarea id="tpe-objectif" name="objectif"
+                                      rows="5" required
+                                      placeholder="Que souhaitez-vous améliorer ?"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tpe-contexte">Contexte actuel</label>
+                            <textarea id="tpe-contexte" name="contexte"
+                                      rows="4"
+                                      placeholder="Outils, organisation, difficultés..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tpe-delai">Délai souhaité</label>
+                            <select id="tpe-delai" name="delai">
+                                <option value="">Pas de délai défini</option>
+                                <option value="moins-1-mois">Moins d'un mois</option>
+                                <option value="1-3-mois">1 à 3 mois</option>
+                                <option value="plus-3-mois">Plus de 3 mois</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tpe-budget">Budget défini ?</label>
+                            <select id="tpe-budget" name="budget">
+                                <option value="">Je ne sais pas encore</option>
+                                <option value="oui">Oui</option>
+                                <option value="non">Non</option>
+                            </select>
+                        </div>
+
+                        <div class="card-actions">
+                            <button type="submit" class="btn-primary">
+                                Préparer mon étude
+                            </button>
+                        </div>
+                        <p class="public-form-feedback" role="status"
+                           aria-live="polite"></p>
+                    </form>
+                </article>
+
+                <aside class="dashboard-card">
+                    <p class="eyebrow">Pourquoi cette étape ?</p>
+                    <h2>Éviter les mauvais choix</h2>
+                    <p>
+                        Un besoin bien défini permet d'éviter
+                        une solution trop complexe, coûteuse
+                        ou inadaptée à votre activité.
+                    </p>
+                    <div class="info-box">
+                        <strong>Exemple</strong>
+                        <p>
+                            Vous souhaitez renouveler vos postes de travail,
+                            mais devez d'abord choisir la configuration
+                            et préparer la migration.
+                        </p>
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+        <!-- FORMULAIRE PME -->
+        <section class="public-profile-content" data-content="pme" hidden>
+            <div class="public-journey-layout">
+                <article class="dashboard-card">
+                    <div class="card-heading">
+                        <div>
+                            <p class="eyebrow">PME &amp; ETI</p>
+                            <h2>Cartographier votre projet</h2>
+                            <p>Définissez le périmètre de votre organisation.</p>
+                        </div>
+                    </div>
+
+                    <form class="journey-form" id="pmeCadrageForm">
+                        <div class="form-group">
+                            <label for="pme-projet">Nom du projet</label>
+                            <input type="text" id="pme-projet"
+                                   name="projectName" required maxlength="200"
+                                   placeholder="Ex. Digitalisation des processus">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="pme-besoin">Besoin principal</label>
+                            <select id="pme-besoin" name="projectNeed" required>
+                                <option value="">Sélectionnez un besoin</option>
+                                <option>Digitalisation de processus</option>
+                                <option>Déploiement multi-sites</option>
+                                <option>Centralisation documentaire</option>
+                                <option>Reporting et pilotage</option>
+                                <option>Organisation des outils</option>
+                                <option>Autre</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="pme-sites">Sites concernés</label>
+                            <select id="pme-sites" name="projectSites">
+                                <option>1 site</option>
+                                <option>2 à 5 sites</option>
+                                <option>6 à 10 sites</option>
+                                <option>Plus de 10 sites</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="pme-equipes">Équipes concernées</label>
+                            <input type="text" id="pme-equipes"
+                                   name="projectTeams"
+                                   placeholder="Direction, RH, finance...">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="pme-contexte">Contexte actuel</label>
+                            <textarea id="pme-contexte" name="projectContext"
+                                      rows="5" required
+                                      placeholder="Organisation et difficultés..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="pme-objectif">Objectif principal</label>
+                            <textarea id="pme-objectif" name="projectGoal"
+                                      rows="4" required
+                                      placeholder="Quel résultat souhaitez-vous obtenir ?"></textarea>
+                        </div>
+
+                        <div class="card-actions">
+                            <button type="submit" class="btn-primary">
+                                Préparer mon cadrage
+                            </button>
+                        </div>
+                        <p class="public-form-feedback" role="status"
+                           aria-live="polite"></p>
+                    </form>
+                </article>
+
+                <aside class="dashboard-card">
+                    <p class="eyebrow">Cadrage PME</p>
+                    <h2>Définir un périmètre réaliste</h2>
+                    <p>
+                        Identifiez les sites, équipes, processus,
+                        outils existants et dépendances du projet.
+                    </p>
+                    <div class="info-box">
+                        <strong>Exemple</strong>
+                        <p>
+                            Une entreprise souhaite harmoniser
+                            ses outils documentaires entre
+                            son siège et plusieurs agences.
+                        </p>
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+        <!-- FORMULAIRE CABINET -->
+        <section class="public-profile-content" data-content="cabinet" hidden>
+            <div class="public-journey-layout">
+                <article class="dashboard-card">
+                    <div class="card-heading">
+                        <div>
+                            <p class="eyebrow">Cabinets</p>
+                            <h2>Étudier vos besoins de collaboration</h2>
+                            <p>
+                                Présentez votre organisation
+                                et les besoins de vos clients.
+                            </p>
+                        </div>
+                    </div>
+
+                    <form class="journey-form" id="cabinetStudyForm">
+                        <div class="form-group">
+                            <label for="cabinet-nom">Nom du cabinet</label>
+                            <input type="text" id="cabinet-nom"
+                                   name="cabinetName" maxlength="200" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cabinet-besoin">Besoin principal</label>
+                            <select id="cabinet-besoin" name="need" required>
+                                <option value="">Sélectionnez un besoin</option>
+                                <option>Centralisation des demandes clients</option>
+                                <option>Coordination des collaborateurs</option>
+                                <option>Suivi des dossiers</option>
+                                <option>Développement du partenariat</option>
+                                <option>Autre</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cabinet-equipe">Taille de l'équipe</label>
+                            <select id="cabinet-equipe" name="teamSize">
+                                <option>1 à 5 collaborateurs</option>
+                                <option>6 à 20 collaborateurs</option>
+                                <option>21 à 50 collaborateurs</option>
+                                <option>Plus de 50 collaborateurs</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cabinet-contexte">Organisation actuelle</label>
+                            <textarea id="cabinet-contexte" name="context"
+                                      rows="4" required></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cabinet-objectif">Objectif recherché</label>
+                            <textarea id="cabinet-objectif" name="goal"
+                                      rows="4" required></textarea>
+                        </div>
+
+                        <div class="card-actions">
+                            <button type="submit" class="btn-primary">
+                                Préparer mon étude
+                            </button>
+                        </div>
+                        <p class="public-form-feedback" role="status"
+                           aria-live="polite"></p>
+                    </form>
+                </article>
+
+                <aside class="dashboard-card">
+                    <p class="eyebrow">Accompagnement cabinet</p>
+                    <h2>Structurer les échanges</h2>
+                    <p>
+                        Définissez vos attentes concernant
+                        la relation client, le suivi des dossiers
+                        et la collaboration avec DATENSIS.
+                    </p>
+                </aside>
+            </div>
+        </section>
+    </section>
+
+    <section class="public-next-step">
+        <div>
+            <p class="eyebrow">Étape suivante</p>
+            <h2>Découvrez les solutions adaptées</h2>
+            <p>
+                Comparez les approches disponibles
+                avant de poursuivre votre projet.
+            </p>
+        </div>
+        <div class="public-next-links">
+            <a href="{{ url_for('main.solutions') }}"
+               class="home-btn-primary">Voir les solutions</a>
+            <a href="{{ url_for('main.contact') }}"
+               class="home-btn-secondary">Contacter DATENSIS</a>
+        </div>
+    </section>
+</main>
+
+{% include "footer.html" %}
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const root = document.querySelector(".datensis-study");
+    if (!root) return;
+
+    const buttons = root.querySelectorAll("[data-profile]");
+    const sections = root.querySelectorAll("[data-content]");
+
+    function selectProfile(profile) {
+        buttons.forEach(button => {
+            const active = button.dataset.profile === profile;
+            button.classList.toggle("is-active", active);
+            button.setAttribute("aria-pressed", String(active));
+        });
+        sections.forEach(section => {
+            section.hidden = section.dataset.content !== profile;
+        });
+    }
+
+    buttons.forEach(button => {
+        button.addEventListener("click", () => {
+            selectProfile(button.dataset.profile);
+        });
+    });
+
+    root.querySelectorAll("form").forEach(form => {
+        form.addEventListener("submit", event => {
+            event.preventDefault();
+            if (!form.reportValidity()) return;
+            const feedback = form.querySelector(".public-form-feedback");
+            if (feedback) {
+                feedback.textContent =
+                    "Votre formulaire est prêt. L'envoi sera disponible " +
+                    "après activation du service de traitement DATENSIS.";
+            }
+        });
+    });
+
+    selectProfile("tpe");
+});
+</script>
+
+</body>
+</html>

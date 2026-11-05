@@ -1,0 +1,457 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suivi & accompagnement | DATENSIS</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+{% include "header.html" %}
+
+<main class="public-page datensis-suivi">
+
+    <section class="public-hero">
+        <div class="public-hero-content">
+            <p class="eyebrow">DATENSIS · Suivi</p>
+            <h1>Gardez une vision claire de chaque étape.</h1>
+            <p>
+                Découvrez comment DATENSIS peut vous aider
+                à visualiser les projets, les actions prioritaires
+                et les prochaines échéances.
+            </p>
+            <div class="public-hero-actions">
+                <a href="#suivi-profils" class="home-btn-primary">
+                    Découvrir le suivi
+                </a>
+                <a href="{{ url_for('main.solutions') }}"
+                   class="home-btn-secondary">
+                    Explorer les solutions
+                </a>
+            </div>
+        </div>
+
+        <div class="public-hero-panel">
+            <div class="hero-step">
+                <strong>01</strong>
+                <div>
+                    <h3>Centraliser</h3>
+                    <p>Regrouper les informations importantes.</p>
+                </div>
+            </div>
+            <div class="hero-step">
+                <strong>02</strong>
+                <div>
+                    <h3>Visualiser</h3>
+                    <p>Comprendre l'avancement des projets.</p>
+                </div>
+            </div>
+            <div class="hero-step">
+                <strong>03</strong>
+                <div>
+                    <h3>Agir</h3>
+                    <p>Identifier les prochaines actions.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="process-section public-process-section">
+        <div class="section-heading">
+            <p class="eyebrow">Notre méthode</p>
+            <h2>Un suivi clair et structuré</h2>
+            <p>
+                Retrouvez une présentation des étapes,
+                des validations et des actions à venir.
+            </p>
+        </div>
+
+        <div class="process-steps">
+            <article class="process-step active">
+                <span class="process-number">01</span>
+                <h3>Avancement</h3>
+                <p>Visualiser les grandes étapes.</p>
+            </article>
+            <article class="process-step">
+                <span class="process-number">02</span>
+                <h3>Validations</h3>
+                <p>Identifier les décisions à prendre.</p>
+            </article>
+            <article class="process-step">
+                <span class="process-number">03</span>
+                <h3>Accompagnement</h3>
+                <p>Préparer les prochaines actions.</p>
+            </article>
+        </div>
+    </section>
+
+    <section class="public-profile-section" id="suivi-profils">
+        <div class="section-heading">
+            <p class="eyebrow">Démonstration</p>
+            <h2>Découvrez votre futur espace de suivi</h2>
+            <p>
+                Les informations présentées sont des exemples fictifs.
+            </p>
+        </div>
+
+        <div class="public-profile-selector" role="group"
+             aria-label="Choisir un profil">
+            <button type="button" class="public-profile-btn is-active"
+                    data-profile="tpe" aria-pressed="true">
+                Indépendants &amp; TPE
+            </button>
+            <button type="button" class="public-profile-btn"
+                    data-profile="pme" aria-pressed="false">
+                PME &amp; ETI
+            </button>
+            <button type="button" class="public-profile-btn"
+                    data-profile="cabinet" aria-pressed="false">
+                Cabinets
+            </button>
+        </div>
+
+        <!-- TPE -->
+        <section class="public-profile-content" data-content="tpe">
+            <div class="section-heading">
+                <p class="eyebrow">Exemple TPE</p>
+                <h2>Modernisation informatique</h2>
+                <p>
+                    Visualisez la progression d'un projet
+                    et les prochaines étapes.
+                </p>
+            </div>
+
+            <article class="public-progress-card">
+                <div class="public-progress-heading">
+                    <div>
+                        <span class="public-progress-label">
+                            Projet fictif
+                        </span>
+                        <h3>Modernisation informatique</h3>
+                        <p>
+                            Déploiement d'une nouvelle infrastructure.
+                        </p>
+                    </div>
+                    <span class="public-progress-value">65 %</span>
+                </div>
+
+                <div class="progress progress-large"
+                     role="progressbar"
+                     aria-label="Avancement du projet exemple"
+                     aria-valuenow="65"
+                     aria-valuemin="0"
+                     aria-valuemax="100">
+                    <div class="progress-bar" style="width:65%"></div>
+                </div>
+            </article>
+
+            <div class="public-tracking-grid">
+                <article class="public-tracking-step completed">
+                    <div class="tracking-marker">✓</div>
+                    <div>
+                        <span class="tracking-label">Terminée</span>
+                        <h3>Solution validée</h3>
+                        <p>Le périmètre a été confirmé.</p>
+                    </div>
+                </article>
+
+                <article class="public-tracking-step completed">
+                    <div class="tracking-marker">✓</div>
+                    <div>
+                        <span class="tracking-label">Terminée</span>
+                        <h3>Préparation</h3>
+                        <p>Les éléments nécessaires ont été préparés.</p>
+                    </div>
+                </article>
+
+                <article class="public-tracking-step active">
+                    <div class="tracking-marker">03</div>
+                    <div>
+                        <span class="tracking-label">En cours</span>
+                        <h3>Mise en place</h3>
+                        <p>Installation et configuration.</p>
+                    </div>
+                </article>
+
+                <article class="public-tracking-step">
+                    <div class="tracking-marker">04</div>
+                    <div>
+                        <span class="tracking-label">À venir</span>
+                        <h3>Vérification</h3>
+                        <p>Contrôle du fonctionnement.</p>
+                    </div>
+                </article>
+
+                <article class="public-tracking-step">
+                    <div class="tracking-marker">05</div>
+                    <div>
+                        <span class="tracking-label">À venir</span>
+                        <h3>Continuité</h3>
+                        <p>Assistance et suivi après déploiement.</p>
+                    </div>
+                </article>
+            </div>
+
+            <div class="public-profile-cta">
+                <a href="{{ url_for('main.tpe_creation_compte') }}"
+                   class="home-btn-primary">
+                    Créer mon compte TPE
+                </a>
+            </div>
+        </section>
+
+        <!-- PME -->
+        <section class="public-profile-content" data-content="pme" hidden>
+            <div class="section-heading">
+                <p class="eyebrow">Exemple PME</p>
+                <h2>Tableau de pilotage</h2>
+                <p>Exemple de déploiement multi-sites.</p>
+            </div>
+
+            <div class="pme-public-kpi-grid">
+                <article class="pme-public-kpi">
+                    <span>Avancement</span>
+                    <strong>68 %</strong>
+                    <small>Donnée fictive</small>
+                </article>
+                <article class="pme-public-kpi">
+                    <span>Étapes terminées</span>
+                    <strong>3 / 5</strong>
+                    <small>Donnée fictive</small>
+                </article>
+                <article class="pme-public-kpi">
+                    <span>Actions ouvertes</span>
+                    <strong>4</strong>
+                    <small>Donnée fictive</small>
+                </article>
+                <article class="pme-public-kpi">
+                    <span>Documents à valider</span>
+                    <strong>2</strong>
+                    <small>Donnée fictive</small>
+                </article>
+            </div>
+
+            <article class="public-progress-card">
+                <div class="public-progress-heading">
+                    <div>
+                        <span class="public-progress-label">
+                            Projet fictif
+                        </span>
+                        <h3>Déploiement multi-sites</h3>
+                        <p>Exemple de progression PME.</p>
+                    </div>
+                    <span class="public-progress-value">68 %</span>
+                </div>
+
+                <div class="progress progress-large"
+                     role="progressbar"
+                     aria-label="Avancement du déploiement exemple"
+                     aria-valuenow="68"
+                     aria-valuemin="0"
+                     aria-valuemax="100">
+                    <div class="progress-bar" style="width:68%"></div>
+                </div>
+            </article>
+
+            <div class="public-tracking-grid">
+                <article class="public-tracking-step completed">
+                    <div class="tracking-marker">✓</div>
+                    <div>
+                        <span class="tracking-label">Terminé</span>
+                        <h3>Cadrage du besoin</h3>
+                        <p>Périmètre validé.</p>
+                    </div>
+                </article>
+
+                <article class="public-tracking-step completed">
+                    <div class="tracking-marker">✓</div>
+                    <div>
+                        <span class="tracking-label">Terminé</span>
+                        <h3>Choix de la solution</h3>
+                        <p>Orientation sélectionnée.</p>
+                    </div>
+                </article>
+
+                <article class="public-tracking-step completed">
+                    <div class="tracking-marker">✓</div>
+                    <div>
+                        <span class="tracking-label">Terminé</span>
+                        <h3>Préparation</h3>
+                        <p>Équipes et sites préparés.</p>
+                    </div>
+                </article>
+
+                <article class="public-tracking-step active">
+                    <div class="tracking-marker">04</div>
+                    <div>
+                        <span class="tracking-label">En cours</span>
+                        <h3>Déploiement</h3>
+                        <p>Mise en œuvre progressive.</p>
+                    </div>
+                </article>
+
+                <article class="public-tracking-step">
+                    <div class="tracking-marker">05</div>
+                    <div>
+                        <span class="tracking-label">À venir</span>
+                        <h3>Validation &amp; continuité</h3>
+                        <p>Contrôle final et suivi.</p>
+                    </div>
+                </article>
+            </div>
+
+            <div class="public-profile-cta">
+                <a href="{{ url_for('main.pme_creation_compte') }}"
+                   class="home-btn-primary">
+                    Créer mon compte PME
+                </a>
+            </div>
+        </section>
+
+        <!-- CABINET -->
+        <section class="public-profile-content" data-content="cabinet" hidden>
+            <div class="section-heading">
+                <p class="eyebrow">Exemple cabinet</p>
+                <h2>Suivi du partenariat</h2>
+                <p>
+                    Une vision des opportunités,
+                    dossiers et échanges avec DATENSIS.
+                </p>
+            </div>
+
+            <div class="cabinet-public-kpi-grid">
+                <article class="cabinet-public-kpi">
+                    <span>Clients transmis</span>
+                    <strong>14</strong>
+                    <small>Donnée fictive</small>
+                </article>
+                <article class="cabinet-public-kpi">
+                    <span>Opportunités ouvertes</span>
+                    <strong>6</strong>
+                    <small>Donnée fictive</small>
+                </article>
+                <article class="cabinet-public-kpi">
+                    <span>Dossiers actifs</span>
+                    <strong>9</strong>
+                    <small>Donnée fictive</small>
+                </article>
+                <article class="cabinet-public-kpi">
+                    <span>Rendez-vous prévus</span>
+                    <strong>3</strong>
+                    <small>Donnée fictive</small>
+                </article>
+            </div>
+
+            <div class="cabinet-demo-grid">
+                <article class="cabinet-demo-card">
+                    <p class="eyebrow">Portefeuille fictif</p>
+                    <h3>Répartition des clients</h3>
+                    <div class="cabinet-portfolio-list">
+                        <div><span>TPE</span><strong>57 %</strong></div>
+                        <div><span>PME</span><strong>36 %</strong></div>
+                        <div><span>Autres</span><strong>7 %</strong></div>
+                    </div>
+                </article>
+
+                <article class="cabinet-demo-card">
+                    <p class="eyebrow">Exemple de rendez-vous</p>
+                    <h3>Prochain point partenariat</h3>
+                    <div class="appointment-card">
+                        <div class="appointment-content">
+                            <strong>Revue de partenariat</strong>
+                            <p>Visioconférence avec DATENSIS</p>
+                            <small>Date à définir</small>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <div class="public-profile-cta">
+                <a href="{{ url_for('main.contact') }}"
+                   class="home-btn-primary">
+                    Contacter DATENSIS
+                </a>
+            </div>
+        </section>
+    </section>
+
+    <section class="public-support-grid">
+        <article class="public-support-card">
+            <span class="public-support-number">01</span>
+            <h2>Informations centralisées</h2>
+            <p>Une vision des éléments importants.</p>
+        </article>
+
+        <article class="public-support-card">
+            <span class="public-support-number">02</span>
+            <h2>Priorités visibles</h2>
+            <p>Des actions et validations identifiables.</p>
+        </article>
+
+        <article class="public-support-card">
+            <span class="public-support-number">03</span>
+            <h2>Accompagnement</h2>
+            <p>Un interlocuteur pour vos questions.</p>
+        </article>
+    </section>
+
+    <section class="public-next-step">
+        <div>
+            <p class="eyebrow">Votre espace DATENSIS</p>
+            <h2>Accédez au suivi réel après connexion</h2>
+            <p>
+                Les démonstrations publiques ne présentent
+                aucune donnée personnelle ou dossier réel.
+            </p>
+        </div>
+        <div class="public-next-links">
+            <a href="{{ url_for('main.etude_conseil') }}"
+               class="home-btn-secondary">
+                Étudier mon besoin
+            </a>
+            <a href="{{ url_for('main.contact') }}"
+               class="home-btn-primary">
+                Contacter DATENSIS
+            </a>
+        </div>
+    </section>
+
+</main>
+
+{% include "footer.html" %}
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const root = document.querySelector(".datensis-suivi");
+    if (!root) return;
+
+    const buttons = root.querySelectorAll("[data-profile]");
+    const contents = root.querySelectorAll("[data-content]");
+
+    function selectProfile(profile) {
+        buttons.forEach(button => {
+            const active = button.dataset.profile === profile;
+            button.classList.toggle("is-active", active);
+            button.setAttribute("aria-pressed", String(active));
+        });
+
+        contents.forEach(content => {
+            content.hidden = content.dataset.content !== profile;
+        });
+    }
+
+    buttons.forEach(button => {
+        button.addEventListener("click", () => {
+            selectProfile(button.dataset.profile);
+        });
+    });
+
+    selectProfile("tpe");
+});
+</script>
+
+</body>
+</html>
